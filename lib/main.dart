@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/theme.dart';
@@ -6,7 +8,6 @@ import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/splash_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
-import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';

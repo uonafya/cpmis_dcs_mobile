@@ -2,7 +2,9 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CaseEventItem extends StatelessWidget {
-  const CaseEventItem({super.key});
+  const CaseEventItem({super.key, required this.data, required this.onDelete});
+  final Map<String, dynamic> data;
+  final Function onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +19,19 @@ class CaseEventItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Event Type",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "CLOSURE",
-                      style: TextStyle(fontSize: 12),
+                      data['eventType'],
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -38,13 +40,13 @@ class CaseEventItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Case Category",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "ALL CASES",
-                      style: TextStyle(fontSize: 12),
+                      data['caseCategory'],
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -54,19 +56,19 @@ class CaseEventItem extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Details",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "First Summon",
-                      style: TextStyle(fontSize: 12),
+                      data['details'],
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -75,13 +77,13 @@ class CaseEventItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Date Of Event",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "11-Oct-2018",
-                      style: TextStyle(fontSize: 12),
+                      data['dateOfEvent'],
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -101,7 +103,9 @@ class CaseEventItem extends StatelessWidget {
                 width: 10,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  onDelete();
+                },
                 child: const Icon(
                   Icons.delete,
                   color: Colors.red,

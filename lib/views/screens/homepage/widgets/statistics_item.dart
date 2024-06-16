@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StatisticsItem extends StatelessWidget {
   const StatisticsItem(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.icon,
       required this.color,
@@ -11,8 +11,7 @@ class StatisticsItem extends StatelessWidget {
       required this.form1BCount,
       required this.cpaCount,
       required this.cparaCount,
-      required this.onClick})
-      : super(key: key);
+      required this.onClick});
   final String title;
   final IconData icon;
   final Color color;
@@ -149,13 +148,12 @@ class StatisticsItem extends StatelessWidget {
 
 class InfoCard extends StatelessWidget {
   const InfoCard(
-      {Key? key,
+      {super.key,
         required this.title,
         required this.icon,
         required this.color,
         required this.secondaryColor,
-       })
-      : super(key: key);
+       });
   final String title;
   final IconData icon;
   final Color color;
