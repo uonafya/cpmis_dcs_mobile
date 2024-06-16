@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -7,6 +8,8 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_grid_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/route_manager.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -212,7 +215,9 @@ class _HomepageState extends State<Homepage> {
                     SizedBox(
                       width: 140,
                       child: CustomButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() => const CaseRegistrationSheet());
+                        },
                         text: "Registry",
                         color: Colors.green,
                       ),
