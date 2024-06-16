@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';

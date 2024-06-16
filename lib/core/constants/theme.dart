@@ -6,6 +6,7 @@ ThemeData appTheme() {
     primaryColor: kPrimaryColor,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.grey[50],
+      foregroundColor: Colors.black,
       iconTheme: const IconThemeData(
         color: Colors.black,
       ),
