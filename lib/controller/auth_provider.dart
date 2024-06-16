@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
-import 'package:cpims_dcs_mobile/core/network/http_client.dart';
+
+import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/user_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
@@ -45,42 +46,33 @@ class AuthProvider with ChangeNotifier {
     required String password,
     required String username,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
-
     final AuthProvider authProvider = AuthProvider();
 
-    final response = await httpClient.request(
-      '${cpimsApiUrl}api/token/',
-      "POST",
-      {
-        'username': username,
-        'password': password,
-      },
-    );
+    final response = await apiService.login(username, password);
 
     if (context.mounted) {
-      await prefs.setString('access', response.data['access']);
-      await prefs.setString('refresh', response.data['refresh']);
+      await preferences.setString('access', response['access']);
+      await preferences.setString('refresh', response['refresh']);
       // await prefs.setBool("hasUserSetup", true);
 
-      await prefs.setInt(
+      await preferences.setInt(
         'authTokenTimestamp',
         DateTime.now().millisecondsSinceEpoch,
       );
 
-      authProvider.setAccessToken(response.data['access']);
+      authProvider.setAccessToken(response['access']);
 
       UserModel userModel = UserModel(
         username: username,
-        accessToken: response.data['access'],
-        refreshToken: response.data['refresh'],
+        accessToken: response['access'],
+        refreshToken: response['refresh'],
       );
       if (context.mounted) {
         setUser(userModel);
       }
 
-      prefs.setString('username', username);
-      prefs.setString('password', password);
+      preferences.setString('username', username);
+      preferences.setString('password', password);
 
       Get.off(() => const InitialLoaderScreen(),
           transition: Transition.fadeIn,
@@ -115,9 +107,8 @@ class AuthProvider with ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      String? refreshToken = prefs.getString('refresh');
-      int? authTokenTimestamp = prefs.getInt('authTokenTimestamp');
+      String? refreshToken = preferences.getString('refresh');
+      int? authTokenTimestamp = preferences.getInt('authTokenTimestamp');
 
       if (refreshToken != null && authTokenTimestamp != null) {
         int currentTimestamp = DateTime.now().millisecondsSinceEpoch;

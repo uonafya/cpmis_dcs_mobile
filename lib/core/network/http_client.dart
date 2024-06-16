@@ -1,15 +1,19 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/dio_request_logger.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
+import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:dio/dio.dart';
+import 'package:get/route_manager.dart';
 
 class HttpClient {
   Dio? _dio;
 
   Future<void> initialize() async {
     _dio = Dio(BaseOptions(
-      baseUrl: "https://dev.cpims.net/mobile/",
+      baseUrl: cpimsApiUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -51,8 +55,7 @@ class HttpClient {
     print(error.response?.data);
     print(error.response?.realUri);
     if (error.response?.statusCode == 401) {
-      //Sign out
-      await preferences.clear();
+      _refreshAccessToken();
 
       return;
     }
@@ -80,14 +83,16 @@ class HttpClient {
   Future _refreshAccessToken() async {
     final refreshToken = preferences.getString("token");
     if (refreshToken != null) {
-      // final response = await request(
-      //   '${IDENTITY_SERVICE_URL}token_renew',
-      //   'GET',
-      //   {'data': refreshToken},
-      // );
-
-      // //Save new token
-      // await preferences.setString("token", response.data['data']['token']);
+      try {
+        await apiService.refreshToken();
+      } catch (e) {
+        preferences.clear();
+        Get.off(
+          () => const LoginScreen(),
+          transition: Transition.fadeIn,
+          duration: const Duration(microseconds: 300),
+        );
+      }
     }
   }
 }
