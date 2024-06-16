@@ -10,7 +10,10 @@ AppBar customAppBar() {
         child: Image.asset('assets/images/logo_gok.png'),
       ),
     ),
-    title: const Text('CPIMS - Kenya'),
+    title: const Text(
+      'CPIMS - DCS',
+      style: TextStyle(color: Colors.black),
+    ),
     actions: [
       IconButton(
         onPressed: () {},

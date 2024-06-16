@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/splash_screen.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -60,7 +61,7 @@ class _CPIMSState extends State<CPIMS> {
 
               return snapshot.data!['hasConnection'] == false ||
                       snapshot.data!['isAuthenticated']
-                  ? const InitialLoaderScreen()
+                  ? const Homepage()
                   : const LoginScreen();
             },
           );
