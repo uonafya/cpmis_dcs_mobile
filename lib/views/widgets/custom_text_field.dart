@@ -3,18 +3,21 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField(
-      {super.key,
-      this.onChanged,
-      this.labelText,
-      this.prefixIcon,
-      this.textInputAction,
-      this.suffixIcon,
-      this.initialValue,
-      this.controller,
-      this.validator,
-      this.enabled,
-      this.hintText});
+  const CustomTextField({
+    super.key,
+    this.onChanged,
+    this.labelText,
+    this.prefixIcon,
+    this.textInputAction,
+    this.suffixIcon,
+    this.initialValue,
+    this.controller,
+    this.validator,
+    this.enabled,
+    this.maxLines = 1,
+    this.hintText,
+    this.onFieldSubmitted,
+  });
 
   final String? labelText;
   final String? hintText;
@@ -26,6 +29,8 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
   final String? initialValue;
   final TextEditingController? controller;
+  final int maxLines;
+  final void Function(String)? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,9 @@ class CustomTextField extends StatelessWidget {
           onChanged!(val);
         }
       },
+      onFieldSubmitted: (String value) {
+        onFieldSubmitted?.call(value);
+      },
       validator: validator,
       controller: controller,
       enabled: enabled,
@@ -42,6 +50,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: kPrimaryColor,
       textInputAction: textInputAction,
       textAlignVertical: TextAlignVertical.center,
+      maxLines: maxLines,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         labelText: labelText,

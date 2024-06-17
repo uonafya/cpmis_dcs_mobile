@@ -1,11 +1,9 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
-
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/user_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
-import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
-
+import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,7 +72,7 @@ class AuthProvider with ChangeNotifier {
       preferences.setString('username', username);
       preferences.setString('password', password);
 
-      Get.off(() => const InitialLoaderScreen(),
+      Get.off(() => const Homepage(),
           transition: Transition.fadeIn,
           duration: const Duration(microseconds: 300));
     }
@@ -83,19 +81,13 @@ class AuthProvider with ChangeNotifier {
   // logout
   Future<void> logOut(BuildContext context) async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-
-      await sharedPreferences.remove('access');
-      await sharedPreferences.remove('refresh');
-
-      clearUser();
-
+      await preferences.clear();
       Get.off(
         () => const LoginScreen(),
         transition: Transition.fadeIn,
         duration: const Duration(microseconds: 300),
       );
+      clearUser();
     } catch (e) {
       if (context.mounted) {
         errorSnackBar(context, e.toString());

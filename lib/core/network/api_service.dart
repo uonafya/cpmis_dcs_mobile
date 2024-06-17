@@ -31,6 +31,21 @@ class ApiService {
 
     return response.data;
   }
+
+  static List<Map<String, dynamic>> fetchCrsData() {
+    return List<Map<String, dynamic>>.generate(
+      10,
+      (index) => {
+        "id": index + 1,
+        "first_name": "John",
+        "surname": "Doee",
+        "sex": "male",
+        "org_unit": "Kisumu",
+        "residence": "Kisumu",
+        "previous_cases": 1,
+      },
+    );
+  }
 }
 
 final apiService = ApiService();
