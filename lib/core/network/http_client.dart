@@ -82,6 +82,7 @@ class HttpClient {
 
   Future _refreshAccessToken() async {
     final refreshToken = preferences.getString("token");
+    print("Here");
     if (refreshToken != null) {
       try {
         await apiService.refreshToken();
@@ -93,6 +94,10 @@ class HttpClient {
           duration: const Duration(microseconds: 300),
         );
       }
+    } else {
+      throw Exception("User not logged in");
+      preferences.clear();
+      Get.offAll(() => const LoginScreen());
     }
   }
 }
