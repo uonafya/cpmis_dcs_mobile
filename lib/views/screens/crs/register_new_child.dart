@@ -21,6 +21,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
     'NGO/private sector employee',
   ];
   String selectedPersonCriteria = 'Please Select';
+  bool? _radioValue;
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +71,45 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 'Person is also a caregiver',
                 style: TextStyle(color: kTextGrey),
               ),
-              Checkbox(value: false, onChanged: (val) {}),
+              Checkbox(
+                value: _isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isChecked = value ?? false; // Update the state
+                  });
+                },
+              ),
+              // Checkbox(value: false, onChanged: (val) {}),
               const SizedBox(height: 10),
               const Text(
                 'Provides services directly to children *',
                 style: TextStyle(color: kTextGrey),
               ),
-              // checkbox with two values, true or false
-              Checkbox(value: false, onChanged: (val) {}),
+              // Radio button with two values, true or false
+              Row(
+                children: [
+                  Radio<bool>(
+                    value: true,
+                    groupValue: _radioValue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _radioValue = value;
+                      });
+                    },
+                  ),
+                  const Text('Yes'),
+                  Radio<bool>(
+                    value: false,
+                    groupValue: _radioValue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _radioValue = value;
+                      });
+                    },
+                  ),
+                  const Text('No'),
+                ],
+              ),
               const SizedBox(height: 10),
               const Text(
                 'First Name *',
