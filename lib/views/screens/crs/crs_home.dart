@@ -1,4 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/api_service.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/register_new_child.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/search_crs_results.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -65,6 +68,16 @@ class _CRSHomeState extends State<CRSHome> {
                 const SizedBox(
                   height: 15,
                 ),
+                // FutureBuilder(
+                //     future: future,
+                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //       if (snapshot.connectionState == ConnectionState.waiting) {
+                //         return const CircularProgressIndicator();
+                //       }
+                //       return SearchCrsResults(
+                //         crsRecords: snapshot.data,
+                //       );
+                //     }),
                 Row(
                   children: [
                     Expanded(child: CustomButton(text: 'Search', onTap: () {})),
@@ -75,10 +88,14 @@ class _CRSHomeState extends State<CRSHome> {
                         child: CustomButton(
                             text: 'Register New',
                             onTap: () {
-                              Get.to(() => const FollowUpHome());
+                              Get.to(() => const RegisterNewChildScreen());
                             })),
                   ],
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SearchCrsResults(crsRecords: ApiService.fetchCrsData()),
               ]),
               const Footer(),
             ]));
