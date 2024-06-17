@@ -2,6 +2,7 @@
 
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -43,6 +44,9 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: customAppBar(),
+        drawer: const Drawer(
+          child: CustomDrawer(),
+        ),
         body: RefreshIndicator(
           onRefresh: () async {},
           child: Stack(
@@ -219,7 +223,7 @@ class _HomepageState extends State<Homepage> {
                         onTap: () {
                           Get.to(() => const CRSHome());
                         },
-                        text: "CRS",
+                        text: "CRS Registry",
                         color: Colors.green,
                       ),
                     ),
