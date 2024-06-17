@@ -4,6 +4,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
@@ -23,6 +24,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   String selectedPersonCriteria = 'Please Select';
   bool? _radioValue;
   bool _isChecked = false;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +146,20 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               const CustomTextField(hintText: 'Date of Birth'),
+              const SizedBox(height: 15,),
+              const Text(
+                'Workforce member recorded on paper *',
+                style: TextStyle(color: kTextGrey),
+              ),
+              const CustomTextField(hintText: 'Workforce ID/Name'),
+              const SizedBox(height: 15,),
+              const Text(
+                'Date paper form filled *',
+                style: TextStyle(color: kTextGrey),
+              ),
+              CustomTextField(hintText: currentDate, readOnly: true),
             ]),
+
           ],
         ));
   }
