@@ -6,14 +6,14 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 
 
 
-class LocationSubform extends StatefulWidget {
-  const LocationSubform({super.key});
+class RegistryLocationSubform extends StatefulWidget {
+  const RegistryLocationSubform({super.key});
 
   @override
-  State<LocationSubform> createState() => _LocationSubformState();
+  State<RegistryLocationSubform> createState() => _RegistryLocationSubformState();
 }
 
-class _LocationSubformState extends State<LocationSubform> {
+class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
   List<String> countyCriteria = [
     'Please Select',
     'HomaBay',
