@@ -162,6 +162,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
               ),
               const SizedBox(height: 15,),
               REGISTRY_SUBFORMS[selectedStep],
+              const SizedBox(height: 15,),
               const Text(
                 'Workforce member recorded on paper *',
                 style: TextStyle(color: kTextGrey),
