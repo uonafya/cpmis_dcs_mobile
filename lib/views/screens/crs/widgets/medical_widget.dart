@@ -32,7 +32,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
         // Title of section
         const FormPageHeading(heading: "Medical"),
         const SizedBox(
-          height: 10.0,
+          height: mediumSpacing,
         ),
 
         // Questions

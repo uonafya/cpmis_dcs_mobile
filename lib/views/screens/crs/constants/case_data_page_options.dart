@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 enum AllegedPerpetratorOptions { known, unknown, self, notApplicable }
@@ -47,6 +46,7 @@ extension LowMediumHighExtension on LowMedHigh {
 }
 
 List<String> lowMedHighList = [
+  pleaseSelect,
   LowMedHigh.high.value,
   LowMedHigh.medium.value,
   LowMedHigh.low.value
@@ -67,7 +67,7 @@ extension YesNoExtension on YesNo {
   }
 }
 
-List<String> yesNoList = [YesNo.no.value, YesNo.yes.value];
+List<String> yesNoList = [pleaseSelect, YesNo.no.value, YesNo.yes.value];
 
 const immediateNeedsOptions = [
   ValueItem<String>(label: "Accompany / Support", value: "support"),
@@ -113,4 +113,42 @@ const futureNeedsOptions = [
   ValueItem<String>(
       label: "Child living with disability referred and linked to app",
       value: "disablility"),
+];
+
+const List<String> relationshipToChildOptions = [
+  pleaseSelect,
+  "None",
+  "Adoptive father",
+  "Adoptive mother",
+  "Foster father",
+  "Foster mother",
+  "Other Relative",
+  "Parent (father)",
+  "Parent (mother)",
+  "Guardian",
+  "Next of kin",
+  "Other"
+];
+
+const List<String> additionalRelationshipToChildOptions = [
+  pleaseSelect,
+  "Commercial Drivers",
+  "Employer",
+  "Friend",
+  "Healthcare Worker",
+  "Local influentials",
+  "Neighbour",
+  "Other non-family",
+  "Other family member",
+  "Other Humanitarian Worker",
+  "Other Primary Care Giver/Guardian",
+  "Other Persion in positions of authority",
+  "Parent",
+  "Religious Leader",
+  "Security Guards",
+  "Security Personnel / Disciplined force member",
+  "Strangers",
+  "Teachers",
+  "Tourist",
+  "Unkown/Not Recorded"
 ];
