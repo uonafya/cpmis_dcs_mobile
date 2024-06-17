@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
@@ -21,6 +22,7 @@ extension AllegedPerpetratorOptionsExtension on AllegedPerpetratorOptions {
 }
 
 List<String> perpetratorOptions = [
+  pleaseSelect,
   AllegedPerpetratorOptions.known.value,
   AllegedPerpetratorOptions.unknown.value,
   AllegedPerpetratorOptions.self.value,

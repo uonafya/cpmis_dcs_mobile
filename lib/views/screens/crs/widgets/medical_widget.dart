@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/medical_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question_with_tooltip.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/info_icon.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
@@ -15,9 +17,9 @@ class MedicalWidget extends StatefulWidget {
 }
 
 class _MedicalWidgetState extends State<MedicalWidget> {
-  String mentalCondition = "";
-  String physicalCondition = "";
-  String otherCondition = "";
+  String mentalCondition = pleaseSelect;
+  String physicalCondition = pleaseSelect;
+  String otherCondition = pleaseSelect;
   List<String> mentalChallenges = [];
   List<String> physicalChallenges = [];
   List<String> otherChallenges = [];
@@ -27,25 +29,30 @@ class _MedicalWidgetState extends State<MedicalWidget> {
     return Column(
       children: [
         // Title of section
-        const Text("Medical"),
-        const Divider(),
+        const FormPageHeading(heading: "Medical"),
+        const SizedBox(
+          height: 10.0,
+        ),
 
         // Questions
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            CompulsaryQuestion(question: "Mental condition:"),
-            InfoIcon(tooltipString: "Select a mental condition")
-          ],
+        const CompulsaryQuestionWithTooltip(
+          question: "Mental condition:",
+          tooltip: "Select a mental condition",
+        ),
+        const SizedBox(
+          height: smallSpacing,
         ),
         CustomDropdown(
-            initialValue: pleaseSelect,
+            initialValue: mentalCondition,
             items: mentalConditionOptions,
             onChanged: (String item) {
               setState(() {
                 mentalCondition = item;
               });
             }),
+        const SizedBox(
+          height: mediumSpacing,
+        ),
 
         // Display list to specify challenge
         if (mentalCondition ==
@@ -67,15 +74,18 @@ class _MedicalWidgetState extends State<MedicalWidget> {
             ],
           ),
         const Divider(),
+        const SizedBox(
+          height: mediumSpacing,
+        ),
 
-        const Row(
-          children: [
-            CompulsaryQuestion(question: "Physical condition:"),
-            InfoIcon(tooltipString: "Select physical condition")
-          ],
+        const CompulsaryQuestionWithTooltip(
+            question: "Physical condition:",
+            tooltip: "Select physical condition"),
+        const SizedBox(
+          height: smallSpacing,
         ),
         CustomDropdown(
-            initialValue: pleaseSelect,
+            initialValue: physicalCondition,
             items: physicalConditionOptions,
             onChanged: (String item) {
               setState(() {
@@ -90,6 +100,9 @@ class _MedicalWidgetState extends State<MedicalWidget> {
                 PhysicalConditionOptions.challengedVerified.value)
           Column(
             children: [
+              const SizedBox(
+                height: mediumSpacing,
+              ),
               const CompulsaryQuestion(question: pleaseSpecify),
               CustomDropDownMultiSelect(
                   options: possiblePhysicalChallenges,
@@ -104,15 +117,18 @@ class _MedicalWidgetState extends State<MedicalWidget> {
             ],
           ),
         const Divider(),
+        const SizedBox(
+          height: mediumSpacing,
+        ),
 
-        const Row(
-          children: [
-            CompulsaryQuestion(question: "Other condition:"),
-            InfoIcon(tooltipString: "Select other conditions if any")
-          ],
+        const CompulsaryQuestionWithTooltip(
+            question: "Other condition:",
+            tooltip: "Select other conditions if any"),
+        const SizedBox(
+          height: smallSpacing,
         ),
         CustomDropdown(
-            initialValue: pleaseSelect,
+            initialValue: otherCondition,
             items: otherConditionOptions,
             onChanged: (String item) {
               setState(() {
