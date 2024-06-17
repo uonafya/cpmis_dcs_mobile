@@ -5,77 +5,64 @@ class FamilyBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
+        Text(
           'Section 2: Family Background',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
         ),
-        const Divider(),
-        const Text(
+        SizedBox(height: 10),
+        Divider(),
+        Text(
           'Case Record Sheet',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Checkbox(value: false, onChanged: (value) {}),
-            const Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
-          ],
-        ),
-        const SizedBox(height: 10),
-        const Text(
+        SizedBox(height: 10),
+        Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
+        SizedBox(height: 10),
+        Text(
           '1. View case (CCO/32/213/5/29/5/2016 - July 1, 2016)',
-          style: TextStyle(fontSize: 11),
+          style:
+              TextStyle(fontSize: 11, color: Color.fromARGB(255, 27, 107, 173)),
         ),
-        const SizedBox(height: 20),
-        const Divider(),
-        const Text(
+        SizedBox(height: 20),
+        Divider(),
+        Text(
           'Parents / Caregiver Particulars',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 10),
-        const Divider(),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Parent (Father)'s Names",
-              style: TextStyle(fontSize: 14),
-            ),
-            Text(
-              'CHEGE MUMBA',
-              style: TextStyle(fontSize: 14),
-            ),
-          ],
+        SizedBox(height: 10),
+        Divider(),
+        Text(
+          "Parent (Father)'s Names",
+          style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        const Divider(),
-        const SizedBox(height: 5),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Parent (Mother)'s Names",
-              style: TextStyle(fontSize: 14),
-            ),
-            Text(
-              'ROSE WANGECHI',
-              style: TextStyle(fontSize: 14),
-            ),
-          ],
+        Text(
+          'CHEGE MUMBA',
+          style: TextStyle(fontSize: 12),
         ),
-        const SizedBox(height: 10),
-        const Divider(),
-        const SizedBox(height: 20),
-        const Text(
+        SizedBox(height: 5),
+        Divider(),
+        Text(
+          "Parent (Mother)'s Names",
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+        Text(
+          'ROSE WANGECHI',
+          style: TextStyle(fontSize: 12),
+        ),
+        SizedBox(height: 5),
+        Divider(),
+        SizedBox(height: 20),
+        Text(
           'Home Particulars',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 10),
-        const Divider(),
-        const SizedBox(height: 10),
-        const Row(
+        SizedBox(height: 10),
+        Divider(),
+        SizedBox(height: 10),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -88,10 +75,10 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 5),
-        const SizedBox(height: 5),
-        const Divider(),
-        const Row(
+        SizedBox(height: 5),
+        SizedBox(height: 5),
+        Divider(),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -104,7 +91,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20),
       ],
     );
   }
