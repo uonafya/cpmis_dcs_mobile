@@ -19,7 +19,6 @@ class RegisterNewChildScreen extends StatefulWidget {
 
 class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   List<String> personCriteria = [
-    'Please Select',
     'Child',
   ];
   String selectedPersonCriteria = 'Please Select';
