@@ -3,6 +3,7 @@ import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
+import 'package:cpims_dcs_mobile/views/screens/social_inquiry/social_inquiry.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,33 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          const Text(
-            "View Case Record Sheet",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          Row(
+            children: [
+              const Text(
+                "View Case Record Sheet",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              const Spacer(),
+              const SizedBox(
+                width: 14,
+              ),
+              InkWell(
+                onTap: () {
+                  Get.to(() => const FollowUpHome());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  child: const Text(
+                    "INACTIVE",
+                    style: TextStyle(color: Colors.white, fontSize: 10),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 6,
@@ -37,25 +62,6 @@ class CRSDetails extends StatelessWidget {
           ),
           Row(
             children: [
-              InkWell(
-                onTap: () {
-                  Get.to(() => const FollowUpHome());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: const Text(
-                    "INACTIVE",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 14,
-              ),
               InkWell(
                 onTap: () {
                   Get.to(() => const CaseRegistrationSheet());
@@ -141,6 +147,20 @@ class CRSDetails extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 14,
+          ),
+          InkWell(
+            onTap: () {
+              Get.to(() => const SocialInquiry());
+            },
+            child: Text(
+              "Social Inquiry Form",
+              style: TextStyle(
+                  color: Colors.blue[800],
+                  decoration: TextDecoration.underline),
+            ),
           ),
           const SizedBox(
             height: 14,
