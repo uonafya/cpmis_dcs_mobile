@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
       this.controller,
       this.validator,
       this.enabled,
+      this.readOnly = false,
       this.maxLines = 1,
       this.hintText});
 
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String? Function(String? val)? validator;
   final bool? enabled;
+  final bool readOnly;
   final String? initialValue;
   final TextEditingController? controller;
  final int maxLines;
@@ -80,6 +82,7 @@ class CustomTextField extends StatelessWidget {
               )
             : null,
       ),
+      readOnly: readOnly,
     );
   }
 }
