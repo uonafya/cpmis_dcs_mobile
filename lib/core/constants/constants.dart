@@ -17,3 +17,5 @@ const String cpimsApiUrl = "https://dev.cpims.net/api/";
 const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 
 enum RadioButtonOptions { yes, no, na }
+
+const String registerUrl = "https://test.cpims.net/accounts/request/";
