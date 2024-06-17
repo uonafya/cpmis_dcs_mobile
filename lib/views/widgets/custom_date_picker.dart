@@ -11,7 +11,9 @@ class CustomDatePicker extends StatefulWidget {
       this.initialDate,
       this.hintText,
       this.prefixIcon,
+      required this.onChanged,
       this.suffixIcon,
+      this.validator,
       this.labelText});
   final DateTime? initialDate;
   final DateTime? firstDate;
@@ -20,6 +22,9 @@ class CustomDatePicker extends StatefulWidget {
   final String? labelText;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final String? Function(String?)? validator;
+
+  final Function(DateTime) onChanged;
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -40,6 +45,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         ).then((value) => setState(() {
               pickedDate = TextEditingController(
                   text: DateFormat('dd/MM/yyyy').format(value!));
+              widget.onChanged(value);
             }));
       },
       child: CustomTextField(
@@ -49,6 +55,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         hintText: widget.hintText,
         prefixIcon: widget.prefixIcon,
         controller: pickedDate,
+        validator: widget.validator,
         onChanged: (val) {},
       ),
     );
