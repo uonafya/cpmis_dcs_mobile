@@ -1,68 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 
 class FamilyBackgroundWidget extends StatelessWidget {
   const FamilyBackgroundWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           'Section 2: Family Background',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
         ),
-        SizedBox(height: 10),
-        Divider(),
-        Text(
+        const SizedBox(height: 10),
+        const Divider(),
+        const Text(
           'Case Record Sheet',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
-        Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
-        SizedBox(height: 10),
-        Text(
-          '1. View case (CCO/32/213/5/29/5/2016 - July 1, 2016)',
-          style:
-              TextStyle(fontSize: 11, color: Color.fromARGB(255, 27, 107, 173)),
+        const SizedBox(height: 10),
+        const Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
+        const SizedBox(height: 10),
+        InkWell(
+          onTap: () {
+            Get.to(() => const CRSDetails());
+          },
+          child: const Text(
+            '1. View case (CCO/32/213/5/29/5/2016 - July 1, 2016)',
+            style: TextStyle(
+              fontSize: 11,
+              color: Color.fromARGB(255, 27, 107, 173),
+              decoration: TextDecoration
+                  .underline, // Optional: to make it look like a hyperlink
+            ),
+          ),
         ),
-        SizedBox(height: 20),
-        Divider(),
-        Text(
+        const SizedBox(height: 20),
+        const Divider(),
+        const Text(
           'Parents / Caregiver Particulars',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
-        Divider(),
-        Text(
+        const SizedBox(height: 10),
+        const Divider(),
+        const Text(
           "Parent (Father)'s Names",
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        Text(
+        const Text(
           'CHEGE MUMBA',
           style: TextStyle(fontSize: 12),
         ),
-        SizedBox(height: 5),
-        Divider(),
-        Text(
+        const SizedBox(height: 5),
+        const Divider(),
+        const Text(
           "Parent (Mother)'s Names",
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        Text(
+        const Text(
           'ROSE WANGECHI',
           style: TextStyle(fontSize: 12),
         ),
-        SizedBox(height: 5),
-        Divider(),
-        SizedBox(height: 20),
-        Text(
+        const SizedBox(height: 5),
+        const Divider(),
+        const SizedBox(height: 20),
+        const Text(
           'Home Particulars',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
-        Divider(),
-        SizedBox(height: 10),
-        Row(
+        const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -75,10 +86,10 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 5),
-        SizedBox(height: 5),
-        Divider(),
-        Row(
+        const SizedBox(height: 5),
+        const SizedBox(height: 5),
+        const Divider(),
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -91,7 +102,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
