@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -49,10 +50,15 @@ class FollowUpListItem extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Icon(
-                    Icons.remove_red_eye,
-                    color: kPrimaryColor,
-                    size: 18,
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => const CRSDetails());
+                    },
+                    child: const Icon(
+                      Icons.remove_red_eye,
+                      color: kPrimaryColor,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
