@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
       this.controller,
       this.validator,
       this.enabled,
+      this.maxLines = 1,
       this.hintText});
 
   final String? labelText;
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
   final String? initialValue;
   final TextEditingController? controller;
+ final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
       cursorColor: kPrimaryColor,
       textInputAction: textInputAction,
       textAlignVertical: TextAlignVertical.center,
+      maxLines: maxLines,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         labelText: labelText,

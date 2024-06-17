@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, avoid_print, deprecated_member_use
+
 import 'package:dio/dio.dart';
 
 enum Level {

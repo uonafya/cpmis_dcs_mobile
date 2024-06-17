@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GraphWidget extends StatelessWidget {
-  const GraphWidget({Key? key, required this.title}) : super(key: key);
+  const GraphWidget({super.key, required this.title});
   final String title;
 
   @override

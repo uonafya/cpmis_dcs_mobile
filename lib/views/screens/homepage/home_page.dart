@@ -1,5 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -8,7 +10,6 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_grid_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 
 class Homepage extends StatefulWidget {
@@ -216,9 +217,9 @@ class _HomepageState extends State<Homepage> {
                       width: 140,
                       child: CustomButton(
                         onTap: () {
-                          Get.to(() => const CaseRegistrationSheet());
+                          Get.to(() => const CRSHome());
                         },
-                        text: "Registry",
+                        text: "CRS",
                         color: Colors.green,
                       ),
                     ),
