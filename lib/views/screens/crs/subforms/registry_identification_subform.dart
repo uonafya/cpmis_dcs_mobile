@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class RegistryIdentificationSubform extends StatefulWidget {
@@ -10,8 +11,9 @@ class RegistryIdentificationSubform extends StatefulWidget {
 class _RegistryIdentificationSubformState extends State<RegistryIdentificationSubform> {
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      child: Text("Identification"),
+    return const SubformWrapper(
+        title: "Identification",
+        children: [],
     );
   }
 }
