@@ -136,12 +136,12 @@ class CaseDataCRSFormModel {
 }
 
 class CRSForm {
-  final CaseReportingCRSFormModel caseReporting;
-  final AboutChildCRSFormModel about;
-  final MedicalCRSFormModel medical;
-  final CaseDataCRSFormModel caseData;
+  CaseReportingCRSFormModel caseReporting;
+  AboutChildCRSFormModel about;
+  MedicalCRSFormModel medical;
+  CaseDataCRSFormModel caseData;
 
-  const CRSForm(
+  CRSForm(
       {required this.caseReporting,
       required this.about,
       required this.medical,
