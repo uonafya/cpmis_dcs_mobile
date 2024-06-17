@@ -152,3 +152,124 @@ const List<String> additionalRelationshipToChildOptions = [
   "Tourist",
   "Unkown/Not Recorded"
 ];
+
+String childCustodyOption = "Custody";
+String childDefilementOption = "Defilement";
+String childOnStreetOption = "Children/Persons on the streets";
+String childTruancyOption = "Child Truancy";
+String childOffenderOption = "Child offender";
+String childLabourOption = "Child labour";
+
+List<String> caseCategoryOptions = [
+  pleaseSelect,
+  "Abandoned",
+  "Abduction",
+  "Child Affected by HIV/AIDS",
+  "Child Delinquency",
+  "Child headed household",
+  "Child labour",
+  "Child marriage",
+  "Child of imprisoned marriage",
+  childOffenderOption,
+  "Child out of school",
+  "Child pregnancy",
+  "Child radicalization",
+  childTruancyOption,
+  "Child with disability",
+  childOnStreetOption,
+  childCustodyOption,
+  childDefilementOption,
+  "Disputed paternity"
+];
+
+const List<ValueItem<String>> caseNatureOptions = [
+  ValueItem<String>(label: "Chronic/ On-going event", value: "chronic"),
+  ValueItem<String>(label: "One-off event", value: "one"),
+  ValueItem<String>(label: "Emergency", value: "emergency")
+];
+
+const List<ValueItem<String>> placeOfEventOptions = [
+  ValueItem<String>(label: "During a Cultural/Sporting Event", value: "event"),
+  ValueItem<String>(label: "Care and Justice Institutions", value: "justice"),
+  ValueItem<String>(label: "Health Facility", value: "health"),
+  ValueItem<String>(label: "Home & Family", value: "family"),
+  ValueItem<String>(label: "On public transport", value: "public"),
+  ValueItem<String>(label: "On the Street", value: "street"),
+  ValueItem<String>(label: "Other community event", value: "other_event"),
+  ValueItem<String>(
+      label: "Place of worship/Religious Center", value: "religious"),
+  ValueItem<String>(label: "Places of Work", value: "work"),
+  ValueItem<String>(
+      label: "School and Educational Settings", value: "educational"),
+  ValueItem<String>(
+      label: "Using public toilets or washing places", value: "toilets"),
+  ValueItem<String>(label: "Walking Locally", value: "walking"),
+  ValueItem<String>(
+      label: "Working for the family outside the home", value: "family"),
+];
+
+const List<ValueItem<String>> childLabourSubCategoryOptions = [
+  ValueItem<String>(label: "Albinism", value: "albinism"),
+];
+
+const List<ValueItem<String>> childOffenderSubcategories = [
+  ValueItem<String>(label: "Loitering", value: "loitering"),
+  ValueItem<String>(label: "House Breaking / Burglary", value: "buglary"),
+  ValueItem<String>(label: "Handling food", value: "food"),
+  ValueItem<String>(label: "Removing forest products", value: "forest"),
+  ValueItem<String>(label: "Creating disturbance", value: "disturbance"),
+  ValueItem<String>(label: "Preparing to commit felony", value: "preparing"),
+  ValueItem<String>(label: "Child Trafficking", value: "trafficking"),
+  ValueItem<String>(label: "Grevious bodily harm", value: "grevious"),
+  ValueItem<String>(label: "Lack of driving license", value: "driving"),
+  ValueItem<String>(label: "Impregnated child", value: "impregnated"),
+  ValueItem<String>(label: "Being unlawfully in Kenya", value: "unlawfully"),
+  ValueItem<String>(label: "Other indecent act", value: "indecent"),
+  ValueItem<String>(label: "Labour", value: "labour"),
+  ValueItem<String>(label: "Albinism", value: "albinism"),
+];
+
+const List<ValueItem<String>> childTruancyOptions = [
+  ValueItem<String>(label: "Below School Age", value: "below"),
+  ValueItem<String>(label: "Care Givers Decision", value: "decision"),
+  ValueItem<String>(
+      label: "Childs Care Responsibility", value: "responsibility"),
+  ValueItem<String>(label: "Childs Preference", value: "preference"),
+  ValueItem<String>(label: "Disability / Chronic Illness", value: "disability"),
+  ValueItem<String>(label: "Exclusion (ability)", value: "ability"),
+  ValueItem<String>(label: "Exclusion (behaviour)", value: "behaviour"),
+  ValueItem<String>(label: "Family Poverty", value: "poverty"),
+  ValueItem<String>(label: "Engaged in child labour", value: "labour"),
+  ValueItem<String>(label: "Other", value: "other"),
+  ValueItem<String>(label: "Unkown/Not Recorded", value: "unknown"),
+];
+
+const List<ValueItem<String>> childOnStreetOptions = [
+  ValueItem<String>(label: "Street living", value: "living"),
+  ValueItem<String>(label: "Street Working", value: "working"),
+  ValueItem<String>(label: "From Street Family", value: "family"),
+];
+
+const List<ValueItem<String>> childCustodyOptions = [
+  ValueItem<String>(label: "Access Denied", value: "denied"),
+  ValueItem<String>(label: "Guardianship", value: "guardianship"),
+  ValueItem<String>(label: "Disputed Custody", value: "disputed"),
+];
+
+const List<ValueItem<String>> childDefilementOptions = [
+  ValueItem<String>(label: "Defilement Victim", value: "victim"),
+  ValueItem<String>(label: "Defilement Offender", value: "offender")
+];
+
+
+List<String> referralActorOptions = [
+  "State",
+];
+
+List<String> specifyOptions = [
+  "State",
+];
+
+List<String> reasonOptions = [
+  "State",
+];

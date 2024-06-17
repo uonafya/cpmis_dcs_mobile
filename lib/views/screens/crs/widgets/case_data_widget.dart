@@ -1,10 +1,13 @@
 import 'package:cpims_dcs_mobile/models/crs_category.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_categories.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_referrals.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question_with_tooltip.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
@@ -30,6 +33,29 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   String firstName = "";
   String surname = "";
   String othernames = "";
+  String summonsIssued = pleaseSelect;
+  late DateTime summonsDate;
+
+  String referralActor = "";
+  void updateReferralActor(String value) {
+    setState(() {
+      referralActor = value;
+    });
+  }
+
+  String specify = "";
+  void updateSpecify(String value) {
+    setState(() {
+      specify = value;
+    });
+  }
+
+  String reason = "";
+  void updateReason(String value) {
+    setState(() {
+      reason = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,26 +228,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             style: TextStyle(color: Colors.red),
           ),
 
-        // Column(
-        //   children: [
-        //     // Case category and sub category
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //           child: Row(
-        //             children: [
-        //               Text("Case Category(s)"),
-        //               CustomDropdown(
-        //                 initialValue: pleaseSelect,
-        //                 items: items,
-        //                 onChanged: onChanged
-        //                 )
-        //             ],)
-        //         )
-        //       ],
-        //     )
-        //   ],
-        // ),
+        CaseCategoriesWidget(),
 
         const SizedBox(
           height: mediumSpacing,
@@ -269,16 +276,52 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
           height: smallSpacing,
         ),
         CustomDropdown(
-            initialValue: pleaseSelect,
+            initialValue: summonsIssued,
             items: yesNoList,
             onChanged: (String val) {
               setState(() {
-                referralsPresent = val;
+                summonsIssued = val;
               });
             }),
         const SizedBox(
           height: 30,
         ),
+
+        // If summons issued yes show date
+        if (summonsIssued == YesNo.yes.value)
+          Column(
+            children: [
+              const CompulsaryQuestion(question: "Date of Summon: "),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CustomDatePicker(onChanged: (DateTime value) {
+                setState(() {
+                  summonsDate = value;
+                });
+              }),
+            ],
+          ),
+
+        // If referalls present is yes show widget
+        if (referralsPresent == YesNo.yes.value)
+          Column(
+            children: [
+              const Align(
+                  alignment: Alignment.centerLeft,
+                  child: CompulsaryQuestion(question: "Referrals: ")),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CaseDataReferrals(
+                  updateReferralActors: updateReferralActor,
+                  referralActors: referralActor,
+                  specify: specify,
+                  updateSpecify: updateSpecify,
+                  reason: reason,
+                  updateReason: updateReason),
+            ],
+          ),
 
         const Align(
             alignment: Alignment.centerLeft,
