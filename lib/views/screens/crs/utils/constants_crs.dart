@@ -1,4 +1,5 @@
 
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/location_subform.dart';
@@ -8,7 +9,7 @@ List<Widget> REGISTRY_SUBFORMS = [
   const RegistryIdentificationSubform(),
   const RegistryContactDetailsSubform(),
   const LocationSubform(),
-  const Text("Caregiver / Siblings"),
+  const RegistryCaregiverSiblingSubform(),
   const Text("Organisation Unit"),
 ];
 
