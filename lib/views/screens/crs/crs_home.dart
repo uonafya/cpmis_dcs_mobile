@@ -3,6 +3,7 @@ import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/register_new_child.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/search_crs_results.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
@@ -35,7 +36,9 @@ class _CRSHomeState extends State<CRSHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(),
-        drawer: const Drawer(),
+        drawer: const Drawer(
+          child: CustomDrawer(),
+        ),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             children: [

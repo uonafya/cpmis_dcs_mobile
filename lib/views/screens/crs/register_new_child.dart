@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -25,16 +26,18 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
     'NGO/private sector employee',
   ];
   String selectedPersonCriteria = 'Please Select';
+  int selectedStep = 0;
   bool? _radioValue;
   bool _isChecked = false;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  int selectedStep = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(),
-        drawer: const Drawer(),
+        drawer: const Drawer(
+          child: CustomDrawer(),
+        ),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           children: [
@@ -174,7 +177,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               CustomTextField(hintText: currentDate, readOnly: true),
-
             ]),
 
           ],

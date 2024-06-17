@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 
 List<Widget> REGISTRY_SUBFORMS = [
   const RegistryIdentificationSubform(),
-  const Text("Contact Details"),
-  const LocationSubform(),
   const RegistryContactDetailsSubform(),
+  const LocationSubform(),
   const Text("Caregiver / Siblings"),
   const Text("Organisation Unit"),
 ];
