@@ -81,19 +81,13 @@ class AuthProvider with ChangeNotifier {
   // logout
   Future<void> logOut(BuildContext context) async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-
-      await sharedPreferences.remove('access');
-      await sharedPreferences.remove('refresh');
-
-      clearUser();
-
+      await preferences.clear();
       Get.off(
         () => const LoginScreen(),
         transition: Transition.fadeIn,
         duration: const Duration(microseconds: 300),
       );
+      clearUser();
     } catch (e) {
       if (context.mounted) {
         errorSnackBar(context, e.toString());
