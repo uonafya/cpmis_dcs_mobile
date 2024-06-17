@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/models/crs_category.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
@@ -29,8 +30,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
     return Column(
       children: [
         // Title
-        const Text("Case Data"),
-        const Divider(),
+        const FormPageHeading(heading: "Case Data"),
 
         // Questions
         const CompulsaryQuestion(question: "Case Serial Number"),
@@ -63,93 +63,92 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
         if (caseCategories.isEmpty)
           const Text(
             "One or more case category is required",
-            style: TextStyle(
-              color: Colors.red
-            ),
-          )
+            style: TextStyle(color: Colors.red),
+          ),
 
-        Column(
-          children: [
-            // Case category and sub category
-            Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text("Case Category(s)"),
-                      CustomDropdown(
-                        initialValue: pleaseSelect, 
-                        items: items, 
-                        onChanged: onChanged
-                        )
-                    ],)
-                )
-              ],
-            )
-          ],
+        // Column(
+        //   children: [
+        //     // Case category and sub category
+        //     Row(
+        //       children: [
+        //         Expanded(
+        //           child: Row(
+        //             children: [
+        //               Text("Case Category(s)"),
+        //               CustomDropdown(
+        //                 initialValue: pleaseSelect,
+        //                 items: items,
+        //                 onChanged: onChanged
+        //                 )
+        //             ],)
+        //         )
+        //       ],
+        //     )
+        //   ],
+        // ),
+
+        const SizedBox(
+          height: 10,
         ),
-
-        const SizedBox(height: 10,),
         const CompulsaryQuestion(question: "Risk Level"),
         CustomDropdown(
-          initialValue: pleaseSelect, 
-          items: lowMedHighList, 
-          onChanged: (String val) {
-            setState(() {
-              riskLevel = val;
-            });
-          }
-        ),
+            initialValue: pleaseSelect,
+            items: lowMedHighList,
+            onChanged: (String val) {
+              setState(() {
+                riskLevel = val;
+              });
+            }),
 
         const CompulsaryQuestion(question: "Refferals Present?"),
         CustomDropdown(
-          initialValue: pleaseSelect, 
-          items: yesNoList, 
-          onChanged: (String val) {
-            setState(() {
-              referralsPresent = val;
-            });
-          }
-        ),
-        
+            initialValue: pleaseSelect,
+            items: yesNoList,
+            onChanged: (String val) {
+              setState(() {
+                referralsPresent = val;
+              });
+            }),
+
         const CompulsaryQuestion(question: "Summons Issued?"),
         CustomDropdown(
-          initialValue: pleaseSelect, 
-          items: yesNoList, 
-          onChanged: (String val) {
-            setState(() {
-              referralsPresent = val;
-            });
-          }
+            initialValue: pleaseSelect,
+            items: yesNoList,
+            onChanged: (String val) {
+              setState(() {
+                referralsPresent = val;
+              });
+            }),
+        const SizedBox(
+          height: 30,
         ),
-        const SizedBox(height: 30,),
 
         const CompulsaryQuestion(question: "Immediate Needs"),
         CustomDropDownMultiSelect(
-          options: immediateNeedsOptions, 
-          onOptionSelected: (List<String> value) {
-            immediateneeds.addAll(value);
-            setState(() {
-              immediateneeds = immediateneeds;
-            });
-          }, 
-          selectionType: SelectionType.multi, 
-          hint: pleaseSelect
+            options: immediateNeedsOptions,
+            onOptionSelected: (List<String> value) {
+              immediateneeds.addAll(value);
+              setState(() {
+                immediateneeds = immediateneeds;
+              });
+            },
+            selectionType: SelectionType.multi,
+            hint: pleaseSelect),
+        const SizedBox(
+          height: 10.0,
         ),
-        const SizedBox(height: 10.0,),
 
         const CompulsaryQuestion(question: "Future Needs"),
         CustomDropDownMultiSelect(
-          options: futureNeedsOptions, 
-          onOptionSelected: (List<String> value) {
-            futureNeeds.addAll(value);
-            setState(() {
-              futureNeeds = futureNeeds;
-            });
-          }, 
-          selectionType: SelectionType.multi, 
-          hint: pleaseSelect
-        ),      
+            options: futureNeedsOptions,
+            onOptionSelected: (List<String> value) {
+              futureNeeds.addAll(value);
+              setState(() {
+                futureNeeds = futureNeeds;
+              });
+            },
+            selectionType: SelectionType.multi,
+            hint: pleaseSelect),
       ],
     );
   }

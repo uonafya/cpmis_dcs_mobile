@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 enum MentalConditionOptions { normal, challengeVerifed, challengeUnverified }
@@ -18,6 +19,7 @@ extension MentalConditionsExtension on MentalConditionOptions {
 }
 
 List<String> mentalConditionOptions = [
+  pleaseSelect,
   MentalConditionOptions.normal.value,
   MentalConditionOptions.challengeUnverified.value,
   MentalConditionOptions.challengeVerifed.value,
@@ -45,6 +47,7 @@ extension PhysicalConditionExtension on PhysicalConditionOptions {
 }
 
 List<String> physicalConditionOptions = [
+  pleaseSelect,
   PhysicalConditionOptions.normal.value,
   PhysicalConditionOptions.challengedVerified.value,
   PhysicalConditionOptions.challengeUnverified.value
@@ -66,6 +69,7 @@ extension OtherConditionExtension on OtherConditionOptions {
 }
 
 List<String> otherConditionOptions = [
+  pleaseSelect,
   OtherConditionOptions.chronic.value,
   OtherConditionOptions.normal.value
 ];

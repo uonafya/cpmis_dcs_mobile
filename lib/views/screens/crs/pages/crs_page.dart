@@ -84,7 +84,16 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
             const SizedBox(
               height: 20,
             ),
-            crsStepperWidgets[selectedStep],
+
+            // Form body
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300]!, width: 1.0),
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0))),
+              padding: const EdgeInsets.all(15.0),
+              child: crsStepperWidgets[selectedStep],
+            ),
+
             const SizedBox(
               height: 30,
             ),

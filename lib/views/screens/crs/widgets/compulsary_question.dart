@@ -10,7 +10,7 @@ class CompulsaryQuestion extends StatelessWidget {
     return RichText(
         text: TextSpan(
             text: question,
-            style: const TextStyle(fontSize: 20, color: Colors.black),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
             children: const [
           TextSpan(text: " *", style: TextStyle(color: Colors.red))
         ]));
