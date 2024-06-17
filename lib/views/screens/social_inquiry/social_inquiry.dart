@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/child_case_history_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/family_background_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/personal_information_widget.dart';
@@ -60,17 +61,20 @@ class _CRSHomeState extends State<SocialInquiry> {
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(),
-      drawer: const Drawer(),
+      drawer: const Drawer(
+        child: CustomDrawer(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView(
@@ -150,9 +154,9 @@ class _CRSHomeState extends State<SocialInquiry> {
             const SizedBox(
               height: 10,
             ),
-            const CustomDatePicker(
-              hintText: 'Date',
-            ),
+            // const CustomDatePicker(
+            //   hintText: 'Date',
+            // ),
             const SizedBox(
               height: 20,
             ),

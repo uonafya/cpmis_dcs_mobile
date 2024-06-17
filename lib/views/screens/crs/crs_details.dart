@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,9 @@ class CRSDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(),
+      drawer: const Drawer(
+        child: CustomDrawer(),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 14),
         children: [
@@ -32,14 +37,20 @@ class CRSDetails extends StatelessWidget {
           ),
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "INACTIVE",
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+              InkWell(
+                onTap: () {
+                  Get.to(() => const FollowUpHome());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Text(
+                    "INACTIVE",
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -47,7 +58,7 @@ class CRSDetails extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => const FollowUpHome());
+                  Get.to(() => const CaseRegistrationSheet());
                 },
                 child: Container(
                   decoration: BoxDecoration(

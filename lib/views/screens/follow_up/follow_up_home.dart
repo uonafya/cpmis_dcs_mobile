@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/widgets/follow_up_list_item.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
@@ -31,7 +32,9 @@ class _FollowUpHomeState extends State<FollowUpHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(),
-        drawer: const Drawer(),
+        drawer: const Drawer(
+          child: CustomDrawer(),
+        ),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             children: [
