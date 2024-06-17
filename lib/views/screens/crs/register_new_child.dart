@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
@@ -162,6 +163,40 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
               const SizedBox(height: 15,),
               REGISTRY_SUBFORMS[selectedStep],
               const SizedBox(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    borderRadius: 50,
+                    text: "← Previous",
+                    color: (selectedStep <= 0 )? Colors.grey : Colors.blue,
+                    onTap: () {
+                      print("Clicked");
+                      if (selectedStep <= 0 ) {
+                        return;
+                      }
+                      setState(() {
+                        selectedStep = selectedStep-1;
+                      });
+                    },
+                  ),
+                  CustomButton(
+                    borderRadius: 50,
+                    text: "    Next →    ",
+                    color: (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 )? Colors.grey : Colors.blue,
+                    onTap: () {
+                      print("Clicked2");
+                      if (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 ) {
+                        return;
+                      }
+                      setState(() {
+                        selectedStep = selectedStep+1;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15,),
               const Text(
                 'Workforce member recorded on paper *',
                 style: TextStyle(color: kTextGrey),
@@ -173,8 +208,25 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               CustomTextField(hintText: currentDate, readOnly: true),
+              const SizedBox(height: 15,),
+              const Row(
+                children: [
+                  CustomButton(
+                    text: "Submit",
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  CustomButton(
+                    text: " Cancel ",
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10,),
             ]),
-
+            const SizedBox(height: 30,),
           ],
         ));
   }
