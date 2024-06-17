@@ -6,6 +6,9 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_stepper.dart';
+import './utils/constants_crs.dart';
+
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
 
@@ -22,6 +25,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
     'NGO/private sector employee',
   ];
   String selectedPersonCriteria = 'Please Select';
+  int selectedStep = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +119,18 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               const CustomTextField(hintText: 'Date of Birth'),
+              const SizedBox(height: 15,),
+              CustomStepperWidget(
+                onTap: (index) {
+                  setState(() {
+                    selectedStep = index;
+                  });
+                },
+                data: REGISTRY_SUBFORM_HEADERS_TEXT,
+                selectedIndex: selectedStep,
+              ),
+              const SizedBox(height: 15,),
+              REGISTRY_SUBFORMS[selectedStep],
             ]),
           ],
         ));
