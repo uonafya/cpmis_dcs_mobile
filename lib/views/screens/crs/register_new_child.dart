@@ -171,7 +171,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     text: "← Previous",
                     color: (selectedStep <= 0 )? Colors.grey : Colors.blue,
                     onTap: () {
-                      print("Clicked");
                       if (selectedStep <= 0 ) {
                         return;
                       }
@@ -185,7 +184,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     text: "    Next →    ",
                     color: (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 )? Colors.grey : Colors.blue,
                     onTap: () {
-                      print("Clicked2");
                       if (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 ) {
                         return;
                       }
