@@ -154,8 +154,13 @@ class _CRSHomeState extends State<SocialInquiry> {
             const SizedBox(
               height: 10,
             ),
-            const CustomDatePicker(
+            CustomDatePicker(
               hintText: 'Date',
+              onChanged: (val) {
+                setState(() {
+                  selectedDate = val;
+                });
+              },
             ),
             const SizedBox(
               height: 20,
