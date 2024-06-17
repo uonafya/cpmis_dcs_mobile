@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/child_case_history_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/family_background_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/personal_information_widget.dart';
@@ -12,7 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SocialInquiry extends StatefulWidget {
-  const SocialInquiry({super.key});
+  const SocialInquiry({super.key, required this.crsDetails});
+  final CRSForm crsDetails;
   @override
   State<SocialInquiry> createState() => _CRSHomeState();
 }
@@ -90,7 +92,9 @@ class _CRSHomeState extends State<SocialInquiry> {
   @override
   Widget build(BuildContext context) {
     List<Widget> socialInquiryWidgets = [
-      const PersonalInformationWidget(),
+      PersonalInformationWidget(
+        childDetails: widget.crsDetails.about.initialDetails,
+      ),
       const FamilyBackgroundWidget(),
       ChildCaseHistoryWidget(
           caseHistoryController: caseHistoryController,
