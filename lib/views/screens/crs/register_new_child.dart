@@ -6,6 +6,9 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../widgets/custom_stepper.dart';
+import './utils/constants_crs.dart';
+
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
 
@@ -25,6 +28,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   bool? _radioValue;
   bool _isChecked = false;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  int selectedStep = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +151,17 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
               ),
               const CustomTextField(hintText: 'Date of Birth'),
               const SizedBox(height: 15,),
+              CustomStepperWidget(
+                onTap: (index) {
+                  setState(() {
+                    selectedStep = index;
+                  });
+                },
+                data: REGISTRY_SUBFORM_HEADERS_TEXT,
+                selectedIndex: selectedStep,
+              ),
+              const SizedBox(height: 15,),
+              REGISTRY_SUBFORMS[selectedStep],
               const Text(
                 'Workforce member recorded on paper *',
                 style: TextStyle(color: kTextGrey),
@@ -158,6 +173,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               CustomTextField(hintText: currentDate, readOnly: true),
+
             ]),
 
           ],
