@@ -4,7 +4,6 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 
 
-enum ServiceLevel { national, county, subCounty }
 
 
 class LocationSubform extends StatefulWidget {
@@ -35,7 +34,6 @@ class _LocationSubformState extends State<LocationSubform> {
   String selectedCounty = 'Please Select';
   String selectedSubCounty = 'Please Select';
   String selectedWard = 'Please Select';
-  ServiceLevel? _radioValue;
 
   @override
   Widget build(BuildContext context) {
@@ -44,60 +42,11 @@ class _LocationSubformState extends State<LocationSubform> {
         children: [
           const SizedBox(height: 10),
           const Text(
-            'Working in',
+            'Living in',
             style: TextStyle(color: kTextGrey),
           ),
           const SizedBox(height: 15,),
-          const Text(
-            'Region',
-            style: TextStyle(color: kTextGrey),
-          ),
-          // Radio button with two values, true or false
-          Column(
-            children: [
-              Row(
-                children: [
-                  Radio<ServiceLevel>(
-                    value: ServiceLevel.national,
-                    groupValue: _radioValue,
-                    onChanged: (ServiceLevel? value) {
-                      setState(() {
-                        _radioValue = value;
-                      });
-                    },
-                  ),
-                  const Text('National'),
-                  Radio<ServiceLevel>(
-                    value: ServiceLevel.county,
-                    groupValue: _radioValue,
-                    onChanged: (ServiceLevel? value) {
-                      setState(() {
-                        _radioValue = value;
-                      });
-                    },
-                  ),
-                  const Text('County'),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio<ServiceLevel>(
-                    value: ServiceLevel.subCounty,
-                    groupValue: _radioValue,
-                    onChanged: (ServiceLevel? value) {
-                      setState(() {
-                        _radioValue = value;
-                      });
-                    },
-                  ),
-                  const Text('Sub-County'),
-                ],
-              ),
-            ],
-          ),
           const Divider(),
-          const SizedBox(height: 10),
-          if(_radioValue == ServiceLevel.county)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,24 +65,11 @@ class _LocationSubformState extends State<LocationSubform> {
               ),
             ],
           ),
-          if(_radioValue == ServiceLevel.subCounty)
+            const SizedBox(height: 15,),
+            const Divider(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'County *',
-                  style: TextStyle(color: kTextGrey),
-                ),
-                CustomDropdown(
-                  initialValue: selectedCounty,
-                  items: countyCriteria,
-                  onChanged: (val) {
-                    setState(() {
-                      selectedCounty = val;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10,),
                 const Text(
                   'Sub-County *',
                   style: TextStyle(color: kTextGrey),
@@ -147,7 +83,8 @@ class _LocationSubformState extends State<LocationSubform> {
                     });
                   },
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(height: 15,),
+                const Divider(),
                 const Text(
                   'Ward *',
                   style: TextStyle(color: kTextGrey),
