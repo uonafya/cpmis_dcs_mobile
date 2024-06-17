@@ -1,7 +1,10 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
+import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class CRSDetails extends StatelessWidget {
   const CRSDetails({super.key});
@@ -42,53 +45,63 @@ class CRSDetails extends StatelessWidget {
               const SizedBox(
                 width: 14,
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      "Edit",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
+              InkWell(
+                onTap: () {
+                  Get.to(() => const FollowUpHome());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Edit",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
                 width: 14,
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.watch,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      "Follow up",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
+              InkWell(
+                onTap: () {
+                  Get.to(() => const FollowUpScreen());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.watch,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "Follow up",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(

@@ -219,7 +219,7 @@ class _HomepageState extends State<Homepage> {
                         onTap: () {
                           Get.to(() => const CRSHome());
                         },
-                        text: "Registry",
+                        text: "CRS",
                         color: Colors.green,
                       ),
                     ),
