@@ -79,7 +79,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                   });
                 },
               ),
-              // Checkbox(value: false, onChanged: (val) {}),
               const SizedBox(height: 10),
               const Text(
                 'Provides services directly to children *',
