@@ -1,4 +1,5 @@
 
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_location_subform.dart';
@@ -9,7 +10,7 @@ List<Widget> REGISTRY_SUBFORMS = [
   const RegistryContactDetailsSubform(),
   const RegistryLocationSubform(),
   const Text("Caregiver / Siblings"),
-  const Text("Organisation Unit"),
+  const RegistryCBOandCHVSubform(),
 ];
 
 List<Map<String, dynamic>> REGISTRY_SUBFORM_HEADERS_TEXT = [
@@ -34,8 +35,8 @@ List<Map<String, dynamic>> REGISTRY_SUBFORM_HEADERS_TEXT = [
     'onTap': () => {},
   },
   {
-    'title': 'Organisation Unit',
-    'subtitle': 'Units attached to person.',
+    'title': 'CBO and CHV',
+    'subtitle': 'CBO and CHV attached to person.',
     'onTap': () => {},
   },
 ];
