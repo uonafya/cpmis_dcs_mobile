@@ -1,4 +1,5 @@
 
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/location_subform.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ List<Widget> REGISTRY_SUBFORMS = [
   const RegistryIdentificationSubform(),
   const Text("Contact Details"),
   const LocationSubform(),
+  const RegistryContactDetailsSubform(),
   const Text("Caregiver / Siblings"),
   const Text("Organisation Unit"),
 ];
