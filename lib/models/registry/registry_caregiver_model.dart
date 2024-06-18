@@ -14,12 +14,12 @@ class RegistryCaregiverModel {
     required this.id,
     required this.firstName,
     required this.surName,
-    required this.otherNames,
+    this.otherNames,
     required this.dateOfBirth,
     required this.sex,
     required this.relationshipToChild,
     required this.nationalIdNumber,
-    required this.phoneNumber,
+    this.phoneNumber,
     this.isRegistered = false,
   });
 

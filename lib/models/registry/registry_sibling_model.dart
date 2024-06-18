@@ -10,11 +10,11 @@ class RegistrySiblingModel {
   RegistrySiblingModel({
     required this.firstName,
     required this.surName,
-    required this.otherNames,
-    required this.dateOfBirth,
     required this.sex,
     required this.currentClass,
-    required this.remarks,
+    this.otherNames,
+    this.dateOfBirth,
+    this.remarks,
   });
 
   Map<String, dynamic> toJson() {
