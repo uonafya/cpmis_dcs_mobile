@@ -12,7 +12,7 @@ class RegistryContactDetailsModel {
   });
 
   // Converts a RegistryContactDetailsModel instance to a map for JSON encoding
-  Map<String, dynamic> toJson() {
+  Map<String, String> toJson() {
     return {
       'designatedPhoneNumber': designatedPhoneNumber,
       'otherMobileNumber': otherMobileNumber,
@@ -22,12 +22,12 @@ class RegistryContactDetailsModel {
   }
 
   // Creates a RegistryContactDetailsModel instance from a map (e.g. decoded JSON)
-  factory RegistryContactDetailsModel.fromJson(Map<String, dynamic> json) {
+  factory RegistryContactDetailsModel.fromJson(Map<String, String> json) {
     return RegistryContactDetailsModel(
-      designatedPhoneNumber: json['designatedPhoneNumber'],
-      otherMobileNumber: json['otherMobileNumber'],
-      emailAddress: json['emailAddress'],
-      physicalLocation: json['physicalLocation'],
+      designatedPhoneNumber: json['designatedPhoneNumber'] ?? "",
+      otherMobileNumber: json['otherMobileNumber'] ?? "",
+      emailAddress: json['emailAddress'] ?? "",
+      physicalLocation: json['physicalLocation'] ?? "",
     );
   }
 }
