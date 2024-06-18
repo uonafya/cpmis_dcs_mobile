@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/models/court_session_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -8,28 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
-class CourtFollowUp extends StatefulWidget {
-  const CourtFollowUp({super.key});
+class CloseFollowup extends StatefulWidget {
+  const CloseFollowup({super.key});
 
   @override
-  State<CourtFollowUp> createState() => _CourtFollowUpState();
+  State<CloseFollowup> createState() => _CourtFollowUpState();
 }
 
-class _CourtFollowUpState extends State<CourtFollowUp> {
+class _CourtFollowUpState extends State<CloseFollowup> {
   final caseCategories = ["Please select", "Neglect"];
   String caseCategory = "Please select";
   final courtSessionTypeList = [
     "Please select",
-    "Application",
-    "Plea Taking",
-    "Hearing",
-    "Mention"
+    "Transferred to another organization unit",
+    "Child reintegrated into education",
+    "Child removed from exploitative situation",
+    "Lost contact (Dropped out)",
+    "Other outcomes (Standard intervention)"
   ];
   String courtSessionType = "Please select";
   String serviceProvider = serviceProviderList[0]["title"]!;
   final courtNotes = TextEditingController();
-  String applicationOutcome = "Please select";
-  final applicationOutcomeList = ["Please select", "Granted", "Denied"];
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
@@ -37,7 +35,7 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Court Session"),
+        title: const Text("Case Closure"),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -45,22 +43,22 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
           const SizedBox(
             height: 14,
           ),
-          const Text("Case category *"),
+          const Text("Case Outcome *"),
           const SizedBox(
             height: 6,
           ),
           CustomDropdown(
-              initialValue: caseCategory,
-              items: caseCategories,
+              initialValue: courtSessionType,
+              items: courtSessionTypeList,
               onChanged: (val) {
                 setState(() {
-                  caseCategory = val;
+                  courtSessionType = val;
                 });
               }),
           const SizedBox(
             height: 14,
           ),
-          const Text("Date of Court Session"),
+          const Text("Date of Outcome *"),
           const SizedBox(
             height: 6,
           ),
@@ -73,18 +71,6 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
           const SizedBox(
             height: 14,
           ),
-          const Text("Court Session Type"),
-          const SizedBox(
-            height: 6,
-          ),
-          CustomDropdown(
-              initialValue: courtSessionType,
-              items: courtSessionTypeList,
-              onChanged: (val) {
-                setState(() {
-                  courtSessionType = val;
-                });
-              }),
           if (courtSessionType != "Please select")
             const SizedBox(
               height: 14,
@@ -97,21 +83,22 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
             ),
           if (courtSessionType != "Please select")
             CustomDropdown(
-                initialValue: applicationOutcome,
-                items: applicationOutcomeList,
+                initialValue: caseCategory,
+                items: caseCategories,
                 onChanged: (val) {
                   setState(() {
-                    applicationOutcome = val;
+                    caseCategory = val;
                   });
                 }),
           const SizedBox(
             height: 14,
           ),
-          const Text("Court Session Notes"),
+          const Text("Case Closure Notes"),
           const SizedBox(
             height: 6,
           ),
           CustomTextField(
+            maxLines: 5,
             hintText: "Notes",
             controller: courtNotes,
           ),
@@ -128,19 +115,6 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   }
 
   void handleAddService() {
-    final courtSession = CourtSessionModel(
-      applicationOutcome: applicationOutcome,
-      courtNotes: courtNotes.text,
-      courtSessionCase: caseCategory,
-      courtOutcome: applicationOutcome,
-      nextHearingDate: dateOfService,
-      nextMentionDate: dateOfService,
-      pleaTaken: applicationOutcome,
-      dateOfCourtEvent: dateOfService,
-      courtSessionType: courtSessionType,
-    );
-
-    print(courtSession.toJson());
     Get.back();
   }
 }

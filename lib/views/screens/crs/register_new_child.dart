@@ -1,10 +1,21 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_subform.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_location_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
+import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../widgets/custom_stepper.dart';
+import './utils/constants_crs.dart';
 
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
@@ -15,16 +26,27 @@ class RegisterNewChildScreen extends StatefulWidget {
 
 class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   List<String> personCriteria = [
-    'Please Select',
     'Child',
-    'Caregiver',
-    'Goverment Employee',
-    'NGO/private sector employee',
   ];
   String selectedPersonCriteria = 'Please Select';
+  int selectedStep = 0;
+  bool? _radioValue;
+  bool _isChecked = false;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  final birthRegIdController = TextEditingController();
+  int formStep = 0;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> registrySubforms = [
+      RegistryIdentificationSubform(
+        birthRegIdController: birthRegIdController,
+      ),
+      const RegistryContactDetailsSubform(),
+      const RegistryLocationSubform(),
+      const RegistryCaregiverSiblingSubform(),
+      const RegistryCBOandCHVSubform(),
+    ];
     return Scaffold(
         appBar: customAppBar(),
         drawer: const Drawer(
@@ -34,88 +56,219 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           children: [
             const SizedBox(height: 20),
-            const Text('Persons Registry Sheet',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(height: 5),
-            const Text(
-              'Register new child',
-              style: TextStyle(color: kTextGrey),
+            if (formStep == 0)
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('Persons Registry Sheet',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                const SizedBox(height: 5),
+                const Text(
+                  'Register new child',
+                  style: TextStyle(color: kTextGrey),
+                ),
+                const SizedBox(height: 30),
+                CustomCard(
+                  title: 'Create Person',
+                  children: [
+                    const Text(
+                      'Personal details',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Person Type *',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    const SizedBox(height: 6),
+                    CustomDropdown(
+                      initialValue: selectedPersonCriteria,
+                      items: personCriteria,
+                      onChanged: (val) {
+                        setState(() {
+                          selectedPersonCriteria = val;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Person is also a caregiver',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    Checkbox(
+                      value: _isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isChecked = value ?? false; // Update the state
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 14),
+                    const Text(
+                      'First Name *',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    const SizedBox(height: 6),
+                    const CustomTextField(hintText: 'First Name'),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Surname *',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    const SizedBox(height: 6),
+                    const CustomTextField(hintText: 'Surname'),
+                    const SizedBox(height: 15),
+                    const Text('Other Names',
+                        style: TextStyle(color: kTextGrey)),
+                    const SizedBox(height: 6),
+                    const CustomTextField(hintText: 'Other Names'),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Sex *',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    const SizedBox(height: 6),
+                    CustomDropdown(
+                      initialValue: "Please Select",
+                      items: const ["Please Select", "Male", "Female"],
+                      onChanged: (val) {
+                        setState(() {
+                          selectedPersonCriteria = val;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Date of Birth *',
+                      style: TextStyle(color: kTextGrey),
+                    ),
+                    const SizedBox(height: 6),
+                    const CustomTextField(hintText: 'Date of Birth'),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ),
+              ]),
+            if (formStep == 1)
+              Column(children: [
+                CustomStepperWidget(
+                  onTap: (index) {
+                    setState(() {
+                      selectedStep = index;
+                    });
+                  },
+                  data: REGISTRY_SUBFORM_HEADERS_TEXT,
+                  selectedIndex: selectedStep,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                registrySubforms[selectedStep],
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: CustomButton(
+                        text: '← Previous',
+                        onTap: () {
+                          if (selectedStep <= 0) {
+                            return;
+                          }
+                          setState(() {
+                            selectedStep = selectedStep - 1;
+                          });
+                        },
+                        color: Colors.transparent,
+                        textColor: Colors.grey,
+                        borderColor: Colors.grey,
+                        borderRadius: 15,
+                        height: 30,
+                        isDisabled: selectedStep == 0,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    SizedBox(
+                      width: 100,
+                      child: CustomButton(
+                        isDisabled: selectedStep ==
+                            REGISTRY_SUBFORM_HEADERS_TEXT.length - 1,
+                        text: 'Next →',
+                        onTap: () {
+                          if (selectedStep >=
+                              REGISTRY_SUBFORM_HEADERS_TEXT.length - 1) {
+                            return;
+                          }
+                          setState(() {
+                            selectedStep = selectedStep + 1;
+                          });
+                        },
+                        color: const Color.fromARGB(255, 20, 89, 144),
+                        textColor: Colors.white,
+                        borderRadius: 15,
+                        height: 30,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ]),
+            Row(
+              children: [
+                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? Expanded(
+                        child: CustomButton(
+                          text: 'Submit',
+                          textColor: Colors.white,
+                          onTap: () {
+                            print("ID :${birthRegIdController.text}");
+                          },
+                        ),
+                      )
+                    : const SizedBox(),
+                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? const SizedBox(width: 15)
+                    : const SizedBox.shrink(),
+                Expanded(
+                  child: CustomButton(
+                    text: formStep == 0
+                        ? "Next"
+                        : formStep == 1 &&
+                                selectedStep ==
+                                    REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                            ? 'Cancel'
+                            : "Back",
+                    textColor: Colors.white,
+                    onTap: () {
+                      if (formStep == 0) {
+                        setState(() {
+                          formStep = 1;
+                        });
+                      } else if (selectedStep ==
+                          REGISTRY_SUBFORM_HEADERS_TEXT.length - 1) {
+                        Navigator.pop(context);
+                      } else {
+                        setState(() {
+                          formStep = 0;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 30),
-            CustomCard(title: 'Create Person', children: [
-              const Text(
-                'Personal details',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Person Type *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              CustomDropdown(
-                initialValue: selectedPersonCriteria,
-                items: personCriteria,
-                onChanged: (val) {
-                  setState(() {
-                    selectedPersonCriteria = val;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Person is also a caregiver',
-                style: TextStyle(color: kTextGrey),
-              ),
-              Checkbox(value: false, onChanged: (val) {}),
-              const SizedBox(height: 10),
-              const Text(
-                'Provides services directly to children *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              // checkbox with two values, true or false
-              Checkbox(value: false, onChanged: (val) {}),
-              const SizedBox(height: 10),
-              const Text(
-                'First Name *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              const CustomTextField(hintText: 'First Name'),
-              const SizedBox(height: 15),
-              const Text(
-                'Surname *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              const CustomTextField(hintText: 'Surname'),
-              const SizedBox(height: 15),
-              const Text('Other Names', style: TextStyle(color: kTextGrey)),
-              const CustomTextField(hintText: 'Other Names'),
-              const SizedBox(height: 15),
-              const Text(
-                'Sex *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              CustomDropdown(
-                initialValue: "Please Select",
-                items: const ["Please Select", "Male", "Female"],
-                onChanged: (val) {
-                  setState(() {
-                    selectedPersonCriteria = val;
-                  });
-                },
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Date of Birth *',
-                style: TextStyle(color: kTextGrey),
-              ),
-              const CustomTextField(hintText: 'Date of Birth'),
-            ]),
+            const SizedBox(height: 20),
+            const Footer(),
           ],
         ));
   }

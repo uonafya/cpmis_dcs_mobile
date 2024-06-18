@@ -1,9 +1,25 @@
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 
 class FamilyBackgroundWidget extends StatelessWidget {
-  const FamilyBackgroundWidget({super.key});
+  const FamilyBackgroundWidget({super.key, required this.caseDetails});
+  final CaseReportingCRSFormModel caseDetails;
+
+  void printCRSDetails() {
+    print('*********Family Background**********:');
+    print('Parent (Father)\'s Names: $caseDetails');
+    print('Parent (Mother)\'s Names: $caseDetails');
+    print('Ward: ${caseDetails.ward}');
+    print('Sub-county: ${caseDetails.subCounty}');
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();,
+  //   printCRSDetails();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,32 +89,32 @@ class FamilyBackgroundWidget extends StatelessWidget {
         const SizedBox(height: 10),
         const Divider(),
         const SizedBox(height: 10),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Ward',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              'Molo',
-              style: TextStyle(fontSize: 14),
+              caseDetails.ward ?? '',
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),
         const SizedBox(height: 5),
         const SizedBox(height: 5),
         const Divider(),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Sub-county',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              'Molo',
-              style: TextStyle(fontSize: 14),
+              caseDetails.subCounty ?? '',
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),

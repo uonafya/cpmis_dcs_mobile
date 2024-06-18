@@ -1,8 +1,9 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
+import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
+import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       "onTap": () {
         Get.back();
 
-        Get.to(() => const FollowUpHome());
+        Get.to(() => const ESRForm());
       },
     },
     {
@@ -49,10 +50,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
       "onTap": () {
         Get.back();
 
-        Get.to(() => const FollowUpHome());
+        Get.to(() => const CCI());
       },
     },
+    {
+      "title": "Delete Data",
+    },
   ];
+
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Data'),
+          content: const Text('Are you sure you want to delete your data?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Get.back(); // Close the drawer
+                Provider.of<AuthProvider>(context, listen: false)
+                    .logOut(context);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +121,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 const Divider(),
                 ...drawerItems.map(
                   (item) => InkWell(
-                    onTap: item['onTap'],
+                    onTap: item['title'] == "Delete Data"
+                        ? _showDeleteConfirmationDialog
+                        : item['onTap'],
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

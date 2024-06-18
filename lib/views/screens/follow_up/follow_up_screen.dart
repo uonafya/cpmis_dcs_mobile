@@ -1,14 +1,9 @@
 import 'package:cpims_dcs_mobile/views/screens/follow_up/case_event_item.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/court_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/referrals_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/services_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/summons_followup.dart';
+import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_actions.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/route_manager.dart';
 
 class FollowUpScreen extends StatefulWidget {
   const FollowUpScreen({super.key});
@@ -132,60 +127,15 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
             const SizedBox(
               height: 14,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    text: "Manage Services",
-                    onTap: () {
-                      Get.to(() => const ServicesFollowUp());
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 14,
-                ),
-                Expanded(
-                  child: CustomButton(
-                    text: "Manage Court Session",
-                    onTap: () {
-                      Get.to(() => const CourtFollowUp());
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    text: "Manage Summons",
-                    onTap: () {
-                      Get.to(() => const SummonsFollowUp());
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 14,
-                ),
-                Expanded(
-                  child: CustomButton(
-                    text: "Manage Referrals",
-                    onTap: () {
-                      Get.to(() => const ReferralsFollowUp());
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            const CustomButton(
-              text: "Close",
+            CustomButton(
+              text: "Case actions",
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => const SingleChildScrollView(
+                          child: FollowupActions(),
+                        ));
+              },
             ),
             const SizedBox(
               height: 20,
