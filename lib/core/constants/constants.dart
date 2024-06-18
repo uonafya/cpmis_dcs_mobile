@@ -13,7 +13,7 @@ void errorSnackBar(BuildContext context, String message,
   ));
 }
 
-const String cpimsApiUrl = "https://dev.cpims.net/api/";
+const String cpimsApiUrl = "https://test.cpims.net/api/";
 const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 
 enum RadioButtonOptions { yes, no, na }

@@ -8,7 +8,7 @@ import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/splash_screen.dart';
-import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
+import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +64,7 @@ class _CPIMSState extends State<CPIMS> {
 
               return snapshot.data!['hasConnection'] == false ||
                       snapshot.data!['isAuthenticated']
-                  ? const Homepage()
+                  ? const InitialLoaderScreen()
                   : const LoginScreen();
             },
           );
@@ -82,7 +82,6 @@ Future<Map<String, dynamic>> intialSetup(BuildContext context) async {
     return {'hasConnection': hasConnection, 'isAuthenticated': false};
   }
   final isAuthenticated =
-      // ignore: use_build_context_synchronously
       await Provider.of<AuthProvider>(context, listen: false)
           .verifyToken(context: context);
 

@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 
 class ApiService {
@@ -35,6 +36,24 @@ class ApiService {
 
   static List<Map<String, dynamic>> fetchCrsData() {
     return caseLoadDummy;
+  }
+
+  Future<List<CaseLoadModel>> fetchCaseLoad(String deviceID) async {
+    final response = await httpClient.request(
+      'mobile/caseload/',
+      'GET',
+      {
+        'deviceID': deviceID,
+      },
+    );
+
+    List<CaseLoadModel> caseLoadData = [];
+
+    for (var caseLoad in response.data) {
+      caseLoadData.add(CaseLoadModel.fromJson(caseLoad));
+    }
+
+    return caseLoadData;
   }
 }
 
