@@ -6,17 +6,6 @@ class PersonalInformationWidget extends StatelessWidget {
   const PersonalInformationWidget({super.key, required this.childDetails});
   final InitialChildDetails childDetails;
 
-  void printCRSDetails() {
-    print('*********Personal Information**********:');
-    print('Details of the Child:');
-    print('First Name: ${childDetails.name}');
-    print('Other Names: Not Provided');
-    print('Surname: ${childDetails.name}');
-    print('Nickname or given name: Not Provided ');
-    print('Sex: ${childDetails.sex}');
-    print('DOB: ${childDetails.dateOfBirth}');
-  }
-
   @override
   // void initState() {
   //   super.initState();,
@@ -38,7 +27,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.name,
+          childDetails.firstName,
           style: const TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -48,7 +37,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.name,
+          childDetails.otherNames,
           style: const TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -58,7 +47,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.name,
+          childDetails.surname,
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         ),
         const SizedBox(height: 5),

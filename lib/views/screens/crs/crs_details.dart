@@ -158,8 +158,10 @@ class CRSDetails extends StatelessWidget {
                   caseReporting: CaseReportingCRSFormModel(
                     county: "Nairobi",
                     subCounty: "Makadara",
+                    city: "Nairobi",
                     location: "Makadara Sub County",
                     obNumber: "N/A",
+                    country: "Kenya",
                     originator: "Mother",
                     placeOfOccurence: true,
                     policeStation: "Maka Police Station",
@@ -178,7 +180,9 @@ class CRSDetails extends StatelessWidget {
                   ),
                   about: AboutChildCRSFormModel(
                       initialDetails: InitialChildDetails(
-                        name: "Baby Kathambi",
+                        firstName: "Baby",
+                        surname: "Kathambi",
+                        otherNames: "",
                         sex: "Female",
                         dateOfBirth: DateTime.now(),
                         age: 7,
@@ -204,6 +208,7 @@ class CRSDetails extends StatelessWidget {
                       serialNumber: "A1931",
                       offenderKnown: "Yes",
                       crsCategories: [],
+                      perpetrators: ["Karl"],
                       riskLevel: 'Medium',
                       referralsPresent: true,
                       summonsIssued: true,
