@@ -1,8 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/register_new_child.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/search_crs_results.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -31,6 +30,52 @@ class _CRSHomeState extends State<CRSHome> {
 
   String selectedTypeOfPerson = 'Please Select';
   String selectedCriteria = 'Select Criteria';
+  List<Map<String, dynamic>> searchedResults = caseLoadDummy;
+  final childTextController = TextEditingController();
+
+  void searchChild() async {
+    if (selectedCriteria == 'Names') {
+      final List<Map<String, dynamic>> results = [];
+      for (final child in caseLoadDummy) {
+        if (child['names'].toString().contains(childTextController.text)) {
+          results.add(child);
+        }
+      }
+      setState(() {
+        searchedResults = results;
+      });
+    } else if (selectedCriteria == 'Org Unit') {
+      final List<Map<String, dynamic>> results = [];
+      for (final child in caseLoadDummy) {
+        if (child['org_unit'].toString().contains(childTextController.text)) {
+          results.add(child);
+        }
+      }
+      setState(() {
+        searchedResults = results;
+      });
+    } else if (selectedCriteria == 'Residence') {
+      final List<Map<String, dynamic>> results = [];
+      for (final child in caseLoadDummy) {
+        if (child['residence'].toString().contains(childTextController.text)) {
+          results.add(child);
+        }
+      }
+      setState(() {
+        searchedResults = results;
+      });
+    } else if (selectedCriteria == 'CPIMS ID') {
+      final List<Map<String, dynamic>> results = [];
+      for (final child in caseLoadDummy) {
+        if (child['id'].toString() == (childTextController.text)) {
+          results.add(child);
+        }
+      }
+      setState(() {
+        searchedResults = results;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +100,10 @@ class _CRSHomeState extends State<CRSHome> {
               ),
               const SizedBox(height: 30),
               CustomCard(title: 'Search Child', children: [
-                const CustomTextField(hintText: 'Enter Child Name(s)'),
+                CustomTextField(
+                  hintText: 'Enter Child Name(s)',
+                  controller: childTextController,
+                ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -71,19 +119,11 @@ class _CRSHomeState extends State<CRSHome> {
                 const SizedBox(
                   height: 15,
                 ),
-                // FutureBuilder(
-                //     future: future,
-                //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //       if (snapshot.connectionState == ConnectionState.waiting) {
-                //         return const CircularProgressIndicator();
-                //       }
-                //       return SearchCrsResults(
-                //         crsRecords: snapshot.data,
-                //       );
-                //     }),
                 Row(
                   children: [
-                    Expanded(child: CustomButton(text: 'Search', onTap: () {})),
+                    Expanded(
+                        child:
+                            CustomButton(text: 'Search', onTap: searchChild)),
                     const SizedBox(
                       width: 15,
                     ),
@@ -98,7 +138,7 @@ class _CRSHomeState extends State<CRSHome> {
                 const SizedBox(
                   height: 15,
                 ),
-                SearchCrsResults(crsRecords: ApiService.fetchCrsData()),
+                SearchCrsResults(crsRecords: searchedResults),
               ]),
               const Footer(),
             ]));
