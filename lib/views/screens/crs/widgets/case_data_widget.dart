@@ -227,7 +227,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             style: TextStyle(color: Colors.red),
           ),
 
-        CaseCategoriesWidget(),
+        const CaseCategoriesWidget(),
 
         const SizedBox(
           height: mediumSpacing,

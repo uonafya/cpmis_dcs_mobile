@@ -3,7 +3,6 @@ import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/referrals_followu
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/services_followup.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/summons_followup.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/close_followup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 

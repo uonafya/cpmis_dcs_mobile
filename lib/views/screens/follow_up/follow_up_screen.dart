@@ -1,15 +1,9 @@
 import 'package:cpims_dcs_mobile/views/screens/follow_up/case_event_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_actions.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/court_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/referrals_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/services_followup.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/summons_followup.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/route_manager.dart';
 
 class FollowUpScreen extends StatefulWidget {
   const FollowUpScreen({super.key});
