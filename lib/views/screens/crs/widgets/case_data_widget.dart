@@ -35,6 +35,9 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   String summonsIssued = pleaseSelect;
   late DateTime summonsDate;
 
+  String perpetratorSex = pleaseSelect;
+  late DateTime perpetratorDOB;
+
   String referralActor = "";
   void updateReferralActor(String value) {
     setState(() {
@@ -180,6 +183,48 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   });
                 },
               ),
+              const SizedBox(
+                height: mediumSpacing,
+              ),
+
+              const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Sex",
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  )),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CustomDropdown(
+                  initialValue: perpetratorSex,
+                  items: sexOptions,
+                  onChanged: (String value) {
+                    setState(() {
+                      perpetratorSex = value;
+                    });
+                  }),
+              const SizedBox(
+                height: mediumSpacing,
+              ),
+
+              const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Date of Birth",
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  )),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CustomDatePicker(
+                  firstDate: DateTime(1950),
+                  lastDate: DateTime.now(),
+                  onChanged: (DateTime time) {
+                    setState(() {
+                      perpetratorDOB = time;
+                    });
+                  }),
               const SizedBox(
                 height: mediumSpacing,
               ),
