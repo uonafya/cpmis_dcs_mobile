@@ -18,6 +18,8 @@ class CaseReportingCRSFormModel {
   final String reportingSubCounty;
   final String reportingOrganizationalUnit;
   final DateTime dateCaseReported;
+  final String country;
+  final String? city;
 
   const CaseReportingCRSFormModel(
       {required this.originator,
@@ -38,37 +40,75 @@ class CaseReportingCRSFormModel {
       this.subLocation,
       required this.reportingSubCounty,
       required this.reportingOrganizationalUnit,
+      required this.country,
+      required this.city,
       required this.dateCaseReported});
 }
 
 class InitialChildDetails {
-  final String name;
+  final String firstName;
+  final String surname;
+  final String otherNames;
   final String sex;
   final DateTime? dateOfBirth;
   final int age;
 
   const InitialChildDetails(
-      {required this.name,
+      {required this.firstName,
+      required this.surname,
+      required this.otherNames,
       required this.sex,
       this.dateOfBirth,
       required this.age});
 }
 
+class SiblingDetails {
+  final int childID;
+  final int siblingID;
+  final DateTime dateLinked;
+  final DateTime? dateUnlinked;
+  final String? remarks;
+  final bool isVoid;
+
+  const SiblingDetails(
+      {required this.childID,
+      required this.siblingID,
+      required this.dateLinked,
+      this.dateUnlinked,
+      this.remarks,
+      required this.isVoid});
+}
+
+class Caregivers {
+  final int caregiverCPIMSID;
+  final String relationshipType;
+  final int personID;
+  final String dateLinked;
+
+  const Caregivers(
+      {required this.caregiverCPIMSID,
+      required this.relationshipType,
+      required this.personID,
+      required this.dateLinked});
+}
+
 class AboutChildCRSFormModel {
   final InitialChildDetails initialDetails;
-  final List<InitialChildDetails> siblingDetails;
+  final List<SiblingDetails>? siblingDetails;
   final String houseEconomicStatus;
+  final List<Caregivers>? caregivers;
   final List<String> familyStatus;
-  final List<String> closeFriends;
-  final List<String> hobbies;
+  final List<String>? closeFriends;
+  final List<String>? hobbies;
 
   const AboutChildCRSFormModel(
       {required this.initialDetails,
-      required this.siblingDetails,
+      this.siblingDetails,
       required this.houseEconomicStatus,
       required this.familyStatus,
-      required this.closeFriends,
-      required this.hobbies});
+      this.closeFriends,
+      this.caregivers,
+      this.hobbies});
 }
 
 class MedicalCRSFormModel {
@@ -90,14 +130,14 @@ class MedicalCRSFormModel {
 
 class CRSCategory {
   final String category;
-  final String subcategory;
+  final List<String>? subcategory;
   final String dateOfEvent;
   final String placeOfEvent;
   final String caseNature;
 
   const CRSCategory(
       {required this.category,
-      required this.subcategory,
+      this.subcategory,
       required this.dateOfEvent,
       required this.placeOfEvent,
       required this.caseNature});
@@ -112,6 +152,25 @@ class CRSReferrals {
       {required this.actor, required this.specify, required this.reason});
 }
 
+class Perpetrators {
+  final String firstName;
+  final String lastName;
+  final String? othernames;
+  final String? sex;
+  final String? relationshipType;
+  final DateTime? dateOfBirth;
+  final int? age;
+
+  const Perpetrators(
+      {required this.firstName,
+      this.relationshipType,
+      required this.lastName,
+      this.othernames,
+      this.sex,
+      this.dateOfBirth,
+      this.age});
+}
+
 class CaseDataCRSFormModel {
   final String serialNumber;
   final String offenderKnown;
@@ -122,6 +181,7 @@ class CaseDataCRSFormModel {
   final DateTime? dateOfSummon;
   final List<String> immediateNeeds;
   final List<String> futureNeeds;
+  final List<String> perpetrators;
 
   const CaseDataCRSFormModel(
       {required this.serialNumber,
@@ -132,18 +192,20 @@ class CaseDataCRSFormModel {
       required this.summonsIssued,
       this.dateOfSummon,
       required this.immediateNeeds,
-      required this.futureNeeds});
+      required this.futureNeeds,
+      required this.perpetrators});
 }
 
 class CRSForm {
-  CaseReportingCRSFormModel caseReporting;
-  AboutChildCRSFormModel about;
-  MedicalCRSFormModel medical;
-  CaseDataCRSFormModel caseData;
+  CaseReportingCRSFormModel? caseReporting;
+  AboutChildCRSFormModel? about;
+  MedicalCRSFormModel? medical;
+  CaseDataCRSFormModel? caseData;
 
   CRSForm(
-      {required this.caseReporting,
-      required this.about,
-      required this.medical,
-      required this.caseData});
+      {
+      this.caseReporting,
+      this.about,
+      this.medical,
+      this.caseData});
 }

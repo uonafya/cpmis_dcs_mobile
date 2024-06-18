@@ -20,6 +20,204 @@ class Database {
             created_at TEXT,
             updated_at TEXT
           )
+
+          CREATE TABLE geolocations(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT,
+            name TEXT NOT NULL,
+            type TEXT NOT NULL,
+            parent INTEGER 
+          )
+
+          CREATE TABLE child(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firstName TEXT NOT NULL,
+            surname TEXT NOT NULL,
+            othername TEXT,
+            nickname TEXT,
+            sex TEXT NOT NULL,
+            dob TEXT NOT NULL,
+          )
+
+          CREATE TABLE caregiver(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firstName TEXT NOT NULL,
+            surname TEXT NOT NULL,
+            othername TEXT,
+            nickname TEXT,
+            sex TEXT,
+            dob TEXT,
+            wardID INTEGER,
+            subCountyID INTEGER,
+            FOREIGN KEY(wardID) REFERENCES geolocation(id),
+            FOREIGN KEY(subCountyID) REFERENCES geolocation(id),
+          )
+
+          CREATE TABLE siblings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            siblingID INTEGER NOT NULL,
+            childID INTEGER NOT NULL
+            dateLinked TEXT,
+            dateUnlinked TEXT,
+            remarks TEXT,
+            FOREIGN KEY(childID) REFERENCES child(id),
+            FOREIGN KEY(siblingID) REFERENCES child(id)
+          )
+
+          CREATE TABLE caregiverChild (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            caregiverID INTEGER NOT NULL,
+            childID INTEGER NOT NULL,
+            dateLinked TEXT NOT NULL,
+            relationshipType TEXT NOT NULL,
+            FOREIGN KEY(caregiverID) REFERENCES caregiver(id),
+            FOREIGN KEY(childID) REFERENCES child(id)
+          )
+
+          CREATE TABLE crs(
+            id TEXT PRIMARY KEY,
+            courtName TEXT,
+            reporterPhoneNumber TEXT,
+            reporterLastName TEXT,
+            reporterFirstName TEXT,
+            courtFileNumber TEXT,
+            reporterOtherName TEXT,
+            policeStation TEXT,
+            obNumber TEXT,
+            placeOfOccurence TEXT NOT NULL,
+            subCountyID INTEGER NOT NULL,
+            village TEXT,
+            wardID INTEGER,
+            sublocationID INTEGER,
+            reportingSubcountyID INTEGER NOT NULL,
+            reportingOrgUnitID INTEGER NOT NULL,          
+            dateCaseReported TEXT NOT NULL,
+            childID INTEGER NOT NULL,
+            countryID INTEGER NOT NULL,
+            city TEXT,
+            houseEconomic TEXT NOT NULL,
+            mentalConditionStatus TEXT NOT NULL,
+            physicalConditionStatus TEXT NOT NULL,
+            otherConditionStatus TEXT NOT NULL,
+            caseSerialNumber TEXT NOT NULL,
+            offenderKnown TEXT NOT NULL,
+            riskLevel TEXT NOT NULL,
+            referralPresent INT NOT NULL,
+            summonsIssued INT NOT NULL,
+            dateOfSummon TEXT,
+            FOREIGN KEY(subCountyID) REFERENCES geolocations(id),
+            FOREIGN KEY(wardID) REFERENCES geolocations(id),
+            FOREIGN KEY(sublocationID) REFERENCES geolocations(id),
+            FOREIGN KEY(countryID) REFERENCES geolocations(id),
+            FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
+            FOREIGN KEY(childID) REFERENCES people(id),
+            FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
+          )
+
+          CREATE TABLE perpetrator(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firstName TEXT NOT NULL,
+            surname TEXT NOT NULL,
+            otherNames TEXT,
+            sex TEXT,
+            dob TEXT,
+            age INTEGER,
+            relationshipType TEXT
+          )
+
+          CREATE TABLE crsFamilyStatus(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            status TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsCloseFriends(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            name TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsHobbies(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            hobby TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsMentalCondition(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            condition TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsPhysicalCondition(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            condition TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsOtherCondition(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            condition TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE categories(
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+          )
+
+          CREATE TABLE subcategories(
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            categoryID TEXT NOT NULL,
+            FOREIGN KEY(categoryID) REFERENCES categories(id)
+          )
+
+          CREATE TABLE crsFormCategories(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            categoryID TEXT NOT NULL,
+            condition TEXT NOT NULL,
+            FOREIGN KEY(categoryID) REFERENCES categories(id)
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsFormSubcategories(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            crsFormCategoryID INTEGER NOT NULL,
+            subCategoryID TEXT NOT NULL,
+            FOREIGN KEY(crsFormCategoryID) REFERENCES crsFormCategories(id)
+            FOREIGN KEY(subCategoryID) REFERENCES subcategories(id)
+          )
+
+          CREATE TABLE crsReferrals(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            actor TEXT NOT NULL,
+            specify TEXT NOT NULL,
+            reason TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsImmediate(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            need TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
+
+          CREATE TABLE crsFutureNeeds(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            need TEXT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id)
+          )
         ''');
       },
       onUpgrade: (db, oldVersion, newVersion) {
