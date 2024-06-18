@@ -24,10 +24,10 @@ class RegistryContactDetailsModel {
   // Creates a RegistryContactDetailsModel instance from a map (e.g. decoded JSON)
   factory RegistryContactDetailsModel.fromJson(Map<String, String> json) {
     return RegistryContactDetailsModel(
-      designatedPhoneNumber: json['designatedPhoneNumber'].toString(),
-      otherMobileNumber: json['otherMobileNumber'].toString(),
-      emailAddress: json['emailAddress'].toString(),
-      physicalLocation: json['physicalLocation'].toString(),
+      designatedPhoneNumber: json['designatedPhoneNumber'] ?? "",
+      otherMobileNumber: json['otherMobileNumber'] ?? "",
+      emailAddress: json['emailAddress'] ?? "",
+      physicalLocation: json['physicalLocation'] ?? "",
     );
   }
 }
