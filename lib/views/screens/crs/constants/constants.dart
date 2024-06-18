@@ -169,3 +169,102 @@ const familyStatusOptions = [
     value: "Living in ICP Camp",
   ),
 ];
+
+// CCI Transition tools
+List<String> yesNoOptions = [
+  pleaseSelect,
+  "Yes",
+  "No",
+];
+
+List<String> cciAwareOptions = [
+  pleaseSelect,
+  "Aware",
+  "Moderately Aware",
+  "Not Aware",
+];
+
+List<String> cciDoneOptions = [
+  pleaseSelect,
+  "Done",
+  "Partly Done",
+  "Not Done",
+];
+
+List<String> cciDecisionOptions = [
+  pleaseSelect,
+  "Decision Made",
+  "Decision partly Made",
+  "Decision not Made",
+];
+
+List<String> cciProgramsOptions = [
+  pleaseSelect,
+  "Child welfare program",
+  "Rescue centre",
+  "None",
+];
+
+List<String> cciSurvivalRightsOptions = [
+  pleaseSelect,
+  "Health",
+  "Nutrition",
+  "Shelter and Clothing",
+];
+
+List<String> cciDevRightsOptions = [
+  pleaseSelect,
+  "Education",
+  "Leisure, recreation and play",
+  "Access to Information",
+  "Conscience and religion",
+];
+
+List<String> cciProtectRightsOptions = [
+  pleaseSelect,
+  "Legal aid and awareness",
+  "Establishment of children clubs",
+  "Family tracing, reunification and reintegration services",
+  "Awareness and implementation of programmes on positive parenting",
+  "Child labour preventive programmes",
+  "Family and community strengthening programmes",
+  "Stakeholders /case workers capacity building",
+  "Professional individual/ family therapies",
+  "Economic empowerment of families",
+  "Education support services",
+  "Health support services [ ] Promotion of Alternative family and community care-based services/ models",
+  "After care/Emergency care services",
+  "Online protection",
+  "Any other relevant programmes.",
+];
+
+List<String> cciParticipateRightsOptions = [
+  pleaseSelect,
+  "Establishment of talent development programmes to nurture creative skills among children",
+  "Advocacy programmes targeting children and their families e.g. Media publications",
+  "Establishment of school and community-based child rights clubs",
+  "Peer support programmes",
+  "Empowerment programmes for children and families with children with disabilities",
+  "Life skills development programmes",
+  "Creation of child rights clubs to enhance the creativity of children",
+  "Any other relevant programmes. ",
+];
+
+List<String> cciDisability = [
+  pleaseSelect,
+  "Children with diabilities only",
+  "Children without diabilities only",
+  "Both Children with and without diabilities only",
+];
+
+const gender = [
+  ValueItem<String>(label: "Male", value: "Male"),
+  ValueItem<String>(label: "Female", value: "Female"),
+  ValueItem<String>(label: "Intersex", value: "Intersex"),
+];
+
+
+
+
+
+// end of variables for CCI Transition tools
