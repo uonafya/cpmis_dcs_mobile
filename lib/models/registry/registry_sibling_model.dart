@@ -1,11 +1,11 @@
 class RegistrySiblingModel {
   String firstName;
   String surName;
-  String otherNames;
-  DateTime dateOfBirth;
+  String? otherNames;
+  DateTime? dateOfBirth;
   String sex;
   String currentClass;
-  String remarks;
+  String? remarks;
 
   RegistrySiblingModel({
     required this.firstName,

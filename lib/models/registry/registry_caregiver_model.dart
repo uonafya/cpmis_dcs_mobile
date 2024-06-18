@@ -2,12 +2,12 @@ class RegistryCaregiverModel {
   String id;
   String firstName;
   String surName;
-  String otherNames;
-  DateTime dateOfBirth;
+  String? otherNames;
+  DateTime? dateOfBirth;
   String sex;
   String relationshipToChild;
   String nationalIdNumber;
-  String phoneNumber;
+  String? phoneNumber;
   bool isRegistered;
 
   RegistryCaregiverModel({
