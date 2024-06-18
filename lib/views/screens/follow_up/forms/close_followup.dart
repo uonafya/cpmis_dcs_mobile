@@ -33,17 +33,29 @@ class _CourtFollowUpState extends State<CloseFollowup> {
   String? dateOfService;
 
   void handleAddService() async {
+    // caseID captured from elsewhere
+    String? caseId = "SomeCaseId";
+
     if (courtSessionType == "Please select" || dateOfService == null) {
       Get.snackbar("Error", "Please fill all required fields.");
       return;
     }
 
+    // InterventionList instance
+    List<InterventionList> interventionList = [
+      InterventionList(
+        intervention: courtSessionType,
+        caseCategory: caseCategory == "Please select" ? null : caseCategory,
+      ),
+    ];
+
     // Create model instance
     ClosureFollowupModel closureFollowupModel = ClosureFollowupModel(
+      caseId: caseId,
       caseOutcome: courtSessionType,
       dateOfCaseClosure: dateOfService,
       caseClosureNotes: courtNotes.text,
-      // Add other fields as necessary
+      interventionList: interventionList,
     );
 
     print(closureFollowupModel.toJson());
