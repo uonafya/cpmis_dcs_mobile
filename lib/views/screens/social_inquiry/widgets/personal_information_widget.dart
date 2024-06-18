@@ -5,7 +5,24 @@ import 'package:intl/intl.dart';
 class PersonalInformationWidget extends StatelessWidget {
   const PersonalInformationWidget({super.key, required this.childDetails});
   final InitialChildDetails childDetails;
+
+  void printCRSDetails() {
+    print('*********Personal Information**********:');
+    print('Details of the Child:');
+    print('First Name: ${childDetails.name}');
+    print('Other Names: Not Provided');
+    print('Surname: ${childDetails.name}');
+    print('Nickname or given name: Not Provided ');
+    print('Sex: ${childDetails.sex}');
+    print('DOB: ${childDetails.dateOfBirth}');
+  }
+
   @override
+  // void initState() {
+  //   super.initState();,
+  //   printCRSDetails();
+  // }
+
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,9 +47,9 @@ class PersonalInformationWidget extends StatelessWidget {
           'Other Names',
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        const Text(
-          'Not Provided',
-          style: TextStyle(fontSize: 12),
+        Text(
+          childDetails.name,
+          style: const TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
         const Divider(),
@@ -71,7 +88,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          DateFormat("dd, MMM YYYY")
+          DateFormat("dd, MMM yyyy")
               .format((childDetails.dateOfBirth ?? DateTime.now())),
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         ),
