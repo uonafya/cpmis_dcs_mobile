@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
@@ -12,6 +13,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 import '../../widgets/custom_stepper.dart';
@@ -232,6 +234,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           textColor: Colors.white,
                           onTap: () {
                             print("ID :${birthRegIdController.text}");
+                            Get.to(() => const CaseRegistrationSheet());
                           },
                         ),
                       )
