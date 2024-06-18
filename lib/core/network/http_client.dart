@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/core/network/dio_request_logger.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class HttpClient {
@@ -81,7 +82,7 @@ class HttpClient {
   }
 
   Future _refreshAccessToken() async {
-    final refreshToken = preferences.getString("token");
+    final refreshToken = preferences.getString("refresh");
     print("Here");
     if (refreshToken != null) {
       try {
@@ -95,9 +96,12 @@ class HttpClient {
         );
       }
     } else {
-      throw Exception("User not logged in");
       preferences.clear();
       Get.offAll(() => const LoginScreen());
+      Get.snackbar("Login failed", "Credentials are invalid",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/child_case_history_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/family_background_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/personal_information_widget.dart';
@@ -12,7 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SocialInquiry extends StatefulWidget {
-  const SocialInquiry({super.key});
+  const SocialInquiry({super.key, required this.crsDetails});
+  final CRSForm crsDetails;
   @override
   State<SocialInquiry> createState() => _CRSHomeState();
 }
@@ -54,6 +56,18 @@ class _CRSHomeState extends State<SocialInquiry> {
     }
   }
 
+  void printCRSDetails() {
+    print('___________01 Details of the Child____________');
+    print('Child Name: ${widget.crsDetails.about.initialDetails.name}');
+    print('Child Sex: ${widget.crsDetails.about.initialDetails.sex}');
+    print('Child DOB: ${widget.crsDetails.about.initialDetails.dateOfBirth}');
+    print('________________02 Family Background Details_________________');
+    print('Case Reporting: ${widget.crsDetails.caseReporting.county}');
+    print('Initial Details: ${widget.crsDetails.about.initialDetails.age}');
+    print('Medical: ${widget.crsDetails.medical}');
+    print('Case Data: ${widget.crsDetails.caseData}');
+  }
+
   void submitForm() {
     if (formKey.currentState!.validate()) {
       // All form fields are valid, retrieve the values
@@ -88,18 +102,28 @@ class _CRSHomeState extends State<SocialInquiry> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    printCRSDetails();
+  }
+
   Widget build(BuildContext context) {
     List<Widget> socialInquiryWidgets = [
-      const PersonalInformationWidget(),
-      const FamilyBackgroundWidget(),
+      PersonalInformationWidget(
+        childDetails: widget.crsDetails.about.initialDetails,
+      ),
+      FamilyBackgroundWidget(
+        caseDetails: widget.crsDetails.caseReporting,
+      ),
       ChildCaseHistoryWidget(
-          caseHistoryController: caseHistoryController,
-          caseObservationController: caseObservationController,
-          caseRecommendationController: caseRecomendationController,
-          caseSubCountyController: caseSubCountyController,
-          nameOfOfficerController: nameOfOfficerController,
-          officerTelephoneController: officerTelephoneController,
-          dateOfSocialInquiry: dateOfSocialInquiry),
+        caseHistoryController: caseHistoryController,
+        caseObservationController: caseObservationController,
+        caseRecommendationController: caseRecomendationController,
+        caseSubCountyController: caseSubCountyController,
+        nameOfOfficerController: nameOfOfficerController,
+        officerTelephoneController: officerTelephoneController,
+        dateOfSocialInquiry: dateOfSocialInquiry,
+      ),
     ];
     return Scaffold(
       appBar: customAppBar(),
