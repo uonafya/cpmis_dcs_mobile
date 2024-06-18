@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/summons_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -24,6 +25,36 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
   List<dynamic> selectedServices = [];
   String? dateOfVisit;
   final formKey = GlobalKey<FormState>();
+
+  void handleAddService() {
+    if (formKey.currentState!.validate()) {
+      // Assuming the dateOfVisit is already in the correct format
+      // caseId available from the follow up
+      String? caseId =
+          "CaseIdHere"; // You need to replace this with actual case ID logic
+
+      CourtSummonsModel newSummons = CourtSummonsModel(
+        honoured: summonHonored == "Yes" ? "true" : "false",
+        honouredDate: dateOfVisit,
+        summonDate: DateFormat("dd/MM/yyyy")
+            .format(DateTime.now()), // Assuming the summon date is today
+        summonNote: notes.text,
+        caseId: caseId,
+      );
+
+      // Here you would send `newSummons` to your backend or database
+      // For demonstration, we'll just print it to the console
+      print(newSummons.toJson());
+
+      // Show a success message or simply navigate back
+      Get.back(); // Navigate back
+      // Optionally, show a success message
+      Get.snackbar("Success", "Summons added successfully");
+    } else {
+      // Show an error message if form is not valid
+      Get.snackbar("Error", "Please fill all the fields correctly");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +115,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
               height: 6,
             ),
             CustomTextField(
+              maxLines: 5,
               hintText: "Notes",
               controller: notes,
             ),
@@ -98,9 +130,5 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
         ),
       ),
     );
-  }
-
-  void handleAddService() {
-    Get.back();
   }
 }
