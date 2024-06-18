@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -30,6 +31,37 @@ class _CourtFollowUpState extends State<CloseFollowup> {
   final courtNotes = TextEditingController();
   List<dynamic> selectedServices = [];
   String? dateOfService;
+
+  void handleAddService() async {
+    if (courtSessionType == "Please select" || dateOfService == null) {
+      Get.snackbar("Error", "Please fill all required fields.");
+      return;
+    }
+
+    // Create model instance
+    ClosureFollowupModel closureFollowupModel = ClosureFollowupModel(
+      caseOutcome: courtSessionType,
+      dateOfCaseClosure: dateOfService,
+      caseClosureNotes: courtNotes.text,
+      // Add other fields as necessary
+    );
+
+    print(closureFollowupModel.toJson());
+
+    // Convert model to JSON
+    Map<String, dynamic> dataToSend = closureFollowupModel.toJson();
+
+    try {
+      // Placeholder for sending data to backend
+      // final response = await YourService.sendClosureFollowup(dataToSend);
+
+      Get.back(); // Navigate back
+      Get.snackbar("Success", "Case closure saved successfully.");
+    } catch (e) {
+      // Handle error
+      Get.snackbar("Error", "Failed to save case closure.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +144,5 @@ class _CourtFollowUpState extends State<CloseFollowup> {
         ],
       ),
     );
-  }
-
-  void handleAddService() {
-    Get.back();
   }
 }
