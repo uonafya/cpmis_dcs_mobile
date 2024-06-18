@@ -1,12 +1,17 @@
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CaseDataRelationshipItem extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final Perpetrators data;
+  final int index;
+  final Function(int index) removeItem;
 
-  const CaseDataRelationshipItem({
-    required this.data,
-    super.key
-  });
+  const CaseDataRelationshipItem(
+      {required this.index,
+      required this.removeItem,
+      required this.data,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['relationship'],
+                      data.relationshipType ?? "",
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -47,7 +52,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['firstname'],
+                      data.firstName,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -69,7 +74,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['surname'],
+                      data.lastName,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -84,7 +89,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['othernames'],
+                      data.othernames ?? "",
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -93,29 +98,21 @@ class CaseDataRelationshipItem extends StatelessWidget {
             ],
           ),
           const Divider(),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     const Icon(
-          //       Icons.edit,
-          //       color: kPrimaryColor,
-          //       size: 18,
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     InkWell(
-          //       onTap: () {
-          //         onDelete();
-          //       },
-          //       child: const Icon(
-          //         Icons.delete,
-          //         color: Colors.red,
-          //         size: 18,
-          //       ),
-          //     ),
-          //   ],
-          // )
+          const SizedBox(
+            height: smallSpacing,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              onPressed: () {
+                removeItem(index);
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+            ),
+          )
         ],
       ),
     );

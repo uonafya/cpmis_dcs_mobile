@@ -1,15 +1,23 @@
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_relationships_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_info_box.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class CaseDataMorePerpetratorsModal extends StatefulWidget {
-  const CaseDataMorePerpetratorsModal({super.key});
+  final Function(List<Perpetrators> item) updatePerpetrators;
+  final List<Perpetrators> perpetrators;
+
+  const CaseDataMorePerpetratorsModal(
+      {required this.updatePerpetrators,
+      required this.perpetrators,
+      super.key});
 
   @override
   State<CaseDataMorePerpetratorsModal> createState() =>
@@ -23,6 +31,8 @@ class _CaseDataMorePerpetratorsModalState
   String firstName = "";
   String lastName = "";
   String otherNames = "";
+  String sex = pleaseSelect;
+  late DateTime dob;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +114,51 @@ class _CaseDataMorePerpetratorsModalState
             },
           ),
           const SizedBox(
+            height: smallSpacing,
+          ),
+          const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Sex",
+                style: TextStyle(fontSize: 14, color: Colors.black),
+              )),
+          const SizedBox(
+            height: smallSpacing,
+          ),
+          CustomDropdown(
+              initialValue: sex,
+              items: sexOptions,
+              onChanged: (String value) {
+                setState(() {
+                  sex = value;
+                });
+              }),
+          const SizedBox(
+            height: mediumSpacing,
+          ),
+
+          const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Date of Birth",
+                style: TextStyle(fontSize: 14, color: Colors.black),
+              )),
+          const SizedBox(
+            height: smallSpacing,
+          ),
+          CustomDatePicker(
+              firstDate: DateTime(1950),
+              lastDate: DateTime.now(),
+              onChanged: (DateTime time) {
+                setState(() {
+                  dob = time;
+                });
+              }),
+          const SizedBox(
+            height: mediumSpacing,
+          ),
+
+          const SizedBox(
             height: mediumSpacing,
           ),
           Align(
@@ -113,7 +168,19 @@ class _CaseDataMorePerpetratorsModalState
               child: CustomButton(
                 text: "Add",
                 onTap: () {
-                  debugPrint("Tapped");
+                  Perpetrators perp = Perpetrators(
+                    firstName: firstName,
+                    lastName: lastName,
+                    relationshipType: additionalRelationship == pleaseSelect
+                        ? relationship
+                        : additionalRelationship,
+                    othernames: otherNames,
+                    sex: sex,
+                    dateOfBirth: dob,
+                  );
+                  widget.perpetrators.add(perp);
+                  widget.updatePerpetrators(widget.perpetrators);
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -130,12 +197,21 @@ class _CaseDataMorePerpetratorsModalState
           ),
 
           // Selected relationships
-          const CaseDataRelationshipItem(data: {
-            "relationship": "Dad",
-            "firstname": "Bob",
-            "surname": "Onyango",
-            "othernames": "Bentley"
-          }),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < widget.perpetrators.length; i++)
+                CaseDataRelationshipItem(
+                  data: widget.perpetrators[i],
+                  index: i,
+                  removeItem: (int index) {
+                    widget.perpetrators.removeAt(index);
+                    widget.updatePerpetrators(widget.perpetrators);
+                  },
+                )
+            ],
+          ),
+
           const SizedBox(
             height: mediumSpacing,
           ),

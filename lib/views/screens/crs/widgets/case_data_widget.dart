@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrator
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_referrals.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
@@ -37,6 +38,13 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
 
   String perpetratorSex = pleaseSelect;
   late DateTime perpetratorDOB;
+
+  List<Perpetrators> perpetrators = [];
+  void updatePerpetrators(List<Perpetrators> item) {
+    setState(() {
+      perpetrators = item;
+    });
+  }
 
   String referralActor = "";
   void updateReferralActor(String value) {
@@ -236,25 +244,42 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     "Perpetrators",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextButton(
-                      onPressed: () {
+                  const SizedBox(
+                    width: smallSpacing,
+                  ),
+                  CustomButton(
+                      onTap: () {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const CaseDataMorePerpetratorsModal();
+                              return CaseDataMorePerpetratorsModal(
+                                perpetrators: perpetrators,
+                                updatePerpetrators: updatePerpetrators,
+                              );
                             });
                       },
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.add),
+                          Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
                           SizedBox(
                             width: 5.0,
                           ),
-                          Text("More")
+                          Text(
+                            "More",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
                         ],
                       ))
                 ],
+              ),
+              const SizedBox(
+                height: mediumSpacing,
               )
             ],
           ),
