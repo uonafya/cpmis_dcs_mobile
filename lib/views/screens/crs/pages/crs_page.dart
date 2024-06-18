@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
+import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -134,7 +135,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                         : 'Next',
                     onTap: () async {
                       if (selectedStep == crsStepperWidgets.length - 1) {
-                        Get.to(() => const CRSHome());
+                        Get.to(() => const FollowUpHome());
                       }
                       _scrollController.animateTo(
                         0,
@@ -151,6 +152,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 )
               ],
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
