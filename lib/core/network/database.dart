@@ -1,18 +1,52 @@
 import 'package:sqflite/sqflite.dart';
-
 import '../constants/constants.dart';
+import "package:path/path.dart";
 
 //ALL LOCAL DATABASE OPERATIONS WILL BE DONE HERE(QUERIES, READS, WRITES, UPDATES, DELETES, ETC.)
 //However, we will not have logic for UI, API, or any other business logic here.
 //Please refer to the respective folders for those(models, controllers & views).
 
-class Database {
-  Future<void> initialise() async {
-    final db = await openDatabase(
-      'cpims_dcs_mobile.db',
-      version: 5,
-      onCreate: (db, version) async {
-       await db.execute('''
+class LocalDB {
+  static Database? _database;
+  static const String _databaseName = 'cpims_dcs_mobile.db';
+
+  LocalDB._init();
+
+  Future<Database> _initDB(String filePath) async{
+    try {
+      final dbPath = await getDatabasesPath();
+      final path = join(dbPath, filePath);
+      return await openDatabase(
+        path,
+        version: 5,
+        onCreate: _initialise,
+        onUpgrade: (db, oldVersion, newVersion) {
+          if (oldVersion < newVersion) {
+            db.execute('''
+            ALTER TABLE users ADD COLUMN role TEXT
+          ''');
+          }
+        },
+      );
+    } catch(err) {
+      throw "Could Not Create Instance of DB";
+    }
+  }
+
+  Future<Database> get database async {
+    // If database exists return it
+    if (_database != null) {
+      return _database!;
+    }
+
+    // Else create it and return
+    Database db = await _initDB(_databaseName);
+    return db;
+  }
+
+
+  Future<void> _initialise(Database db, int version) async {
+    await db.execute('''
           CREATE TABLE IF NOT EXISTS $geolocationTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             code TEXT,
@@ -21,7 +55,7 @@ class Database {
             parent INTEGER 
           );
         ''');
-       await db.execute('''
+    await db.execute('''
           CREATE TABLE IF NOT EXISTS $usersTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
@@ -33,7 +67,7 @@ class Database {
           );        
         ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $childTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
@@ -45,7 +79,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
@@ -61,7 +95,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
        CREATE TABLE IF NOT EXISTS $siblingsTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             siblingID INTEGER NOT NULL,
@@ -74,7 +108,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverChildTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             caregiverID INTEGER NOT NULL,
@@ -86,7 +120,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsTable(
             id TEXT PRIMARY KEY,
             courtName TEXT,
@@ -128,7 +162,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $perpetratorTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
@@ -141,7 +175,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsFamilyStatusTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -150,7 +184,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsCloseFriendsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -159,7 +193,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsHobbiesTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -168,7 +202,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsMentalConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -177,7 +211,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsPhysicalConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -186,7 +220,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsOtherConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -195,14 +229,14 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $categoriesTable (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $subCategoriesTable (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
@@ -211,7 +245,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsFormCategoriesTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -222,7 +256,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsFormSubCategoriesTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             crsFormCategoryID INTEGER NOT NULL,
@@ -232,7 +266,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsReferralsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -243,7 +277,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsImmediateTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -252,7 +286,7 @@ class Database {
           );
        ''');
 
-       await db.execute('''
+    await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsFutureNeedsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
@@ -260,16 +294,5 @@ class Database {
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
-      },
-      onUpgrade: (db, oldVersion, newVersion) {
-        if (oldVersion < newVersion) {
-          db.execute('''
-            ALTER TABLE users ADD COLUMN role TEXT
-          ''');
-        }
-      },
-    );
   }
 }
-
-final database = Database();
