@@ -1,7 +1,6 @@
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 
 class FamilyBackgroundWidget extends StatelessWidget {
@@ -99,7 +98,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
             Text(
               caseDetails.ward ?? '',
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),
@@ -115,7 +114,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
             ),
             Text(
               caseDetails.subCounty ?? '',
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),

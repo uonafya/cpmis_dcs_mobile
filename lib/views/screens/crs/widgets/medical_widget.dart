@@ -3,11 +3,9 @@ import 'package:cpims_dcs_mobile/views/screens/crs/constants/medical_page_option
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question_with_tooltip.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/widgets/info_icon.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class MedicalWidget extends StatefulWidget {

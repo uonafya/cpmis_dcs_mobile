@@ -8,7 +8,8 @@ class RegistryCBOandCHVSubform extends StatefulWidget {
   const RegistryCBOandCHVSubform({super.key});
 
   @override
-  State<RegistryCBOandCHVSubform> createState() => _RegistryCBOandCHVSubformState();
+  State<RegistryCBOandCHVSubform> createState() =>
+      _RegistryCBOandCHVSubformState();
 }
 
 class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
@@ -16,7 +17,6 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
     'Select Parent Unit',
     'UO27664 - CARITAS DOHB',
     'U73643 - KARAYA',
-
   ];
   List<String> ovcCriteria = [
     'Please Select One',
@@ -39,51 +39,59 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
   @override
   Widget build(BuildContext context) {
     return SubformWrapper(
-        title: "CBO/CHV Details",
-        children: [
-          const Text(
-            'CBO *',
-            style: TextStyle(color: kTextGrey),
-          ),
-          CustomDropdown(
-            initialValue: selectedCBO,
-            items: cboCriteria,
-            onChanged: (val) {
-              setState(() {
-                selectedCBO = val;
-              });
-            },
-          ),
-          const SizedBox(height: 15,),
-          const Divider(),
-          const Text(
-            'OVC Program Enrollment *',
-            style: TextStyle(color: kTextGrey),
-          ),
-          CustomDropdown(
-            initialValue: selectedOVC,
-            items: ovcCriteria,
-            onChanged: (val) {
-              setState(() {
-                selectedOVC = val;
-              });
-            },
-          ),
-          const SizedBox(height: 15,),
-          const Divider(),
-          const Text(
-            'CHV *',
-            style: TextStyle(color: kTextGrey),
-          ),
-          CustomDropdown(
-            initialValue: selectedCHV,
-            items: chvCriteria,
-            onChanged: (val) {
-              setState(() {
-                selectedCHV = val;
-              });
-            },
-          ),
-        ],);
+      title: "CBO/CHV Details",
+      children: [
+        const Text(
+          'CBO *',
+          style: TextStyle(color: kTextGrey),
+        ),
+        const SizedBox(height: 6),
+        CustomDropdown(
+          initialValue: selectedCBO,
+          items: cboCriteria,
+          onChanged: (val) {
+            setState(() {
+              selectedCBO = val;
+            });
+          },
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        const Divider(),
+        const Text(
+          'OVC Program Enrollment *',
+          style: TextStyle(color: kTextGrey),
+        ),
+        const SizedBox(height: 6),
+        CustomDropdown(
+          initialValue: selectedOVC,
+          items: ovcCriteria,
+          onChanged: (val) {
+            setState(() {
+              selectedOVC = val;
+            });
+          },
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        const Divider(),
+        const Text(
+          'CHV *',
+          style: TextStyle(color: kTextGrey),
+        ),
+        const SizedBox(height: 6),
+        CustomDropdown(
+          initialValue: selectedCHV,
+          items: chvCriteria,
+          onChanged: (val) {
+            setState(() {
+              selectedCHV = val;
+            });
+          },
+        ),
+      ],
+    );
   }
 }
