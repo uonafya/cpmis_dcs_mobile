@@ -25,7 +25,7 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
-  void handleSubmit() {
+  void handleAddService() {
     // Assuming caseId, encounterNotes, and caseCategoryId are to be captured elsewhere/are static
     String? caseId = "SomeCaseId";
     String? encounterNotes = "Some notes here";
@@ -156,7 +156,7 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
           CustomButton(
               text: "+ Add service(s)",
               onTap: () {
-                handleSubmit();
+                handleAddService();
               }),
           const SizedBox(
             height: 10,
@@ -186,29 +186,6 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
         ],
       ),
     );
-  }
-
-  void handleAddService() {
-    if (serviceProvider.isEmpty || service.isEmpty) {
-      return;
-    }
-    if (service == "Please select") {
-      return;
-    }
-    selectedServices.add({
-      "service": service,
-      "serviceProvider": serviceProvider,
-      "dateOfService": dateOfService,
-      "placeOfService": placeOfServiceController.text
-    });
-
-    //Clear the form
-    placeOfServiceController.clear();
-    dateOfService = null;
-    serviceProvider = serviceProviderList[0]["title"]!;
-    service = serviceList[0]["title"]!;
-
-    setState(() {});
   }
 }
 
