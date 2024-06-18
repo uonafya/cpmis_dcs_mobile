@@ -1,7 +1,7 @@
 class RegisterNewChildModel {
   String personType;
   bool isCaregiver;
-  bool providesServicesToChildren;
+  bool childOVCProgram;
   String firstName;
   String surname;
   String? otherNames;
@@ -13,7 +13,7 @@ class RegisterNewChildModel {
   RegisterNewChildModel({
     required this.personType,
     required this.isCaregiver,
-    required this.providesServicesToChildren,
+    required this.childOVCProgram,
     required this.firstName,
     required this.surname,
     this.otherNames,
@@ -28,7 +28,7 @@ class RegisterNewChildModel {
     return {
       'personType': personType,
       'isCaregiver': isCaregiver,
-      'providesServicesToChildren': providesServicesToChildren,
+      'providesServicesToChildren': childOVCProgram,
       'firstName': firstName,
       'surname': surname,
       'otherNames': otherNames,
@@ -44,7 +44,7 @@ class RegisterNewChildModel {
     return RegisterNewChildModel(
       personType: json['personType'],
       isCaregiver: json['isCaregiver'],
-      providesServicesToChildren: json['providesServicesToChildren'],
+      childOVCProgram: json['providesServicesToChildren'],
       firstName: json['firstName'],
       surname: json['surname'],
       otherNames: json['otherNames'],
