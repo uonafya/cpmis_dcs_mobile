@@ -57,12 +57,11 @@ class _CRSHomeState extends State<SocialInquiry> {
   }
 
   void printCRSDetails() {
-    print('___________Personal Information____________');
-    print('01 Details of the Child:');
+    print('___________01 Details of the Child____________');
     print('Child Name: ${widget.crsDetails.about.initialDetails.name}');
     print('Child Sex: ${widget.crsDetails.about.initialDetails.sex}');
     print('Child DOB: ${widget.crsDetails.about.initialDetails.dateOfBirth}');
-    print('02 Family Background Details:');
+    print('________________02 Family Background Details_________________');
     print('Case Reporting: ${widget.crsDetails.caseReporting.county}');
     print('Initial Details: ${widget.crsDetails.about.initialDetails.age}');
     print('Medical: ${widget.crsDetails.medical}');
@@ -113,15 +112,18 @@ class _CRSHomeState extends State<SocialInquiry> {
       PersonalInformationWidget(
         childDetails: widget.crsDetails.about.initialDetails,
       ),
-      const FamilyBackgroundWidget(),
+      FamilyBackgroundWidget(
+        caseDetails: widget.crsDetails.caseReporting,
+      ),
       ChildCaseHistoryWidget(
-          caseHistoryController: caseHistoryController,
-          caseObservationController: caseObservationController,
-          caseRecommendationController: caseRecomendationController,
-          caseSubCountyController: caseSubCountyController,
-          nameOfOfficerController: nameOfOfficerController,
-          officerTelephoneController: officerTelephoneController,
-          dateOfSocialInquiry: dateOfSocialInquiry),
+        caseHistoryController: caseHistoryController,
+        caseObservationController: caseObservationController,
+        caseRecommendationController: caseRecomendationController,
+        caseSubCountyController: caseSubCountyController,
+        nameOfOfficerController: nameOfOfficerController,
+        officerTelephoneController: officerTelephoneController,
+        dateOfSocialInquiry: dateOfSocialInquiry,
+      ),
     ];
     return Scaffold(
       appBar: customAppBar(),
