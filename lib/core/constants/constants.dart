@@ -17,3 +17,26 @@ const String cpimsApiUrl = "https://dev.cpims.net/api/";
 const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 
 enum RadioButtonOptions { yes, no, na }
+
+// Database table names
+const String geolocationTable = "geolocations";
+const String usersTable = "users";
+const String childTable = "child";
+const String caregiverTable = "caregiver";
+const String siblingsTable = "siblings";
+const String caregiverChildTable = "caregiverChild";
+const String crsTable = "crs";
+const String perpetratorTable = "perpetrator";
+const String crsFamilyStatusTable = "crsFamilyStatus";
+const String crsCloseFriendsTable = "crsCloseFriends";
+const String crsHobbiesTable = "crsHobbies";
+const String crsMentalConditionTable = "crsMentalCondition";
+const String crsPhysicalConditionTable = "crsPhysicalCondition";
+const String crsOtherConditionTable = "crsOtherCondition";
+const String categoriesTable = "categories";
+const String subCategoriesTable = "subcategories";
+const String crsFormCategoriesTable = "crsFormCategories";
+const String crsFormSubCategoriesTable = "crsFormSubcategories";
+const String crsReferralsTable = "crsReferrals";
+const String crsImmediateTable = "crsImmediate";
+const String crsFutureNeedsTable = "crsFutureNeeds";

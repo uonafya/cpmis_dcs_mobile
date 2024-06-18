@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../constants/constants.dart';
+
 //ALL LOCAL DATABASE OPERATIONS WILL BE DONE HERE(QUERIES, READS, WRITES, UPDATES, DELETES, ETC.)
 //However, we will not have logic for UI, API, or any other business logic here.
 //Please refer to the respective folders for those(models, controllers & views).
@@ -8,10 +10,19 @@ class Database {
   Future<void> initialise() async {
     final db = await openDatabase(
       'cpims_dcs_mobile.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute('''
-          CREATE TABLE users(
+      version: 5,
+      onCreate: (db, version) async {
+       await db.execute('''
+          CREATE TABLE IF NOT EXISTS $geolocationTable(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT,
+            name TEXT NOT NULL,
+            type TEXT NOT NULL,
+            parent INTEGER 
+          );
+        ''');
+       await db.execute('''
+          CREATE TABLE IF NOT EXISTS $usersTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
             password TEXT,
@@ -19,27 +30,23 @@ class Database {
             phone_number TEXT,
             created_at TEXT,
             updated_at TEXT
-          )
+          );        
+        ''');
 
-          CREATE TABLE geolocations(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT,
-            name TEXT NOT NULL,
-            type TEXT NOT NULL,
-            parent INTEGER 
-          )
-
-          CREATE TABLE child(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $childTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
             othername TEXT,
             nickname TEXT,
             sex TEXT NOT NULL,
-            dob TEXT NOT NULL,
-          )
+            dob TEXT NOT NULL
+          );
+       ''');
 
-          CREATE TABLE caregiver(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $caregiverTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
@@ -50,21 +57,25 @@ class Database {
             wardID INTEGER,
             subCountyID INTEGER,
             FOREIGN KEY(wardID) REFERENCES geolocation(id),
-            FOREIGN KEY(subCountyID) REFERENCES geolocation(id),
-          )
+            FOREIGN KEY(subCountyID) REFERENCES geolocation(id)
+          );
+       ''');
 
-          CREATE TABLE siblings (
+       await db.execute('''
+       CREATE TABLE IF NOT EXISTS $siblingsTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             siblingID INTEGER NOT NULL,
-            childID INTEGER NOT NULL
+            childID INTEGER NOT NULL,
             dateLinked TEXT,
             dateUnlinked TEXT,
             remarks TEXT,
             FOREIGN KEY(childID) REFERENCES child(id),
             FOREIGN KEY(siblingID) REFERENCES child(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE caregiverChild (
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $caregiverChildTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             caregiverID INTEGER NOT NULL,
             childID INTEGER NOT NULL,
@@ -72,9 +83,11 @@ class Database {
             relationshipType TEXT NOT NULL,
             FOREIGN KEY(caregiverID) REFERENCES caregiver(id),
             FOREIGN KEY(childID) REFERENCES child(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crs(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsTable(
             id TEXT PRIMARY KEY,
             courtName TEXT,
             reporterPhoneNumber TEXT,
@@ -112,9 +125,11 @@ class Database {
             FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
             FOREIGN KEY(childID) REFERENCES people(id),
             FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE perpetrator(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $perpetratorTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
@@ -123,102 +138,128 @@ class Database {
             dob TEXT,
             age INTEGER,
             relationshipType TEXT
-          )
+          );
+       ''');
 
-          CREATE TABLE crsFamilyStatus(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFamilyStatusTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             status TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsCloseFriends(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsCloseFriendsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             name TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsHobbies(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsHobbiesTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             hobby TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsMentalCondition(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsMentalConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             condition TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsPhysicalCondition(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsPhysicalConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             condition TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsOtherCondition(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsOtherConditionTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             condition TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE categories(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $categoriesTable (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-          )
+            name TEXT NOT NULL
+          );
+       ''');
 
-          CREATE TABLE subcategories(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $subCategoriesTable (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             categoryID TEXT NOT NULL,
             FOREIGN KEY(categoryID) REFERENCES categories(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsFormCategories(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFormCategoriesTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             categoryID TEXT NOT NULL,
             condition TEXT NOT NULL,
-            FOREIGN KEY(categoryID) REFERENCES categories(id)
+            FOREIGN KEY(categoryID) REFERENCES categories(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsFormSubcategories(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFormSubCategoriesTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             crsFormCategoryID INTEGER NOT NULL,
             subCategoryID TEXT NOT NULL,
-            FOREIGN KEY(crsFormCategoryID) REFERENCES crsFormCategories(id)
+            FOREIGN KEY(crsFormCategoryID) REFERENCES crsFormCategories(id),
             FOREIGN KEY(subCategoryID) REFERENCES subcategories(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsReferrals(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsReferralsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             actor TEXT NOT NULL,
             specify TEXT NOT NULL,
             reason TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsImmediate(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsImmediateTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             need TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
+          );
+       ''');
 
-          CREATE TABLE crsFutureNeeds(
+       await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFutureNeedsTable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             need TEXT NOT NULL,
             FOREIGN KEY(formID) REFERENCES crs(id)
-          )
-        ''');
+          );
+       ''');
       },
       onUpgrade: (db, oldVersion, newVersion) {
         if (oldVersion < newVersion) {
