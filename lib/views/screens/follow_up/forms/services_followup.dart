@@ -1,9 +1,11 @@
+import 'package:cpims_dcs_mobile/models/services_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_forms_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class ServicesFollowUp extends StatefulWidget {
@@ -22,6 +24,42 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   final placeOfServiceController = TextEditingController();
   List<dynamic> selectedServices = [];
   String? dateOfService;
+
+  void handleSubmit() {
+    // Assuming caseId, encounterNotes, and caseCategoryId are to be captured elsewhere/are static
+    String? caseId = "SomeCaseId";
+    String? encounterNotes = "Some notes here";
+    String?
+        caseCategoryId; // Determine how to capture this, possibly related to caseCategory
+
+    // Assuming caseCategory maps to caseCategoryId in some way, for simplicity, using caseCategory directly
+    caseCategoryId = caseCategory == "Please select" ? null : caseCategory;
+
+    // Create a list of ServiceProvidedList with current form values
+    List<ServiceProvidedList> serviceProvidedList = [
+      ServiceProvidedList(
+        serviceProvided: service == "Please select" ? null : service,
+        serviceProvider:
+            serviceProvider == "Please select" ? null : serviceProvider,
+        placeOfService: placeOfServiceController.text.isEmpty
+            ? null
+            : placeOfServiceController.text,
+        dateOfEncounterEvent:
+            dateOfService, // Assuming dateOfService is in the correct format
+      ),
+    ];
+
+    // ServiceFollowupModel instance with captured values
+    final serviceFollowup = ServiceFollowupModel(
+      caseId: caseId,
+      encounterNotes: encounterNotes,
+      caseCategoryId: caseCategoryId,
+      serviceProvidedList: serviceProvidedList,
+    );
+
+    print(serviceFollowup.toJson());
+    Get.back();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +153,11 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
           const SizedBox(
             height: 14,
           ),
-          CustomButton(text: "+ Add service(s)", onTap: handleAddService),
+          CustomButton(
+              text: "+ Add service(s)",
+              onTap: () {
+                handleSubmit();
+              }),
           const SizedBox(
             height: 10,
           ),
