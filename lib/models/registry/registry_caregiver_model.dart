@@ -38,17 +38,19 @@ class RegistryCaregiverModel {
     };
   }
 
-  factory RegistryCaregiverModel.fromJson(Map<String, dynamic> json) {
+  factory RegistryCaregiverModel.fromJson(Map<String, String> json) {
     return RegistryCaregiverModel(
-      id: json['id'],
-      firstName: json['firstName'],
-      surName: json['surName'],
-      otherNames: json['otherNames'],
-      dateOfBirth: json['dateOfBirth'],
-      sex: json['sex'],
-      relationshipToChild: json['relationshipToChild'],
-      nationalIdNumber: json['nationalIdNumber'],
-      phoneNumber: json['phoneNumber'],
+      id: json['id'] ?? "",
+      firstName: json['firstName'] ?? "",
+      surName: json['surName'] ?? "",
+      otherNames: json['otherNames'] ?? "",
+      dateOfBirth: json['dateOfBirth'] != null
+          ? DateTime.parse(json['dateOfBirth']!)
+          : DateTime.now(),
+      sex: json['sex'] ?? "",
+      relationshipToChild: json['relationshipToChild'] ?? "",
+      nationalIdNumber: json['nationalIdNumber'] ?? "",
+      phoneNumber: json['phoneNumber'] ?? "",
       isRegistered: json['isRegistered'] == 'true',
     );
   }
