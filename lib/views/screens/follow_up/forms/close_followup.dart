@@ -36,8 +36,13 @@ class _CourtFollowUpState extends State<CloseFollowup> {
     // caseID captured from elsewhere
     String? caseId = "SomeCaseId";
 
-    if (courtSessionType == "Please select" || dateOfService == null) {
-      Get.snackbar("Error", "Please fill all required fields.");
+    if (courtSessionType == "Please select") {
+      Get.snackbar("Error", "Please select a court session type.");
+      return;
+    }
+
+    if (dateOfService == null) {
+      Get.snackbar("Error", "Please fill in the date of service.");
       return;
     }
 
