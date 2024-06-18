@@ -87,7 +87,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Provides services directly to children *',
+                'Child is in OVC program *',
                 style: TextStyle(color: kTextGrey),
               ),
               // Radio button with two values, true or false
