@@ -10,7 +10,7 @@ class RegistryLocationModel {
   });
 
   // Converts a RegistryLocationModel instance to a map for JSON encoding
-  Map<String, dynamic> toJson() {
+  Map<String, String> toJson() {
     return {
       'county': county,
       'subCounty': subCounty,

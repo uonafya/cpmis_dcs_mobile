@@ -12,7 +12,7 @@ class RegistryContactDetailsModel {
   });
 
   // Converts a RegistryContactDetailsModel instance to a map for JSON encoding
-  Map<String, dynamic> toJson() {
+  Map<String, String> toJson() {
     return {
       'designatedPhoneNumber': designatedPhoneNumber,
       'otherMobileNumber': otherMobileNumber,
