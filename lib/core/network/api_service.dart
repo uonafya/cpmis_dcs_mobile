@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 
 class ApiService {
   String _queryParams(Map<String, dynamic> params) =>
@@ -33,18 +34,7 @@ class ApiService {
   }
 
   static List<Map<String, dynamic>> fetchCrsData() {
-    return List<Map<String, dynamic>>.generate(
-      10,
-      (index) => {
-        "id": index + 1,
-        "first_name": "John",
-        "surname": "Doee",
-        "sex": "male",
-        "org_unit": "Kisumu",
-        "residence": "Kisumu",
-        "previous_cases": 1,
-      },
-    );
+    return caseLoadDummy;
   }
 }
 

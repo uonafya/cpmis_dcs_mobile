@@ -3,7 +3,6 @@ import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_relationships_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
-import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_info_box.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
@@ -151,7 +150,7 @@ class _CaseDataMorePerpetratorsModalState
                       onPressed: () {
                         debugPrint("Close");
                       },
-                      child: Text("Close")),
+                      child: const Text("Close")),
                 ),
                 const SizedBox(
                   width: 5.0,
@@ -161,7 +160,7 @@ class _CaseDataMorePerpetratorsModalState
                   onPressed: () {
                     debugPrint("Action");
                   },
-                  child: Text("Action"),
+                  child: const Text("Action"),
                 ))
               ],
             ),

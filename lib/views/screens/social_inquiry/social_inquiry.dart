@@ -107,6 +107,7 @@ class _CRSHomeState extends State<SocialInquiry> {
     printCRSDetails();
   }
 
+  @override
   Widget build(BuildContext context) {
     List<Widget> socialInquiryWidgets = [
       PersonalInformationWidget(
