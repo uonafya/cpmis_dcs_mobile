@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
@@ -153,7 +154,65 @@ class CRSDetails extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Get.to(() => const SocialInquiry());
+              final crsDetails = CRSForm(
+                  caseReporting: CaseReportingCRSFormModel(
+                    county: "Nairobi",
+                    subCounty: "Makadara",
+                    location: "Makadara Sub County",
+                    obNumber: "N/A",
+                    originator: "Mother",
+                    placeOfOccurence: true,
+                    policeStation: "Maka Police Station",
+                    reporterFirstName: "Ann",
+                    reporterLastName: "Kathambi",
+                    reporterOtherName: "Njeru",
+                    reporterPhoneNumber: "0713532868",
+                    reportingOrganizationalUnit: "Makadara Sub County",
+                    reportingSubCounty: "Makadara",
+                    courtFileNumber: "NB/47/287/5/29/3004/2024",
+                    courtName: "Makadara Law Courts",
+                    dateCaseReported: DateTime.now(),
+                    subLocation: "Maksadara",
+                    village: "Maka Village",
+                    ward: "Maka Ward",
+                  ),
+                  about: AboutChildCRSFormModel(
+                      initialDetails: InitialChildDetails(
+                        name: "Baby Kathambi",
+                        sex: "Female",
+                        dateOfBirth: DateTime.now(),
+                        age: 7,
+                      ),
+                      siblingDetails: [],
+                      houseEconomicStatus: "Good",
+                      familyStatus: [],
+                      closeFriends: [],
+                      hobbies: []),
+                  medical: const MedicalCRSFormModel(
+                      mentalConditionStatus: "Appears Not Okay",
+                      mentalCondition: [
+                        "Anxiety",
+                        "Depression",
+                        "Stress",
+                        "Trauma"
+                      ],
+                      physicalConditionStatus: "Appears Normal",
+                      physicalCondition: ["Tired"],
+                      otherConditionStatus: "Appears not well",
+                      otherCondition: ["Sick", "Weak", "Tired"]),
+                  caseData: CaseDataCRSFormModel(
+                      serialNumber: "A1931",
+                      offenderKnown: "Yes",
+                      crsCategories: [],
+                      riskLevel: 'Medium',
+                      referralsPresent: true,
+                      summonsIssued: true,
+                      dateOfSummon: DateTime.now(),
+                      immediateNeeds: ["Clothing", "Food", "Shelter"],
+                      futureNeeds: ["Clothing", "Food", "Shelter"]));
+              Get.to(() => SocialInquiry(
+                    crsDetails: crsDetails,
+                  ));
             },
             child: Text(
               "Social Inquiry Form",

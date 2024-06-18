@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
+import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +43,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       "onTap": () {
         Get.back();
 
-        Get.to(() => const FollowUpHome());
+        Get.to(() => const ESRForm());
       },
     },
     {

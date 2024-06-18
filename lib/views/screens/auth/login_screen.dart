@@ -4,6 +4,8 @@ import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/connectivity_screen.dart';
+import 'package:cpims_dcs_mobile/views/screens/auth/request_access_screen.dart';
+import 'package:cpims_dcs_mobile/views/screens/auth/reset_password_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/widgets/important_links_widget.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
@@ -12,6 +14,7 @@ import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
@@ -226,41 +229,71 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Not registered yet? Click ',
-                      style: TextStyle(fontSize: 13, color: kTextGrey),
-                      children: [
-                        TextSpan(
-                          text: 'here',
-                          style: TextStyle(
-                            color: kPrimaryColor,
+                  GestureDetector(
+                    onTap: () async {
+                      final hasConnection =
+                          await Provider.of<ConnectivityProvider>(context,
+                                  listen: false)
+                              .checkInternetConnection();
+                      if (!hasConnection) {
+                        Get.to(() => const ConnectivityScreen(
+                              redirectScreen: RequestAccessScreen(),
+                            ));
+                      } else {
+                        Get.to(() => const RequestAccessScreen());
+                      }
+                    },
+                    child: RichText(
+                      text: const TextSpan(
+                        text: 'Not registered yet? Click ',
+                        style: TextStyle(fontSize: 13, color: kTextGrey),
+                        children: [
+                          TextSpan(
+                            text: 'here',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: ' to request for access',
-                        )
-                      ],
+                          TextSpan(
+                            text: ' to request for access',
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Forgot password? Click ',
-                      style: TextStyle(fontSize: 13, color: kTextGrey),
-                      children: [
-                        TextSpan(
-                          text: 'here',
-                          style: TextStyle(
-                            color: kPrimaryColor,
+                  GestureDetector(
+                    onTap: () async {
+                      final hasConnection =
+                          await Provider.of<ConnectivityProvider>(context,
+                                  listen: false)
+                              .checkInternetConnection();
+                      if (!hasConnection) {
+                        Get.to(() => const ConnectivityScreen(
+                              redirectScreen: ResetPasswordScreen(),
+                            ));
+                      } else {
+                        Get.to(() => const ResetPasswordScreen());
+                      }
+                    },
+                    child: RichText(
+                      text: const TextSpan(
+                        text: 'Forgot password? Click ',
+                        style: TextStyle(fontSize: 13, color: kTextGrey),
+                        children: [
+                          TextSpan(
+                            text: 'here',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: ' to change password',
-                        )
-                      ],
+                          TextSpan(
+                            text: ' to change password',
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(

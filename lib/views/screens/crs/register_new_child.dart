@@ -1,10 +1,15 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../widgets/custom_stepper.dart';
+import './utils/constants_crs.dart';
 
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
@@ -15,13 +20,13 @@ class RegisterNewChildScreen extends StatefulWidget {
 
 class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   List<String> personCriteria = [
-    'Please Select',
     'Child',
-    'Caregiver',
-    'Goverment Employee',
-    'NGO/private sector employee',
   ];
   String selectedPersonCriteria = 'Please Select';
+  int selectedStep = 0;
+  bool? _radioValue;
+  bool _isChecked = false;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +77,44 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 'Person is also a caregiver',
                 style: TextStyle(color: kTextGrey),
               ),
-              Checkbox(value: false, onChanged: (val) {}),
+              Checkbox(
+                value: _isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isChecked = value ?? false; // Update the state
+                  });
+                },
+              ),
               const SizedBox(height: 10),
               const Text(
                 'Provides services directly to children *',
                 style: TextStyle(color: kTextGrey),
               ),
-              // checkbox with two values, true or false
-              Checkbox(value: false, onChanged: (val) {}),
+              // Radio button with two values, true or false
+              Row(
+                children: [
+                  Radio<bool>(
+                    value: true,
+                    groupValue: _radioValue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _radioValue = value;
+                      });
+                    },
+                  ),
+                  const Text('Yes'),
+                  Radio<bool>(
+                    value: false,
+                    groupValue: _radioValue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _radioValue = value;
+                      });
+                    },
+                  ),
+                  const Text('No'),
+                ],
+              ),
               const SizedBox(height: 10),
               const Text(
                 'First Name *',
@@ -115,7 +150,81 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                 style: TextStyle(color: kTextGrey),
               ),
               const CustomTextField(hintText: 'Date of Birth'),
+              const SizedBox(height: 15,),
+              CustomStepperWidget(
+                onTap: (index) {
+                  setState(() {
+                    selectedStep = index;
+                  });
+                },
+                data: REGISTRY_SUBFORM_HEADERS_TEXT,
+                selectedIndex: selectedStep,
+              ),
+              const SizedBox(height: 15,),
+              REGISTRY_SUBFORMS[selectedStep],
+              const SizedBox(height: 15,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    borderRadius: 50,
+                    text: "← Previous",
+                    color: (selectedStep <= 0 )? Colors.grey : Colors.blue,
+                    onTap: () {
+                      if (selectedStep <= 0 ) {
+                        return;
+                      }
+                      setState(() {
+                        selectedStep = selectedStep-1;
+                      });
+                    },
+                  ),
+                  CustomButton(
+                    borderRadius: 50,
+                    text: "    Next →    ",
+                    color: (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 )? Colors.grey : Colors.blue,
+                    onTap: () {
+                      if (selectedStep >= REGISTRY_SUBFORM_HEADERS_TEXT.length - 1 ) {
+                        return;
+                      }
+                      setState(() {
+                        selectedStep = selectedStep+1;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15,),
+              const Text(
+                'Workforce member recorded on paper *',
+                style: TextStyle(color: kTextGrey),
+              ),
+              const CustomTextField(hintText: 'Workforce ID/Name'),
+              const SizedBox(height: 15,),
+              const Text(
+                'Date paper form filled *',
+                style: TextStyle(color: kTextGrey),
+              ),
+              CustomTextField(hintText: currentDate, readOnly: true),
+              const SizedBox(height: 15,),
+              const Row(
+                children: [
+                  CustomButton(
+                    text: "Submit",
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  CustomButton(
+                    text: " Cancel ",
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10,),
             ]),
+            const SizedBox(height: 30,),
           ],
         ));
   }
