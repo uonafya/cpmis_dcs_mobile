@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/court_session_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -27,6 +28,8 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   String courtSessionType = "Please select";
   String serviceProvider = serviceProviderList[0]["title"]!;
   final courtNotes = TextEditingController();
+  String applicationOutcome = "Please select";
+  final applicationOutcomeList = ["Please select", "Granted", "Denied"];
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
@@ -94,11 +97,11 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
             ),
           if (courtSessionType != "Please select")
             CustomDropdown(
-                initialValue: caseCategory,
-                items: caseCategories,
+                initialValue: applicationOutcome,
+                items: applicationOutcomeList,
                 onChanged: (val) {
                   setState(() {
-                    caseCategory = val;
+                    applicationOutcome = val;
                   });
                 }),
           const SizedBox(
@@ -125,6 +128,19 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   }
 
   void handleAddService() {
+    final courtSession = CourtSessionModel(
+      applicationOutcome: applicationOutcome,
+      courtNotes: courtNotes.text,
+      courtSessionCase: caseCategory,
+      courtOutcome: applicationOutcome,
+      nextHearingDate: dateOfService,
+      nextMentionDate: dateOfService,
+      pleaTaken: applicationOutcome,
+      dateOfCourtEvent: dateOfService,
+      courtSessionType: courtSessionType,
+    );
+
+    print(courtSession.toJson());
     Get.back();
   }
 }
