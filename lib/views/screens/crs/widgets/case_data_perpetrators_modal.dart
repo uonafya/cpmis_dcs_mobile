@@ -36,6 +36,26 @@ class _CaseDataMorePerpetratorsModalState
 
   @override
   Widget build(BuildContext context) {
+    if (widget.perpetrators.length >= 4) {
+      return Scaffold(
+        body: ListView(
+          padding: const EdgeInsets.all(20.0),
+          children: const [
+            // Title
+            FormPageHeading(
+              heading: "More Perpetrators",
+              hasClosePage: true,
+            ),
+            SizedBox(
+              height: mediumSpacing,
+            ),
+            CustomInfoBox(
+                child: Text(
+                    "You have added the maximum number of perpetrators i.e 4"))
+          ],
+        ),
+      );
+    }
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(20.0),
@@ -211,36 +231,6 @@ class _CaseDataMorePerpetratorsModalState
                 )
             ],
           ),
-
-          const SizedBox(
-            height: mediumSpacing,
-          ),
-
-          // Actions
-          SizedBox(
-            width: 200,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                      onPressed: () {
-                        debugPrint("Close");
-                      },
-                      child: const Text("Close")),
-                ),
-                const SizedBox(
-                  width: 5.0,
-                ),
-                Expanded(
-                    child: TextButton(
-                  onPressed: () {
-                    debugPrint("Action");
-                  },
-                  child: const Text("Action"),
-                ))
-              ],
-            ),
-          )
         ],
       ),
     );

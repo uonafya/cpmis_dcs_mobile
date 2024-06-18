@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_categories.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_category_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_referrals.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
@@ -38,6 +39,14 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
 
   String perpetratorSex = pleaseSelect;
   late DateTime perpetratorDOB;
+
+  List<CRSCategory> categories = [];
+  void addCategory(CRSCategory item) {
+    categories.add(item);
+    setState(() {
+      categories = categories;
+    });
+  }
 
   List<Perpetrators> perpetrators = [];
   void updatePerpetrators(List<Perpetrators> item) {
@@ -297,7 +306,26 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             style: TextStyle(color: Colors.red),
           ),
 
-        const CaseCategoriesWidget(),
+        CaseCategoriesWidget(
+          addCategory: addCategory,
+        ),
+
+        // Display filled categories
+        Column(
+          children: [
+            for (var i = 0; i < categories.length; i++)
+              CaseDataCategoryItem(
+                index: i,
+                removeItem: (int index) {
+                  categories.removeAt(index);
+                  setState(() {
+                    categories = categories;
+                  });
+                },
+                data: categories[i],
+              )
+          ],
+        ),
 
         const SizedBox(
           height: mediumSpacing,
