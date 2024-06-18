@@ -1,18 +1,18 @@
 class RegisterNewChildModel {
   String personType;
-  bool isCaregiver;
+  bool? isCaregiver;
   bool childOVCProgram;
   String firstName;
   String surname;
   String? otherNames;
   String sex;
-  String dateOfBirth;
+  DateTime dateOfBirth;
   String workforceIdName;
   String datePaperFormFilled;
 
   RegisterNewChildModel({
     required this.personType,
-    required this.isCaregiver,
+    this.isCaregiver,
     required this.childOVCProgram,
     required this.firstName,
     required this.surname,
