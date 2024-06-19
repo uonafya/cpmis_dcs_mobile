@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../controller/registry_provider.dart';
 
 
 
@@ -37,6 +40,9 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
 
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return SubformWrapper(
         title: "Location",
         children: [
@@ -55,11 +61,12 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 style: TextStyle(color: kTextGrey),
               ),
               CustomDropdown(
-                initialValue: selectedCounty,
+                initialValue: registryProvider.registryLocationModel.county.isNotEmpty ? registryProvider.registryLocationModel.county : selectedCounty,
                 items: countyCriteria,
                 onChanged: (val) {
                   setState(() {
                     selectedCounty = val;
+                    registryProvider.setCounty(selectedCounty);
                   });
                 },
               ),
@@ -75,11 +82,12 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
-                  initialValue: selectedSubCounty,
+                  initialValue: registryProvider.registryLocationModel.subCounty.isNotEmpty ? registryProvider.registryLocationModel.subCounty : selectedSubCounty,
                   items: subcountyCriteria,
                   onChanged: (val) {
                     setState(() {
                       selectedSubCounty = val;
+                      registryProvider.setSubCounty(selectedSubCounty);
                     });
                   },
                 ),
@@ -90,11 +98,12 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
-                  initialValue: selectedWard,
+                  initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
                   items: wardCriteria,
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;
+                      registryProvider.setWard(selectedWard);
                     });
                   },
                 ),
