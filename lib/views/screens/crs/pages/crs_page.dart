@@ -1,10 +1,13 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
+import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class CaseRegistrationSheet extends StatefulWidget {
   const CaseRegistrationSheet({super.key});
@@ -131,6 +134,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                         ? 'Submit'
                         : 'Next',
                     onTap: () async {
+                      if (selectedStep == crsStepperWidgets.length - 1) {
+                        Get.to(() => const FollowUpHome());
+                      }
                       _scrollController.animateTo(
                         0,
                         duration: const Duration(milliseconds: 100),
@@ -146,6 +152,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 )
               ],
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

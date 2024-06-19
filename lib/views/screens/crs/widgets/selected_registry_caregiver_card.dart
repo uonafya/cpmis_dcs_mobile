@@ -1,9 +1,5 @@
-import 'package:cpims_dcs_mobile/views/widgets/custom_grid_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/constants.dart';
-import '../../../widgets/custom_card_grid_item.dart';
 
 class SelectedRegistryCaregiverCard extends StatefulWidget {
   const SelectedRegistryCaregiverCard({super.key});

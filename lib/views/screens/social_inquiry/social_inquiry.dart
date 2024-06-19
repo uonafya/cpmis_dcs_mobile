@@ -56,18 +56,6 @@ class _CRSHomeState extends State<SocialInquiry> {
     }
   }
 
-  void printCRSDetails() {
-    print('___________01 Details of the Child____________');
-    print('Child Name: ${widget.crsDetails.about.initialDetails.name}');
-    print('Child Sex: ${widget.crsDetails.about.initialDetails.sex}');
-    print('Child DOB: ${widget.crsDetails.about.initialDetails.dateOfBirth}');
-    print('________________02 Family Background Details_________________');
-    print('Case Reporting: ${widget.crsDetails.caseReporting.county}');
-    print('Initial Details: ${widget.crsDetails.about.initialDetails.age}');
-    print('Medical: ${widget.crsDetails.medical}');
-    print('Case Data: ${widget.crsDetails.caseData}');
-  }
-
   void submitForm() {
     if (formKey.currentState!.validate()) {
       // All form fields are valid, retrieve the values
@@ -104,16 +92,16 @@ class _CRSHomeState extends State<SocialInquiry> {
   @override
   void initState() {
     super.initState();
-    printCRSDetails();
   }
 
+  @override
   Widget build(BuildContext context) {
     List<Widget> socialInquiryWidgets = [
       PersonalInformationWidget(
-        childDetails: widget.crsDetails.about.initialDetails,
+        childDetails: widget.crsDetails.about!.initialDetails,
       ),
       FamilyBackgroundWidget(
-        caseDetails: widget.crsDetails.caseReporting,
+        caseDetails: widget.crsDetails.caseReporting!,
       ),
       ChildCaseHistoryWidget(
         caseHistoryController: caseHistoryController,
