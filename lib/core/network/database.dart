@@ -10,9 +10,11 @@ class LocalDB {
   static Database? _database;
   static const String _databaseName = 'cpims_dcs_mobile.db';
 
+  static final LocalDB instance = LocalDB._init();
+
   LocalDB._init();
 
-  Future<Database> _initDB(String filePath) async{
+  Future<Database> _initDB(String filePath) async {
     try {
       final dbPath = await getDatabasesPath();
       final path = join(dbPath, filePath);
@@ -28,7 +30,7 @@ class LocalDB {
           }
         },
       );
-    } catch(err) {
+    } catch (err) {
       throw "Could Not Create Instance of DB";
     }
   }
@@ -43,7 +45,6 @@ class LocalDB {
     Database db = await _initDB(_databaseName);
     return db;
   }
-
 
   Future<void> _initialise(Database db, int version) async {
     await db.execute('''
@@ -294,5 +295,66 @@ class LocalDB {
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
+
+    // Creating registry tables
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryIdentificationTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      birthRegistrationNumber TEXT,
+      givenName TEXT,
+      countryOfOrigin TEXT,
+      tribe TEXT,
+      religion TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryContactTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      designatedPhoneNumber TEXT,
+      otherMobileNumber TEXT,
+      emailAddress TEXT,
+      physicalLocation TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryLocationTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      county TEXT,
+      subCounty TEXT,
+      ward TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryCaregiverTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      relationship TEXT,
+      contactNumber TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registrySiblingTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      age INTEGER,
+      gender TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryCboChvTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cboParentUnit TEXT,
+      ovcProgramEnrollment TEXT,
+      chv TEXT
+    )
+    ''');
   }
 }
+
+var localdb = LocalDB._init();

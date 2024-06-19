@@ -14,11 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await httpClient.initialize();
   await preferences.initialize();
+  await localdb.database;
   runApp(const MyApp());
 }
 
