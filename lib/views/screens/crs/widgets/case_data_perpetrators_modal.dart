@@ -46,7 +46,7 @@ class _CaseDataMorePerpetratorsModalState
           CustomDropdown(
               initialValue: relationship,
               items: relationshipToChildOptions,
-              onChanged: (String value) {
+              onChanged: (value) {
                 setState(() {
                   relationship = value;
                 });
@@ -57,7 +57,7 @@ class _CaseDataMorePerpetratorsModalState
           CustomDropdown(
             initialValue: additionalRelationship,
             items: additionalRelationshipToChildOptions,
-            onChanged: (String value) {
+            onChanged: (value) {
               setState(() {
                 additionalRelationship = value;
               });
@@ -75,7 +75,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomTextField(
             hintText: "First Name",
-            onChanged: (String value) {
+            onChanged: (value) {
               setState(() {
                 firstName = value;
               });
@@ -86,7 +86,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomTextField(
             hintText: "Last Name",
-            onChanged: (String value) {
+            onChanged: (value) {
               setState(() {
                 lastName = value;
               });
@@ -97,7 +97,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomTextField(
             hintText: "Other Name(s)",
-            onChanged: (String value) {
+            onChanged: (value) {
               setState(() {
                 otherNames = value;
               });

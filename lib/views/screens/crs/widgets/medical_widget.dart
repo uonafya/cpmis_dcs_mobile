@@ -44,7 +44,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
         CustomDropdown(
             initialValue: mentalCondition,
             items: mentalConditionOptions,
-            onChanged: (String item) {
+            onChanged: (item) {
               setState(() {
                 mentalCondition = item;
               });
@@ -92,7 +92,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
         CustomDropdown(
             initialValue: physicalCondition,
             items: physicalConditionOptions,
-            onChanged: (String item) {
+            onChanged: (item) {
               setState(() {
                 physicalCondition = item;
               });
@@ -138,7 +138,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
         CustomDropdown(
             initialValue: otherCondition,
             items: otherConditionOptions,
-            onChanged: (String item) {
+            onChanged: (item) {
               setState(() {
                 otherCondition = item;
               });

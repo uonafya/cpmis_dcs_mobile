@@ -163,7 +163,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
         CustomDropdown(
           initialValue: houseEconomicStatus,
           items: houseEconomicStatusOptions,
-          onChanged: (String item) {
+          onChanged: (item) {
             setState(() {
               houseEconomicStatus = item;
             });
@@ -199,7 +199,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
         const SizedBox(height: 10),
         CustomTextField(
           hintText: 'Type names + ENTER',
-          onFieldSubmitted: (String value) {
+          onFieldSubmitted: (value) {
             setState(() {
               closeFriends.add(value);
             });
@@ -235,7 +235,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
         const SizedBox(height: 10),
         CustomTextField(
           hintText: 'Type hobby + ENTER',
-          onFieldSubmitted: (String value) {
+          onFieldSubmitted: (value) {
             setState(() {
               hobbies.add(value);
             });
