@@ -47,7 +47,7 @@ const String registryContactTable = "registry_contact";
 const String registryLocationTable = "registry_location";
 const String registryCaregiverTable = "registry_caregiver";
 const String registrySiblingTable = "registry_sibling";
-const String registry_cbo_chvTable = "registry_cbo_chv";
+const String registryCboChvTable = "registry_cbo_chv";
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
 const String forgotPasswordUrl = "https://test.cpims.net/accounts/password-reset/";
