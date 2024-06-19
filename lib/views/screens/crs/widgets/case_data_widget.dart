@@ -2,10 +2,12 @@ import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_categories.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_category_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_referrals.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/compulsary_question.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
@@ -34,6 +36,24 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   String othernames = "";
   String summonsIssued = pleaseSelect;
   late DateTime summonsDate;
+
+  String perpetratorSex = pleaseSelect;
+  late DateTime perpetratorDOB;
+
+  List<CRSCategory> categories = [];
+  void addCategory(CRSCategory item) {
+    categories.add(item);
+    setState(() {
+      categories = categories;
+    });
+  }
+
+  List<Perpetrators> perpetrators = [];
+  void updatePerpetrators(List<Perpetrators> item) {
+    setState(() {
+      perpetrators = item;
+    });
+  }
 
   String referralActor = "";
   void updateReferralActor(value) {
@@ -184,6 +204,48 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                 height: mediumSpacing,
               ),
 
+              const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Sex",
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  )),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CustomDropdown(
+                  initialValue: perpetratorSex,
+                  items: sexOptions,
+                  onChanged: (value) {
+                    setState(() {
+                      perpetratorSex = value;
+                    });
+                  }),
+              const SizedBox(
+                height: mediumSpacing,
+              ),
+
+              const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Date of Birth",
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  )),
+              const SizedBox(
+                height: smallSpacing,
+              ),
+              CustomDatePicker(
+                  firstDate: DateTime(1950),
+                  lastDate: DateTime.now(),
+                  onChanged: (DateTime time) {
+                    setState(() {
+                      perpetratorDOB = time;
+                    });
+                  }),
+              const SizedBox(
+                height: mediumSpacing,
+              ),
+
               // Perpertrators modal
               Row(
                 children: [
@@ -191,25 +253,42 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     "Perpetrators",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextButton(
-                      onPressed: () {
+                  const SizedBox(
+                    width: smallSpacing,
+                  ),
+                  CustomButton(
+                      onTap: () {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const CaseDataMorePerpetratorsModal();
+                              return CaseDataMorePerpetratorsModal(
+                                perpetrators: perpetrators,
+                                updatePerpetrators: updatePerpetrators,
+                              );
                             });
                       },
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.add),
+                          Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
                           SizedBox(
                             width: 5.0,
                           ),
-                          Text("More")
+                          Text(
+                            "More",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
                         ],
                       ))
                 ],
+              ),
+              const SizedBox(
+                height: mediumSpacing,
               )
             ],
           ),
@@ -227,7 +306,26 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             style: TextStyle(color: Colors.red),
           ),
 
-        const CaseCategoriesWidget(),
+        CaseCategoriesWidget(
+          addCategory: addCategory,
+        ),
+
+        // Display filled categories
+        Column(
+          children: [
+            for (var i = 0; i < categories.length; i++)
+              CaseDataCategoryItem(
+                index: i,
+                removeItem: (int index) {
+                  categories.removeAt(index);
+                  setState(() {
+                    categories = categories;
+                  });
+                },
+                data: categories[i],
+              )
+          ],
+        ),
 
         const SizedBox(
           height: mediumSpacing,

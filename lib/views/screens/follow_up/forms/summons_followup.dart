@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/summons_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -25,6 +26,48 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
   String? dateOfVisit;
   final formKey = GlobalKey<FormState>();
 
+  void handleAddService() async {
+    // TODO: Fix redirection issue
+    // caseID captured from elsewhere
+    String? caseId = "SomeCaseId";
+
+    if (dateOfVisit == null) {
+      Get.snackbar("Error", "Please fill in the date of visit.");
+      return;
+    }
+
+    if (summonHonored == "Please select") {
+      Get.snackbar("Error", "Please select a summon.");
+      return;
+    }
+
+    // Model instance
+    CourtSummonsModel newSummonsModel = CourtSummonsModel(
+      honoured: summonHonored == "Yes" ? "true" : "false",
+      honouredDate: dateOfVisit,
+      summonDate: DateFormat("dd/MM/yyyy")
+          .format(DateTime.now()), // Assuming the summon date is today
+      summonNote: notes.text,
+      caseId: caseId,
+    );
+
+    print(newSummonsModel.toJson());
+    Get.snackbar("Error", "Please fill all the fields correctly");
+
+    try {
+      // Placeholder for sending data to backend
+      print("Here1");
+
+      Get.snackbar("Success",
+          "Summons added successfully, you can go back to the previous page");
+      Get.back();
+
+      print("Here2");
+    } catch (e) {
+      Get.snackbar("Error", "Please fill all the fields correctly");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +94,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 14,
             ),
-            const Text("Date of Visit"),
+            const Text("Date of Visit *"),
             const SizedBox(
               height: 6,
             ),
@@ -64,7 +107,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 14,
             ),
-            const Text("Summon Honored?"),
+            const Text("Summon Honored? *"),
             const SizedBox(
               height: 6,
             ),
@@ -79,11 +122,12 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 14,
             ),
-            const Text("Notes"),
+            const Text("Notes *"),
             const SizedBox(
               height: 6,
             ),
             CustomTextField(
+              maxLines: 5,
               hintText: "Notes",
               controller: notes,
             ),
@@ -98,9 +142,5 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
         ),
       ),
     );
-  }
-
-  void handleAddService() {
-    Get.back();
   }
 }

@@ -1,9 +1,10 @@
+import 'package:cpims_dcs_mobile/models/registry/registry_sibling_model.dart';
 import 'package:flutter/material.dart';
 
 
 class SelectedRegistrySiblingCard extends StatefulWidget {
-  const SelectedRegistrySiblingCard({super.key});
-
+  const SelectedRegistrySiblingCard({super.key, required this.sibling});
+  final RegistrySiblingModel sibling;
   @override
   State<SelectedRegistrySiblingCard> createState() => _SelectedRegistrySiblingCardState();
 }
@@ -28,23 +29,23 @@ class _SelectedRegistrySiblingCardState extends State<SelectedRegistrySiblingCar
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "BABY KATHAMBI",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      ("${widget.sibling.firstName} ${widget.sibling.surName}").toUpperCase(),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      "ID: 9886",
+                    const Text(
+                      "ID: XXXXXX",
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Male"),
-                    Text("02-02-2004"),
+                    Text(widget.sibling.sex),
+                    Text(widget.sibling.dateOfBirth?.toString() ?? "Uknown"),
                   ],
                 ),
                 const SizedBox(

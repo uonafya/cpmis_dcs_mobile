@@ -2,12 +2,12 @@ import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-class CaseDataRelationshipItem extends StatelessWidget {
-  final Perpetrators data;
+class CaseDataCategoryItem extends StatelessWidget {
+  final CRSCategory data;
   final int index;
   final Function(int index) removeItem;
 
-  const CaseDataRelationshipItem(
+  const CaseDataCategoryItem(
       {required this.index,
       required this.removeItem,
       required this.data,
@@ -33,11 +33,11 @@ class CaseDataRelationshipItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Relationship",
+                      "Category",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.relationshipType ?? "",
+                      data.category,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -48,13 +48,21 @@ class CaseDataRelationshipItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "First Name",
+                      "Subcategory",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
-                    Text(
-                      data.firstName,
-                      style: const TextStyle(fontSize: 12),
-                    ),
+                    data.subcategory != null && data.subcategory!.isNotEmpty ? 
+                    Column(
+                      children: [
+                        for (var i = 0; i < data.subcategory!.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(data.subcategory![i]),
+                          )
+                      ],
+                    ) :
+                    const Text("None"), 
+                    
                   ],
                 ),
               ),
@@ -70,11 +78,11 @@ class CaseDataRelationshipItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Surname",
+                      "Date of Event",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.lastName,
+                      data.dateOfEvent,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -85,11 +93,11 @@ class CaseDataRelationshipItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Other Names",
+                      "Place of Event",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.othernames ?? "",
+                      data.placeOfEvent,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -97,6 +105,20 @@ class CaseDataRelationshipItem extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: smallSpacing,),
+          Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Case Nature",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    Text(
+                      data.caseNature,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
           const Divider(),
           const SizedBox(
             height: smallSpacing,
@@ -107,7 +129,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
               onPressed: () {
                 removeItem(index);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.red,
               ),
