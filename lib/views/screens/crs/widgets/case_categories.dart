@@ -49,7 +49,7 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
               CustomDropdown(
                   initialValue: caseCategory,
                   items: caseCategoryOptions,
-                  onChanged: (String value) {
+                  onChanged: (value) {
                     setState(() {
                       caseCategory = value;
                     });
@@ -70,7 +70,7 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
               CustomDropdown(
                   initialValue: caseCategory,
                   items: caseCategoryOptions,
-                  onChanged: (String value) {
+                  onChanged: (value) {
                     setState(() {
                       caseCategory = value;
                     });

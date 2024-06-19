@@ -14,7 +14,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.validator,
     this.enabled,
-      this.readOnly = false,
+    this.readOnly = false,
     this.maxLines = 1,
     this.hintText,
     this.onFieldSubmitted,
@@ -42,7 +42,7 @@ class CustomTextField extends StatelessWidget {
           onChanged!(val);
         }
       },
-      onFieldSubmitted: (String value) {
+      onFieldSubmitted: (value) {
         onFieldSubmitted?.call(value);
       },
       validator: validator,
@@ -54,7 +54,8 @@ class CustomTextField extends StatelessWidget {
       textAlignVertical: TextAlignVertical.center,
       maxLines: maxLines,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         labelText: labelText,
         labelStyle: const TextStyle(fontSize: 14),
         hintText: hintText,

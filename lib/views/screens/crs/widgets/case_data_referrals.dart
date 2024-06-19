@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 class CaseDataReferrals extends StatelessWidget {
   final String referralActors;
-  final Function(String) updateReferralActors;
+  final Function(dynamic) updateReferralActors;
   final String specify;
-  final Function(String) updateSpecify;
+  final Function(dynamic) updateSpecify;
   final String reason;
-  final Function(String) updateReason;
+  final Function(dynamic) updateReason;
 
   const CaseDataReferrals(
       {required this.updateReferralActors,
