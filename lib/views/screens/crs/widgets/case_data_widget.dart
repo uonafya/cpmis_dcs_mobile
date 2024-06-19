@@ -36,21 +36,21 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   late DateTime summonsDate;
 
   String referralActor = "";
-  void updateReferralActor(String value) {
+  void updateReferralActor(value) {
     setState(() {
       referralActor = value;
     });
   }
 
   String specify = "";
-  void updateSpecify(String value) {
+  void updateSpecify(value) {
     setState(() {
       specify = value;
     });
   }
 
   String reason = "";
-  void updateReason(String value) {
+  void updateReason(value) {
     setState(() {
       reason = value;
     });
@@ -92,7 +92,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
         CustomDropdown(
             initialValue: selectedPerpetrator,
             items: perpetratorOptions,
-            onChanged: (String value) {
+            onChanged: (value) {
               setState(() {
                 selectedPerpetrator = value;
               });
@@ -115,7 +115,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               CustomDropdown(
                   initialValue: relationshipToChild,
                   items: relationshipToChildOptions,
-                  onChanged: (String value) {
+                  onChanged: (value) {
                     setState(() {
                       relationshipToChild = value;
                     });
@@ -134,7 +134,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               ),
               CustomTextField(
                 hintText: "First name",
-                onChanged: (String value) {
+                onChanged: (value) {
                   setState(() {
                     firstName = value;
                   });
@@ -153,7 +153,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               ),
               CustomTextField(
                 hintText: "Surname",
-                onChanged: (String value) {
+                onChanged: (value) {
                   setState(() {
                     surname = value;
                   });
@@ -174,7 +174,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               ),
               CustomTextField(
                 hintText: "Middle Name",
-                onChanged: (String value) {
+                onChanged: (value) {
                   setState(() {
                     othernames = value;
                   });
@@ -241,7 +241,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
         CustomDropdown(
             initialValue: pleaseSelect,
             items: lowMedHighList,
-            onChanged: (String val) {
+            onChanged: (val) {
               setState(() {
                 riskLevel = val;
               });
@@ -259,7 +259,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
         CustomDropdown(
             initialValue: pleaseSelect,
             items: yesNoList,
-            onChanged: (String val) {
+            onChanged: (val) {
               setState(() {
                 referralsPresent = val;
               });
@@ -277,7 +277,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
         CustomDropdown(
             initialValue: summonsIssued,
             items: yesNoList,
-            onChanged: (String val) {
+            onChanged: (val) {
               setState(() {
                 summonsIssued = val;
               });

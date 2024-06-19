@@ -40,6 +40,11 @@ const String crsFormSubCategoriesTable = "crsFormSubcategories";
 const String crsReferralsTable = "crsReferrals";
 const String crsImmediateTable = "crsImmediate";
 const String crsFutureNeedsTable = "crsFutureNeeds";
+const String caseLoadTable = "caseLoad";
+const String caregiverCaseLoadTable = "caregiverCaseLoad";
+const String siblingsCaseLoadTable = "siblingsCaseLoad";
+const String perpetratorCaseLoadTable = "perpetratorCaseLoad";
+const String caseLoadCategoryTable = "caseLoadCategory";
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
 const String forgotPasswordUrl =

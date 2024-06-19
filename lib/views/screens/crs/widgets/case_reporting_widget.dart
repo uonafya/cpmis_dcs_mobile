@@ -47,7 +47,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         CustomDropdown(
           initialValue: caseReporter,
           items: caseReporterOptions,
-          onChanged: (String item) {
+          onChanged: (item) {
             setState(() {
               caseReporter = item;
             });
@@ -215,7 +215,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   CustomDropdown(
                     initialValue: selectedCounty,
                     items: countiesOptions,
-                    onChanged: (String item) {
+                    onChanged: (item) {
                       setState(() {
                         selectedCounty = item;
                       });
@@ -227,7 +227,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   CustomDropdown(
                     initialValue: selectedSubCounty,
                     items: subcountiesOptions,
-                    onChanged: (String item) {
+                    onChanged: (item) {
                       setState(() {
                         selectedCounty = item;
                       });
@@ -241,7 +241,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   CustomDropdown(
                     initialValue: selectedSubCounty,
                     items: subcountiesOptions,
-                    onChanged: (String item) {
+                    onChanged: (item) {
                       setState(() {
                         selectedCounty = item;
                       });
@@ -253,7 +253,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   CustomDropdown(
                     initialValue: selectedSubCounty,
                     items: subcountiesOptions,
-                    onChanged: (String item) {
+                    onChanged: (item) {
                       setState(() {
                         selectedCounty = item;
                       });
@@ -270,7 +270,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   CustomDropdown(
                     initialValue: selectedCounty,
                     items: countiesOptions,
-                    onChanged: (String item) {
+                    onChanged: (item) {
                       setState(() {
                         selectedCounty = item;
                       });
@@ -301,7 +301,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         CustomDropdown(
           initialValue: selectedCounty,
           items: countiesOptions,
-          onChanged: (String item) {
+          onChanged: (item) {
             setState(() {
               selectedCounty = item;
             });
@@ -313,7 +313,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         CustomDropdown(
           initialValue: selectedCounty,
           items: countiesOptions,
-          onChanged: (String item) {
+          onChanged: (item) {
             setState(() {
               selectedCounty = item;
             });

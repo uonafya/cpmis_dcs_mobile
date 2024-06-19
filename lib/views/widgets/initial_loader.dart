@@ -1,6 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
-import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ class InitialLoaderScreen extends StatefulWidget {
 }
 
 class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
+  final ApiService apiService = ApiService();
   @override
   void initState() {
     super.initState();
@@ -38,13 +38,8 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
             // if authenticated, navigate to homepage
             // else navigate to login screen
 
-            // fetch caseload data
-            final List<CaseLoadModel> caseloadData =
-                await ApiService().fetchCaseLoad(deviceID);
-
-            if (kDebugMode) {
-              print('OVCID: ${caseloadData.first.ovcCpimsId}');
-            }
+            // fetch and insert caseload data to local db
+            await apiService.fetchAndInsertCaseload(deviceID: deviceID);
           } else {
             // show dialog to user
             // to enable internet connection
