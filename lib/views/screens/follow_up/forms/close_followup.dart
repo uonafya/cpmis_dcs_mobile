@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -30,6 +31,54 @@ class _CourtFollowUpState extends State<CloseFollowup> {
   final courtNotes = TextEditingController();
   List<dynamic> selectedServices = [];
   String? dateOfService;
+
+  void handleAddService() async {
+    // caseID captured from elsewhere
+    String? caseId = "SomeCaseId";
+
+    if (courtSessionType == "Please select") {
+      Get.snackbar("Error", "Please select a court session type.");
+      return;
+    }
+
+    if (dateOfService == null) {
+      Get.snackbar("Error", "Please fill in the date of service.");
+      return;
+    }
+
+    // InterventionList instance
+    List<InterventionList> interventionList = [
+      InterventionList(
+        intervention: courtSessionType,
+        caseCategory: caseCategory == "Please select" ? null : caseCategory,
+      ),
+    ];
+
+    // Create model instance
+    ClosureFollowupModel closureFollowupModel = ClosureFollowupModel(
+      caseId: caseId,
+      caseOutcome: courtSessionType,
+      dateOfCaseClosure: dateOfService,
+      caseClosureNotes: courtNotes.text,
+      interventionList: interventionList,
+    );
+
+    print(closureFollowupModel.toJson());
+
+    // Convert model to JSON
+    Map<String, dynamic> dataToSend = closureFollowupModel.toJson();
+
+    try {
+      // Placeholder for sending data to backend
+      // final response = await YourService.sendClosureFollowup(dataToSend);
+
+      Get.back(); // Navigate back
+      Get.snackbar("Success", "Case closure saved successfully.");
+    } catch (e) {
+      // Handle error
+      Get.snackbar("Error", "Failed to save case closure.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +161,5 @@ class _CourtFollowUpState extends State<CloseFollowup> {
         ],
       ),
     );
-  }
-
-  void handleAddService() {
-    Get.back();
   }
 }
