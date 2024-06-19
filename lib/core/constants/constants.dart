@@ -42,6 +42,8 @@ const String crsReferralsTable = "crsReferrals";
 const String crsImmediateTable = "crsImmediate";
 const String crsFutureNeedsTable = "crsFutureNeeds";
 
+const String registryFormDetails = "registry_form_details";
+const String registrtPersonalDetails = "registry_personal_details";
 const String registryIdentificationTable = "registry_identification";
 const String registryContactTable = "registry_contact";
 const String registryLocationTable = "registry_location";
