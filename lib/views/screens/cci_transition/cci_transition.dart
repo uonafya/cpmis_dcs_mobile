@@ -291,7 +291,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: "Select Disability",
                                 items: cciDisability,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues["cci_serves_disabled"] =
                                         item;
@@ -435,7 +435,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['cci_started_transiton'],
                                 items: yesNoOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     // selectedQuestion = item;
                                     selectedValues['cci_started_transiton'] =
@@ -451,7 +451,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['reason_basis_transition'],
                                 items: cciAwareOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "reason_basis_transition", () => item);
@@ -466,7 +466,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['legal_framework_strategy'],
                                 items: cciAwareOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "legal_framework_strategy", () => item);
@@ -480,7 +480,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['stakeholder_engagement'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "stakeholder_engagement", () => item);
@@ -493,7 +493,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['making_decision'],
                                 items: cciDecisionOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "making_decision", () => item);
@@ -517,7 +517,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['assessment'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues['assessment'] = item;
                                   });
@@ -530,7 +530,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['strategic_planning'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "strategic_planning", () => item);
@@ -543,7 +543,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['org_planning'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "org_planning", () => item);
@@ -557,7 +557,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['program_planning'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "program_planning", () => item);
@@ -571,7 +571,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['transiton_planning'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "transiton_planning", () => item);
@@ -637,7 +637,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['monitoring_eval'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "monitoring_eval", () => item);
@@ -652,7 +652,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['program_transition_to'],
                                 items: cciProgramsOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "program_transition_to", () => item);
@@ -676,7 +676,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['survival_rights'],
                                 items: cciSurvivalRightsOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "survival_rights", () => item);
@@ -689,7 +689,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                                 initialValue: selectedValues['dev_rights'],
                                 items: cciDevRightsOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "dev_rights", () => item);
@@ -703,7 +703,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['protection_rights'],
                                 items: cciProtectRightsOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "protection_rights", () => item);
@@ -714,10 +714,9 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Participation rights"),
                             CustomDropdown(
-                                initialValue:
-                                    selectedValues['participate_rights'],
+                                initialValue: selectedQuestion,
                                 items: cciParticipateRightsOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "participate_rights", () => item);

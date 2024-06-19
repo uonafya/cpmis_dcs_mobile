@@ -25,7 +25,7 @@ class SiblingsModel {
       "date_linked": dateLinked ?? '',
       "date_delinked": dateDelinked ?? '',
       "remarks": remarks ?? '',
-      "is_void": isVoid ?? false,
+      "is_void": (isVoid ?? false) ? 1 : 0,
     };
   }
 
