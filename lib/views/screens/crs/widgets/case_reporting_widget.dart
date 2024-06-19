@@ -412,6 +412,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           const SizedBox(height: 10),
           CustomFormsDatePicker(
             hintText: 'Date of Case Opening',
+            lastDate: DateTime.now(),
             onDateSelected: (DateTime selectedDate) {
               var update = model.caseReport;
               update.dateCaseReported = selectedDate;

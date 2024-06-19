@@ -154,12 +154,14 @@ class CRSCategory {
       required this.caseNature});
 
   Map<String, dynamic> toJSON() {
-    return {
+    var json = {
       "case_category": category,
       "date_of_event": dateOfEvent,
       "place_of_event": placeOfEvent,
       "case_nature": caseNature
     };
+    json['case_subcategories'] = subcategory.toString();
+    return json;
   }
 }
 
@@ -189,6 +191,23 @@ class Perpetrators {
       this.sex,
       this.dateOfBirth,
       this.age});
+
+  Map<String, dynamic> toJSON() {
+    var json =  {
+      "relationship_to_child": relationshipType,
+      "first_name": firstName,
+      "surname": lastName,
+      "other_names": othernames
+    };
+
+    if (dateOfBirth != null) {
+      json['date_of_birth'] = dateOfBirth!.toIso8601String();
+    }
+    if(sex != null) {
+      json['sex'] = sex;
+    }
+    return json;
+  }
 }
 
 class CRSReferral {
@@ -198,6 +217,14 @@ class CRSReferral {
 
   CRSReferral(
       {required this.actor, required this.reason, required this.specify});
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "actor": actor,
+      "specify": specify,
+      "reason": reason
+    };
+  }
 }
 
 class CaseDataCRSFormModel {
@@ -281,77 +308,84 @@ class CRSForm {
       jsonToReturn['reporter_othernumber'] = caseReporting?.reporterOtherName;
     }
 
-    jsonToReturn["court_file_number"] = caseReporting?.courtFileNumber;
-    jsonToReturn["case_reporter"] = caseReporting?.originator;
-    jsonToReturn["case_reporter"] = caseReporting?.originator;
-    jsonToReturn["case_reporter"] = caseReporting?.originator;
-    jsonToReturn["case_reporter"] = caseReporting?.originator;
+    if(caseReporting?.placeOfOccurence == true) {
+      jsonToReturn['country'] = "Kenya";
+      jsonToReturn['county'] = caseReporting?.county;
+      jsonToReturn['sub_county'] = caseReporting?.subCounty;
+
+      if(caseReporting?.ward != null) {
+        jsonToReturn['ward'] = caseReporting?.ward;
+      }
+
+      if(caseReporting?.village != null) {
+        jsonToReturn['village'] = caseReporting?.village;
+      }
+
+      if(caseReporting?.location != null) {
+        jsonToReturn['location'] = caseReporting?.location;
+      }
+
+      if(caseReporting?.subLocation != null) {
+        jsonToReturn['sub_location'] = caseReporting?.subLocation;
+      }
+
+    } else {
+      jsonToReturn['country'] = caseReporting?.country;
+      jsonToReturn['city'] = caseReporting?.city;
+    }
+
+    jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
+    jsonToReturn['reporting_orgunit'] = caseReporting?.reportingOrganizationalUnit;
+    jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
+
+    jsonToReturn['child'] = {};
+    jsonToReturn['siblings'] = [];
+    jsonToReturn['caregivers'] = [];
+    jsonToReturn['house_economic_status'] = about?.houseEconomicStatus;
+    jsonToReturn['family_status'] = about?.familyStatus;
+
+    if(about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
+      jsonToReturn['close_friends'] = about?.closeFriends;
+    }
+
+    if(about?.hobbies != null && about!.hobbies!.isNotEmpty) {
+      jsonToReturn['hobbies'] = about?.hobbies;
+    }
+
+    jsonToReturn['medical_condition'] = medical?.mentalConditionStatus;
+    if (medical?.mentalConditionStatus == "verified") {
+      jsonToReturn['medical_conditions'] = medical?.mentalCondition;
+    }
+    jsonToReturn['physical_condition'] = medical?.physicalCondition;
+    if (medical?.physicalConditionStatus == "verified") {
+      jsonToReturn['physical_conditions'] = medical?.physicalCondition;
+    }
+    jsonToReturn['other_condition'] = medical?.otherConditionStatus;
+    if (medical?.otherConditionStatus == "verified") {
+      jsonToReturn['other_conditions'] = medical?.otherCondition;
+    }
+
+    jsonToReturn['case_serial_number'] = caseData?.serialNumber;
+    jsonToReturn['offender_known'] = caseData?.offenderKnown;
+
+    if(caseData?.offenderKnown == "Known") {
+      jsonToReturn['perpetrators'] = caseData?.perpetrators.map((e) => e.toJSON).toList();
+    }
+
+    jsonToReturn['case_categories'] = caseData?.crsCategories.map((e) => e.toJSON()).toList();
+    jsonToReturn['risk_level'] = caseData?.riskLevel;
+
+    if (caseData?.referralsPresent == true) {
+      jsonToReturn['referrals'] = caseData?.referrals?.map((e) => e.toJSON()).toList();
+    }
+
+    if (caseData?.summonsIssued == true) {
+      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon;
+    }
+
+    jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;
+    jsonToReturn['future_needs'] = caseData?.futureNeeds;
 
     return jsonToReturn;
-
-    // return {
-    //   "siblings": siblingJSON,
-    //   "physical_condition": medical?.physicalConditionStatus,
-    //   "county": caseReporting?.county,
-    //   "hh_economic_status": about?.houseEconomicStatus,
-    //   "case_id": caseID,
-    //   "school_admission_class": "ACPR",
-    //   "other_condition": medical?.otherConditionStatus,
-    //   "child_sex": about?.initialDetails.sex,
-    //   "reporter_first_name": caseReporting?.reporterFirstName,
-    //   "ob_number": caseReporting?.obNumber,
-    //   "longitude": "34.750397",
-    //   "recommendation_bic":
-    //       "The matter was referred to SCCO for further interventions and directives ",
-    //   "family_status": about?.familyStatus ?? [],
-    //   "reporter_other_names": caseReporting?.reporterOtherName,
-    //   "case_date": caseReporting?.dateCaseReported,
-    //   "organization_unit": caseReporting?.reportingOrganizationalUnit,
-    //   "case_reporter": "CRON",
-    //   "child_in_school": "AYES",
-    //   "tribe": "TRLO",
-    //   "sublocation": caseReporting?.subLocation,
-    //   "parents": [
-    //     {
-    //       "alive": "AYES",
-    //       "phone": "0735542250",
-    //       "surname": "Omondi",
-    //       "village": "Kondele",
-    //       "first_name": "Bildad"
-    //     },
-    //     {
-    //       "national_id": "34321589",
-    //       "phone": "0758483272/0792488479",
-    //       "surname": "Opiyo",
-    //       "first_name": "Emma"
-    //     }
-    //   ],
-    //   "child_surname": about?.initialDetails.surname,
-    //   "case_village": "Kondele ",
-    //   "latitude": "-0.109161",
-    //   "child_first_name": about?.initialDetails.firstName,
-    //   "reporter_telephone": caseReporting?.reporterPhoneNumber,
-    //   "court_number": caseReporting?.courtFileNumber,
-    //   "child_dob": about?.initialDetails.dateOfBirth,
-    //   "perpetrator_status": caseData?.offenderKnown,
-    //   "reporter_surname": caseReporting?.reporterLastName,
-    //   "case_narration":
-    //       "The subject has been engaged in criminal activities; pick pocketing,bhang smoking and gangster ", // Add to bottom of fomr
-    //   "court_name": caseReporting?.courtName,
-    //   "case_landmark": "Lakebreeze",
-    //   "future_needs": "LSES,LSHV,LSRH,LSPS", // Future needs
-    //   "immediate_needs": caseData?.immediateNeeds,
-    //   "mental_condition": medical?.mentalConditionStatus,
-    //   "school_name": "Kosawo Primary school ",
-    //   "police_station": caseReporting?.policeStation,
-    //   "risk_level": caseData?.riskLevel,
-    //   "case_details": caseCategories,
-    //   "constituency": caseReporting?.reportingSubCounty,
-    //   "reporter_email": null,
-    //   "primary_class_level": "CLS3",
-    //   "location": caseReporting?.location,
-    //   "has_birth_cert": "AYES",
-    //   "user": "catieno"
-    // };
   }
 }
