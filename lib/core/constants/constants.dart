@@ -19,4 +19,5 @@ const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 enum RadioButtonOptions { yes, no, na }
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
-const String forgotPasswordUrl = "https://test.cpims.net/accounts/password-reset/";
+const String forgotPasswordUrl =
+    "https://test.cpims.net/accounts/password-reset/";

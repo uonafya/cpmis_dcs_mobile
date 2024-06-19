@@ -21,7 +21,7 @@ class _CCIState extends State<CCI> {
   String registrationType = 'Please Select';
   String selectedQuestion = pleaseSelect;
   List<String> genders = [];
-  Map<String, dynamic> selectedValues = {};
+  Map<String, dynamic> selectedValues = {"cci_registered": false};
 
   @override
   Widget build(BuildContext context) {
@@ -84,11 +84,10 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Is it registered with NCCS ?"),
                             Checkbox(
-                                value: false,
+                                value: selectedValues['cci_registered'],
                                 onChanged: (val) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "cci_registered", () => val);
+                                    selectedValues['cci_registered'] = val;
                                   });
                                 }),
                             const SizedBox(

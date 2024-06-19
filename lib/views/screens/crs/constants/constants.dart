@@ -263,11 +263,8 @@ const gender = [
   ValueItem<String>(label: "Intersex", value: "Intersex"),
 ];
 
-
-
-
-
 // end of variables for CCI Transition tools
+
 List<String> childClass = [
   "Please Select",
   "NOT IN SCHOOL",
