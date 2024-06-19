@@ -5,6 +5,64 @@ import 'package:cpims_dcs_mobile/models/registry/registry_identification_details
 import 'package:cpims_dcs_mobile/models/registry/registry_location_model.dart';
 import 'package:cpims_dcs_mobile/models/registry/registry_sibling_model.dart';
 
+class RegistryPersonalDetailsModel {
+  String personType;
+  bool? isCaregiver;
+  bool childOVCProgram;
+  String firstName;
+  String surname;
+  String? otherNames;
+  String sex;
+  DateTime dateOfBirth;
+  String workforceIdName;
+  String datePaperFormFilled;
+
+  RegistryPersonalDetailsModel({
+    required this.personType,
+    this.isCaregiver,
+    required this.childOVCProgram,
+    required this.firstName,
+    required this.surname,
+    this.otherNames,
+    required this.sex,
+    required this.dateOfBirth,
+    required this.workforceIdName,
+    required this.datePaperFormFilled,
+  });
+
+  // Converts a RegisterNewChildModel instance to a map for JSON encoding
+  Map<String, dynamic> toJson() {
+    return {
+      'personType': personType,
+      'isCaregiver': isCaregiver,
+      'providesServicesToChildren': childOVCProgram,
+      'firstName': firstName,
+      'surname': surname,
+      'otherNames': otherNames,
+      'sex': sex,
+      'dateOfBirth': dateOfBirth,
+      'workforceIdName': workforceIdName,
+      'datePaperFormFilled': datePaperFormFilled,
+    };
+  }
+
+  // Creates a RegisterNewChildModel instance from a map (e.g., decoded JSON)
+  factory RegistryPersonalDetailsModel.fromJson(Map<String, dynamic> json) {
+    return RegistryPersonalDetailsModel(
+      personType: json['personType'],
+      isCaregiver: json['isCaregiver'],
+      childOVCProgram: json['providesServicesToChildren'],
+      firstName: json['firstName'],
+      surname: json['surname'],
+      otherNames: json['otherNames'],
+      sex: json['sex'],
+      dateOfBirth: json['dateOfBirth'],
+      workforceIdName: json['workforceIdName'],
+      datePaperFormFilled: json['datePaperFormFilled'],
+    );
+  }
+}
+
 class RegisterNewChildModel {
   String personType;
   bool? isCaregiver;

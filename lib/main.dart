@@ -3,6 +3,7 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/registry_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/theme.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
       ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ChangeNotifierProvider(create: (_) => CRSFormProvider())
+      ChangeNotifierProvider(create: (_) => CRSFormProvider()),
+      ChangeNotifierProvider(create: (_) => RegistryProvider())
     ], child: const CPIMS());
   }
 }

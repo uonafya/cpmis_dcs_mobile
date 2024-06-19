@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../controller/registry_provider.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../widgets/subform_wrapper.dart';
 
@@ -15,34 +17,62 @@ class _RegistryContactDetailsSubformState
     extends State<RegistryContactDetailsSubform> {
   @override
   Widget build(BuildContext context) {
-    return const SubformWrapper(
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
+    return SubformWrapper(
       title: "Contact Information",
       children: [
-        SizedBox(height: 10),
-        Text(
+        const SizedBox(height: 10),
+        const Text(
           'Designated Mobile Number *',
         ),
-        SizedBox(height: 6),
-        CustomTextField(hintText: '07xxxxxxxx'),
-        SizedBox(height: 15),
-        Text(
+        const SizedBox(height: 6),
+        CustomTextField(
+          hintText: '07xxxxxxxx',
+          initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
+          onChanged: (value) {
+            registryProvider.setDesignatedPhoneNumber(value);
+          },
+        ),
+        const SizedBox(height: 15),
+        const Text(
           'Other Mobile Number',
           style: TextStyle(color: Colors.black),
         ),
-        SizedBox(height: 6),
-        CustomTextField(hintText: '07xxxxxxxx'),
-        SizedBox(height: 15),
-        Text(
+        const SizedBox(height: 6),
+        CustomTextField(
+          hintText: '07xxxxxxxx',
+          initialValue: registryProvider.registryContactDetailsModel.otherMobileNumber,
+          onChanged: (value) {
+            registryProvider.setOtherMobileNumber(value);
+          },
+        ),
+        const SizedBox(height: 15),
+        const Text(
           'Email Address',
           style: TextStyle(color: Colors.black),
         ),
-        SizedBox(height: 6),
-        CustomTextField(hintText: 'Email Address'),
-        SizedBox(height: 15),
-        Text('Physical Location', style: TextStyle(color: Colors.black)),
-        SizedBox(height: 6),
-        CustomTextField(hintText: '', maxLines: 4),
-        SizedBox(
+        const SizedBox(height: 6),
+        CustomTextField(
+          hintText: 'Email Address',
+          initialValue: registryProvider.registryContactDetailsModel.emailAddress,
+          onChanged: (value) {
+            registryProvider.setEmailAddress(value);
+          },
+        ),
+        const SizedBox(height: 15),
+        const Text('Physical Location', style: TextStyle(color: Colors.black)),
+        const SizedBox(height: 6),
+        CustomTextField(
+          hintText: '',
+          maxLines: 4,
+          initialValue: registryProvider.registryContactDetailsModel.physicalLocation,
+          onChanged: (value) {
+            registryProvider.setPhysicalAddress(value);
+          },
+        ),
+        const SizedBox(
           height: 15,
         ),
       ],
