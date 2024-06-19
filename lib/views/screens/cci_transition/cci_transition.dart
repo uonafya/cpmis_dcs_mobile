@@ -45,10 +45,11 @@ class _CCIState extends State<CCI> {
     "program_implement": pleaseSelect,
     "monitoring_eval": pleaseSelect,
     "program_transition_to": pleaseSelect,
-    "survival_rights": pleaseSelect,
-    "dev_rights": pleaseSelect,
-    "protection_rights": pleaseSelect,
-    "participate_rights": pleaseSelect
+    "survival_rights": [pleaseSelect],
+    "dev_rights": [pleaseSelect],
+    "protection_rights": [pleaseSelect],
+    "participate_rights": [pleaseSelect],
+    "sex": [pleaseSelect]
   };
 
   @override
@@ -261,8 +262,9 @@ class _CCIState extends State<CCI> {
                                           'Valid until: (in years) *',
                                           style: TextStyle(color: kTextGrey),
                                         ),
-                                        CustomDatePicker(
-                                            hintText: 'Valid until:',
+                                        CustomTextField(
+                                            hintText:
+                                                'Other Entity Valid until: (in years)',
                                             onChanged: (val) {
                                               setState(() {
                                                 selectedValues.putIfAbsent(
@@ -300,16 +302,16 @@ class _CCIState extends State<CCI> {
                             const SizedBox(
                               height: 10,
                             ),
-                            CustomDropDownMultiSelect(
-                                options: gender,
-                                onOptionSelected: (List<String> value) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "select_geneders_served", () => value);
-                                  });
-                                },
-                                selectionType: SelectionType.multi,
-                                hint: "Select Sex"),
+                            CustomDropdown(
+                              items: cciGenders,
+                              isMultiSelect: true,
+                              initialValue: selectedValues["sex"],
+                              onChanged: (item) {
+                                setState(() {
+                                  selectedValues["sex"] = item;
+                                });
+                              },
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -324,8 +326,8 @@ class _CCIState extends State<CCI> {
                                         selectedValues['child_accom_0_4_yrs'],
                                     onChanged: (val) {
                                       setState(() {
-                                        selectedValues.putIfAbsent(
-                                            "child_accom_0_4_yrs", () => val);
+                                        selectedValues["child_accom_0_4_yrs"] =
+                                            val;
                                       });
                                     }),
                                 const SizedBox(
@@ -361,11 +363,11 @@ class _CCIState extends State<CCI> {
                               children: [
                                 Checkbox(
                                     value:
-                                        selectedValues['child_accom_15_17_yrs'],
+                                        selectedValues['child_accom_10_14_yrs'],
                                     onChanged: (val) {
                                       setState(() {
                                         selectedValues[
-                                            'child_accom_15_17_yrs'] = val;
+                                            'child_accom_10_14_yrs'] = val;
                                       });
                                     }),
                                 const SizedBox(
@@ -437,7 +439,6 @@ class _CCIState extends State<CCI> {
                                 items: yesNoOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    // selectedQuestion = item;
                                     selectedValues['cci_started_transiton'] =
                                         item;
                                   });
@@ -596,7 +597,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['employee_development'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "employee_development", () => item);
@@ -610,7 +611,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['piloting_validation'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "piloting_validation", () => item);
@@ -624,7 +625,7 @@ class _CCIState extends State<CCI> {
                                 initialValue:
                                     selectedValues['program_implement'],
                                 items: cciDoneOptions,
-                                onChanged: (String item) {
+                                onChanged: (item) {
                                   setState(() {
                                     selectedValues.putIfAbsent(
                                         "program_implement", () => item);
@@ -674,6 +675,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Survival rights"),
                             CustomDropdown(
+                                isMultiSelect: true,
                                 initialValue: selectedValues['survival_rights'],
                                 items: cciSurvivalRightsOptions,
                                 onChanged: (item) {
@@ -687,6 +689,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Development rights"),
                             CustomDropdown(
+                                isMultiSelect: true,
                                 initialValue: selectedValues['dev_rights'],
                                 items: cciDevRightsOptions,
                                 onChanged: (item) {
@@ -700,6 +703,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Protection rights"),
                             CustomDropdown(
+                                isMultiSelect: true,
                                 initialValue:
                                     selectedValues['protection_rights'],
                                 items: cciProtectRightsOptions,
@@ -714,7 +718,9 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Participation rights"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                isMultiSelect: true,
+                                initialValue:
+                                    selectedValues['participate_rights'],
                                 items: cciParticipateRightsOptions,
                                 onChanged: (item) {
                                   setState(() {

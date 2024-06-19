@@ -184,6 +184,13 @@ List<String> cciAwareOptions = [
   "Not Aware",
 ];
 
+List<String> cciGenders = [
+  pleaseSelect,
+  "Male",
+  "Female",
+  "Intersex",
+];
+
 List<String> cciDoneOptions = [
   pleaseSelect,
   "Done",
