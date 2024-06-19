@@ -346,7 +346,7 @@ class LocalDB {
     ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registry_cbo_chvTable (
+    CREATE TABLE IF NOT EXISTS $registryCboChvTable (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       cboParentUnit TEXT,
       ovcProgramEnrollment TEXT,
