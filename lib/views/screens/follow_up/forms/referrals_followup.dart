@@ -145,4 +145,6 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
       ),
     );
   }
+
+  void handleAddService() {}
 }
