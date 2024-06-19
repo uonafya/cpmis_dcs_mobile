@@ -12,13 +12,13 @@ class LocalDB {
 
   LocalDB._init();
 
-  Future<Database> _initDB(String filePath) async{
+  Future<Database> _initDB(String filePath) async {
     try {
       final dbPath = await getDatabasesPath();
       final path = join(dbPath, filePath);
       return await openDatabase(
         path,
-        version: 5,
+        version: 6,
         onCreate: _initialise,
         onUpgrade: (db, oldVersion, newVersion) {
           if (oldVersion < newVersion) {
@@ -28,7 +28,7 @@ class LocalDB {
           }
         },
       );
-    } catch(err) {
+    } catch (err) {
       throw "Could Not Create Instance of DB";
     }
   }
@@ -43,7 +43,6 @@ class LocalDB {
     Database db = await _initDB(_databaseName);
     return db;
   }
-
 
   Future<void> _initialise(Database db, int version) async {
     await db.execute('''
@@ -69,7 +68,7 @@ class LocalDB {
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $childTable(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
             othername TEXT,
@@ -139,8 +138,8 @@ class LocalDB {
             reportingSubcountyID INTEGER NOT NULL,
             reportingOrgUnitID INTEGER NOT NULL,          
             dateCaseReported TEXT NOT NULL,
-            childID INTEGER NOT NULL,
-            countryID INTEGER NOT NULL,
+            childID TEXT NOT NULL,
+            countryID INTEGER,
             city TEXT,
             houseEconomic TEXT NOT NULL,
             mentalConditionStatus TEXT NOT NULL,
@@ -250,7 +249,9 @@ class LocalDB {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             categoryID TEXT NOT NULL,
-            condition TEXT NOT NULL,
+            placeOfEvent TEXT NOT NULL,
+            caseNature TEXT NOT NULL,
+            dateOfEvent TEXT NOT NULL,
             FOREIGN KEY(categoryID) REFERENCES categories(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
@@ -294,5 +295,17 @@ class LocalDB {
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFormPerpetrators (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            perpetratorID INT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id),
+            FOREIGN KEY(perpetratorID) REFERENCES $perpetratorTable(id)
+        );
+        ''');
   }
 }
+
+var localdb = LocalDB._init();

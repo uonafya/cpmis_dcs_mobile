@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -11,6 +12,7 @@ class CaseDataReferrals extends StatelessWidget {
   final Function(String) updateSpecify;
   final String reason;
   final Function(String) updateReason;
+  final Function(CRSReferral item) addReferral;
 
   const CaseDataReferrals(
       {required this.updateReferralActors,
@@ -18,6 +20,7 @@ class CaseDataReferrals extends StatelessWidget {
       required this.specify,
       required this.updateSpecify,
       required this.reason,
+      required this.addReferral,
       required this.updateReason,
       super.key});
 
@@ -87,9 +90,11 @@ class CaseDataReferrals extends StatelessWidget {
           ),
           CustomButton(
             onTap: () {
-              debugPrint("Reason");
+              CRSReferral referral = CRSReferral(
+                  actor: referralActors, reason: reason, specify: specify);
+              addReferral(referral);
             },
-            text: "Save",
+            text: "Add",
           ),
           const SizedBox(
             height: mediumSpacing,

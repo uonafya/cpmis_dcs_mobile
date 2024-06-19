@@ -6,10 +6,12 @@ class CustomDropdown extends StatefulWidget {
   final String initialValue;
   final List<String> items;
   final Function(String) onChanged;
+  final String? Function(String?)? validator;
 
   const CustomDropdown(
       {super.key,
       required this.initialValue,
+      this.validator,
       required this.items,
       required this.onChanged});
 
@@ -98,6 +100,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             widget.onChanged(value!);
           },
           selectedItem: widget.initialValue,
+          validator: widget.validator,
         ));
   }
 }

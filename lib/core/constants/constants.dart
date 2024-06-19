@@ -18,7 +18,6 @@ const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 
 enum RadioButtonOptions { yes, no, na }
 
-
 // Database table names
 const String geolocationTable = "geolocations";
 const String usersTable = "users";
@@ -41,7 +40,8 @@ const String crsFormSubCategoriesTable = "crsFormSubcategories";
 const String crsReferralsTable = "crsReferrals";
 const String crsImmediateTable = "crsImmediate";
 const String crsFutureNeedsTable = "crsFutureNeeds";
+const String crsFormPerpetrators = "crsFormPerpetrators";
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
-const String forgotPasswordUrl = "https://test.cpims.net/accounts/password-reset/";
-
+const String forgotPasswordUrl =
+    "https://test.cpims.net/accounts/password-reset/";
