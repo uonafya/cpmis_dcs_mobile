@@ -10,9 +10,11 @@ class LocalDB {
   static Database? _database;
   static const String _databaseName = 'cpims_dcs_mobile.db';
 
+  static final LocalDB instance = LocalDB._init();
+
   LocalDB._init();
 
-  Future<Database> _initDB(String filePath) async{
+  Future<Database> _initDB(String filePath) async {
     try {
       final dbPath = await getDatabasesPath();
       final path = join(dbPath, filePath);
@@ -28,7 +30,7 @@ class LocalDB {
           }
         },
       );
-    } catch(err) {
+    } catch (err) {
       throw "Could Not Create Instance of DB";
     }
   }
@@ -43,7 +45,6 @@ class LocalDB {
     Database db = await _initDB(_databaseName);
     return db;
   }
-
 
   Future<void> _initialise(Database db, int version) async {
     await db.execute('''
@@ -353,7 +354,6 @@ class LocalDB {
       chv TEXT
     )
     ''');
-
   }
 }
 
