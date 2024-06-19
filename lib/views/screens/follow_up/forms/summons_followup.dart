@@ -26,32 +26,44 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
   String? dateOfVisit;
   final formKey = GlobalKey<FormState>();
 
-  void handleAddService() {
-    if (formKey.currentState!.validate()) {
-      // Assuming the dateOfVisit is already in the correct format
-      // caseId available from the follow up
-      String? caseId =
-          "CaseIdHere"; // You need to replace this with actual case ID logic
+  void handleAddService() async {
+    // TODO: Fix redirection issue
+    // caseID captured from elsewhere
+    String? caseId = "SomeCaseId";
 
-      CourtSummonsModel newSummons = CourtSummonsModel(
-        honoured: summonHonored == "Yes" ? "true" : "false",
-        honouredDate: dateOfVisit,
-        summonDate: DateFormat("dd/MM/yyyy")
-            .format(DateTime.now()), // Assuming the summon date is today
-        summonNote: notes.text,
-        caseId: caseId,
-      );
+    if (dateOfVisit == null) {
+      Get.snackbar("Error", "Please fill in the date of visit.");
+      return;
+    }
 
-      // Here you would send `newSummons` to your backend or database
-      // For demonstration, we'll just print it to the console
-      print(newSummons.toJson());
+    if (summonHonored == "Please select") {
+      Get.snackbar("Error", "Please select a summon.");
+      return;
+    }
 
-      // Show a success message or simply navigate back
-      Get.back(); // Navigate back
-      // Optionally, show a success message
-      Get.snackbar("Success", "Summons added successfully");
-    } else {
-      // Show an error message if form is not valid
+    // Model instance
+    CourtSummonsModel newSummonsModel = CourtSummonsModel(
+      honoured: summonHonored == "Yes" ? "true" : "false",
+      honouredDate: dateOfVisit,
+      summonDate: DateFormat("dd/MM/yyyy")
+          .format(DateTime.now()), // Assuming the summon date is today
+      summonNote: notes.text,
+      caseId: caseId,
+    );
+
+    print(newSummonsModel.toJson());
+    Get.snackbar("Error", "Please fill all the fields correctly");
+
+    try {
+      // Placeholder for sending data to backend
+      print("Here1");
+
+      Get.snackbar("Success",
+          "Summons added successfully, you can go back to the previous page");
+      Get.back();
+
+      print("Here2");
+    } catch (e) {
       Get.snackbar("Error", "Please fill all the fields correctly");
     }
   }
@@ -82,7 +94,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 14,
             ),
-            const Text("Date of Visit"),
+            const Text("Date of Visit *"),
             const SizedBox(
               height: 6,
             ),
@@ -91,11 +103,17 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
                 dateOfVisit = DateFormat("dd/MM/yyyy").format(val);
                 setState(() {});
               },
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return "Please select a date";
+                }
+                return null;
+              },
             ),
             const SizedBox(
               height: 14,
             ),
-            const Text("Summon Honored?"),
+            const Text("Summon Honored? *"),
             const SizedBox(
               height: 6,
             ),
@@ -110,7 +128,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 14,
             ),
-            const Text("Notes"),
+            const Text("Notes *"),
             const SizedBox(
               height: 6,
             ),
