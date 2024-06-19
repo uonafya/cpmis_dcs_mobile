@@ -1,9 +1,14 @@
+import 'package:cpims_dcs_mobile/models/registry/registry_sibling_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../controller/registry_provider.dart';
+import '../../../../widgets/custom_button.dart';
 
 class PersonRegistryAttachSiblingModal extends StatefulWidget {
   const PersonRegistryAttachSiblingModal({super.key});
@@ -17,8 +22,19 @@ class _PersonRegistryAttachSiblingModalState
     extends State<PersonRegistryAttachSiblingModal> {
   bool _isChecked = false;
 
+  String firstName = "";
+  String surName = "";
+  String? otherNames;
+  DateTime? dateOfBirth;
+  String sex = "";
+  String currentClass = "";
+  String? remarks;
+
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return Scaffold(
       body: ListView(padding: const EdgeInsets.all(20.0), children: [
         const Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -41,23 +57,52 @@ class _PersonRegistryAttachSiblingModalState
         ),
         const SizedBox(height: 10),
         h2Text("First Name"),
-        const CustomTextField(hintText: 'First Name'),
+        CustomTextField(
+            hintText: 'First Name',
+          onChanged: (value) {
+              setState(() {
+                firstName = value;
+              });
+    },
+        ),
         const SizedBox(height: 15),
         h2Text("Surname"),
-        const CustomTextField(hintText: 'Surname'),
+        CustomTextField(
+            hintText: 'Surname',
+          onChanged: (value) {
+              setState(() {
+                surName = value;
+              });
+    },
+        ),
         const SizedBox(height: 15),
         h2Text("Other Name(s)"),
-        const CustomTextField(hintText: 'Other Names'),
+        CustomTextField(
+            hintText: 'Other Names',
+          onChanged: (value) {
+              setState(() {
+                otherNames = value;
+              });
+    },
+        ),
         const SizedBox(height: 15),
         h2Text("Date of Birth"),
-        const CustomTextField(hintText: 'Date of Birth'),
+        CustomTextField(
+            hintText: 'Date of Birth',
+          onChanged: (value) {
+              setState(() {
+              });
+    },
+        ),
         const SizedBox(height: 15),
         h2Text("Sex"),
         CustomDropdown(
           initialValue: "Please Select",
           items: const ["Please Select", "Male", "Female"],
-          onChanged: (val) {
-            setState(() {});
+          onChanged: (value) {
+            setState(() {
+              sex = value;
+            });
           },
         ),
         const SizedBox(height: 15),
@@ -65,13 +110,47 @@ class _PersonRegistryAttachSiblingModalState
         CustomDropdown(
           initialValue: "Please Select",
           items: childClass,
-          onChanged: (val) {
-            setState(() {});
+          onChanged: (value) {
+            setState(() {
+              currentClass = value;
+            });
           },
         ),
         const SizedBox(height: 15),
         h2Text("Remarks"),
-        const CustomTextField(maxLines: 4)
+        CustomTextField(
+            maxLines: 4,
+          onChanged: (value) {
+              setState(() {
+                remarks = value;
+              });
+          },
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: CustomButton(
+                text: 'Cancel',
+                textColor: Colors.white,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: CustomButton(
+                text: "Submut",
+                textColor: Colors.white,
+                onTap: () {
+                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, currentClass: currentClass);
+                  registryProvider.addSibling(sibling);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
       ]),
     );
   }
