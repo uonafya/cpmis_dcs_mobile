@@ -298,6 +298,44 @@ class LocalDB {
 
     // Creating registry tables
 
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $registryFormDetails (
+        personType TEXT NOT NULL,
+        isCaregiver BOOLEAN,
+        childOVCProgram BOOLEAN NOT NULL,
+        firstName TEXT NOT NULL,
+        surname TEXT NOT NULL,
+        otherNames TEXT,
+        sex TEXT NOT NULL,
+        dateOfBirth TEXT NOT NULL,
+        registryIdentificationModel TEXT NOT NULL,
+        registryContactDetailsModel TEXT NOT NULL,
+        registryLocationModel TEXT NOT NULL,
+        caregivers TEXT NOT NULL,
+        siblings TEXT NOT NULL,
+        registryCboChvModel TEXT NOT NULL,
+        workforceIdName TEXT NOT NULL,
+        datePaperFormFilled TEXT NOT NULL
+      );
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registrtPersonalDetails (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      personType TEXT,
+      isCaregiver BOOLEAN,
+      childOVCProgram BOOLEAN,
+      firstName TEXT,
+      surname TEXT,
+      otherNames TEXT,
+      sex TEXT,
+      dateOfBirth TEXT,
+      workforceIdName TEXT,
+      datePaperFormFilled TEXT
+    )
+    ''');
+
     await db.execute('''
     CREATE TABLE IF NOT EXISTS $registryIdentificationTable (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
