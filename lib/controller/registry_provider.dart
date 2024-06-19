@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -141,6 +142,9 @@ class RegistryProvider extends ChangeNotifier {
     print("]");
     print(_registryLocationModel.toJson());
     print(_registryCboChvModel.toJson());
+
+    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+    RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
   }
 
   //DB instance
@@ -148,6 +152,7 @@ class RegistryProvider extends ChangeNotifier {
     var database = await localdb.database;
 
     // Assuming you have tables for each model in your database
+    var personaldetailsData = await database.query(registrtPersonalDetails);
     var identificationData = await database.query(registryIdentificationTable);
     var contactData = await database.query(registryContactTable);
     var locationData = await database.query(registryLocationTable);
@@ -156,6 +161,9 @@ class RegistryProvider extends ChangeNotifier {
     var cboChvData = await database.query(registryCboChvTable);
 
     // Convert the database data to model instances and assign them to the provider's fields
+    if (personaldetailsData.isNotEmpty){
+      RegistryPersonalDetailsModel.fromJson(personaldetailsData.first);
+    }
     if (identificationData.isNotEmpty) {
       RegistryIdentificationModel.fromJson(identificationData.first);
     }
