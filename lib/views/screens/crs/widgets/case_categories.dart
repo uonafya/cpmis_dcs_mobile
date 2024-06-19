@@ -109,8 +109,8 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
               ),
               CustomDropdown(
                 initialValue: placeOfEvent,
-                items: ['Local'],
-                onChanged: (String item) {
+                items: const ['Local'],
+                onChanged: (item) {
                   setState(() {
                     placeOfEvent = item;
                   });
@@ -130,8 +130,8 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
               ),
               CustomDropdown(
                 initialValue: caseNature,
-                items: ["Ongoing event"],
-                onChanged: (String item) {
+                items: const ["Ongoing event"],
+                onChanged: (item) {
                   setState(() {
                     caseNature = item;
                   });

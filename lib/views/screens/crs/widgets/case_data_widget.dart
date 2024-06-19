@@ -216,7 +216,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               CustomDropdown(
                   initialValue: perpetratorSex,
                   items: sexOptions,
-                  onChanged: (String value) {
+                  onChanged: (value) {
                     setState(() {
                       perpetratorSex = value;
                     });

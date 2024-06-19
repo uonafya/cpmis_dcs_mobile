@@ -148,7 +148,7 @@ class _CaseDataMorePerpetratorsModalState
           CustomDropdown(
               initialValue: sex,
               items: sexOptions,
-              onChanged: (String value) {
+              onChanged: (value) {
                 setState(() {
                   sex = value;
                 });
