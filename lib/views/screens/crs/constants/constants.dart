@@ -251,10 +251,10 @@ List<String> cciParticipateRightsOptions = [
 ];
 
 List<String> cciDisability = [
-  pleaseSelect,
-  "Children with diabilities only",
-  "Children without diabilities only",
-  "Both Children with and without diabilities only",
+  "Select Disabilities",
+  "Children with disabilities only",
+  "Children without disabilities only",
+  "Both Children with and without disabilities only",
 ];
 
 const gender = [

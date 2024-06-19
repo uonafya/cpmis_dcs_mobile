@@ -119,7 +119,7 @@ List<Map<String, dynamic>> esrStepperData = [
     'onTap': () {},
   },
   {
-    'title': 'BENEFITS FROM SOCIAL ASSISTANCE PROGRAMMES',
+    'title': 'Benefits From Social Assistance Programmes',
     'subtitle': 'Name and additional details',
     'onTap': () => {},
   },

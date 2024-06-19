@@ -40,6 +40,7 @@ const String crsFormSubCategoriesTable = "crsFormSubcategories";
 const String crsReferralsTable = "crsReferrals";
 const String crsImmediateTable = "crsImmediate";
 const String crsFutureNeedsTable = "crsFutureNeeds";
+const String cciTransitionTable = "cciTransitionTable";
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
 const String forgotPasswordUrl =
