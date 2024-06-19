@@ -261,7 +261,6 @@ const List<ValueItem<String>> childDefilementOptions = [
   ValueItem<String>(label: "Defilement Offender", value: "offender")
 ];
 
-
 List<String> referralActorOptions = [
   "State",
 ];
@@ -273,3 +272,5 @@ List<String> specifyOptions = [
 List<String> reasonOptions = [
   "State",
 ];
+
+List<String> sexOptions = [pleaseSelect, "Male", "Female", "Other"];
