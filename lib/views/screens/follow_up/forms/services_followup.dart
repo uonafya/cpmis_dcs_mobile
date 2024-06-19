@@ -16,7 +16,7 @@ class ServicesFollowUp extends StatefulWidget {
 }
 
 class _ServicesFollowUpState extends State<ServicesFollowUp> {
-  final caseCategories = ["Please select", "Neglect"];
+  final caseCategories = ["Please select", "Abandoned"];
   String caseCategory = "Please select";
   final services = ["Please select", "Service 1", "Service 2"];
   String service = serviceList[0]["title"]!;
@@ -24,13 +24,19 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   final placeOfServiceController = TextEditingController();
   List<dynamic> selectedServices = [];
   String? dateOfService;
+  final TextEditingController encounterNotesController =
+      TextEditingController();
 
   void handleAddService() {
     // Assuming caseId, encounterNotes, and caseCategoryId are to be captured elsewhere/are static
     String? caseId = "SomeCaseId";
-    String? encounterNotes = "Some notes here";
     String?
         caseCategoryId; // Determine how to capture this, possibly related to caseCategory
+
+    if (caseCategory == "Please select") {
+      Get.snackbar("Error", "Please select case category.");
+      return;
+    }
 
     // Assuming caseCategory maps to caseCategoryId in some way, for simplicity, using caseCategory directly
     caseCategoryId = caseCategory == "Please select" ? null : caseCategory;
@@ -52,13 +58,23 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
     // ServiceFollowupModel instance with captured values
     final serviceFollowup = ServiceFollowupModel(
       caseId: caseId,
-      encounterNotes: encounterNotes,
+      encounterNotes: encounterNotesController.text.isEmpty
+          ? null
+          : encounterNotesController.text,
       caseCategoryId: caseCategoryId,
       serviceProvidedList: serviceProvidedList,
     );
 
     print(serviceFollowup.toJson());
-    Get.back();
+
+    try {
+      // Backend logic
+
+      Get.back();
+      Get.snackbar("Success", "Service added successfully");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to save case closure.");
+    }
   }
 
   @override
@@ -149,6 +165,17 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
               }
               return null;
             },
+          ),
+          const SizedBox(
+            height: 14,
+          ),
+          const Text("Encounter/Service Notes:"),
+          const SizedBox(
+            height: 6,
+          ),
+          CustomTextField(
+            controller: encounterNotesController,
+            maxLines: 5,
           ),
           const SizedBox(
             height: 14,
