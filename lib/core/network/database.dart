@@ -294,5 +294,67 @@ class LocalDB {
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
+
+    // Creating registry tables
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryIdentificationTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      birthRegistrationNumber TEXT,
+      givenName TEXT,
+      countryOfOrigin TEXT,
+      tribe TEXT,
+      religion TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryContactTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      designatedPhoneNumber TEXT,
+      otherMobileNumber TEXT,
+      emailAddress TEXT,
+      physicalLocation TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryLocationTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      county TEXT,
+      subCounty TEXT,
+      ward TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registryCaregiverTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      relationship TEXT,
+      contactNumber TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registrySiblingTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      age INTEGER,
+      gender TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS $registry_cbo_chvTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cboParentUnit TEXT,
+      ovcProgramEnrollment TEXT,
+      chv TEXT
+    )
+    ''');
+
   }
 }
+
+var localdb = LocalDB._init();
