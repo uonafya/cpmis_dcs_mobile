@@ -1,3 +1,6 @@
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants/constants.dart';
 import "package:path/path.dart";
@@ -392,7 +395,279 @@ class LocalDB {
       chv TEXT
     )
     ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
+            ${CaregiversCaseloadTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+            ${CaregiversCaseloadTable.caseID} TEXT NOT NULL,
+            ${CaregiversCaseloadTable.caregiverCpimsId} TEXT NOT NULL,
+            ${CaregiversCaseloadTable.relationshipType} TEXT NOT NULL,
+            ${CaregiversCaseloadTable.guardianPerson} TEXT NOT NULL,
+            ${CaregiversCaseloadTable.dateLinked} TEXT NOT NULL,
+            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
+          );
+       ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $siblingsCaseLoadTable (
+            ${SiblingsCaseLoadTable.id} INTEGER PRIMARY KEY,
+            ${SiblingsCaseLoadTable.caseID} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.childPersonId} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.siblingPersonId} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.dateLinked} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.dateDelinked} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.remarks} TEXT NOT NULL,
+            ${SiblingsCaseLoadTable.isVoid} INTEGER NOT NULL,
+            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
+          );
+       ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $perpetratorCaseLoadTable(
+            ${PerpetratorsCaseloadTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+            ${PerpetratorsCaseloadTable.caseID} TEXT NOT NULL,
+            ${PerpetratorsCaseloadTable.firstName} TEXT NOT NULL,
+            ${PerpetratorsCaseloadTable.surName} TEXT NOT NULL,
+            ${PerpetratorsCaseloadTable.ovcOtherNames} TEXT,
+            ${PerpetratorsCaseloadTable.relationshipType} TEXT,
+            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
+          );
+       ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $caseLoadCategoryTable(
+            ${CaseCategoriesTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+            ${CaseCategoriesTable.caseID} TEXT NOT NULL,
+            ${CaseCategoriesTable.caseCaregory} TEXT NOT NULL,
+            ${CaseCategoriesTable.dateOfEvent} TEXT NOT NULL,
+            ${CaseCategoriesTable.placeOfEvent} TEXT NOT NULL,
+            ${CaseCategoriesTable.caseNature} TEXT,
+            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
+          );
+       ''');
+
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $caseLoadTable (
+            ${CaseLoadTableFields.caseID} TEXT PRIMARY KEY,
+            ${CaseLoadTableFields.caseSerial} TEXT NOT NULL,
+            ${CaseLoadTableFields.caseReporter} TEXT NOT NULL,
+            ${CaseLoadTableFields.ovcCpimsId} TEXT NOT NULL,
+            ${CaseLoadTableFields.ovcFirstName} TEXT NOT NULL,
+            ${CaseLoadTableFields.ovcSurname} TEXT NOT NULL,
+            ${CaseLoadTableFields.ovcOtherNames} TEXT NOT NULL,
+            ${CaseLoadTableFields.ovcSex} TEXT NOT NULL,
+            ${CaseLoadTableFields.perpetratorStatus} TEXT NOT NULL,
+            ${CaseLoadTableFields.riskLevel} TEXT NOT NULL,
+            ${CaseLoadTableFields.dateCaseOpened} TEXT NOT NULL,
+            ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
+            ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
+            );
+    ''');
   }
+
+  // insert multiple caseload records
+  Future<void> insertMultipleCaseLoad(
+    List<CaseLoadModel> caseLoadModelData,
+  ) async {
+    try {
+      final db = await instance.database;
+
+      final batch = db.batch();
+
+      for (final caseLoadModel in caseLoadModelData) {
+        batch.insert(
+          caseLoadTable,
+          {
+            CaseLoadTableFields.caseID: caseLoadModel.caseID,
+            CaseLoadTableFields.caseSerial: caseLoadModel.caseSerial,
+            CaseLoadTableFields.caseReporter: caseLoadModel.caseReporter,
+            CaseLoadTableFields.ovcCpimsId: caseLoadModel.ovcCpimsId,
+            CaseLoadTableFields.ovcFirstName: caseLoadModel.ovcFirstName,
+            CaseLoadTableFields.ovcSurname: caseLoadModel.ovcSurname,
+            CaseLoadTableFields.ovcOtherNames: caseLoadModel.ovcOtherNames,
+            CaseLoadTableFields.ovcSex: caseLoadModel.ovcSex,
+            CaseLoadTableFields.perpetratorStatus:
+                caseLoadModel.perpetratorStatus,
+            CaseLoadTableFields.riskLevel: caseLoadModel.riskLevel,
+            CaseLoadTableFields.dateCaseOpened: caseLoadModel.dateCaseOpened,
+            CaseLoadTableFields.caseStatus: caseLoadModel.caseStatus,
+            CaseLoadTableFields.caseRemarks: caseLoadModel.caseRemarks,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+
+        // Insert related perpetrators
+        if (caseLoadModel.perpetrators != null) {
+          for (final PerpetratorModel perpetrator
+              in caseLoadModel.perpetrators!) {
+            final perpetratorMap = perpetrator
+                .toMap(); // Convert PerpetratorModel to Map<String, dynamic>
+            perpetratorMap['case_id'] =
+                caseLoadModel.caseID; // Add the case_id field
+            batch.insert(
+              perpetratorCaseLoadTable,
+              perpetratorMap,
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+
+        // Insert related case categories
+        if (caseLoadModel.caseCategories != null) {
+          for (final caseCategory in caseLoadModel.caseCategories!) {
+            final caseCategoryMap = caseCategory.toMap();
+            caseCategoryMap['case_id'] = caseLoadModel.caseID;
+            batch.insert(
+              caseLoadCategoryTable,
+              caseCategoryMap,
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+
+        // Insert related caregivers
+        if (caseLoadModel.caregivers != null) {
+          for (final caregiver in caseLoadModel.caregivers!) {
+            final caregiverMap = caregiver.toMap();
+            caregiverMap['case_id'] = caseLoadModel.caseID;
+            batch.insert(
+              caregiverCaseLoadTable,
+              caregiverMap,
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+
+        // Insert related siblings
+        if (caseLoadModel.siblings != null) {
+          for (final sibling in caseLoadModel.siblings!) {
+            final siblingMap = sibling.toMap();
+            siblingMap['case_id'] = caseLoadModel.caseID;
+            batch.insert(
+              siblingsCaseLoadTable,
+              siblingMap,
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+      }
+      await batch.commit(noResult: true);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting caseload data: $e");
+      }
+    }
+  }
+}
+
+class CaseLoadTableFields {
+  static final List<String> values = [
+    caseID,
+    caseSerial,
+    caseReporter,
+    ovcCpimsId,
+    ovcFirstName,
+    ovcSurname,
+    ovcOtherNames,
+    ovcSex,
+    perpetratorStatus,
+    riskLevel,
+    dateCaseOpened,
+    caseStatus,
+    caseCategories,
+    caseRemarks,
+  ];
+
+  static const String caseID = 'case_id';
+  static const String caseSerial = 'case_serial';
+  static const String caseReporter = 'case_reporter';
+  static const String ovcCpimsId = 'ovc_cpims_id';
+  static const String ovcFirstName = 'ovc_first_name';
+  static const String ovcSurname = 'ovc_surname';
+  static const String ovcOtherNames = 'ovc_other_names';
+  static const String ovcSex = 'ovc_sex';
+  static const String perpetratorStatus = 'perpetrator_status';
+  static const String riskLevel = 'risk_level';
+  static const String dateCaseOpened = 'date_case_opened';
+  static const String caseStatus = 'case_status';
+  static const String caseCategories = 'case_categories';
+  static const String caseRemarks = 'case_remarks';
+}
+
+class PerpetratorsCaseloadTable {
+  static final List<String> values = [
+    id,
+    caseID,
+    firstName,
+    surName,
+    ovcOtherNames,
+    relationshipType
+  ];
+
+  static const String id = 'id';
+  static const String caseID = 'case_id';
+  static const String firstName = 'first_name';
+  static const String surName = 'surname';
+  static const String ovcOtherNames = 'ovc_other_names';
+  static const String relationshipType = 'relationship_type';
+}
+
+class CaregiversCaseloadTable {
+  static final List<String> values = [
+    id,
+    caseID,
+    caregiverCpimsId,
+    relationshipType,
+    guardianPerson,
+    dateLinked
+  ];
+
+  static const String id = 'id';
+  static const String caseID = 'case_id';
+  static const String caregiverCpimsId = 'caregiver_cpims_id';
+  static const String relationshipType = 'relationship_type';
+  static const String guardianPerson = 'guardian_person';
+  static const String dateLinked = 'date_linked';
+}
+
+class SiblingsCaseLoadTable {
+  static final List<String> values = [
+    id,
+    caseID,
+    childPersonId,
+    siblingPersonId,
+    dateLinked,
+    dateDelinked,
+    remarks,
+    isVoid
+  ];
+
+  static const String id = 'id';
+  static const String caseID = 'case_id';
+  static const String childPersonId = 'child_person_id';
+  static const String siblingPersonId = 'sibling_person_id';
+  static const String dateLinked = 'date_linked';
+  static const String dateDelinked = 'date_delinked';
+  static const String remarks = 'remarks';
+  static const String isVoid = 'is_void';
+}
+
+class CaseCategoriesTable {
+  static final List<String> values = [
+    id,
+    caseID,
+    caseCaregory,
+    dateOfEvent,
+    placeOfEvent,
+    caseNature
+  ];
+
+  static const String id = 'id';
+  static const String caseID = 'case_id';
+  static const String caseCaregory = 'case_category';
+  static const String dateOfEvent = 'date_of_event';
+  static const String placeOfEvent = 'place_of_event';
+  static const String caseNature = 'case_nature';
 }
 
 var localdb = LocalDB._init();
