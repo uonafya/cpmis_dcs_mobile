@@ -1,8 +1,13 @@
+import 'package:cpims_dcs_mobile/models/registry/registry_caregiver_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../controller/registry_provider.dart';
+import '../../../../widgets/custom_button.dart';
 
 class PersonRegistryAttachCareGiver extends StatefulWidget {
   const PersonRegistryAttachCareGiver({super.key});
@@ -29,8 +34,22 @@ class _PersonRegistryAttachCareGiverState
     "Other"
   ];
 
+  String id = "";
+  String firstName = "";
+  String surName = "";
+  String? otherNames;
+  DateTime? dateOfBirth;
+  String sex = "";
+  String relationshipToChild = "";
+  String nationalIdNumber = "";
+  String? phoneNumber;
+  bool isRegistered = false;
+
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(20.0),
@@ -48,6 +67,7 @@ class _PersonRegistryAttachCareGiverState
                 onChanged: (bool? value) {
                   setState(() {
                     _isChecked = value ?? false; // Update the state
+                    isRegistered = _isChecked;
                   });
                 },
               ),
@@ -55,26 +75,61 @@ class _PersonRegistryAttachCareGiverState
           ),
           const SizedBox(height: 10),
           h2Text("Search Caregiver"),
-          const CustomTextField(hintText: 'Caregiver - 5646'),
+          CustomTextField(
+            hintText: 'Caregiver - 5646',
+            onChanged: (value) {
+
+            },
+          ),
           const SizedBox(height: 10),
           h2Text("First Name"),
-          const CustomTextField(hintText: 'First Name'),
+          CustomTextField(
+            hintText: 'First Name',
+            onChanged: (value) {
+              setState(() {
+                firstName = value;
+              });
+            },
+          ),
           const SizedBox(height: 15),
           h2Text("Surname"),
-          const CustomTextField(hintText: 'Surname'),
+          CustomTextField(
+            hintText: 'Surname',
+            onChanged: (value) {
+              setState(() {
+                surName = value;
+              });
+            },
+          ),
           const SizedBox(height: 15),
           h2Text("Other Name(s)"),
-          const CustomTextField(hintText: 'Other Names'),
+          CustomTextField(
+            hintText: 'Other Names',
+            onChanged: (value) {
+              setState(() {
+                otherNames = value;
+              });
+            },
+          ),
           const SizedBox(height: 15),
           h2Text("Date of Birth"),
-          const CustomTextField(hintText: 'Date of Birth'),
+          CustomTextField(
+            hintText: 'Date of Birth',
+            onChanged: (value) {
+              setState(() {
+
+              });
+            },
+          ),
           const SizedBox(height: 15),
           h2Text("Sex"),
           CustomDropdown(
             initialValue: "Please Select",
             items: const ["Please Select", "Male", "Female"],
             onChanged: (val) {
-              setState(() {});
+              setState(() {
+                sex = val;
+              });
             },
           ),
           const SizedBox(height: 15),
@@ -83,15 +138,57 @@ class _PersonRegistryAttachCareGiverState
             initialValue: "None",
             items: childRelationship,
             onChanged: (val) {
-              setState(() {});
+              setState(() {
+                relationshipToChild = val;
+              });
             },
           ),
           const SizedBox(height: 15),
           h2Text("National ID No"),
-          const CustomTextField(hintText: 'National ID'),
+          CustomTextField(
+            hintText: 'National ID',
+            onChanged: (value) {
+              setState(() {
+                nationalIdNumber = value;
+              });
+            },
+          ),
           const SizedBox(height: 15),
           h2Text("MobileNumber:"),
-          const CustomTextField(hintText: 'Cellphone Number'),
+          CustomTextField(
+            hintText: 'Cellphone Number',
+            onChanged: (value) {
+              setState(() {
+                phoneNumber = value;
+              });;
+            },
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                  text: 'Cancel',
+                  textColor: Colors.white,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: CustomButton(
+                  text: "Submut",
+                  textColor: Colors.white,
+                  onTap: () {
+                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
+                    registryProvider.addCaregiver(caregiver);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
+
         ],
       ),
     );

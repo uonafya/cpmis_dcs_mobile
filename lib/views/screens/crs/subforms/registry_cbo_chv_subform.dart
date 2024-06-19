@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../controller/registry_provider.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../widgets/custom_dropdown.dart';
 
@@ -38,6 +40,9 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
 
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return SubformWrapper(
       title: "CBO/CHV Details",
       children: [
@@ -47,11 +52,12 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedCBO,
+          initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
           items: cboCriteria,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;
+              registryProvider.setCboParentUnit(selectedCBO);
             });
           },
         ),
@@ -65,11 +71,12 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedOVC,
+          initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
           items: ovcCriteria,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;
+              registryProvider.setOvcProgramEnrolment(selectedOVC);
             });
           },
         ),
@@ -83,11 +90,12 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedCHV,
+          initialValue: registryProvider.registryCboChvModel.chv.isNotEmpty ? registryProvider.registryCboChvModel.chv : selectedCHV,
           items: chvCriteria,
           onChanged: (val) {
             setState(() {
               selectedCHV = val;
+              registryProvider.setChv(selectedCHV);
             });
           },
         ),

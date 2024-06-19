@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/models/registry/personal_details_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,6 +13,7 @@ class RegistryProvider extends ChangeNotifier {
 
   // final RegisterNewChildModel _registerNewChildModel = RegisterNewChildModel();
 
+  final RegistryPersonalDetailsModel _registryPersonalDetailsModel = RegistryPersonalDetailsModel(personType: "", childOVCProgram: false, firstName: "", surname: "", sex: "", dateOfBirth: DateTime.now(), workforceIdName: "", datePaperFormFilled: "");
   final RegistryIdentificationModel _registryIdentificationModel = RegistryIdentificationModel(birthRegistrationNumber: "", givenName: "", countryOfOrigin: "", tribe: "", religion:  "");
   final RegistryContactDetailsModel _registryContactDetailsModel = RegistryContactDetailsModel(designatedPhoneNumber: "", otherMobileNumber: "", emailAddress: "", physicalLocation: "");
   final RegistryLocationModel _registryLocationModel = RegistryLocationModel(county: "", subCounty: "", ward: "");
@@ -19,6 +21,7 @@ class RegistryProvider extends ChangeNotifier {
   final List<RegistrySiblingModel> _siblings = [];
   final RegistryCboChvModel _registryCboChvModel = RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
 
+  RegistryPersonalDetailsModel get registryPersonalDetailsModel => _registryPersonalDetailsModel;
   RegistryIdentificationModel get registryIdentificationModel => _registryIdentificationModel;
   RegistryContactDetailsModel get registryContactDetailsModel => _registryContactDetailsModel;
   RegistryLocationModel get registryLocationModel => _registryLocationModel;
@@ -26,6 +29,116 @@ class RegistryProvider extends ChangeNotifier {
   List<RegistrySiblingModel> get siblings => _siblings;
   RegistryCboChvModel get registryCboChvModel => _registryCboChvModel;
 
+  void setPersonType(String value) {
+    _registryPersonalDetailsModel.personType = value;
+  }
 
+  void setIsCaregiver(bool value) {
+    _registryPersonalDetailsModel.isCaregiver = value;
+  }
 
+  void setFirstName(String value) {
+    _registryPersonalDetailsModel.firstName = value;
+  }
+
+  void setSurname(String value) {
+    _registryPersonalDetailsModel.surname = value;
+  }
+
+  void setOtherNames(String value) {
+    _registryPersonalDetailsModel.otherNames = value;
+  }
+
+  void setSex(String value) {
+    _registryPersonalDetailsModel.sex = value;
+  }
+
+  void setDateOfBirth(DateTime value) {
+    _registryPersonalDetailsModel.dateOfBirth = value;
+  }
+
+  void setBirthRegistrationNumber(String value) {
+    _registryIdentificationModel.birthRegistrationNumber = value;
+  }
+
+  void setGivenName(String value) {
+    _registryIdentificationModel.givenName = value;
+  }
+
+  void setCountryOfOrigin(String value) {
+    _registryIdentificationModel.countryOfOrigin = value;
+  }
+
+  void setTribe(String value) {
+    _registryIdentificationModel.tribe = value;
+  }
+
+  void setReligion(String value) {
+    _registryIdentificationModel.religion = value;
+  }
+
+  void setDesignatedPhoneNumber(String value) {
+    _registryContactDetailsModel.designatedPhoneNumber = value;
+  }
+
+  void setOtherMobileNumber(String value) {
+    _registryContactDetailsModel.otherMobileNumber = value;
+  }
+
+  void setEmailAddress(String value) {
+    _registryContactDetailsModel.emailAddress = value;
+  }
+
+  void setPhysicalAddress(String value) {
+    _registryContactDetailsModel.physicalLocation = value;
+  }
+
+  void setCounty(String value) {
+    _registryLocationModel.county = value;
+  }
+
+  void setSubCounty(String value) {
+    _registryLocationModel.subCounty = value;
+  }
+
+  void setWard(String value) {
+    _registryLocationModel.ward = value;
+  }
+
+  void setCboParentUnit(String value) {
+    _registryCboChvModel.cboParentUnit = value;
+  }
+
+  void setOvcProgramEnrolment(String value) {
+    _registryCboChvModel.ovcProgramEnrollment = value;
+  }
+
+  void setChv(String value) {
+    _registryCboChvModel.chv = value;
+  }
+
+  void addCaregiver(RegistryCaregiverModel value) {
+    caregivers.add(value);
+    notifyListeners();
+
+  }
+
+  void addSibling(RegistrySiblingModel value) {
+    siblings.add(value);
+    notifyListeners();
+  }
+
+  void submit() {
+    print(registryPersonalDetailsModel.toJson());
+    print(_registryIdentificationModel.toJson());
+    print(_registryContactDetailsModel.toJson());
+    print("[");
+    caregivers.forEach((value) {print(value.toJson());});
+    print("]");
+    print("[");
+    siblings.forEach((value) {print(value.toJson());});
+    print("]");
+    print(_registryLocationModel.toJson());
+    print(_registryCboChvModel.toJson());
+  }
 }
