@@ -103,12 +103,6 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
                 dateOfVisit = DateFormat("dd/MM/yyyy").format(val);
                 setState(() {});
               },
-              validator: (val) {
-                if (val == null || val.isEmpty) {
-                  return "Please select a date";
-                }
-                return null;
-              },
             ),
             const SizedBox(
               height: 14,
