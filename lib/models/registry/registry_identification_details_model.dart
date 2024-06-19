@@ -25,7 +25,7 @@ class RegistryIdentificationModel {
   }
 
   // Creates a RegistryIdentificationModel instance from a map (e.g., decoded JSON)
-  factory RegistryIdentificationModel.fromJson(Map<String, String> json) {
+  factory RegistryIdentificationModel.fromJson(Map<String, dynamic> json) {
     return RegistryIdentificationModel(
       birthRegistrationNumber: json['birthRegistrationNumber'] ?? "",
       givenName: json['givenName'] ?? "",

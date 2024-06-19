@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -18,6 +19,7 @@ class CaseRegistrationSheet extends StatefulWidget {
 
 class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
   var selectedStep = 0;
+  bool hasConcented = false;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -93,6 +95,13 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
             ),
 
             // Form body
+            hasConcented == false ?
+                ConsentForm(
+                  update: (bool value) {
+                    setState(() {
+                      hasConcented = value;
+                    });
+                  }, message: "You have concented to filling the form",):
             Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[300]!, width: 1.0),

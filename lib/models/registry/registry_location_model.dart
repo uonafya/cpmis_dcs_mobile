@@ -19,11 +19,11 @@ class RegistryLocationModel {
   }
 
   // Creates a RegistryLocationModel instance from a map (e.g. decoded JSON)
-  factory RegistryLocationModel.fromJson(Map<String, String> json) {
+  factory RegistryLocationModel.fromJson(Map<String, dynamic> json) {
     return RegistryLocationModel(
-      county: json['county'] ?? "",
-      subCounty: json['subCounty'] ?? "",
-      ward: json['ward'] ?? "",
+      county: json['county'],
+      subCounty: json['subCounty'],
+      ward: json['ward'],
     );
   }
 }

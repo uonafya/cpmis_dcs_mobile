@@ -1,8 +1,10 @@
+import 'package:cpims_dcs_mobile/models/registry/registry_caregiver_model.dart';
 import 'package:flutter/material.dart';
 
 
 class SelectedRegistryCaregiverCard extends StatefulWidget {
-  const SelectedRegistryCaregiverCard({super.key});
+  const SelectedRegistryCaregiverCard({super.key, required this.caregiver});
+  final RegistryCaregiverModel caregiver;
 
   @override
   State<SelectedRegistryCaregiverCard> createState() => _SelectedRegistryCaregiverCardState();
@@ -29,23 +31,23 @@ class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregive
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "BABY KATHAMBI",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      ("${widget.caregiver.firstName} ${widget.caregiver.surName}").toUpperCase(),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      "ID: 9886",
+                      "ID: ${widget.caregiver.id}",
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Other Relative"),
-                    Text("Adult: Yes"),
+                    Text(widget.caregiver.relationshipToChild),
+                    const Text("Adult: Yes"),
                   ],
                 ),
                 const SizedBox(

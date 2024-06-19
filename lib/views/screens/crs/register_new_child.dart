@@ -15,7 +15,9 @@ import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../../../controller/registry_provider.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
@@ -33,13 +35,16 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   String selectedPersonCriteria = 'Please Select';
   int selectedStep = 0;
   bool? _radioValue;
-  bool _isChecked = false;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   final birthRegIdController = TextEditingController();
   int formStep = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
+    bool _isChecked = registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
         birthRegIdController: birthRegIdController,
@@ -88,11 +93,12 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: selectedPersonCriteria,
+                      initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
                       items: personCriteria,
                       onChanged: (val) {
                         setState(() {
                           selectedPersonCriteria = val;
+                          registryProvider.setPersonType(selectedPersonCriteria);
                         });
                       },
                     ),
@@ -106,6 +112,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       onChanged: (bool? value) {
                         setState(() {
                           _isChecked = value ?? false; // Update the state
+                          registryProvider.setIsCaregiver(_isChecked);
                         });
                       },
                     ),
@@ -115,19 +122,37 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       style: TextStyle(color: kTextGrey),
                     ),
                     const SizedBox(height: 6),
-                    const CustomTextField(hintText: 'First Name'),
+                    CustomTextField(
+                      hintText: 'First Name',
+                      initialValue: registryProvider.registryPersonalDetailsModel.firstName,
+                      onChanged: (value) {
+                          registryProvider.setFirstName(value);
+    },
+                    ),
                     const SizedBox(height: 15),
                     const Text(
                       'Surname *',
                       style: TextStyle(color: kTextGrey),
                     ),
                     const SizedBox(height: 6),
-                    const CustomTextField(hintText: 'Surname'),
+                    CustomTextField(
+                      hintText: 'Surname',
+                      initialValue: registryProvider.registryPersonalDetailsModel.surname,
+                      onChanged: (value) {
+                          registryProvider.setSurname(value);
+    },
+                    ),
                     const SizedBox(height: 15),
                     const Text('Other Names',
                         style: TextStyle(color: kTextGrey)),
                     const SizedBox(height: 6),
-                    const CustomTextField(hintText: 'Other Names'),
+                    CustomTextField(
+                      hintText: 'Other Names',
+                      initialValue: registryProvider.registryPersonalDetailsModel.otherNames,
+                      onChanged: (value) {
+                          registryProvider.setOtherNames(value);
+                      },
+                    ),
                     const SizedBox(height: 15),
                     const Text(
                       'Sex *',
@@ -135,11 +160,12 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: "Please Select",
+                      initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
                       items: const ["Please Select", "Male", "Female"],
-                      onChanged: (val) {
+                      onChanged: (value) {
                         setState(() {
-                          selectedPersonCriteria = val;
+                          selectedPersonCriteria = value;
+                          registryProvider.setSex(value);
                         });
                       },
                     ),
@@ -234,7 +260,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           textColor: Colors.white,
                           onTap: () {
                             print("ID :${birthRegIdController.text}");
-                            Get.to(() => const CaseRegistrationSheet());
+                            // Get.to(() => const CaseRegistrationSheet());
+                            registryProvider.submit();
                           },
                         ),
                       )

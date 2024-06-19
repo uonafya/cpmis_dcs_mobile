@@ -19,7 +19,7 @@ class RegistryCboChvModel {
   }
 
   // Creates a RegistryContactDetailsModel instance from a map (e.g. decoded JSON)
-  factory RegistryCboChvModel.fromJson(Map<String, String> json) {
+  factory RegistryCboChvModel.fromJson(Map<String, dynamic> json) {
     return RegistryCboChvModel(
       cboParentUnit: json['cboParentUnit'] ?? "",
       ovcProgramEnrollment: json['ovcProgramEnrollment'] ?? "",
