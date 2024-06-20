@@ -201,71 +201,71 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text(
-                'Upstream Test Syncing...',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              GestureDetector(
-                child: const Text(
-                  'Sync',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  final ServiceFollowupModel? serviceFollowupModel =
-                      await serviceDatabaseHelper.getServiceFollowup(
-                          "1231"); // Replace with actual case ID
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final ServiceFollowupModel? serviceFollowupModel =
+          //             await serviceDatabaseHelper.getServiceFollowup(
+          //                 "1231"); // Replace with actual case ID
 
-                  if (serviceFollowupModel != null) {
-                    print(serviceFollowupModel.toJson());
-                    Get.snackbar(
-                        "Success", "Service followup synced successfully.");
-                  } else {
-                    Get.snackbar(
-                        "Error", "No service followup found for this case ID.");
-                  }
-                },
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text(
-                'Deletion Test...',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              GestureDetector(
-                child: const Text(
-                  'Delete',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  try {
-                    await serviceDatabaseHelper.deleteServiceFollowup("1231");
-                    Get.snackbar(
-                        "Success", "Service followup deleted successfully.");
-                  } catch (e) {
-                    Get.snackbar("Error", "Failed to delete service followup.");
-                  }
-                },
-              )
-            ],
-          ),
+          //         if (serviceFollowupModel != null) {
+          //           print(serviceFollowupModel.toJson());
+          //           Get.snackbar(
+          //               "Success", "Service followup synced successfully.");
+          //         } else {
+          //           Get.snackbar(
+          //               "Error", "No service followup found for this case ID.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await serviceDatabaseHelper.deleteServiceFollowup("1231");
+          //           Get.snackbar(
+          //               "Success", "Service followup deleted successfully.");
+          //         } catch (e) {
+          //           Get.snackbar("Error", "Failed to delete service followup.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
           const Divider(),
           if (selectedServices.isNotEmpty)
             const Text(

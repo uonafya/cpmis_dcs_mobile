@@ -163,63 +163,63 @@ class _CourtFollowUpState extends State<CloseFollowup> {
             height: 20,
           ),
           // TODO: REMOVE IN PRODUCTION
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text(
-                'Upstream Test Syncing...',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              GestureDetector(
-                child: const Text(
-                  'Sync',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  final ClosureFollowupModel? closureFollowupModel =
-                      await closureDatabaseHelper
-                          .getClosureFollowup("SomeCaseId");
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final ClosureFollowupModel? closureFollowupModel =
+          //             await closureDatabaseHelper
+          //                 .getClosureFollowup("SomeCaseId");
 
-                  print(closureFollowupModel?.caseId);
-                },
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text(
-                'Deletion Test...',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              GestureDetector(
-                child: const Text(
-                  'Delete',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  try {
-                    await closureDatabaseHelper.deleteClosureFollowup("1233");
-                    Get.snackbar("Success", "Delete successful.");
-                  } catch (e) {
-                    Get.snackbar("Error", "Failed to delete.");
-                  }
-                },
-              )
-            ],
-          ),
+          //         print(closureFollowupModel?.caseId);
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await closureDatabaseHelper.deleteClosureFollowup("1233");
+          //           Get.snackbar("Success", "Delete successful.");
+          //         } catch (e) {
+          //           Get.snackbar("Error", "Failed to delete.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
