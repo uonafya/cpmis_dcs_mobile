@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
+import '../../../../../core/constants/constants.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
 
@@ -61,30 +62,8 @@ class _PersonRegistryAttachCareGiverState
             heading: "Attach Caregiver",
             hasClosePage: true,
           ),
-          Row(
-            children: [
-              h2Text("CPIMS registered caregiver"),
-              Checkbox(
-                value: _isChecked,
-                onChanged: (bool? value) {
-                  setState(() {
-                    _isChecked = value ?? false; // Update the state
-                    isRegistered = _isChecked;
-                  });
-                },
-              ),
-            ],
-          ),
           const SizedBox(height: 10),
-          h2Text("Search Caregiver"),
-          CustomTextField(
-            hintText: 'Caregiver - 5646',
-            onChanged: (value) {
-
-            },
-          ),
-          const SizedBox(height: 10),
-          h2Text("First Name"),
+          h2Text("First Name *"),
           CustomTextField(
             hintText: 'First Name',
             onChanged: (value) {
@@ -94,7 +73,7 @@ class _PersonRegistryAttachCareGiverState
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Surname"),
+          h2Text("Surname *"),
           CustomTextField(
             hintText: 'Surname',
             onChanged: (value) {
@@ -131,7 +110,7 @@ class _PersonRegistryAttachCareGiverState
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Sex"),
+          h2Text("Sex *"),
           CustomDropdown(
             initialValue: "Please Select",
             items: const ["Please Select", "Male", "Female"],
@@ -142,7 +121,7 @@ class _PersonRegistryAttachCareGiverState
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Relationship with Child"),
+          h2Text("Relationship with Child *"),
           CustomDropdown(
             initialValue: "None",
             items: childRelationship,
@@ -153,7 +132,7 @@ class _PersonRegistryAttachCareGiverState
             },
           ),
           const SizedBox(height: 15),
-          h2Text("National ID No"),
+          h2Text("National ID No *"),
           CustomTextField(
             hintText: 'National ID',
             onChanged: (value) {
@@ -190,6 +169,16 @@ class _PersonRegistryAttachCareGiverState
                   text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
+                    int? nationalId;
+                    try {
+                      nationalId = int.parse(nationalIdNumber);
+                    } catch (e) {}
+                    if (firstName.isEmpty || surName.isEmpty || sex.isEmpty || relationshipToChild.isEmpty || nationalIdNumber.isEmpty) {
+                      if (context.mounted) {
+                        errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
+                      }
+                      return;
+                    }
                     RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);

@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
+import '../../../../../core/constants/constants.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
 
@@ -44,21 +45,8 @@ class _PersonRegistryAttachSiblingModalState
           heading: "Add Sibling",
           hasClosePage: true,
         ),
-        Row(
-          children: [
-            h2Text("CPIMS registered caregiver"),
-            Checkbox(
-              value: _isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _isChecked = value ?? false; // Update the state
-                });
-              },
-            ),
-          ],
-        ),
         const SizedBox(height: 10),
-        h2Text("First Name"),
+        h2Text("First Name *"),
         CustomTextField(
             hintText: 'First Name',
           onChanged: (value) {
@@ -68,7 +56,7 @@ class _PersonRegistryAttachSiblingModalState
     },
         ),
         const SizedBox(height: 15),
-        h2Text("Surname"),
+        h2Text("Surname *"),
         CustomTextField(
             hintText: 'Surname',
           onChanged: (value) {
@@ -105,7 +93,7 @@ class _PersonRegistryAttachSiblingModalState
           },
         ),
         const SizedBox(height: 15),
-        h2Text("Sex"),
+        h2Text("Sex *"),
         CustomDropdown(
           initialValue: "Please Select",
           items: const ["Please Select", "Male", "Female"],
@@ -116,7 +104,7 @@ class _PersonRegistryAttachSiblingModalState
           },
         ),
         const SizedBox(height: 15),
-        h2Text("Class"),
+        h2Text("Class *"),
         CustomDropdown(
           initialValue: "Please Select",
           items: childClass,
@@ -154,6 +142,12 @@ class _PersonRegistryAttachSiblingModalState
                 text: "Submit",
                 textColor: Colors.white,
                 onTap: () {
+                  if (firstName.isEmpty || surName.isEmpty || sex.isEmpty || currentClass.isEmpty) {
+                    if (context.mounted) {
+                      errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
+                    }
+                    return;
+                  }
                   RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass);
                   registryProvider.addSibling(sibling);
                   Navigator.pop(context);

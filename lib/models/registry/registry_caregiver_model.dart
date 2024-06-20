@@ -1,5 +1,5 @@
 class RegistryCaregiverModel {
-  String id;
+  String? id;
   String firstName;
   String surName;
   String? otherNames;
@@ -8,10 +8,9 @@ class RegistryCaregiverModel {
   String relationshipToChild;
   String nationalIdNumber;
   String? phoneNumber;
-  bool isRegistered;
 
   RegistryCaregiverModel({
-    required this.id,
+    this.id,
     required this.firstName,
     required this.surName,
     this.otherNames,
@@ -20,7 +19,6 @@ class RegistryCaregiverModel {
     required this.relationshipToChild,
     required this.nationalIdNumber,
     this.phoneNumber,
-    this.isRegistered = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -34,7 +32,6 @@ class RegistryCaregiverModel {
       'relationshipToChild': relationshipToChild,
       'nationalIdNumber': nationalIdNumber,
       'phoneNumber': phoneNumber,
-      'isRegistered': isRegistered ? true : false,
     };
   }
 
@@ -49,7 +46,6 @@ class RegistryCaregiverModel {
       relationshipToChild: json['relationshipToChild'],
       nationalIdNumber: json['nationalIdNumber'],
       phoneNumber: json['phoneNumber'],
-      isRegistered: json['isRegistered'],
     );
   }
 
@@ -63,6 +59,5 @@ class RegistryCaregiverModel {
     relationshipToChild = "";
     nationalIdNumber = "";
     phoneNumber = null;
-    isRegistered = false;
   }
 }
