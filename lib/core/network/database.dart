@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
@@ -478,6 +479,16 @@ class LocalDB {
     ${CourtSummonsTable.honouredDate} TEXT,
     ${CourtSummonsTable.summonDate} TEXT,
     ${CourtSummonsTable.summonNote} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $referralTable(
+    ${ReferralTable.caseId} TEXT PRIMARY KEY,
+    ${ReferralTable.caseCategory} TEXT,
+    ${ReferralTable.referralActor} TEXT,
+    ${ReferralTable.specifiedReferral} TEXT,
+    ${ReferralTable.referralFor} TEXT
   );
 ''');
   }

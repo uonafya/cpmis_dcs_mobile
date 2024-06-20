@@ -1,3 +1,7 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
+import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -21,49 +25,57 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
   String specifiedReferral = specifyReferralList[0]["title"]!;
   String referralFor = referralForList[0]["title"]!;
 
-  // TODO: Uncomment when the model information is available
-  // void handleAddService() async {
-  //   // caseID captured from elsewhere
-  //   String? caseId = "SomeCaseId";
+  final ReferralDatabaseHelper referralDatabaseHelper =
+      ReferralDatabaseHelper();
 
-  //   if (caseCategory == "Please select") {
-  //     Get.snackbar("Error", "Please select a case category.");
-  //     return;
-  //   }
+  void handleAddReferral() async {
+    String? caseId = "1232";
 
-  //   if (referral == "Please select") {
-  //     Get.snackbar("Error", "Please select a referral actor.");
-  //     return;
-  //   }
+    if (caseCategory == "Please select") {
+      Get.snackbar("Error", "Please select a case category.");
+      return;
+    }
 
-  //   if (specifiedReferral == "Please select") {
-  //     Get.snackbar("Error", "Please select a specified referral.");
-  //     return;
-  //   }
+    if (referral == "Please select") {
+      Get.snackbar("Error", "Please select a referral actor.");
+      return;
+    }
 
-  //   if (referralFor == "Please select") {
-  //     Get.snackbar("Error", "Please select a referral for.");
-  //     return;
-  //   }
+    if (specifiedReferral == "Please select") {
+      Get.snackbar("Error", "Please select a specified referral.");
+      return;
+    }
 
-  //   // Create model instance
-  //   ReferralFollowupModel referralFollowupModel = ReferralFollowupModel(
-  //     caseId: caseId,
-  //     caseCategory: caseCategory,
-  //     referralActor: referral,
-  //     specifiedReferral: specifiedReferral,
-  //     referralFor: referralFor,
-  //   );
+    if (referralFor == "Please select") {
+      Get.snackbar("Error", "Please select what the referral is for.");
+      return;
+    }
 
-  //   print(referralFollowupModel.toJson());
+    // Create ReferralModel instance
+    ReferralModel referralModel = ReferralModel(
+      caseId: caseId,
+      caseCategory: caseCategory,
+      referralActor: referral,
+      specifiedReferral: specifiedReferral,
+      referralFor: referralFor,
+    );
 
-  //   try {
-  //     Get.back(); // Navigate back
-  //     Get.snackbar("Success", "Referral Followup saved successfully.");
-  //   } catch (e) {
-  //     Get.snackbar("Error", "An error occurred. Please try again.");
-  //   }
-  // }
+    print(referralModel.toJson());
+
+    try {
+      print('Db initialization & saving referral...');
+      var db = await localdb.database;
+      final referralDatabaseHelper = ReferralDatabaseHelper();
+      await referralDatabaseHelper.insertReferral(referralModel);
+      print('Saved referral :)');
+
+      Get.back(); // Navigate back
+      Get.snackbar("Success", "Referral added successfully.");
+    } catch (e) {
+      print(e.toString());
+      Get.snackbar("Error", "Failed to save referral. Please try again.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +149,85 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
           const SizedBox(
             height: 14,
           ),
-          CustomButton(text: "Save", onTap: handleAddService),
+          CustomButton(text: "Save", onTap: handleAddReferral),
           const SizedBox(
             height: 10,
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           print('Retrieving referral...');
+          //           final referralDatabaseHelper = ReferralDatabaseHelper();
+          //           final ReferralModel? referralModel =
+          //               await referralDatabaseHelper
+          //                   .getReferral("1232"); // Replace with actual case ID
+
+          //           if (referralModel != null) {
+          //             print(referralModel.toJson());
+          //             Get.snackbar(
+          //                 "Success", "Referral retrieved successfully.");
+          //           } else {
+          //             Get.snackbar(
+          //                 "Error", "No referral found for this case ID.");
+          //           }
+          //         } catch (e) {
+          //           print(e.toString());
+          //           Get.snackbar("Error", "Failed to retrieve referral.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Delete...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           print('Deleting referral...');
+          //           final referralDatabaseHelper = ReferralDatabaseHelper();
+          //           await referralDatabaseHelper.deleteReferral("1232");
+          //           print('Deleted referral :)');
+          //           Get.snackbar("Success", "Referral deleted successfully.");
+          //         } catch (e) {
+          //           print(e.toString());
+          //           Get.snackbar("Error", "Failed to delete referral.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
