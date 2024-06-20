@@ -404,6 +404,16 @@ class LocalDB {
             );
     ''');
 
+    // Organization unit
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $organizationUnitsTable (
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        name TEXT,
+        primaryUnit INTEGER
+       );
+    ''');
+    
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
         case_id TEXT PRIMARY KEY,

@@ -19,6 +19,7 @@ const String mobileEndpoint = "https://dev.cpims.net/mobile/";
 enum RadioButtonOptions { yes, no, na }
 
 // Database table names
+const String organizationUnitsTable = "orgUnits";
 const String geolocationTable = "geolocations";
 const String usersTable = "users";
 const String childTable = "child";
