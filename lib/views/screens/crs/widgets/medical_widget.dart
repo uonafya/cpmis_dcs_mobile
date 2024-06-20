@@ -56,9 +56,8 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               ),
               CustomDropdown(
                   initialValue: model.medical.mentalConditionStatus,
-                  validator: validator,
                   items: mentalConditionOptions,
-                  onChanged: (String item) {
+                  onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
                     updated.mentalConditionStatus = item;
                     model.medical = updated;
@@ -111,7 +110,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               CustomDropdown(
                   initialValue: model.medical.physicalConditionStatus,
                   items: physicalConditionOptions,
-                  onChanged: (String item) {
+                  onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
                     updated.physicalConditionStatus = item;
                     model.medical = updated;
@@ -163,7 +162,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               CustomDropdown(
                   initialValue: model.medical.otherConditionStatus,
                   items: otherConditionOptions,
-                  onChanged: (String item) {
+                  onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
 
                     updated.otherConditionStatus = item;

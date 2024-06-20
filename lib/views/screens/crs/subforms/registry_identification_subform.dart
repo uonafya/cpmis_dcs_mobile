@@ -1,7 +1,10 @@
+import 'package:cpims_dcs_mobile/controller/registry_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../../widgets/custom_text_field.dart';
 
@@ -44,6 +47,9 @@ class _RegistryIdentificationSubformState
 
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return SubformWrapper(
       title: "Identification",
       children: [
@@ -57,7 +63,11 @@ class _RegistryIdentificationSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: 'Birth Reg ID',
-          controller: widget.birthRegIdController,
+          // controller: widget.birthRegIdController,
+          initialValue: registryProvider.registryIdentificationModel.birthRegistrationNumber,
+          onChanged: (value) {
+            registryProvider.setBirthRegistrationNumber(value);
+          },
         ),
         const SizedBox(
           height: 15,
@@ -68,8 +78,12 @@ class _RegistryIdentificationSubformState
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
-        const CustomTextField(
+        CustomTextField(
           hintText: 'Given Name',
+          initialValue: registryProvider.registryIdentificationModel.givenName,
+          onChanged: (value) {
+            registryProvider.setGivenName(value);
+          },
         ),
         const SizedBox(
           height: 15,
@@ -78,11 +92,12 @@ class _RegistryIdentificationSubformState
         const Text('Country of Origin'),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedCountry,
+          initialValue: registryProvider.registryIdentificationModel.countryOfOrigin.isNotEmpty ? registryProvider.registryIdentificationModel.countryOfOrigin : selectedCountry,
           items: countryCriteria,
           onChanged: (val) {
             setState(() {
               selectedCountry = val;
+              registryProvider.setCountryOfOrigin(selectedCountry);
             });
           },
         ),
@@ -93,11 +108,12 @@ class _RegistryIdentificationSubformState
         const Text('Tribe:'),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedTribe,
+          initialValue: registryProvider.registryIdentificationModel.tribe.isNotEmpty ? registryProvider.registryIdentificationModel.tribe : selectedTribe,
           items: tribeCriteria,
           onChanged: (val) {
             setState(() {
               selectedTribe = val;
+              registryProvider.setTribe(selectedTribe);
             });
           },
         ),
@@ -108,11 +124,12 @@ class _RegistryIdentificationSubformState
         const Text('Religion:'),
         const SizedBox(height: 6),
         CustomDropdown(
-          initialValue: selectedReligion,
+          initialValue: registryProvider.registryIdentificationModel.religion.isNotEmpty ? registryProvider.registryIdentificationModel.religion : selectedReligion,
           items: religionCriteria,
           onChanged: (val) {
             setState(() {
               selectedReligion = val;
+              registryProvider.setReligion(selectedReligion);
             });
           },
         ),

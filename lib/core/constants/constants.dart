@@ -41,6 +41,20 @@ const String crsReferralsTable = "crsReferrals";
 const String crsImmediateTable = "crsImmediate";
 const String crsFutureNeedsTable = "crsFutureNeeds";
 const String crsFormPerpetrators = "crsFormPerpetrators";
+const String caseLoadTable = "caseLoad";
+const String caregiverCaseLoadTable = "caregiverCaseLoad";
+const String siblingsCaseLoadTable = "siblingsCaseLoad";
+const String perpetratorCaseLoadTable = "perpetratorCaseLoad";
+const String caseLoadCategoryTable = "caseLoadCategory";
+
+const String registryFormDetails = "registry_form_details";
+const String registrtPersonalDetails = "registry_personal_details";
+const String registryIdentificationTable = "registry_identification";
+const String registryContactTable = "registry_contact";
+const String registryLocationTable = "registry_location";
+const String registryCaregiverTable = "registry_caregiver";
+const String registrySiblingTable = "registry_sibling";
+const String registryCboChvTable = "registry_cbo_chv";
 
 const String registerUrl = "https://test.cpims.net/accounts/request/";
 const String forgotPasswordUrl =

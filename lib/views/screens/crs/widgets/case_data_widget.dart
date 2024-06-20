@@ -35,21 +35,21 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   late DateTime perpetratorDOB;
 
   String referralActor = "";
-  void updateReferralActor(String value) {
+  void updateReferralActor(value) {
     setState(() {
       referralActor = value;
     });
   }
 
   String specify = "";
-  void updateSpecify(String value) {
+  void updateSpecify(value) {
     setState(() {
       specify = value;
     });
   }
 
   String reason = "";
-  void updateReason(String value) {
+  void updateReason(value) {
     setState(() {
       reason = value;
     });
@@ -96,8 +96,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             CustomDropdown(
                 initialValue: model.caseData.offenderKnown ?? pleaseSelect,
                 items: perpetratorOptions,
-                onChanged: (String value) {
-                  CaseDataCRSFormModel update = model.caseData;
+                onChanged: (dynamic value) {
+                  var update = model.caseData;
 
                   update.offenderKnown = value;
                   model.caseData = update;
@@ -121,7 +121,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   CustomDropdown(
                       initialValue: relationshipToChild,
                       items: relationshipToChildOptions,
-                      onChanged: (String value) {
+                      onChanged: (dynamic value) {
                         setState(() {
                           relationshipToChild = value;
                         });
@@ -202,7 +202,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   CustomDropdown(
                       initialValue: perpetratorSex,
                       items: sexOptions,
-                      onChanged: (String value) {
+                      onChanged: (dynamic value) {
                         setState(() {
                           perpetratorSex = value;
                         });
@@ -358,7 +358,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             CustomDropdown(
                 initialValue: pleaseSelect,
                 items: lowMedHighList,
-                onChanged: (String val) {
+                onChanged: (dynamic val) {
                   CaseDataCRSFormModel update = model.caseData;
                   update.riskLevel = val;
                   model.caseData = update;
@@ -376,8 +376,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             CustomDropdown(
                 initialValue: pleaseSelect,
                 items: yesNoList,
-                onChanged: (String val) {
-                  CaseDataCRSFormModel update = model.caseData;
+                onChanged: (dynamic val) {
+                  var update = model.caseData;
                   update.referralsPresent = val == YesNo.yes.value;
                   model.caseData = update;
                 }),
@@ -394,8 +394,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             CustomDropdown(
                 initialValue: boolToYesNo(model.caseData.summonsIssued).value,
                 items: yesNoList,
-                onChanged: (String val) {
-                  CaseDataCRSFormModel update = model.caseData;
+                onChanged: (dynamic val) {
+                  var update = model.caseData;
                   update.summonsIssued = val == YesNo.yes.value;
                   model.caseData = update;
                 }),

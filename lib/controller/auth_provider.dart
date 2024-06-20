@@ -3,7 +3,7 @@ import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/user_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
-import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
+import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -71,7 +71,7 @@ class AuthProvider with ChangeNotifier {
       preferences.setString('username', username);
       preferences.setString('password', password);
 
-      Get.off(() => const Homepage(),
+      Get.off(() => const InitialLoaderScreen(),
           transition: Transition.fadeIn,
           duration: const Duration(microseconds: 300));
     }

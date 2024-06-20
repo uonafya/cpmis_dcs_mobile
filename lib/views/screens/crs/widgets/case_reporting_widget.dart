@@ -1,7 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_forms_date_picker.dart';
@@ -50,9 +48,8 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           CustomDropdown(
             initialValue: model.caseReport.originator,
             items: caseReporterOptions,
-            onChanged: (String item) {
-              CaseReportingCRSFormModel update = model.caseReport;
-
+            onChanged: (dynamic item) {
+              var update = model.caseReport;
               update.originator = item;
               model.caseReport = update;
             },
@@ -288,7 +285,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                     CustomDropdown(
                       initialValue: model.caseReport.county,
                       items: countiesOptions,
-                      onChanged: (String item) {
+                      onChanged: (dynamic item) {
                         var update = model.caseReport;
                         update.county = item;
                         model.caseReport = update;
@@ -300,7 +297,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                     CustomDropdown(
                       initialValue: model.caseReport.subCounty,
                       items: subcountiesOptions,
-                      onChanged: (String item) {
+                      onChanged: (dynamic item) {
                         var update = model.caseReport;
                         update.subCounty = item;
                         model.caseReport = update;
@@ -314,7 +311,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                     CustomDropdown(
                       initialValue: model.caseReport.ward ?? pleaseSelect,
                       items: subcountiesOptions,
-                      onChanged: (String item) {
+                      onChanged: (dynamic item) {
                         var update = model.caseReport;
                         update.ward = item;
                         model.caseReport = update;
@@ -327,7 +324,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                       initialValue:
                           model.caseReport.subLocation ?? pleaseSelect,
                       items: subcountiesOptions,
-                      onChanged: (String item) {
+                      onChanged: (dynamic item) {
                         var update = model.caseReport;
                         update.subLocation = item;
                         model.caseReport = update;
@@ -344,7 +341,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                     CustomDropdown(
                       initialValue: model.caseReport.country,
                       items: countiesOptions,
-                      onChanged: (String item) {
+                      onChanged: (dynamic item) {
                         var update = model.caseReport;
                         update.country = item;
                         model.caseReport = update;
@@ -380,7 +377,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           CustomDropdown(
             initialValue: model.caseReport.reportingSubCounty,
             items: countiesOptions,
-            onChanged: (String item) {
+            onChanged: (dynamic item) {
               var update = model.caseReport;
               update.reportingSubCounty = item;
               model.caseReport = update;
@@ -392,7 +389,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           CustomDropdown(
             initialValue: model.caseReport.reportingOrganizationalUnit,
             items: countiesOptions,
-            onChanged: (String item) {
+            onChanged: (dynamic item) {
               var update = model.caseReport;
               update.reportingOrganizationalUnit = item;
               model.caseReport = update;

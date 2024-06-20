@@ -171,7 +171,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           CustomDropdown(
             initialValue: model.about?.houseEconomicStatus ?? pleaseSelect,
             items: houseEconomicStatusOptions,
-            onChanged: (String item) {
+            onChanged: (dynamic item) {
               var update = model.about;
               update?.houseEconomicStatus = item;
               model.about = update;

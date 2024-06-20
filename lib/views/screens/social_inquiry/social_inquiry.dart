@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/child_case_history_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/family_background_widget.dart';
@@ -92,6 +93,9 @@ class _CRSHomeState extends State<SocialInquiry> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      final db = await LocalDB.instance.database;
+    });
   }
 
   @override

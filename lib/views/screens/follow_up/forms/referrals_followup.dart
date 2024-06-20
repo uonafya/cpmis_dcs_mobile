@@ -21,6 +21,50 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
   String specifiedReferral = specifyReferralList[0]["title"]!;
   String referralFor = referralForList[0]["title"]!;
 
+  // TODO: Uncomment when the model information is available
+  // void handleAddService() async {
+  //   // caseID captured from elsewhere
+  //   String? caseId = "SomeCaseId";
+
+  //   if (caseCategory == "Please select") {
+  //     Get.snackbar("Error", "Please select a case category.");
+  //     return;
+  //   }
+
+  //   if (referral == "Please select") {
+  //     Get.snackbar("Error", "Please select a referral actor.");
+  //     return;
+  //   }
+
+  //   if (specifiedReferral == "Please select") {
+  //     Get.snackbar("Error", "Please select a specified referral.");
+  //     return;
+  //   }
+
+  //   if (referralFor == "Please select") {
+  //     Get.snackbar("Error", "Please select a referral for.");
+  //     return;
+  //   }
+
+  //   // Create model instance
+  //   ReferralFollowupModel referralFollowupModel = ReferralFollowupModel(
+  //     caseId: caseId,
+  //     caseCategory: caseCategory,
+  //     referralActor: referral,
+  //     specifiedReferral: specifiedReferral,
+  //     referralFor: referralFor,
+  //   );
+
+  //   print(referralFollowupModel.toJson());
+
+  //   try {
+  //     Get.back(); // Navigate back
+  //     Get.snackbar("Success", "Referral Followup saved successfully.");
+  //   } catch (e) {
+  //     Get.snackbar("Error", "An error occurred. Please try again.");
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +146,5 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
     );
   }
 
-  void handleAddService() {
-    Get.back();
-  }
+  void handleAddService() {}
 }

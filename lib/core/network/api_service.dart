@@ -1,7 +1,9 @@
+import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiService {
   String _queryParams(Map<String, dynamic> params) =>
@@ -38,22 +40,30 @@ class ApiService {
     return caseLoadDummy;
   }
 
-  Future<List<CaseLoadModel>> fetchCaseLoad(String deviceID) async {
-    final response = await httpClient.request(
-      'mobile/caseload/',
-      'GET',
-      {
-        'deviceID': deviceID,
-      },
-    );
+  Future<void> fetchAndInsertCaseload({
+    required String deviceID,
+  }) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/caseload/',
+        'GET',
+        {
+          'deviceID': deviceID,
+        },
+      );
 
-    List<CaseLoadModel> caseLoadData = [];
+      List<CaseLoadModel> caseLoadData = [];
 
-    for (var caseLoad in response.data) {
-      caseLoadData.add(CaseLoadModel.fromJson(caseLoad));
+      for (var caseLoad in response.data) {
+        caseLoadData.add(CaseLoadModel.fromJson(caseLoad));
+      }
+
+      await LocalDB.instance.insertMultipleCaseLoad(caseLoadData);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while inserting caseload data $e');
+      }
     }
-
-    return caseLoadData;
   }
 }
 
