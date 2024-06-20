@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
+import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/foundation.dart';
@@ -46,6 +47,7 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
             await loadLocationFromUpstream();
             await saveCategoriesInDB();
             await saveOrganizationUnits();
+            await saveCountries();
           } else {
             // show dialog to user
             // to enable internet connection
