@@ -237,7 +237,7 @@ class LocalDB {
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL,
             subcategory TEXT,
-            order INTEGER
+            orderNo INTEGER
           );
        ''');
 

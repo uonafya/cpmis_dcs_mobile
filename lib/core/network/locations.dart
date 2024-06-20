@@ -18,7 +18,7 @@ Future<void> saveLocation(Database db, List<dynamic> locations) async {
         "name": location.areaName,
         "type": location.areaType,
         "parent": location.parent
-      });
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
     }
 
     await batch.commit();

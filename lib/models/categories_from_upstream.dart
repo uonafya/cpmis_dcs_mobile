@@ -13,12 +13,12 @@ class CategoriesFromUpstream {
 
   factory CategoriesFromUpstream.fromJSON(Map<String, dynamic> json) {
     var id = json['item_id'];
-    String description = json['item_description'];
-    String subCategory = json['item_sub_category'];
-    int order = json['the_order'];
+    var description = json['item_description'];
+    var subCategory = json['item_sub_category'];
+    var order = json['the_order'];
 
     return CategoriesFromUpstream(
-        id: id,
+      id: id,
       description: description,
       subCategory: subCategory,
       order: order);

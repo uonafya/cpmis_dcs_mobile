@@ -31,8 +31,8 @@ Future<void> saveCategories(Database db, List<dynamic> categories) async {
         "id": categ.id ?? "",
         "name": categ.description ?? "",
         "subcategory": categ.subCategory,
-        "order": categ.order
-      });
+        "orderNo": categ.order
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
     }
 
     await batch.commit();
