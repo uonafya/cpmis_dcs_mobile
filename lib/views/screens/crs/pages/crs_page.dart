@@ -1,8 +1,13 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
+import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/locations.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -10,6 +15,7 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
@@ -122,6 +128,13 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
             const SizedBox(
               height: 30,
             ),
+            CustomButton(
+              child: Text("Get categories"),
+              onTap: () async {
+                await saveCategoriesInDB();
+              },
+            ),
+            const SizedBox(height: 10,),
             Row(
               children: <Widget>[
                 Expanded(
@@ -165,9 +178,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                         var db = await localdb.database;
                         var uuid = const Uuid();
                         var formID = uuid.v4();
-                        CRSDatabaseForm.storeFormInDB(form, db, formID);
-                        await form.sendToUpstream();
-                        await Get.to(() => const FollowUpHome());
+                        CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+
+                        Get.to(() => const FollowUpHome());
                       }
                       _scrollController.animateTo(
                         0,

@@ -55,7 +55,7 @@ class InitialChildDetails {
   final String otherNames;
   final String sex;
   final DateTime? dateOfBirth;
-  final int age;
+  final int? age;
 
   const InitialChildDetails(
       {required this.firstName,
@@ -63,7 +63,7 @@ class InitialChildDetails {
       required this.otherNames,
       required this.sex,
       this.dateOfBirth,
-      required this.age});
+      this.age});
 }
 
 class SiblingDetails {
@@ -205,7 +205,7 @@ class Perpetrators {
     if (dateOfBirth != null) {
       json['date_of_birth'] = dateOfBirth!.toIso8601String();
     }
-    if(sex != null) {
+    if (sex != null) {
       json['sex'] = sex;
     }
     return json;
@@ -337,8 +337,9 @@ class CRSForm {
     }
 
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
-    jsonToReturn['reporting_orgunit'] = caseReporting?.reportingOrganizationalUnit;
-    jsonToReturn['date_case_reported'] = convertDateToYMD(caseReporting?.dateCaseReported ?? DateTime.now());
+    jsonToReturn['reporting_orgunit'] =
+        caseReporting?.reportingOrganizationalUnit;
+    jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
 
     jsonToReturn['child'] = {};
     jsonToReturn['siblings'] = [];
@@ -382,7 +383,7 @@ class CRSForm {
     }
 
     if (caseData?.summonsIssued == true) {
-      jsonToReturn['date_of_summon'] = convertDateToYMD(caseData?.dateOfSummon ?? DateTime.now());
+      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon;
     }
 
     jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;
@@ -390,12 +391,12 @@ class CRSForm {
 
     return jsonToReturn;
   }
-  
+
   Future<void> sendToUpstream() async{
     try {
-      // Convert to JSON 
+      // Convert to JSON
       var json = toJSON();
-      
+
       // Submit
       var request = await httpClient.request("${cpimsApiUrl}mobile/crs/", "POST", json);
       print("Submitted Succesfully");

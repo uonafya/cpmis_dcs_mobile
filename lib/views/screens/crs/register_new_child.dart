@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
@@ -23,8 +24,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/registry_provider.dart';
+import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
+
+
 
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
@@ -44,13 +48,14 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   final birthRegIdController = TextEditingController();
   int formStep = 0;
   String currentClass = "";
+  String dateOfBirth = "";
 
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked = registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
+    bool _isChecked =
+        registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
         birthRegIdController: birthRegIdController,
@@ -191,12 +196,32 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       'Date of Birth *',
                       style: TextStyle(color: kTextGrey),
                     ),
-                    const SizedBox(height: 6),
-                    const CustomTextField(hintText: 'Date of Birth'),
+                    CustomDatePicker(
+                      hintText: 'Date of Birth',
+                      lastDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      showInitialDate: true,
+                      initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                      onChanged: (val) {
+                        dateOfBirth =
+                            DateFormat('yyyy-MM-dd').format(val);
+                        registryProvider.setDateOfBirth(dateOfBirth);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please select a date';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(height: 15),
                     h2Text("Class"),
                     CustomDropdown(
-                      initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
+                      initialValue: registryProvider
+                              .registryPersonalDetailsModel.childClass.isEmpty
+                          ? "Please Select"
+                          : registryProvider
+                              .registryPersonalDetailsModel.childClass,
                       items: childClass,
                       onChanged: (value) {
                         setState(() {
@@ -293,10 +318,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             : "Back",
                     textColor: Colors.white,
                     color: formStep == 1 &&
-                        selectedStep ==
-                            REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
-                    ? kTextGrey
-                    : kPrimaryColor,
+                            selectedStep ==
+                                REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                        ? kTextGrey
+                        : kPrimaryColor,
                     onTap: () {
                       if (formStep == 0) {
                         setState(() {
@@ -318,16 +343,27 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     : const SizedBox.shrink(),
                 selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
                     ? Expanded(
-                  child: CustomButton(
-                    text: 'Submit',
-                    textColor: Colors.white,
-                    onTap: () {
-                      print("ID :${birthRegIdController.text}");
-                      registryProvider.submit();
-                      Get.off(() => const CaseRegistrationSheet());
-                    },
-                  ),
-                )
+                        child: CustomButton(
+                          text: 'Submit',
+                          textColor: Colors.white,
+                          onTap: () {
+                            var crsAbout = AboutChildCRSFormModel(
+                                initialDetails: InitialChildDetails(
+                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                                  firstName: registryProvider.registryPersonalDetailsModel.firstName,
+                                  otherNames: registryProvider.registryPersonalDetailsModel.otherNames ?? "",
+                                  sex: registryProvider.registryPersonalDetailsModel.sex,
+                                  surname: registryProvider.registryPersonalDetailsModel.surname,
+                                ),
+                                familyStatus: [],
+                                houseEconomicStatus: "");
+                            registryProvider.submit();
+                            Get.off(() => const CaseRegistrationSheet());
+                            Provider.of<CRSFormProvider>(context, listen: false)
+                                .about = crsAbout;
+                          },
+                        ),
+                      )
                     : const SizedBox(),
               ],
             ),
