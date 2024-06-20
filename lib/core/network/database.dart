@@ -410,6 +410,17 @@ class LocalDB {
         type TEXT,
         name TEXT,
         primaryUnit INTEGER
+       );
+    ''');
+    
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $caseClosureTable(
+        case_id TEXT PRIMARY KEY,
+        case_outcome TEXT,
+        transfered_to TEXT,
+        case_closure_notes TEXT,
+        date_of_case_closure TEXT,
+        intervention_list TEXT
       );
     ''');
   }

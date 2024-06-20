@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class CRSDetails extends StatelessWidget {
-  const CRSDetails({super.key});
+  const CRSDetails({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,9 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-          const Text("BABY KATHAMBI | Female | 7 Years"),
+          Text(
+            "${caseLoad.ovcFirstName} ${caseLoad.ovcSurname} | ${caseLoad.ovcSex}",
+          ),
           const SizedBox(
             height: 14,
           ),
@@ -234,50 +238,50 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          const CustomCard(title: "CASE REPORTING", children: [
+          CustomCard(title: "CASE REPORTING", children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Case Reporter/Originator",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Mother",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.caseReporter ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Reporter Name(s)",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "ANN KATHAMBI NJERU",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.caseReporter ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Reporter Phone Number",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "0713532868",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.caseReporter ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -291,7 +295,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -305,7 +309,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -319,7 +323,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -333,7 +337,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -347,7 +351,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -365,50 +369,52 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          const CustomCard(title: "ABOUT THE CHILD", children: [
+          CustomCard(title: "ABOUT THE CHILD", children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Child Name(s)",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "BABY KATHAMBI",
-                  style: TextStyle(fontSize: 12),
+                  "${caseLoad.ovcFirstName} ${caseLoad.ovcSurname}",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Sex",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Female",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.ovcSex ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Siblings",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.siblings == null
+                      ? ""
+                      : caseLoad.siblings!.map((e) => e.id ?? "-").join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -422,7 +428,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -436,7 +442,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -450,7 +456,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -464,7 +470,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -478,7 +484,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -492,7 +498,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -510,36 +516,36 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          const CustomCard(title: "CASE DETAILS", children: [
+          CustomCard(title: "CASE DETAILS", children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Case Serial",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "CCO/47/287/5/29/3004/2018",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.caseSerial ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Risk Level",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Medium",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.riskLevel ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -553,7 +559,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -567,7 +573,7 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -588,13 +594,13 @@ class CRSDetails extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Case Remarks",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "None",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.caseRemarks ?? "None",
+                  style: const TextStyle(fontSize: 12),
                 ),
               ],
             ),

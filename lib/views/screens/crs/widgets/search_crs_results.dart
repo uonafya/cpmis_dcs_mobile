@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -5,7 +6,7 @@ import 'package:get/route_manager.dart';
 class SearchCrsResults extends StatelessWidget {
   const SearchCrsResults({super.key, required this.crsRecords});
 
-  final List<Map<String, dynamic>> crsRecords;
+  final List<CaseLoadModel> crsRecords;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,9 @@ class SearchCrsResults extends StatelessWidget {
               final crsRecord = crsRecords[index];
               return GestureDetector(
                 onTap: () {
-                  Get.to(() => const CRSDetails());
+                  Get.to(() => CRSDetails(
+                        caseLoad: crsRecord,
+                      ));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -42,7 +45,7 @@ class SearchCrsResults extends StatelessWidget {
                             style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           Text(
-                            crsRecord["names"].toString(),
+                            "${crsRecord.ovcFirstName} ${crsRecord.ovcSurname} ",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -62,49 +65,7 @@ class SearchCrsResults extends StatelessWidget {
                                       fontSize: 12, color: Colors.grey),
                                 ),
                                 Text(
-                                  crsRecord["id"].toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 14,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Org Unit",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                ),
-                                Text(
-                                  crsRecord["org_unit"].toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Residence",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                ),
-                                Text(
-                                  crsRecord["residence"].toString(),
+                                  crsRecord.ovcCpimsId ?? "-",
                                   style: const TextStyle(fontSize: 12),
                                 ),
                               ],
@@ -123,7 +84,7 @@ class SearchCrsResults extends StatelessWidget {
                                       fontSize: 12, color: Colors.grey),
                                 ),
                                 Text(
-                                  crsRecord["sex"].toString(),
+                                  crsRecord.ovcSex ?? "-",
                                   style: const TextStyle(fontSize: 12),
                                 ),
                               ],
@@ -141,12 +102,12 @@ class SearchCrsResults extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  "Case ",
+                                  "Case Serial",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey),
                                 ),
                                 Text(
-                                  crsRecord["case_serial"].toString(),
+                                  crsRecord.caseSerial ?? "-",
                                   style: const TextStyle(fontSize: 12),
                                 ),
                               ],
@@ -155,21 +116,25 @@ class SearchCrsResults extends StatelessWidget {
                           const SizedBox(
                             width: 14,
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Case Category",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                ),
-                                Text(
-                                  crsRecord["case_category"].toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Case Category",
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          Text(
+                            crsRecord.caseCategories == null
+                                ? "-"
+                                : crsRecord.caseCategories!
+                                    .map((e) => e.caseCategory)
+                                    .join(","),
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ],
                       ),
