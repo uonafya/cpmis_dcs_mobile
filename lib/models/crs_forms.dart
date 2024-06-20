@@ -49,60 +49,134 @@ class CaseReportingCRSFormModel {
       required this.dateCaseReported});
 }
 
-class InitialChildDetails {
-  final String firstName;
-  final String surname;
-  final String otherNames;
-  final String sex;
-  final DateTime? dateOfBirth;
-  final int? age;
+abstract class BaseCRSFormModel {
+  late String firstName;
+  late String surName;
+  String? otherNames;
+  DateTime? dateOfBirth;
+  late String sex;
 
-  const InitialChildDetails(
+  Map<String, dynamic> toJSON();
+
+  BaseCRSFormModel(
       {required this.firstName,
-      required this.surname,
-      required this.otherNames,
-      required this.sex,
-      this.dateOfBirth,
-      this.age});
+      required this.surName,
+      this.otherNames,
+      required this.dateOfBirth,
+      required this.sex});
 }
 
-class SiblingDetails {
-  final int childID;
-  final int siblingID;
-  final DateTime dateLinked;
-  final DateTime? dateUnlinked;
+class InitialChildDetails extends BaseCRSFormModel {
+  final int? age;
+  final String? currentClass;
   final String? remarks;
 
-  const SiblingDetails({
-    required this.childID,
-    required this.siblingID,
-    required this.dateLinked,
-    this.dateUnlinked,
-    this.remarks,
-  });
+  InitialChildDetails(
+      {required super.firstName,
+      required super.surName,
+      super.otherNames,
+      required DateTime super.dateOfBirth,
+      required super.sex,
+      this.age,
+      this.currentClass,
+      this.remarks});
 
+  @override
   Map<String, dynamic> toJSON() {
     return {
-      "child_person_id": childID,
-      "sibling_person_id": siblingID,
-      "date_linked": dateLinked, // Date submitted
-      "date_delinked": dateUnlinked,
-      "remarks": remarks ?? "",
+      "first_name": firstName,
+      "surname": surName,
+      "other_names": otherNames,
+      "sex": sex,
+      "date_of_birth": convertDateToYMD(dateOfBirth),
+      "age": age,
+      "current_class": currentClass,
+      "remarks": remarks
     };
   }
 }
 
-class Caregivers {
-  final int caregiverCPIMSID;
-  final String relationshipType;
-  final int personID;
-  final String dateLinked;
+class SiblingDetails extends BaseCRSFormModel {
+  final DateTime dateLinked;
+  final DateTime? dateUnlinked;
+  final int? age;
+  final String? currentClass;
+  final String? remarks;
 
-  const Caregivers(
-      {required this.caregiverCPIMSID,
-      required this.relationshipType,
-      required this.personID,
-      required this.dateLinked});
+  SiblingDetails(
+      String firstName,
+      String surName,
+      String? otherNames,
+      DateTime dateOfBirth,
+      String sex,
+      this.age,
+      this.currentClass,
+      this.remarks,
+      this.dateLinked,
+      this.dateUnlinked)
+      : super(
+          firstName: firstName,
+          surName: surName,
+          otherNames: otherNames,
+          dateOfBirth: dateOfBirth,
+          sex: sex,
+        );
+
+  @override
+  Map<String, dynamic> toJSON() {
+    return {
+      "first_name": firstName,
+      "surname": surName,
+      "other_names": otherNames,
+      "sex": sex,
+      "date_of_birth": convertDateToYMD(dateOfBirth),
+      "age": age,
+      "current_class": currentClass,
+      "remarks": remarks,
+      "date_linked": convertDateToYMD(dateLinked),
+      "date_unlinked": convertDateToYMD(dateUnlinked)
+    };
+  }
+}
+
+class Caregivers extends BaseCRSFormModel {
+  final String relationshipToChild;
+  final String nationalIdNumber;
+  final String? phoneNumber;
+  final bool isRegistered;
+
+  Caregivers(
+      String firstName,
+      String surName,
+      String? otherNames,
+      DateTime dateOfBirth,
+      String sex,
+      this.relationshipToChild,
+      this.nationalIdNumber,
+      this.phoneNumber,
+      this.isRegistered)
+      : super(
+          firstName: firstName,
+          surName: surName,
+          otherNames: otherNames,
+          dateOfBirth: dateOfBirth,
+          sex: sex,
+        );
+
+  @override
+  Map<String, dynamic> toJSON() {
+    return {
+      "first_name": firstName,
+      "surname": surName,
+      "other_names": otherNames,
+      "sex": sex,
+      "date_of_birth": convertDateToYMD(dateOfBirth),
+      "relationship_to_child": relationshipToChild,
+      "national_id_number": nationalIdNumber,
+      "phone_number": phoneNumber,
+      "is_registered": isRegistered
+    };
+  }
 }
 
 class AboutChildCRSFormModel {
@@ -195,7 +269,7 @@ class Perpetrators {
       this.age});
 
   Map<String, dynamic> toJSON() {
-    var json =  {
+    var json = {
       "relationship_to_child": relationshipType,
       "first_name": firstName,
       "surname": lastName,
@@ -221,11 +295,7 @@ class CRSReferral {
       {required this.actor, required this.reason, required this.specify});
 
   Map<String, dynamic> toJSON() {
-    return {
-      "actor": actor,
-      "specify": specify,
-      "reason": reason
-    };
+    return {"actor": actor, "specify": specify, "reason": reason};
   }
 }
 
@@ -310,27 +380,26 @@ class CRSForm {
       jsonToReturn['reporter_othernumber'] = caseReporting?.reporterOtherName;
     }
 
-    if(caseReporting?.placeOfOccurence == true) {
+    if (caseReporting?.placeOfOccurence == true) {
       jsonToReturn['country'] = "Kenya";
       jsonToReturn['county'] = caseReporting?.county;
       jsonToReturn['sub_county'] = caseReporting?.subCounty;
 
-      if(caseReporting?.ward != null) {
+      if (caseReporting?.ward != null) {
         jsonToReturn['ward'] = caseReporting?.ward;
       }
 
-      if(caseReporting?.village != null) {
+      if (caseReporting?.village != null) {
         jsonToReturn['village'] = caseReporting?.village;
       }
 
-      if(caseReporting?.location != null) {
+      if (caseReporting?.location != null) {
         jsonToReturn['location'] = caseReporting?.location;
       }
 
-      if(caseReporting?.subLocation != null) {
+      if (caseReporting?.subLocation != null) {
         jsonToReturn['sub_location'] = caseReporting?.subLocation;
       }
-
     } else {
       jsonToReturn['country'] = caseReporting?.country;
       jsonToReturn['city'] = caseReporting?.city;
@@ -347,11 +416,11 @@ class CRSForm {
     jsonToReturn['house_economic_status'] = about?.houseEconomicStatus;
     jsonToReturn['family_status'] = about?.familyStatus;
 
-    if(about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
+    if (about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
       jsonToReturn['close_friends'] = about?.closeFriends;
     }
 
-    if(about?.hobbies != null && about!.hobbies!.isNotEmpty) {
+    if (about?.hobbies != null && about!.hobbies!.isNotEmpty) {
       jsonToReturn['hobbies'] = about?.hobbies;
     }
 
@@ -371,15 +440,18 @@ class CRSForm {
     jsonToReturn['case_serial_number'] = caseData?.serialNumber;
     jsonToReturn['offender_known'] = caseData?.offenderKnown;
 
-    if(caseData?.offenderKnown == "Known") {
-      jsonToReturn['perpetrators'] = caseData?.perpetrators.map((e) => e.toJSON).toList();
+    if (caseData?.offenderKnown == "Known") {
+      jsonToReturn['perpetrators'] =
+          caseData?.perpetrators.map((e) => e.toJSON).toList();
     }
 
-    jsonToReturn['case_categories'] = caseData?.crsCategories.map((e) => e.toJSON()).toList();
+    jsonToReturn['case_categories'] =
+        caseData?.crsCategories.map((e) => e.toJSON()).toList();
     jsonToReturn['risk_level'] = caseData?.riskLevel;
 
     if (caseData?.referralsPresent == true) {
-      jsonToReturn['referrals'] = caseData?.referrals?.map((e) => e.toJSON()).toList();
+      jsonToReturn['referrals'] =
+          caseData?.referrals?.map((e) => e.toJSON()).toList();
     }
 
     if (caseData?.summonsIssued == true) {
@@ -392,15 +464,16 @@ class CRSForm {
     return jsonToReturn;
   }
 
-  Future<void> sendToUpstream() async{
+  Future<void> sendToUpstream() async {
     try {
       // Convert to JSON
       var json = toJSON();
 
       // Submit
-      var request = await httpClient.request("${cpimsApiUrl}mobile/crs/", "POST", json);
+      var request =
+          await httpClient.request("${cpimsApiUrl}mobile/crs/", "POST", json);
       print("Submitted Succesfully");
-    } catch(err) {
+    } catch (err) {
       throw "Could Not Send To Upstream";
     }
   }
