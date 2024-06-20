@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/models/metadata.dart';
+import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<void> saveMetadata() async {
@@ -14,6 +15,24 @@ Future<void> saveMetadata() async {
     var metadata = results.data.map((e) => Metadata.fromJSON(e)).toList();
 
     await saveMetadataInDB(db, metadata);
+  } catch (err) {
+    throw "Could Not Get Metadata";
+  }
+}
+
+Future<List<NameID>> getMetadata(MetadataTypes type) async {
+  try {
+    var db = await localdb.database;
+    var results = await db.query(metadataTable,
+        distinct: true,
+        where: "fieldName = ?",
+        columns: ['description', 'id'],
+        whereArgs: [type.value]);
+
+    return results
+        .map((e) =>
+            NameID(name: e['description'].toString(), id: e['id'].toString()))
+        .toList();
   } catch (err) {
     throw "Could Not Get Metadata";
   }
@@ -46,8 +65,8 @@ Future<void> saveMetadataInDB(Database db, List<dynamic> metadata) async {
 enum MetadataTypes { category, reporter, areaType, sex }
 
 extension MetadataValues on MetadataTypes {
-  String value() {
-    switch(this) {
+  String get value {
+    switch (this) {
       case MetadataTypes.category:
         return "case_category_id";
       case MetadataTypes.reporter:
