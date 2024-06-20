@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
-import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
@@ -129,11 +128,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
               height: 30,
             ),
             CustomButton(
-              child: Text("Save Organizational Units"),
-              onTap: () async{
-                var db = await localdb.database;
-                var results = await getCountries();
-                print(results);
+              child: Text("Get categories"),
+              onTap: () async {
+                await saveCategoriesInDB();
               },
             ),
             const SizedBox(height: 10,),

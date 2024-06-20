@@ -1,5 +1,3 @@
-import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
-
 class CaseReportingCRSFormModel {
   String originator;
   String? courtName;
@@ -53,7 +51,7 @@ class InitialChildDetails {
   final String otherNames;
   final String sex;
   final DateTime? dateOfBirth;
-  final int age;
+  final int? age;
 
   const InitialChildDetails(
       {required this.firstName,
@@ -61,7 +59,7 @@ class InitialChildDetails {
       required this.otherNames,
       required this.sex,
       this.dateOfBirth,
-      required this.age});
+      this.age});
 }
 
 class SiblingDetails {
@@ -193,7 +191,7 @@ class Perpetrators {
       this.age});
 
   Map<String, dynamic> toJSON() {
-    var json =  {
+    var json = {
       "relationship_to_child": relationshipType,
       "first_name": firstName,
       "surname": lastName,
@@ -203,7 +201,7 @@ class Perpetrators {
     if (dateOfBirth != null) {
       json['date_of_birth'] = dateOfBirth!.toIso8601String();
     }
-    if(sex != null) {
+    if (sex != null) {
       json['sex'] = sex;
     }
     return json;
@@ -219,11 +217,7 @@ class CRSReferral {
       {required this.actor, required this.reason, required this.specify});
 
   Map<String, dynamic> toJSON() {
-    return {
-      "actor": actor,
-      "specify": specify,
-      "reason": reason
-    };
+    return {"actor": actor, "specify": specify, "reason": reason};
   }
 }
 
@@ -308,34 +302,34 @@ class CRSForm {
       jsonToReturn['reporter_othernumber'] = caseReporting?.reporterOtherName;
     }
 
-    if(caseReporting?.placeOfOccurence == true) {
+    if (caseReporting?.placeOfOccurence == true) {
       jsonToReturn['country'] = "Kenya";
       jsonToReturn['county'] = caseReporting?.county;
       jsonToReturn['sub_county'] = caseReporting?.subCounty;
 
-      if(caseReporting?.ward != null) {
+      if (caseReporting?.ward != null) {
         jsonToReturn['ward'] = caseReporting?.ward;
       }
 
-      if(caseReporting?.village != null) {
+      if (caseReporting?.village != null) {
         jsonToReturn['village'] = caseReporting?.village;
       }
 
-      if(caseReporting?.location != null) {
+      if (caseReporting?.location != null) {
         jsonToReturn['location'] = caseReporting?.location;
       }
 
-      if(caseReporting?.subLocation != null) {
+      if (caseReporting?.subLocation != null) {
         jsonToReturn['sub_location'] = caseReporting?.subLocation;
       }
-
     } else {
       jsonToReturn['country'] = caseReporting?.country;
       jsonToReturn['city'] = caseReporting?.city;
     }
 
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
-    jsonToReturn['reporting_orgunit'] = caseReporting?.reportingOrganizationalUnit;
+    jsonToReturn['reporting_orgunit'] =
+        caseReporting?.reportingOrganizationalUnit;
     jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
 
     jsonToReturn['child'] = {};
@@ -344,11 +338,11 @@ class CRSForm {
     jsonToReturn['house_economic_status'] = about?.houseEconomicStatus;
     jsonToReturn['family_status'] = about?.familyStatus;
 
-    if(about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
+    if (about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
       jsonToReturn['close_friends'] = about?.closeFriends;
     }
 
-    if(about?.hobbies != null && about!.hobbies!.isNotEmpty) {
+    if (about?.hobbies != null && about!.hobbies!.isNotEmpty) {
       jsonToReturn['hobbies'] = about?.hobbies;
     }
 
@@ -368,15 +362,18 @@ class CRSForm {
     jsonToReturn['case_serial_number'] = caseData?.serialNumber;
     jsonToReturn['offender_known'] = caseData?.offenderKnown;
 
-    if(caseData?.offenderKnown == "Known") {
-      jsonToReturn['perpetrators'] = caseData?.perpetrators.map((e) => e.toJSON).toList();
+    if (caseData?.offenderKnown == "Known") {
+      jsonToReturn['perpetrators'] =
+          caseData?.perpetrators.map((e) => e.toJSON).toList();
     }
 
-    jsonToReturn['case_categories'] = caseData?.crsCategories.map((e) => e.toJSON()).toList();
+    jsonToReturn['case_categories'] =
+        caseData?.crsCategories.map((e) => e.toJSON()).toList();
     jsonToReturn['risk_level'] = caseData?.riskLevel;
 
     if (caseData?.referralsPresent == true) {
-      jsonToReturn['referrals'] = caseData?.referrals?.map((e) => e.toJSON()).toList();
+      jsonToReturn['referrals'] =
+          caseData?.referrals?.map((e) => e.toJSON()).toList();
     }
 
     if (caseData?.summonsIssued == true) {

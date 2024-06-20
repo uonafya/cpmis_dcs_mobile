@@ -2,7 +2,6 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/search_caseload.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/register_new_child.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/search_crs_results.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
