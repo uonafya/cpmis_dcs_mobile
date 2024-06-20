@@ -39,7 +39,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
   void handleAddService() async {
     // caseID captured from elsewhere
-    String? caseId = "1232";
+    String? caseId = "1233";
 
     if (courtSessionType == "Please select") {
       Get.snackbar("Error", "Please select a court session type.");
@@ -210,7 +210,12 @@ class _CourtFollowUpState extends State<CloseFollowup> {
                   ),
                 ),
                 onTap: () async {
-                  await closureDatabaseHelper.deleteClosureFollowup("1232");
+                  try {
+                    await closureDatabaseHelper.deleteClosureFollowup("1233");
+                    Get.snackbar("Success", "Delete successful.");
+                  } catch (e) {
+                    Get.snackbar("Error", "Failed to delete.");
+                  }
                 },
               )
             ],

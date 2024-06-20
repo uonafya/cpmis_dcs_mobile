@@ -13,12 +13,13 @@ class ClosureDatabaseHelper {
       await db.insert(
         caseClosureTable,
         {
-          'case_id': closureData.caseId,
-          'case_outcome': closureData.caseOutcome,
-          'transfered_to': closureData.transferedTo,
-          'case_closure_notes': closureData.caseClosureNotes,
-          'date_of_case_closure': closureData.dateOfCaseClosure,
-          'intervention_list': jsonEncode(closureData.interventionList),
+          CaseClosureTable.caseID: closureData.caseId,
+          CaseClosureTable.caseOutcome: closureData.caseOutcome,
+          CaseClosureTable.transferredTo: closureData.transferedTo,
+          CaseClosureTable.caseClosureNotes: closureData.caseClosureNotes,
+          CaseClosureTable.dateOfCaseClosure: closureData.dateOfCaseClosure,
+          CaseClosureTable.interventionList:
+              jsonEncode(closureData.interventionList),
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -48,7 +49,7 @@ class ClosureDatabaseHelper {
           // Create a new map with the updated intervention_list field
           final updatedResult = {
             ...queryResults.first,
-            'intervention_list': jsonDecode(interventionList),
+            CaseClosureTable.interventionList: jsonDecode(interventionList),
           };
 
           return ClosureFollowupModel.fromJson(updatedResult);
@@ -82,3 +83,22 @@ class ClosureDatabaseHelper {
       }
     }
   }
+}
+
+class CaseClosureTable {
+  static final List<String> values = [
+    caseID,
+    caseOutcome,
+    transferredTo,
+    caseClosureNotes,
+    dateOfCaseClosure,
+    interventionList
+  ];
+
+  static const String caseID = 'case_id';
+  static const String caseOutcome = 'case_outcome';
+  static const String transferredTo = 'transfered_to';
+  static const String caseClosureNotes = 'case_closure_notes';
+  static const String dateOfCaseClosure = 'date_of_case_closure';
+  static const String interventionList = 'intervention_list';
+}

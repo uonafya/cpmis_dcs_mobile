@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:flutter/foundation.dart';
@@ -334,7 +335,6 @@ class LocalDB {
       );
     ''');
 
-
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
             ${CaregiversCaseloadTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -405,17 +405,17 @@ class LocalDB {
 
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
-        case_id TEXT PRIMARY KEY,
-        case_outcome TEXT,
-        transfered_to TEXT,
-        case_closure_notes TEXT,
-        date_of_case_closure TEXT,
-        intervention_list TEXT
+        ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.caseOutcome} TEXT,
+        ${CaseClosureTable.transferredTo} TEXT,
+        ${CaseClosureTable.caseClosureNotes} TEXT,
+        ${CaseClosureTable.dateOfCaseClosure} TEXT,
+        ${CaseClosureTable.interventionList} TEXT
       );
     ''');
   }
 
-   // insert multiple caseload records
+  // insert multiple caseload records
   Future<void> insertMultipleCaseLoad(
     List<CaseLoadModel> caseLoadModelData,
   ) async {
