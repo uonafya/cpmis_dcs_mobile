@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+
 import '../models/registry/personal_details_model.dart';
 import '../models/registry/registry_caregiver_model.dart';
 import '../models/registry/registry_cbo_chv_model.dart';
@@ -55,7 +56,6 @@ class RegistryProvider extends ChangeNotifier {
   void setDateOfBirth(String value) {
     _registryPersonalDetailsModel.dateOfBirth = value;
   }
-
 
   void setChildClass(String value) {
     _registryPersonalDetailsModel.childClass = value;
@@ -124,7 +124,6 @@ class RegistryProvider extends ChangeNotifier {
   void addCaregiver(RegistryCaregiverModel value) {
     caregivers.add(value);
     notifyListeners();
-
   }
 
   void addSibling(RegistrySiblingModel value) {
@@ -135,7 +134,6 @@ class RegistryProvider extends ChangeNotifier {
   void removeCaregiver(RegistryCaregiverModel value) {
     caregivers.remove(value);
     notifyListeners();
-
   }
 
   void removeSibling(RegistrySiblingModel value) {
@@ -153,12 +151,19 @@ class RegistryProvider extends ChangeNotifier {
     _registryCboChvModel.clear();
   }
 
-  void submit() {
-    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
-    RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
-    clearState();
-    if (kDebugMode) {
-      print(registerNewChildModel.toJson());
+  Future<void> submit() async {
+    try {
+      RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+      await RegisterNewChildQuery.insertRegistryFormDetails(
+          registerNewChildModel);
+      clearState();
+      if (kDebugMode) {
+        print(registerNewChildModel.toJson());
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print("Error inserting new child: $e");
+      }
     }
     RegisterNewChildQuery.getRegistryFormDetails();
   }
