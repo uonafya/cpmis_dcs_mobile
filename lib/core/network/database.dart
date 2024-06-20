@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:flutter/foundation.dart';
@@ -413,6 +414,15 @@ class LocalDB {
         ${CaseClosureTable.interventionList} TEXT
       );
     ''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
+    ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.encounterNotes} TEXT,
+    ${ServiceFollowupTable.caseCategoryId} TEXT,
+    ${ServiceFollowupTable.serviceProvidedList} TEXT
+  );
+''');
   }
 
   // insert multiple caseload records
