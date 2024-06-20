@@ -54,7 +54,7 @@ class RegisterNewChildQuery {
           otherNames: maps[i]['otherNames'],
           sex: maps[i]['sex'],
           dateOfBirth: maps[i]['dateOfBirth'],
-          childClass: "",  // TODO : Add key for childClass
+          childClass: maps[i]['childClass'],  // TODO : Add key for childClass
           registryIdentificationModel: RegistryIdentificationModel.fromJson(jsonDecode(maps[i]['registryIdentificationModel'])),
           registryContactDetailsModel: RegistryContactDetailsModel.fromJson(jsonDecode(maps[i]['registryContactDetailsModel'])),
           registryLocationModel: RegistryLocationModel.fromJson(jsonDecode(maps[i]['registryLocationModel'])),
