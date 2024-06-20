@@ -6,4 +6,9 @@ class NameID {
     required this.name,
     required this.id
   });
+
+  @override
+  String toString() {
+    return "name: $name; id: $id";
+  }
 }

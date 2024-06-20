@@ -3,6 +3,30 @@ import 'package:cpims_dcs_mobile/core/constants/location_types.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../models/locationFromUpstream.dart';
+
+// Saving locations
+Future<void> saveLocation(Database db, List<dynamic> locations) async {
+  try {
+    var batch = db.batch();
+
+    for (var i = 0; i < locations.length; i++) {
+      var location = locations[i];
+      batch.insert(geolocationTable, {
+        "id": location.id,
+        "code": location.areaCode,
+        "name": location.areaName,
+        "type": location.areaType,
+        "parent": location.parent
+      });
+    }
+
+    await batch.commit();
+  } catch(err) {
+    throw "Could Not Save Location";
+  }
+}
+
 // Get countries
 Future<List<NameID>> getCountries(Database db) async {
   try {
