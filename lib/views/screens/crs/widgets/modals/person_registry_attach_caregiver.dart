@@ -169,7 +169,7 @@ class _PersonRegistryAttachCareGiverState
             onChanged: (value) {
               setState(() {
                 phoneNumber = value;
-              });;
+              });
             },
           ),
           const SizedBox(height: 15),

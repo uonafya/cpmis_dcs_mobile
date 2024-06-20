@@ -1,9 +1,7 @@
-import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
-
 import '../models/registry/personal_details_model.dart';
 import '../models/registry/registry_caregiver_model.dart';
 import '../models/registry/registry_cbo_chv_model.dart';
@@ -133,6 +131,23 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  void submit() {
+    print(registryPersonalDetailsModel.toJson());
+    print(_registryIdentificationModel.toJson());
+    print(_registryContactDetailsModel.toJson());
+    print("[");
+    for (var value in caregivers) {print(value.toJson());}
+    print("]");
+    print("[");
+    for (var value in siblings) {print(value.toJson());}
+    print("]");
+    print(_registryLocationModel.toJson());
+    print(_registryCboChvModel.toJson());
+
+    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+    RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
+
   void removeCaregiver(RegistryCaregiverModel value) {
     caregivers.remove(value);
     notifyListeners();
@@ -168,5 +183,6 @@ class RegistryProvider extends ChangeNotifier {
       }
     }
     RegisterNewChildQuery.getRegistryFormDetails();
+
   }
 }

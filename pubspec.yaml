@@ -52,12 +52,12 @@ dependencies:
   webview_flutter: ^4.8.0
 
 dev_dependencies:
-  flutter_launcher_icons: "^0.10.0"
+  flutter_launcher_icons: "^0.13.0"
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
 
-flutter_icons:
+flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/logo_gok.png"
