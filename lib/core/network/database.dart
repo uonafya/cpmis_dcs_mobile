@@ -23,7 +23,7 @@ class LocalDB {
       final path = join(dbPath, filePath);
       return await openDatabase(
         path,
-        version: 6,
+        version: 7,
         onCreate: _initialise,
         onUpgrade: (db, oldVersion, newVersion) {
           if (oldVersion < newVersion) {
@@ -144,7 +144,7 @@ class LocalDB {
             reportingOrgUnitID INTEGER NOT NULL,          
             dateCaseReported TEXT NOT NULL,
             childID TEXT NOT NULL,
-            countryID INTEGER,
+            country TEXT,
             city TEXT,
             houseEconomic TEXT NOT NULL,
             mentalConditionStatus TEXT NOT NULL,
@@ -159,7 +159,6 @@ class LocalDB {
             FOREIGN KEY(subCountyID) REFERENCES geolocations(id),
             FOREIGN KEY(wardID) REFERENCES geolocations(id),
             FOREIGN KEY(sublocationID) REFERENCES geolocations(id),
-            FOREIGN KEY(countryID) REFERENCES geolocations(id),
             FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
             FOREIGN KEY(childID) REFERENCES people(id),
             FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
@@ -236,7 +235,9 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $categoriesTable (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            subcategory TEXT,
+            order INTEGER
           );
        ''');
 
