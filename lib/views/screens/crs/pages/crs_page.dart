@@ -136,6 +136,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 print(results);
               },
             ),
+            const SizedBox(height: 10,),
             Row(
               children: <Widget>[
                 Expanded(
