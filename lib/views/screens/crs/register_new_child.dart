@@ -1,4 +1,6 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
@@ -44,10 +46,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked = registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
+    bool _isChecked =
+        registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
         birthRegIdController: birthRegIdController,
@@ -96,12 +98,17 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
+                      initialValue: registryProvider
+                              .registryPersonalDetailsModel.personType.isEmpty
+                          ? selectedPersonCriteria
+                          : registryProvider
+                              .registryPersonalDetailsModel.personType,
                       items: personCriteria,
                       onChanged: (val) {
                         setState(() {
                           selectedPersonCriteria = val;
-                          registryProvider.setPersonType(selectedPersonCriteria);
+                          registryProvider
+                              .setPersonType(selectedPersonCriteria);
                         });
                       },
                     ),
@@ -127,10 +134,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'First Name',
-                      initialValue: registryProvider.registryPersonalDetailsModel.firstName,
+                      initialValue: registryProvider
+                          .registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
-                          registryProvider.setFirstName(value);
-    },
+                        registryProvider.setFirstName(value);
+                      },
                     ),
                     const SizedBox(height: 15),
                     const Text(
@@ -140,10 +148,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Surname',
-                      initialValue: registryProvider.registryPersonalDetailsModel.surname,
+                      initialValue:
+                          registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
-                          registryProvider.setSurname(value);
-    },
+                        registryProvider.setSurname(value);
+                      },
                     ),
                     const SizedBox(height: 15),
                     const Text('Other Names',
@@ -151,9 +160,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Other Names',
-                      initialValue: registryProvider.registryPersonalDetailsModel.otherNames,
+                      initialValue: registryProvider
+                          .registryPersonalDetailsModel.otherNames,
                       onChanged: (value) {
-                          registryProvider.setOtherNames(value);
+                        registryProvider.setOtherNames(value);
                       },
                     ),
                     const SizedBox(height: 15),
@@ -163,7 +173,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
+                      initialValue: registryProvider
+                              .registryPersonalDetailsModel.sex.isEmpty
+                          ? "Please Select"
+                          : registryProvider.registryPersonalDetailsModel.sex,
                       items: const ["Please Select", "Male", "Female"],
                       onChanged: (value) {
                         setState(() {
@@ -182,7 +195,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 15),
                     h2Text("Class"),
                     CustomDropdown(
-                      initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
+                      initialValue: registryProvider
+                              .registryPersonalDetailsModel.childClass.isEmpty
+                          ? "Please Select"
+                          : registryProvider
+                              .registryPersonalDetailsModel.childClass,
                       items: childClass,
                       onChanged: (value) {
                         setState(() {
@@ -279,10 +296,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             : "Back",
                     textColor: Colors.white,
                     color: formStep == 1 &&
-                        selectedStep ==
-                            REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
-                    ? kTextGrey
-                    : kPrimaryColor,
+                            selectedStep ==
+                                REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                        ? kTextGrey
+                        : kPrimaryColor,
                     onTap: () {
                       if (formStep == 0) {
                         setState(() {
@@ -304,16 +321,34 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     : const SizedBox.shrink(),
                 selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
                     ? Expanded(
-                  child: CustomButton(
-                    text: 'Submit',
-                    textColor: Colors.white,
-                    onTap: () {
-                      print("ID :${birthRegIdController.text}");
-                      registryProvider.submit();
-                      Get.off(() => const CaseRegistrationSheet());
-                    },
-                  ),
-                )
+                        child: CustomButton(
+                          text: 'Submit',
+                          textColor: Colors.white,
+                          onTap: () {
+                            var crsAbout = AboutChildCRSFormModel(
+                                initialDetails: InitialChildDetails(
+                                  dateOfBirth: registryProvider
+                                      .registryPersonalDetailsModel.dateOfBirth,
+                                  firstName: registryProvider
+                                      .registryPersonalDetailsModel.firstName,
+                                  otherNames: registryProvider
+                                          .registryPersonalDetailsModel
+                                          .otherNames ??
+                                      "",
+                                  sex: registryProvider
+                                      .registryPersonalDetailsModel.sex,
+                                  surname: registryProvider
+                                      .registryPersonalDetailsModel.surname,
+                                ),
+                                familyStatus: [],
+                                houseEconomicStatus: "");
+                            registryProvider.submit();
+                            Get.off(() => const CaseRegistrationSheet());
+                            Provider.of<CRSFormProvider>(context, listen: false)
+                                .about = crsAbout;
+                          },
+                        ),
+                      )
                     : const SizedBox(),
               ],
             ),
