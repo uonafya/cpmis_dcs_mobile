@@ -106,10 +106,10 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.crsCategories.length; j++) {
         await db.insert(crsFormCategoriesTable, {
           "formID": form.caseID,
-          "categoryID": form.caseData!.crsCategories[j].category,
-          "placeOfEvent": form.caseData!.crsCategories[j].placeOfEvent,
-          "caseNature": form.caseData!.crsCategories[j].caseNature,
-          "dateOfEvent": form.caseData!.crsCategories[j].dateOfEvent,
+          "categoryID": form.caseData?.crsCategories[j].category,
+          "placeOfEvent": form.caseData?.crsCategories[j].placeOfEvent,
+          "caseNature": form.caseData?.crsCategories[j].caseNature,
+          "dateOfEvent": form.caseData?.crsCategories[j].dateOfEvent,
         });
 
         // Inserting sub categories
