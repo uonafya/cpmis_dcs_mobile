@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/models/categories_from_upstream.dart';
+import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -38,5 +39,25 @@ Future<void> saveCategories(Database db, List<dynamic> categories) async {
     await batch.commit();
   } catch(err) {
     throw "Could Not Get categories";
+  }
+}
+
+Future<List<NameID>> getCategoriesFromDB() async{
+  try {
+    var db = await localdb.database;
+
+    // Get all items from categories table
+    var results = await db.query(
+      categoriesTable,
+      distinct: true,
+      columns: ['name', 'id'],
+    );
+
+    // Map to name id
+    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+
+    return toReturn;
+  } catch(err) {
+    throw "Could Not Get Categories";
   }
 }
