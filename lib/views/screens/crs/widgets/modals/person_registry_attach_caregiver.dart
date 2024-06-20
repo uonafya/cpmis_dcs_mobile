@@ -169,7 +169,7 @@ class _PersonRegistryAttachCareGiverState
             onChanged: (value) {
               setState(() {
                 phoneNumber = value;
-              });;
+              });
             },
           ),
           const SizedBox(height: 15),
@@ -190,7 +190,7 @@ class _PersonRegistryAttachCareGiverState
                   text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
-                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
+                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);
                   },
