@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class StatisticsItem extends StatelessWidget {
   const StatisticsItem(
@@ -7,19 +8,13 @@ class StatisticsItem extends StatelessWidget {
       required this.icon,
       required this.color,
       required this.secondaryColor,
-      required this.form1ACount,
-      required this.form1BCount,
-      required this.cpaCount,
-      required this.cparaCount,
+      this.otherItems = const [],
       required this.onClick});
   final String title;
   final IconData icon;
   final Color color;
   final Color secondaryColor;
-  final int form1ACount;
-  final int form1BCount;
-  final int cpaCount;
-  final int cparaCount;
+  final List<String> otherItems;
   final VoidCallback onClick;
 
   @override
@@ -29,7 +24,6 @@ class StatisticsItem extends StatelessWidget {
         onClick();
       },
       child: Container(
-        height: 200,
         width: double.infinity,
         color: color,
         margin: const EdgeInsets.symmetric(vertical: 7.5),
@@ -41,70 +35,27 @@ class StatisticsItem extends StatelessWidget {
               child: Row(children: [
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        (form1ACount + form1BCount + cpaCount + cparaCount)
-                            .toString(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(children: [
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          "Form 1A ($form1ACount)",
+                          title,
                           style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 16,
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
                         ),
-                        const Spacer(),
-                        Text(
-                          "CPARA ($cparaCount)",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
+                        const SizedBox(
+                          height: 10,
                         ),
-                        const Spacer(),
+                        ...List.generate(
+                            otherItems.length,
+                            (index) => Text(
+                                  "> ${otherItems[index]}",
+                                  style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 12),
+                                )),
                       ]),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(children: [
-                        Text(
-                          "Form 1B ($form1BCount)",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const Spacer(),
-                        Text(
-                          "CPT ($cpaCount)",
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const Spacer(),
-                      ])
-                    ],
-                  ),
                 ),
                 Icon(
                   icon,
@@ -113,7 +64,6 @@ class StatisticsItem extends StatelessWidget {
                 )
               ]),
             ),
-            const Spacer(),
             Container(
               height: 35,
               width: double.infinity,
@@ -145,15 +95,14 @@ class StatisticsItem extends StatelessWidget {
   }
 }
 
-
 class InfoCard extends StatelessWidget {
-  const InfoCard(
-      {super.key,
-        required this.title,
-        required this.icon,
-        required this.color,
-        required this.secondaryColor,
-       });
+  const InfoCard({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.secondaryColor,
+  });
   final String title;
   final IconData icon;
   final Color color;
@@ -162,34 +111,34 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
-        width: double.infinity,
-        color: color,
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
+      height: 60,
+      width: double.infinity,
+      color: color,
+      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
-              ]),
-            ),
-          ],
-        ),
+              ),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }
