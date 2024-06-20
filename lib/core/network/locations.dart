@@ -4,8 +4,6 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../models/locationFromUpstream.dart';
-
 // Saving locations
 Future<void> saveLocation(Database db, List<dynamic> locations) async {
   try {
