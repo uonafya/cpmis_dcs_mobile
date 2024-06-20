@@ -26,4 +26,10 @@ class RegistryLocationModel {
       ward: json['ward'],
     );
   }
+
+  void clear() {
+    county = "";
+    subCounty = "";
+    ward = "";
+  }
 }

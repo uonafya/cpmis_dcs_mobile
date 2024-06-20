@@ -1,5 +1,9 @@
+import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants/constants.dart';
@@ -315,6 +319,7 @@ class LocalDB {
     // Creating registry tables
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $registryFormDetails (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
         personType TEXT NOT NULL,
         isCaregiver BOOLEAN,
         childOVCProgram BOOLEAN NOT NULL,
@@ -323,6 +328,7 @@ class LocalDB {
         otherNames TEXT,
         sex TEXT NOT NULL,
         dateOfBirth TEXT NOT NULL,
+        childClass Text NOT NULL,
         registryIdentificationModel TEXT NOT NULL,
         registryContactDetailsModel TEXT NOT NULL,
         registryLocationModel TEXT NOT NULL,
@@ -400,6 +406,8 @@ class LocalDB {
             ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
             ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
             );
+
+            
     ''');
 
     // Organization unit
@@ -414,12 +422,54 @@ class LocalDB {
 
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
-        case_id TEXT PRIMARY KEY,
-        case_outcome TEXT,
-        transfered_to TEXT,
-        case_closure_notes TEXT,
-        date_of_case_closure TEXT,
-        intervention_list TEXT
+        ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.caseOutcome} TEXT,
+        ${CaseClosureTable.transferredTo} TEXT,
+        ${CaseClosureTable.caseClosureNotes} TEXT,
+        ${CaseClosureTable.dateOfCaseClosure} TEXT,
+        ${CaseClosureTable.interventionList} TEXT
+      );
+    ''');
+
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
+    ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.encounterNotes} TEXT,
+    ${ServiceFollowupTable.caseCategoryId} TEXT,
+    ${ServiceFollowupTable.serviceProvidedList} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSessionTable(
+    ${CourtSessionTable.courtSessionCase} TEXT PRIMARY KEY,
+    ${CourtSessionTable.courtSessionType} TEXT,
+    ${CourtSessionTable.dateOfCourtEvent} TEXT,
+    ${CourtSessionTable.courtNotes} TEXT,
+    ${CourtSessionTable.nextHearingDate} TEXT,
+    ${CourtSessionTable.nextMentionDate} TEXT,
+    ${CourtSessionTable.pleaTaken} TEXT,
+    ${CourtSessionTable.applicationOutcome} TEXT,
+    ${CourtSessionTable.courtOutcome} TEXT,
+    ${CourtSessionTable.courtOrder} TEXT
+  );
+''');
+
+    // Social Inquiry
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $socialInquiryTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        case_recommendation TEXT,
+        case_history TEXT,
+        sub_county_children_office TEXT,
+        case_observation TEXT,
+        officer_name TEXT,
+        officer_phone TEXT,
+        date_of_social_inquiry TEXT,
+        case_id TEXT,
+        form_id TEXT
+
       );
     ''');
 
@@ -432,6 +482,25 @@ class LocalDB {
         orderNo INTEGER
       );
     ''');
+  }
+
+  //Insert social inquiry form data
+  Future<void> insertSocialInquiryForm(
+      SocialInquiryFormModel socialInquiryForm) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert(
+        socialInquiryTable,
+        socialInquiryForm.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
+
   }
 
   // insert multiple caseload records

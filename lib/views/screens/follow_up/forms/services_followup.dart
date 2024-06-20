@@ -1,3 +1,6 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/services_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -27,53 +30,63 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   final TextEditingController encounterNotesController =
       TextEditingController();
 
-  void handleAddService() {
-    // Assuming caseId, encounterNotes, and caseCategoryId are to be captured elsewhere/are static
-    String? caseId = "SomeCaseId";
-    String?
-        caseCategoryId; // Determine how to capture this, possibly related to caseCategory
+  final ServiceDatabaseHelper serviceDatabaseHelper = ServiceDatabaseHelper();
+
+  void handleAddService() async {
+    // Assuming caseId is captured elsewhere
+    String? caseId = "1231";
 
     if (caseCategory == "Please select") {
       Get.snackbar("Error", "Please select case category.");
       return;
     }
 
-    // Assuming caseCategory maps to caseCategoryId in some way, for simplicity, using caseCategory directly
-    caseCategoryId = caseCategory == "Please select" ? null : caseCategory;
+    if (service == "Please select") {
+      Get.snackbar("Error", "Please select a service.");
+      return;
+    }
+
+    if (serviceProvider == "Please select") {
+      Get.snackbar("Error", "Please select a service provider.");
+      return;
+    }
+
+    if (dateOfService == null) {
+      Get.snackbar("Error", "Please select a date of service.");
+      return;
+    }
 
     // Create a list of ServiceProvidedList with current form values
     List<ServiceProvidedList> serviceProvidedList = [
       ServiceProvidedList(
-        serviceProvided: service == "Please select" ? null : service,
-        serviceProvider:
-            serviceProvider == "Please select" ? null : serviceProvider,
-        placeOfService: placeOfServiceController.text.isEmpty
-            ? null
-            : placeOfServiceController.text,
-        dateOfEncounterEvent:
-            dateOfService, // Assuming dateOfService is in the correct format
+        serviceProvided: service,
+        serviceProvider: serviceProvider,
+        placeOfService: placeOfServiceController.text,
+        dateOfEncounterEvent: dateOfService,
       ),
     ];
 
     // ServiceFollowupModel instance with captured values
-    final serviceFollowup = ServiceFollowupModel(
+    final serviceFollowupModel = ServiceFollowupModel(
       caseId: caseId,
-      encounterNotes: encounterNotesController.text.isEmpty
-          ? null
-          : encounterNotesController.text,
-      caseCategoryId: caseCategoryId,
+      encounterNotes: encounterNotesController.text,
+      caseCategoryId: caseCategory,
       serviceProvidedList: serviceProvidedList,
     );
 
-    print(serviceFollowup.toJson());
+    print(serviceFollowupModel.toJson());
 
     try {
-      // Backend logic
+      print('Db initialization & saving service followup...');
+      var db = await localdb.database;
+      await serviceDatabaseHelper.insertServiceFollowup(serviceFollowupModel);
+      print('Saved service followup :)');
 
       Get.back();
-      Get.snackbar("Success", "Service added successfully");
+      Get.snackbar("Success", "Service followup saved successfully.");
     } catch (e) {
-      Get.snackbar("Error", "Failed to save case closure.");
+      print(e.toString());
+      Get.snackbar("Error", "Failed to save service followup.");
     }
   }
 
@@ -186,8 +199,73 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
                 handleAddService();
               }),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final ServiceFollowupModel? serviceFollowupModel =
+          //             await serviceDatabaseHelper.getServiceFollowup(
+          //                 "1231"); // Replace with actual case ID
+
+          //         if (serviceFollowupModel != null) {
+          //           print(serviceFollowupModel.toJson());
+          //           Get.snackbar(
+          //               "Success", "Service followup synced successfully.");
+          //         } else {
+          //           Get.snackbar(
+          //               "Error", "No service followup found for this case ID.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await serviceDatabaseHelper.deleteServiceFollowup("1231");
+          //           Get.snackbar(
+          //               "Success", "Service followup deleted successfully.");
+          //         } catch (e) {
+          //           Get.snackbar("Error", "Failed to delete service followup.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
           const Divider(),
           if (selectedServices.isNotEmpty)
             const Text(

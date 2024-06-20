@@ -4,10 +4,12 @@ import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dar
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
 import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_date_picker.dart';
 
 class PersonRegistryAttachCareGiver extends StatefulWidget {
   const PersonRegistryAttachCareGiver({super.key});
@@ -38,7 +40,7 @@ class _PersonRegistryAttachCareGiverState
   String firstName = "";
   String surName = "";
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex = "";
   String relationshipToChild = "";
   String nationalIdNumber = "";
@@ -113,12 +115,19 @@ class _PersonRegistryAttachCareGiverState
           ),
           const SizedBox(height: 15),
           h2Text("Date of Birth"),
-          CustomTextField(
+          CustomDatePicker(
             hintText: 'Date of Birth',
-            onChanged: (value) {
-              setState(() {
-
-              });
+            lastDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            onChanged: (val) {
+              dateOfBirth =
+                  DateFormat('yyyy-MM-dd').format(val);
+            },
+            validator: (val) {
+              if (val!.isEmpty) {
+                return 'Please select a date';
+              }
+              return null;
             },
           ),
           const SizedBox(height: 15),
@@ -163,6 +172,7 @@ class _PersonRegistryAttachCareGiverState
               });;
             },
           ),
+          const SizedBox(height: 15),
           Row(
             children: [
               Expanded(
@@ -177,7 +187,7 @@ class _PersonRegistryAttachCareGiverState
               const SizedBox(width: 15),
               Expanded(
                 child: CustomButton(
-                  text: "Submut",
+                  text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
                     RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);

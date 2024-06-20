@@ -1,19 +1,12 @@
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_details.dart';
 
 class FamilyBackgroundWidget extends StatelessWidget {
-  const FamilyBackgroundWidget({super.key, required this.caseDetails});
-  final CaseReportingCRSFormModel caseDetails;
-
-  void printCRSDetails() {
-    print('*********Family Background**********:');
-    print('Parent (Father)\'s Names: $caseDetails');
-    print('Parent (Mother)\'s Names: $caseDetails');
-    print('Ward: ${caseDetails.ward}');
-    print('Sub-county: ${caseDetails.subCounty}');
-  }
+  const FamilyBackgroundWidget({super.key, required this.caseLoadModel});
+  final CaseLoadModel caseLoadModel;
 
   // @override
   // void initState() {
@@ -37,13 +30,15 @@ class FamilyBackgroundWidget extends StatelessWidget {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
-        const Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
+        Text('${caseLoadModel.caseSerial} - ${caseLoadModel.dateCaseOpened}'),
         const SizedBox(height: 10),
         InkWell(
-          onTap: () {},
-          child: const Text(
-            '1. View case (CCO/32/213/5/29/5/2016 - July 1, 2016)',
-            style: TextStyle(
+          onTap: () {
+            Get.to(() => CRSDetails(caseLoad: caseLoadModel));
+          },
+          child: Text(
+            '1. View case (${caseLoadModel.caseSerial} - ${caseLoadModel.dateCaseOpened})',
+            style: const TextStyle(
               fontSize: 11,
               color: Color.fromARGB(255, 27, 107, 173),
               decoration: TextDecoration
@@ -64,7 +59,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         const Text(
-          'CHEGE MUMBA',
+          "-",
           style: TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -74,7 +69,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         const Text(
-          'ROSE WANGECHI',
+          '',
           style: TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -87,32 +82,32 @@ class FamilyBackgroundWidget extends StatelessWidget {
         const SizedBox(height: 10),
         const Divider(),
         const SizedBox(height: 10),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Ward',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              caseDetails.ward ?? '',
-              style: const TextStyle(fontSize: 14),
+              '',
+              style: TextStyle(fontSize: 14),
             ),
           ],
         ),
         const SizedBox(height: 5),
         const SizedBox(height: 5),
         const Divider(),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Sub-county',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              caseDetails.subCounty ?? '',
-              style: const TextStyle(fontSize: 14),
+              '',
+              style: TextStyle(fontSize: 14),
             ),
           ],
         ),
