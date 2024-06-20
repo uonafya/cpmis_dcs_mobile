@@ -26,6 +26,8 @@ import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
+
+
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
 
@@ -345,18 +347,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           onTap: () {
                             var crsAbout = AboutChildCRSFormModel(
                                 initialDetails: InitialChildDetails(
-                                  dateOfBirth: registryProvider
-                                      .registryPersonalDetailsModel.dateOfBirth,
-                                  firstName: registryProvider
-                                      .registryPersonalDetailsModel.firstName,
-                                  otherNames: registryProvider
-                                          .registryPersonalDetailsModel
-                                          .otherNames ??
-                                      "",
-                                  sex: registryProvider
-                                      .registryPersonalDetailsModel.sex,
-                                  surname: registryProvider
-                                      .registryPersonalDetailsModel.surname,
+                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                                  firstName: registryProvider.registryPersonalDetailsModel.firstName,
+                                  otherNames: registryProvider.registryPersonalDetailsModel.otherNames ?? "",
+                                  sex: registryProvider.registryPersonalDetailsModel.sex,
+                                  surname: registryProvider.registryPersonalDetailsModel.surname,
                                 ),
                                 familyStatus: [],
                                 houseEconomicStatus: "");
