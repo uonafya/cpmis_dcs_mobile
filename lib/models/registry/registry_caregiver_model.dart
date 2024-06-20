@@ -3,7 +3,7 @@ class RegistryCaregiverModel {
   String firstName;
   String surName;
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex;
   String relationshipToChild;
   String nationalIdNumber;

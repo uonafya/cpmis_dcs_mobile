@@ -13,7 +13,7 @@ class RegistryPersonalDetailsModel {
   String surname;
   String? otherNames;
   String sex;
-  DateTime dateOfBirth;
+  String dateOfBirth;
   String workforceIdName;
   String datePaperFormFilled;
   String childClass;
@@ -74,10 +74,15 @@ class RegistryPersonalDetailsModel {
     surname = "";
     otherNames = null;
     sex = "";
-    dateOfBirth = DateTime.now();
+    dateOfBirth = "";
     workforceIdName = "";
     datePaperFormFilled = "";
     childClass = "";
+  }
+
+  bool isComplete() {
+
+    return true;
   }
 }
 
@@ -89,7 +94,7 @@ class RegisterNewChildModel {
   String surname;
   String? otherNames;
   String sex;
-  DateTime dateOfBirth;
+  String dateOfBirth;
   String childClass;
   RegistryIdentificationModel registryIdentificationModel;
   RegistryContactDetailsModel registryContactDetailsModel;

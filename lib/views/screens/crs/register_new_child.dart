@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/registry_provider.dart';
+import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
@@ -41,6 +42,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   final birthRegIdController = TextEditingController();
   int formStep = 0;
   String currentClass = "";
+  String dateOfBirth = "";
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +179,24 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       'Date of Birth *',
                       style: TextStyle(color: kTextGrey),
                     ),
-                    const SizedBox(height: 6),
-                    const CustomTextField(hintText: 'Date of Birth'),
+                    CustomDatePicker(
+                      hintText: 'Date of Birth',
+                      lastDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      showInitialDate: true,
+                      initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                      onChanged: (val) {
+                        dateOfBirth =
+                            DateFormat('yyyy-MM-dd').format(val);
+                        registryProvider.setDateOfBirth(dateOfBirth);
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please select a date';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(height: 15),
                     h2Text("Class"),
                     CustomDropdown(
