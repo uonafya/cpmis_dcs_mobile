@@ -1,9 +1,11 @@
+import 'package:cpims_dcs_mobile/models/services_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_forms_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class ServicesFollowUp extends StatefulWidget {
@@ -14,7 +16,7 @@ class ServicesFollowUp extends StatefulWidget {
 }
 
 class _ServicesFollowUpState extends State<ServicesFollowUp> {
-  final caseCategories = ["Please select", "Neglect"];
+  final caseCategories = ["Please select", "Abandoned"];
   String caseCategory = "Please select";
   final services = ["Please select", "Service 1", "Service 2"];
   String service = serviceList[0]["title"]!;
@@ -22,6 +24,58 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   final placeOfServiceController = TextEditingController();
   List<dynamic> selectedServices = [];
   String? dateOfService;
+  final TextEditingController encounterNotesController =
+      TextEditingController();
+
+  void handleAddService() {
+    // Assuming caseId, encounterNotes, and caseCategoryId are to be captured elsewhere/are static
+    String? caseId = "SomeCaseId";
+    String?
+        caseCategoryId; // Determine how to capture this, possibly related to caseCategory
+
+    if (caseCategory == "Please select") {
+      Get.snackbar("Error", "Please select case category.");
+      return;
+    }
+
+    // Assuming caseCategory maps to caseCategoryId in some way, for simplicity, using caseCategory directly
+    caseCategoryId = caseCategory == "Please select" ? null : caseCategory;
+
+    // Create a list of ServiceProvidedList with current form values
+    List<ServiceProvidedList> serviceProvidedList = [
+      ServiceProvidedList(
+        serviceProvided: service == "Please select" ? null : service,
+        serviceProvider:
+            serviceProvider == "Please select" ? null : serviceProvider,
+        placeOfService: placeOfServiceController.text.isEmpty
+            ? null
+            : placeOfServiceController.text,
+        dateOfEncounterEvent:
+            dateOfService, // Assuming dateOfService is in the correct format
+      ),
+    ];
+
+    // ServiceFollowupModel instance with captured values
+    final serviceFollowup = ServiceFollowupModel(
+      caseId: caseId,
+      encounterNotes: encounterNotesController.text.isEmpty
+          ? null
+          : encounterNotesController.text,
+      caseCategoryId: caseCategoryId,
+      serviceProvidedList: serviceProvidedList,
+    );
+
+    print(serviceFollowup.toJson());
+
+    try {
+      // Backend logic
+
+      Get.back();
+      Get.snackbar("Success", "Service added successfully");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to save case closure.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +169,22 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
           const SizedBox(
             height: 14,
           ),
-          CustomButton(text: "+ Add service(s)", onTap: handleAddService),
+          const Text("Encounter/Service Notes:"),
+          const SizedBox(
+            height: 6,
+          ),
+          CustomTextField(
+            controller: encounterNotesController,
+            maxLines: 5,
+          ),
+          const SizedBox(
+            height: 14,
+          ),
+          CustomButton(
+              text: "+ Add service(s)",
+              onTap: () {
+                handleAddService();
+              }),
           const SizedBox(
             height: 10,
           ),
@@ -144,29 +213,6 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
         ],
       ),
     );
-  }
-
-  void handleAddService() {
-    if (serviceProvider.isEmpty || service.isEmpty) {
-      return;
-    }
-    if (service == "Please select") {
-      return;
-    }
-    selectedServices.add({
-      "service": service,
-      "serviceProvider": serviceProvider,
-      "dateOfService": dateOfService,
-      "placeOfService": placeOfServiceController.text
-    });
-
-    //Clear the form
-    placeOfServiceController.clear();
-    dateOfService = null;
-    serviceProvider = serviceProviderList[0]["title"]!;
-    service = serviceList[0]["title"]!;
-
-    setState(() {});
   }
 }
 
