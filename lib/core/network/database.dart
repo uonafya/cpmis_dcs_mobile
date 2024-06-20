@@ -258,7 +258,7 @@ class LocalDB {
             placeOfEvent TEXT NOT NULL,
             caseNature TEXT NOT NULL,
             dateOfEvent TEXT NOT NULL,
-            FOREIGN KEY(categoryID) REFERENCES categories(id),
+            FOREIGN KEY(categoryID) REFERENCES $metadataTable(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
@@ -333,7 +333,6 @@ class LocalDB {
         datePaperFormFilled TEXT NOT NULL
       );
     ''');
-
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
@@ -412,7 +411,7 @@ class LocalDB {
         primaryUnit INTEGER
        );
     ''');
-    
+
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
         case_id TEXT PRIMARY KEY,
@@ -423,9 +422,19 @@ class LocalDB {
         intervention_list TEXT
       );
     ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $metadataTable(
+        id TEXT PRIMARY KEY,
+        fieldName TEXT,
+        description TEXT,
+        subCategory TEXT,
+        orderNo INTEGER
+      );
+    ''');
   }
 
-   // insert multiple caseload records
+  // insert multiple caseload records
   Future<void> insertMultipleCaseLoad(
     List<CaseLoadModel> caseLoadModelData,
   ) async {
