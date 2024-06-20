@@ -160,5 +160,6 @@ class RegistryProvider extends ChangeNotifier {
     if (kDebugMode) {
       print(registerNewChildModel.toJson());
     }
+    RegisterNewChildQuery.getRegistryFormDetails();
   }
 }
