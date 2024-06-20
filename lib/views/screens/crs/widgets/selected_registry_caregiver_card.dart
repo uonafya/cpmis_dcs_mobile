@@ -1,5 +1,9 @@
 import 'package:cpims_dcs_mobile/models/registry/registry_caregiver_model.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../controller/registry_provider.dart';
 
 
 class SelectedRegistryCaregiverCard extends StatefulWidget {
@@ -14,6 +18,9 @@ class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregive
 
   @override
   Widget build(BuildContext context) {
+
+    RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -53,15 +60,19 @@ class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregive
                 const SizedBox(
                   height: 8,
                 ),
-                InkWell(
-                  onTap: () {
-
-                  },
-                  child: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                    size: 18,
-                  ),
+                Row(
+                  children: [
+                    CustomButton(
+                      text: "REMOVE",
+                      color: Colors.redAccent,
+                      textColor: Colors.white,
+                      height: 35,
+                      onTap: () {
+                        registryProvider.removeCaregiver(widget.caregiver);
+                      },
+                    ),
+                    const Expanded(child: SizedBox())
+                  ],
                 ),
               ],
             ),
