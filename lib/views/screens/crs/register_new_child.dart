@@ -310,7 +310,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     onTap: () {
                       print("ID :${birthRegIdController.text}");
                       registryProvider.submit();
-                      Get.to(() => const CaseRegistrationSheet());
+                      Get.off(() => const CaseRegistrationSheet());
                     },
                   ),
                 )

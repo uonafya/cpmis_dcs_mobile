@@ -142,6 +142,16 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearState() {
+    _registryPersonalDetailsModel.clear();
+    _registryIdentificationModel.clear();
+    _registryContactDetailsModel.clear();
+    _registryLocationModel.clear();
+    _caregivers.clear();
+    _siblings.clear();
+    _registryCboChvModel.clear();
+  }
+
   void submit() {
     print(registryPersonalDetailsModel.toJson());
     print(_registryIdentificationModel.toJson());
@@ -157,6 +167,7 @@ class RegistryProvider extends ChangeNotifier {
 
     RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
     RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
+    clearState();
     print(registerNewChildModel.toJson());
   }
 }

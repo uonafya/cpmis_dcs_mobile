@@ -52,4 +52,17 @@ class RegistryCaregiverModel {
       isRegistered: json['isRegistered'] == true,
     );
   }
+
+  void clear() {
+    id = "";
+    firstName = "";
+    surName = "";
+    otherNames = null;
+    dateOfBirth = null;
+    sex = "";
+    relationshipToChild = "";
+    nationalIdNumber = "";
+    phoneNumber = null;
+    isRegistered = false;
+  }
 }

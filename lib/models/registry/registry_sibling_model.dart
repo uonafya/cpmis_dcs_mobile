@@ -40,4 +40,15 @@ class RegistrySiblingModel {
       remarks: json['remarks'],
     );
   }
+
+  void clear() {
+    firstName = "";
+    surName = "";
+    otherNames = null;
+    dateOfBirth = null;
+    sex = "";
+    currentClass = "";
+    remarks = null;
+
+  }
 }

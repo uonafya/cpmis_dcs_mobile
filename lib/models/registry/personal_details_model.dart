@@ -65,6 +65,20 @@ class RegistryPersonalDetailsModel {
       childClass: json['childClass'],
     );
   }
+
+  void clear() {
+    personType = "";
+    isCaregiver = null;
+    childOVCProgram = false;
+    firstName = "";
+    surname = "";
+    otherNames = null;
+    sex = "";
+    dateOfBirth = DateTime.now();
+    workforceIdName = "";
+    datePaperFormFilled = "";
+    childClass = "";
+  }
 }
 
 class RegisterNewChildModel {
