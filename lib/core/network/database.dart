@@ -430,7 +430,6 @@ class LocalDB {
       );
     ''');
 
-
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
     ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
@@ -471,6 +470,16 @@ class LocalDB {
 
       );
     ''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSummonsTable(
+    ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSummonsTable.honoured} TEXT,
+    ${CourtSummonsTable.honouredDate} TEXT,
+    ${CourtSummonsTable.summonDate} TEXT,
+    ${CourtSummonsTable.summonNote} TEXT
+  );
+''');
   }
 
   //Insert social inquiry form data
@@ -489,17 +498,6 @@ class LocalDB {
         print("Error inserting social inquiry form data: $e");
       }
     }
-
-
-    await db.execute('''
-  CREATE TABLE IF NOT EXISTS $courtSummonsTable(
-    ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
-    ${CourtSummonsTable.honoured} TEXT,
-    ${CourtSummonsTable.honouredDate} TEXT,
-    ${CourtSummonsTable.summonDate} TEXT,
-    ${CourtSummonsTable.summonNote} TEXT
-  );
-''');
   }
 
   // insert multiple caseload records
