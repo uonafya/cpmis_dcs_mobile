@@ -39,7 +39,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
   void handleAddService() async {
     // caseID captured from elsewhere
-    String? caseId = "1234";
+    String? caseId = "1232";
 
     if (courtSessionType == "Please select") {
       Get.snackbar("Error", "Please select a court session type.");
@@ -187,6 +187,30 @@ class _CourtFollowUpState extends State<CloseFollowup> {
                           .getClosureFollowup("SomeCaseId");
 
                   print(closureFollowupModel?.caseId);
+                },
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              const Text(
+                'Deletion Test...',
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () async {
+                  await closureDatabaseHelper.deleteClosureFollowup("1232");
                 },
               )
             ],

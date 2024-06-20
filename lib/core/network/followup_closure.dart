@@ -67,11 +67,13 @@ class ClosureDatabaseHelper {
   }
 
   // Delete closure follow-up data by caseId
-  Future<void> deleteClosureFollowup(Database db, String caseId) async {
+  Future<void> deleteClosureFollowup(String caseId) async {
+    final db = await LocalDB.instance.database;
+
     try {
       await db.delete(
         caseClosureTable,
-        where: 'caseId = ?',
+        where: 'case_id = ?',
         whereArgs: [caseId],
       );
     } catch (e) {
@@ -80,31 +82,3 @@ class ClosureDatabaseHelper {
       }
     }
   }
-
-  // Optional: Update closure follow-up data by caseId
-  static Future<void> updateClosureFollowup(
-      Database db, String caseId, Map<String, dynamic> updatedData) async {
-    try {
-      // Convert intervention list to JSON string for update
-      String interventionsJson = jsonEncode(updatedData['interventions']);
-      Map<String, dynamic> dataToUpdate = {
-        'caseOutcome': updatedData['case_outcome'],
-        'transferredTo': updatedData['transferred_to'],
-        'caseClosureNotes': updatedData['case_closure_notes'],
-        'dateOfCaseClosure': updatedData['date_of_case_closure'],
-        'interventions': interventionsJson,
-      };
-
-      await db.update(
-        caseClosureTable,
-        dataToUpdate,
-        where: 'caseId = ?',
-        whereArgs: [caseId],
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        print(e.toString());
-      }
-    }
-  }
-}
