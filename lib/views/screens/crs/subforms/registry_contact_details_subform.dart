@@ -22,6 +22,7 @@ class _RegistryContactDetailsSubformState
 
     return SubformWrapper(
       title: "Contact Information",
+      shouldAlwaysAutoValidate: registryProvider.shouldValidateFields,
       children: [
         const SizedBox(height: 10),
         const Text(
@@ -33,6 +34,12 @@ class _RegistryContactDetailsSubformState
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
             registryProvider.setDesignatedPhoneNumber(value);
+          },
+          validator: (val) {
+            if (val!.isEmpty) {
+              return "Please enter required details.";
+            }
+            return null;
           },
         ),
         const SizedBox(height: 15),

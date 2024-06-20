@@ -57,7 +57,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'County: ',
+                'County *',
                 style: TextStyle(color: kTextGrey),
               ),
               CustomDropdown(
@@ -78,7 +78,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Sub-County: ',
+                  'Sub-County *',
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
@@ -94,7 +94,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 const SizedBox(height: 15,),
                 const Divider(),
                 const Text(
-                  'Ward: ',
+                  'Ward *',
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(

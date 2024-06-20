@@ -19,6 +19,7 @@ class RegistryProvider extends ChangeNotifier {
   final List<RegistryCaregiverModel> _caregivers = [];
   final List<RegistrySiblingModel> _siblings = [];
   final RegistryCboChvModel _registryCboChvModel = RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
+  bool _shouldValidateFields = false;
 
   RegistryPersonalDetailsModel get registryPersonalDetailsModel => _registryPersonalDetailsModel;
   RegistryIdentificationModel get registryIdentificationModel => _registryIdentificationModel;
@@ -27,6 +28,7 @@ class RegistryProvider extends ChangeNotifier {
   List<RegistryCaregiverModel> get caregivers => _caregivers;
   List<RegistrySiblingModel> get siblings => _siblings;
   RegistryCboChvModel get registryCboChvModel => _registryCboChvModel;
+  bool get shouldValidateFields => _shouldValidateFields;
 
   void setPersonType(String value) {
     _registryPersonalDetailsModel.personType = value;
@@ -143,6 +145,11 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShouldValidateFields() {
+    _shouldValidateFields = true;
+    notifyListeners();
+  }
+
   void clearState() {
     _registryPersonalDetailsModel.clear();
     _registryIdentificationModel.clear();
@@ -151,6 +158,7 @@ class RegistryProvider extends ChangeNotifier {
     _caregivers.clear();
     _siblings.clear();
     _registryCboChvModel.clear();
+    _shouldValidateFields = false;
   }
 
   bool isComplete() {
