@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:flutter/foundation.dart';
@@ -437,6 +438,16 @@ class LocalDB {
     ${CourtSessionTable.applicationOutcome} TEXT,
     ${CourtSessionTable.courtOutcome} TEXT,
     ${CourtSessionTable.courtOrder} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSummonsTable(
+    ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSummonsTable.honoured} TEXT,
+    ${CourtSummonsTable.honouredDate} TEXT,
+    ${CourtSummonsTable.summonDate} TEXT,
+    ${CourtSummonsTable.summonNote} TEXT
   );
 ''');
   }

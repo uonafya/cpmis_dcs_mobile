@@ -49,6 +49,7 @@ const String caseLoadCategoryTable = "caseLoadCategory";
 const String caseClosureTable = "caseClosure";
 const String serviceFollowupTable = "serviceFollowup";
 const String courtSessionTable = "courtSession";
+const String courtSummonsTable = "courtSummons";
 
 const String registryIdentificationTable = "registry_identification";
 const String registryContactTable = "registry_contact";

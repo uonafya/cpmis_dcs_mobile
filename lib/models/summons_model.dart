@@ -5,12 +5,13 @@ class CourtSummonsModel {
   String? summonNote;
   String? caseId;
 
-  CourtSummonsModel(
-      {this.honoured,
-      this.honouredDate,
-      this.summonDate,
-      this.summonNote,
-      this.caseId});
+  CourtSummonsModel({
+    this.honoured,
+    this.honouredDate,
+    this.summonDate,
+    this.summonNote,
+    this.caseId,
+  });
 
   CourtSummonsModel.fromJson(Map<String, dynamic> json) {
     honoured = json['honoured'];
@@ -28,5 +29,15 @@ class CourtSummonsModel {
     data['summon_note'] = this.summonNote;
     data['case_id'] = this.caseId;
     return data;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'honoured': honoured,
+      'honoured_date': honouredDate,
+      'summon_date': summonDate,
+      'summon_note': summonNote,
+      'case_id': caseId,
+    };
   }
 }

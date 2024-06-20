@@ -1,3 +1,6 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -26,10 +29,12 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
   String? dateOfVisit;
   final formKey = GlobalKey<FormState>();
 
+  final CourtSummonsDatabaseHelper courtSummonsDatabaseHelper =
+      CourtSummonsDatabaseHelper();
+
   void handleAddService() async {
-    // TODO: Fix redirection issue
-    // caseID captured from elsewhere
-    String? caseId = "SomeCaseId";
+    String? caseId = "1232"; // Replace with actual case ID
+    print("Here I am");
 
     if (dateOfVisit == null) {
       Get.snackbar("Error", "Please fill in the date of visit.");
@@ -37,34 +42,35 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     }
 
     if (summonHonored == "Please select") {
-      Get.snackbar("Error", "Please select a summon.");
+      Get.snackbar("Error", "Please select whether the summon was honored.");
       return;
     }
 
-    // Model instance
-    CourtSummonsModel newSummonsModel = CourtSummonsModel(
-      honoured: summonHonored == "Yes" ? "true" : "false",
-      honouredDate: dateOfVisit,
-      summonDate: DateFormat("dd/MM/yyyy")
-          .format(DateTime.now()), // Assuming the summon date is today
-      summonNote: notes.text,
+    // Create CourtSummonsModel instance
+    CourtSummonsModel courtSummonsModel = CourtSummonsModel(
       caseId: caseId,
+      honoured: summonHonored == "Yes" ? "AYES" : "ANO",
+      honouredDate: dateOfVisit,
+      summonDate: DateFormat("yyyy-MM-dd")
+          .format(DateTime.now()), // Using yyyy-MM-dd format
+      summonNote: notes.text,
     );
 
-    print(newSummonsModel.toJson());
-    Get.snackbar("Error", "Please fill all the fields correctly");
+    print(courtSummonsModel.toJson());
 
     try {
-      // Placeholder for sending data to backend
-      print("Here1");
+      print('Db initialization & saving court summons...');
+      var db = await localdb.database;
+      final courtSummonsDatabaseHelper = CourtSummonsDatabaseHelper();
+      await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
+      print('Saved court summons :)');
 
       Get.snackbar("Success",
           "Summons added successfully, you can go back to the previous page");
-      Get.back();
-
-      print("Here2");
+      Get.back(); // Navigate back
     } catch (e) {
-      Get.snackbar("Error", "Please fill all the fields correctly");
+      print(e.toString());
+      Get.snackbar("Error", "Failed to save court summons. Please try again.");
     }
   }
 
@@ -138,6 +144,86 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 10,
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: <Widget>[
+            //     const Text(
+            //       'Upstream Test Syncing...',
+            //       style: TextStyle(color: Colors.grey),
+            //     ),
+            //     const SizedBox(
+            //       width: 10,
+            //     ),
+            //     GestureDetector(
+            //       child: const Text(
+            //         'Sync',
+            //         style: TextStyle(
+            //           color: kPrimaryColor,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //       onTap: () async {
+            //         try {
+            //           print('Retrieving court summons...');
+            //           final courtSummonsDatabaseHelper =
+            //               CourtSummonsDatabaseHelper();
+            //           final CourtSummonsModel? courtSummonsModel =
+            //               await courtSummonsDatabaseHelper.getCourtSummons(
+            //                   "1232"); // Replace with actual case ID
+
+            //           if (courtSummonsModel != null) {
+            //             print(courtSummonsModel.toJson());
+            //             Get.snackbar(
+            //                 "Success", "Court summons retrieved successfully.");
+            //           } else {
+            //             Get.snackbar("Error",
+            //                 "No court summons found for this case ID.");
+            //           }
+            //         } catch (e) {
+            //           print(e.toString());
+            //           Get.snackbar(
+            //               "Error", "Failed to retrieve court summons.");
+            //         }
+            //       },
+            //     )
+            //   ],
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: <Widget>[
+            //     const Text(
+            //       'Upstream Test Syncing...',
+            //       style: TextStyle(color: Colors.grey),
+            //     ),
+            //     const SizedBox(
+            //       width: 10,
+            //     ),
+            //     GestureDetector(
+            //       child: const Text(
+            //         'Delete',
+            //         style: TextStyle(
+            //           color: Colors.red,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //       onTap: () async {
+            //         try {
+            //           print('Deleting court summons...');
+            //           final courtSummonsDatabaseHelper =
+            //               CourtSummonsDatabaseHelper();
+            //           await courtSummonsDatabaseHelper.deleteCourtSummons(
+            //               "1232"); // Replace with actual case ID
+            //           print('Deleted court summons :)');
+            //           Get.snackbar(
+            //               "Success", "Court summons deleted successfully.");
+            //         } catch (e) {
+            //           print(e.toString());
+            //           Get.snackbar("Error", "Failed to delete court summons.");
+            //         }
+            //       },
+            //     )
+            //   ],
+            // ),
           ],
         ),
       ),
