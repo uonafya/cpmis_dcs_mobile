@@ -47,7 +47,7 @@ class CRSDatabaseForm {
       // Insert into family status
       for (var i = 0; i < form.about!.familyStatus.length; i++) {
         await db.insert(crsFamilyStatusTable, {
-          "formID": form.caseID,
+          "formID": formID,
           "status": form.about!.familyStatus[i],
         });
       }
@@ -56,7 +56,7 @@ class CRSDatabaseForm {
       if (form.about!.closeFriends != null) {
         for (var j = 0; j < form.about!.closeFriends!.length; j++) {
           await db.insert(crsCloseFriendsTable, {
-            "formID": form.caseID,
+            "formID": formID,
             "name": form.about!.closeFriends![j],
           });
         }
@@ -66,7 +66,7 @@ class CRSDatabaseForm {
       if (form.about!.hobbies != null) {
         for (var j = 0; j < form.about!.hobbies!.length; j++) {
           await db.insert(crsHobbiesTable, {
-            "formID": form.caseID,
+            "formID": formID,
             "hobby": form.about!.hobbies![j],
           });
         }
@@ -76,7 +76,7 @@ class CRSDatabaseForm {
       if (form.medical!.mentalCondition != null) {
         for (var j = 0; j < form.medical!.mentalCondition!.length; j++) {
           await db.insert(crsMentalConditionTable, {
-            "formID": form.caseID,
+            "formID": formID,
             "condition": form.medical!.mentalCondition![j],
           });
         }
@@ -86,7 +86,7 @@ class CRSDatabaseForm {
       if (form.medical!.physicalCondition != null) {
         for (var j = 0; j < form.medical!.physicalCondition!.length; j++) {
           await db.insert(crsPhysicalConditionTable, {
-            "formID": form.caseID,
+            "formID": formID,
             "condition": form.medical!.physicalCondition![j],
           });
         }
@@ -96,7 +96,7 @@ class CRSDatabaseForm {
       if (form.medical!.otherCondition != null) {
         for (var j = 0; j < form.medical!.otherCondition!.length; j++) {
           await db.insert(crsOtherConditionTable, {
-            "formID": form.caseID,
+            "formID": formID,
             "condition": form.medical!.otherCondition![j],
           });
         }
@@ -105,8 +105,8 @@ class CRSDatabaseForm {
       // Inserting CRS categories
       for (var j = 0; j < form.caseData!.crsCategories.length; j++) {
         await db.insert(crsFormCategoriesTable, {
-          "formID": form.caseID,
-          "categoryID": form.caseData?.crsCategories[j].category,
+          "formID": formID,
+          "categoryID": "CSCU",
           "placeOfEvent": form.caseData?.crsCategories[j].placeOfEvent,
           "caseNature": form.caseData?.crsCategories[j].caseNature,
           "dateOfEvent": form.caseData?.crsCategories[j].dateOfEvent,
@@ -117,8 +117,8 @@ class CRSDatabaseForm {
             l < form.caseData!.crsCategories[j].subcategory!.length;
             l++) {
           var subCateg = form.caseData!.crsCategories[j].subcategory![l];
-          await db.insert(crsFormCategoriesTable, {
-            "crsFormCategoryID": form.caseID,
+          await db.insert(crsFormSubCategoriesTable, {
+            "crsFormCategoryID": formID,
             "subCategoryID": subCateg,
           });
         }
@@ -128,8 +128,8 @@ class CRSDatabaseForm {
       if (form.caseData?.referrals != null) {
         for (var j = 0; j < form.caseData!.referrals!.length; j++) {
           var referral = form.caseData!.referrals![j];
-          await db.insert(crsOtherConditionTable, {
-            "formID": form.caseID,
+          await db.insert(crsReferralsTable, {
+            "formID": formID,
             "actor": referral.actor,
             "specify": referral.specify,
             "reason": referral.reason,
@@ -141,7 +141,7 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.immediateNeeds.length; j++) {
         var immediate = form.caseData!.immediateNeeds[j];
         await db.insert(crsOtherConditionTable, {
-          "formID": form.caseID,
+          "formID": formID,
           "need": immediate,
         });
       }
@@ -150,7 +150,7 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.futureNeeds.length; j++) {
         var future = form.caseData!.futureNeeds[j];
         await db.insert(crsOtherConditionTable, {
-          "formID": form.caseID,
+          "formID": formID,
           "need": future,
         });
       }

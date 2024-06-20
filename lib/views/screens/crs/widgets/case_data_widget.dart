@@ -14,6 +14,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
@@ -28,11 +29,11 @@ class CaseDataWidget extends StatefulWidget {
 class _CaseDataWidgetState extends State<CaseDataWidget> {
   String selectedPerpetrator = pleaseSelect;
   String relationshipToChild = pleaseSelect;
-  String firstName = "";
-  String surname = "";
-  String othernames = "";
+  var firstName = TextEditingController();
+  var surname = TextEditingController();
+  var othernames = TextEditingController();
   String perpetratorSex = pleaseSelect;
-  late DateTime perpetratorDOB;
+  DateTime? perpetratorDOB;
 
   String referralActor = "";
   void updateReferralActor(value) {
@@ -107,7 +108,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             ),
 
             // et details of perpetrator if known
-            if (selectedPerpetrator == AllegedPerpetratorOptions.known.value)
+            if (model.caseData.offenderKnown == AllegedPerpetratorOptions.known.value)
               Column(
                 children: [
                   const Align(
@@ -139,12 +140,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     height: smallSpacing,
                   ),
                   CustomTextField(
+                    controller: firstName,
                     hintText: "First name",
-                    onChanged: (String value) {
-                      setState(() {
-                        firstName = value;
-                      });
-                    },
                   ),
                   const SizedBox(
                     height: mediumSpacing,
@@ -158,12 +155,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     height: smallSpacing,
                   ),
                   CustomTextField(
-                    hintText: "Surname",
-                    onChanged: (String value) {
-                      setState(() {
-                        surname = value;
-                      });
-                    },
+                    controller: surname,
+                    hintText: "Surname"
                   ),
                   const SizedBox(
                     height: mediumSpacing,
@@ -179,12 +172,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     height: smallSpacing,
                   ),
                   CustomTextField(
+                    controller: othernames,
                     hintText: "Middle Name",
-                    onChanged: (String value) {
-                      setState(() {
-                        othernames = value;
-                      });
-                    },
                   ),
                   const SizedBox(
                     height: mediumSpacing,
@@ -220,7 +209,16 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   const SizedBox(
                     height: smallSpacing,
                   ),
+                  perpetratorDOB != null ?
                   CustomDatePicker(
+                    initialDate: perpetratorDOB,
+                      firstDate: DateTime(1950),
+                      lastDate: DateTime.now(),
+                      onChanged: (DateTime time) {
+                        setState(() {
+                          perpetratorDOB = time;
+                        });
+                      }) : CustomDatePicker(
                       firstDate: DateTime(1950),
                       lastDate: DateTime.now(),
                       onChanged: (DateTime time) {
@@ -247,9 +245,9 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                             // Save perpetrator
                             CaseDataCRSFormModel update = model.caseData;
                             Perpetrators perp = Perpetrators(
-                              firstName: firstName,
-                              lastName: surname,
-                              othernames: othernames,
+                              firstName: firstName.text,
+                              lastName: surname.text,
+                              othernames: othernames.text,
                               sex: perpetratorSex,
                               dateOfBirth: perpetratorDOB,
                             );

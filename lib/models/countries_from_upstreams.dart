@@ -1,5 +1,3 @@
-import 'package:cpims_dcs_mobile/models/categories_from_upstream.dart';
-
 class CountriesFromUpstreams {
   final int? id;
   final String? code;
