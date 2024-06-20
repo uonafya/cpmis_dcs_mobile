@@ -67,26 +67,6 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
-  // void handleAddService() {
-  //   final courtSession = CourtSessionModel(
-  //     applicationOutcome:
-  //         applicationOutcome == "Please select" ? null : applicationOutcome,
-  //     courtNotes: courtNotes.text,
-  //     courtSessionCase: caseCategory == "Please select" ? null : caseCategory,
-  //     courtOutcome: courtOutcome == "Please select" ? null : courtOutcome,
-  //     nextHearingDate: nextHearingDate,
-  //     nextMentionDate: dateOfMention,
-  //     pleaTaken: pleaTaken == "Please select" ? null : pleaTaken,
-  //     dateOfCourtEvent: dateOfService,
-  //     courtSessionType:
-  //         courtSessionType == "Please select" ? null : courtSessionType,
-  //     courtOrder: courtOrders.isNotEmpty ? courtOrders : null,
-  //   );
-
-  //   print(courtSession.toJson());
-  //   // Get.back();
-  // }
-
   void handleAddService() {
     if (caseCategory == "Please select") {
       Get.snackbar("Error", "Please select a case category.");

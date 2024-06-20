@@ -69,11 +69,12 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
                 style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
               CustomDropdown(
-                  initialValue: caseCategory,
+                  initialValue: caseSubcategory,
                   items: caseCategoryOptions,
                   onChanged: (value) {
+                    subCategories.add(value);
                     setState(() {
-                      caseCategory = value;
+                      subCategories = subCategories;
                     });
                   })
             ],
@@ -153,6 +154,7 @@ class _CaseCategoriesWidgetState extends State<CaseCategoriesWidget> {
                   dateOfEvent: caseSubcategory,
                   placeOfEvent: placeOfEvent,
                   caseNature: caseNature,
+                  subcategory: subCategories
                 );
                 widget.addCategory(category);
               },
