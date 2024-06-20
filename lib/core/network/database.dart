@@ -324,6 +324,7 @@ class LocalDB {
         otherNames TEXT,
         sex TEXT NOT NULL,
         dateOfBirth TEXT NOT NULL,
+        childClass Text NOT NULL,
         registryIdentificationModel TEXT NOT NULL,
         registryContactDetailsModel TEXT NOT NULL,
         registryLocationModel TEXT NOT NULL,

@@ -24,6 +24,7 @@ class RegisterNewChildQuery {
           'otherNames': child.otherNames,
           'sex': child.sex,
           'dateOfBirth': child.dateOfBirth,
+          'childClass': child.childClass,
           'registryIdentificationModel': jsonEncode(child.registryIdentificationModel.toJson()),
           'registryContactDetailsModel': jsonEncode(child.registryContactDetailsModel.toJson()),
           'registryLocationModel': jsonEncode(child.registryLocationModel.toJson()),
