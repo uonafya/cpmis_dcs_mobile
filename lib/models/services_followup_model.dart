@@ -4,11 +4,12 @@ class ServiceFollowupModel {
   String? caseCategoryId;
   List<ServiceProvidedList>? serviceProvidedList;
 
-  ServiceFollowupModel(
-      {this.caseId,
-      this.encounterNotes,
-      this.caseCategoryId,
-      this.serviceProvidedList});
+  ServiceFollowupModel({
+    this.caseId,
+    this.encounterNotes,
+    this.caseCategoryId,
+    this.serviceProvidedList,
+  });
 
   ServiceFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
@@ -17,13 +18,13 @@ class ServiceFollowupModel {
     if (json['service_provided_list'] != null) {
       serviceProvidedList = <ServiceProvidedList>[];
       json['service_provided_list'].forEach((v) {
-        serviceProvidedList!.add(new ServiceProvidedList.fromJson(v));
+        serviceProvidedList!.add(ServiceProvidedList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['case_id'] = this.caseId;
     data['encounter_notes'] = this.encounterNotes;
     data['case_category_id'] = this.caseCategoryId;
@@ -33,6 +34,16 @@ class ServiceFollowupModel {
     }
     return data;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'case_id': caseId,
+      'encounter_notes': encounterNotes,
+      'case_category_id': caseCategoryId,
+      'service_provided_list':
+          serviceProvidedList?.map((e) => e.toMap()).toList() ?? [],
+    };
+  }
 }
 
 class ServiceProvidedList {
@@ -41,11 +52,12 @@ class ServiceProvidedList {
   String? placeOfService;
   String? dateOfEncounterEvent;
 
-  ServiceProvidedList(
-      {this.serviceProvided,
-      this.serviceProvider,
-      this.placeOfService,
-      this.dateOfEncounterEvent});
+  ServiceProvidedList({
+    this.serviceProvided,
+    this.serviceProvider,
+    this.placeOfService,
+    this.dateOfEncounterEvent,
+  });
 
   ServiceProvidedList.fromJson(Map<String, dynamic> json) {
     serviceProvided = json['service_provided'];
@@ -55,11 +67,20 @@ class ServiceProvidedList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['service_provided'] = this.serviceProvided;
     data['service_provider'] = this.serviceProvider;
     data['place_of_service'] = this.placeOfService;
     data['date_of_encounter_event'] = this.dateOfEncounterEvent;
     return data;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'service_provided': serviceProvided,
+      'service_provider': serviceProvider,
+      'place_of_service': placeOfService,
+      'date_of_encounter_event': dateOfEncounterEvent,
+    };
   }
 }
