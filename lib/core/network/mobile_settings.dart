@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/models/organization_unit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<void> saveOrganizationUnits() async{
@@ -16,6 +17,11 @@ Future<void> saveOrganizationUnits() async{
 
     // Store
     await saveOrganizationalUnitsToDB(db, organizationalUnits);
+    
+    // Store rest in preferences
+    var rest = results.data.removeWhere((key, value) => key == "org_units");
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString("mobile_settigns", rest.toString());
   } catch(err) {
     print(err.toString());
     throw "Could Not Save Mobile Settings";
