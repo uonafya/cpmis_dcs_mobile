@@ -402,6 +402,16 @@ class LocalDB {
             ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
             );
     ''');
+
+    // Organization unit
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $organizationUnitsTable (
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        name TEXT,
+        primaryUnit INTEGER
+      );
+    ''');
   }
 
    // insert multiple caseload records
