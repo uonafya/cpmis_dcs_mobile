@@ -82,7 +82,7 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
       await serviceDatabaseHelper.insertServiceFollowup(serviceFollowupModel);
       print('Saved service followup :)');
 
-      // Get.back(); // Navigate back
+      Get.back();
       Get.snackbar("Success", "Service followup saved successfully.");
     } catch (e) {
       print(e.toString());
