@@ -10,17 +10,18 @@ class CourtSessionModel {
   String? courtOutcome;
   List<String>? courtOrder;
 
-  CourtSessionModel(
-      {this.courtSessionCase,
-      this.courtSessionType,
-      this.dateOfCourtEvent,
-      this.courtNotes,
-      this.nextHearingDate,
-      this.nextMentionDate,
-      this.pleaTaken,
-      this.applicationOutcome,
-      this.courtOutcome,
-      this.courtOrder});
+  CourtSessionModel({
+    this.courtSessionCase,
+    this.courtSessionType,
+    this.dateOfCourtEvent,
+    this.courtNotes,
+    this.nextHearingDate,
+    this.nextMentionDate,
+    this.pleaTaken,
+    this.applicationOutcome,
+    this.courtOutcome,
+    this.courtOrder,
+  });
 
   CourtSessionModel.fromJson(Map<String, dynamic> json) {
     courtSessionCase = json['court_session_case'];
@@ -48,5 +49,20 @@ class CourtSessionModel {
     data['court_outcome'] = courtOutcome;
     data['court_order'] = courtOrder;
     return data;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'court_session_case': courtSessionCase,
+      'court_session_type': courtSessionType,
+      'date_of_court_event': dateOfCourtEvent,
+      'court_notes': courtNotes,
+      'next_hearing_date': nextHearingDate,
+      'next_mention_date': nextMentionDate,
+      'plea_taken': pleaTaken,
+      'application_outcome': applicationOutcome,
+      'court_outcome': courtOutcome,
+      'court_order': courtOrder?.join(','),
+    };
   }
 }
