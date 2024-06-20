@@ -49,7 +49,7 @@ class RegistryCaregiverModel {
       relationshipToChild: json['relationshipToChild'],
       nationalIdNumber: json['nationalIdNumber'],
       phoneNumber: json['phoneNumber'],
-      isRegistered: json['isRegistered'] == true,
+      isRegistered: json['isRegistered'],
     );
   }
 }

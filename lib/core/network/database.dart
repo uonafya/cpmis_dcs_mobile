@@ -314,6 +314,7 @@ class LocalDB {
     // Creating registry tables
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $registryFormDetails (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
         personType TEXT NOT NULL,
         isCaregiver BOOLEAN,
         childOVCProgram BOOLEAN NOT NULL,
