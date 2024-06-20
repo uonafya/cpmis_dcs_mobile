@@ -62,19 +62,19 @@ Future<List<NameID>> getCategoriesFromDB() async{
   }
 }
 
-Future<List<String>> getSubCategoriesFromDB(String categoryName) async {
+Future<String> getSubCategoriesFromDB(String categoryID) async {
   try {
     var db = await localdb.database;
 
     var results = await db.query(
       categoriesTable,
       distinct: true,
-      where: "name = ?",
+      where: "id = ?",
       columns: ['subcategory'],
-      whereArgs: [categoryName]
+      whereArgs: [categoryID]
     );
 
-    List<String> toReturn = results.map((e) => e['subcategory'].toString()).toList();
+    String toReturn = results[0]['subcategory'].toString();
 
     return toReturn;
   } catch(err) {
