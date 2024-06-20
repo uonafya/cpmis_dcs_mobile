@@ -111,3 +111,5 @@ class SearchCaseLoad {
     return null;
   }
 }
+
+final searchCaseLoad = SearchCaseLoad();

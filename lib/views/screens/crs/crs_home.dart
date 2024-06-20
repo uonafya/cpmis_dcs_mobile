@@ -1,4 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/search_caseload.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/register_new_child.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/search_crs_results.dart';
@@ -24,55 +26,27 @@ class _CRSHomeState extends State<CRSHome> {
     'Select Criteria',
     'Names',
     'Org Unit',
-    'Residence',
+    'Case Serial',
     'CPIMS ID',
   ];
 
   String selectedTypeOfPerson = 'Please Select';
   String selectedCriteria = 'Select Criteria';
-  List<Map<String, dynamic>> searchedResults = caseLoadDummy;
+  List<CaseLoadModel> searchedResults = [];
   final childTextController = TextEditingController();
 
   void searchChild() async {
     if (selectedCriteria == 'Names') {
-      final List<Map<String, dynamic>> results = [];
-      for (final child in caseLoadDummy) {
-        if (child['names'].toString().contains(childTextController.text)) {
-          results.add(child);
-        }
-      }
+      final results =
+          await searchCaseLoad.searchOVCByNames(childTextController.text);
       setState(() {
-        searchedResults = results;
-      });
-    } else if (selectedCriteria == 'Org Unit') {
-      final List<Map<String, dynamic>> results = [];
-      for (final child in caseLoadDummy) {
-        if (child['org_unit'].toString().contains(childTextController.text)) {
-          results.add(child);
-        }
-      }
-      setState(() {
-        searchedResults = results;
-      });
-    } else if (selectedCriteria == 'Residence') {
-      final List<Map<String, dynamic>> results = [];
-      for (final child in caseLoadDummy) {
-        if (child['residence'].toString().contains(childTextController.text)) {
-          results.add(child);
-        }
-      }
-      setState(() {
-        searchedResults = results;
+        searchedResults = results ?? [];
       });
     } else if (selectedCriteria == 'CPIMS ID') {
-      final List<Map<String, dynamic>> results = [];
-      for (final child in caseLoadDummy) {
-        if (child['id'].toString() == (childTextController.text)) {
-          results.add(child);
-        }
-      }
+      final results =
+          await searchCaseLoad.searchOVCByCPIMSID(childTextController.text);
       setState(() {
-        searchedResults = results;
+        searchedResults = results ?? [];
       });
     }
   }

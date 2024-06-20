@@ -40,9 +40,7 @@ class FamilyBackgroundWidget extends StatelessWidget {
         const Text('CCO/32/213/5/29/5/2016 - July 1, 2016'),
         const SizedBox(height: 10),
         InkWell(
-          onTap: () {
-            Get.to(() => const CRSDetails());
-          },
+          onTap: () {},
           child: const Text(
             '1. View case (CCO/32/213/5/29/5/2016 - July 1, 2016)',
             style: TextStyle(

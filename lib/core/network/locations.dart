@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/location_types.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -22,118 +23,136 @@ Future<void> saveLocation(Database db, List<dynamic> locations) async {
     }
 
     await batch.commit();
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Save Location";
   }
 }
 
 // Get countries
-Future<List<NameID>> getCountries(Database db) async {
+Future<List<NameID>> getCountries() async {
+  final db = await LocalDB.instance.database;
   try {
-    var results = await db.query(
-      geolocationTable,
-      distinct: true,
-      columns: ['name', 'id'],
-      where: "type = ?",
-      whereArgs: [LocationTypes.country.value]
-    );
+    var results = await db.query(geolocationTable,
+        distinct: true,
+        columns: ['name', 'id'],
+        where: "type = ?",
+        whereArgs: [LocationTypes.country.value]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Countries";
   }
 }
 
 // Get county
-Future<List<NameID>> getCounties(Database db) async{
+Future<List<NameID>> getCounties() async {
   try {
-    var results = await db.query(
-        geolocationTable,
+    final db = await LocalDB.instance.database;
+
+    var results = await db.query(geolocationTable,
         distinct: true,
         columns: ['name', 'id'],
         where: "type = ?",
-        whereArgs: [LocationTypes.county.value]
-    );
+        whereArgs: [LocationTypes.county.value]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Counties";
   }
 }
 
 // Get subcounty
-Future<List<NameID>> getSubCountiesOfCounty(Database db, String countyName) async{
+Future<List<NameID>> getSubCountiesOfCounty(String countyName) async {
   try {
-    var results = await db.rawQuery(
-      "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = (SELECT id FROM $geolocationTable WHERE name = ? and type = ? LIMIT 1)",
-      [countyName, LocationTypes.county.value]
-    );
+    final db = await LocalDB.instance.database;
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    var results = await db.rawQuery(
+        "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = (SELECT id FROM $geolocationTable WHERE name = ? and type = ? LIMIT 1)",
+        [countyName, LocationTypes.county.value]);
+
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Sub counties";
   }
 }
 
 // Get location
-Future<List<NameID>> getLocationsFromSubCounty(Database db, String subCountyName) async{
+Future<List<NameID>> getLocationsFromSubCounty(String subCountyName) async {
   try {
+    final db = await LocalDB.instance.database;
+
     var results = await db.rawQuery(
         "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = (SELECT id FROM $geolocationTable WHERE name = ? and type = ? LIMIT 1)",
-        [subCountyName, LocationTypes.subcounty.value]
-    );
+        [subCountyName, LocationTypes.subcounty.value]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Locations From sub county";
   }
 }
 
 // Get sublocation
-Future<List<NameID>> getSubLocationFromLocation(Database db, int locationID) async{
+Future<List<NameID>> getSubLocationFromLocation(int locationID) async {
   try {
+    final db = await LocalDB.instance.database;
+
     var results = await db.rawQuery(
         "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = ?",
-        [locationID]
-    );
+        [locationID]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Sub locations From sub county";
   }
 }
 
 // Get ward
-Future<List<NameID>> getWardsFromSubCounty(Database db, int subCountyID) async{
+Future<List<NameID>> getWardsFromSubCounty(int subCountyID) async {
   try {
+    final db = await LocalDB.instance.database;
+
     var results = await db.rawQuery(
         "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = ?",
-        [subCountyID]
-    );
+        [subCountyID]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Wards From sub county";
   }
 }
 
 // Get orgunit
-Future<List<NameID>> getOrgUnitsFromSubCounty(Database db, int subCountyID) async{
+Future<List<NameID>> getOrgUnitsFromSubCounty(int subCountyID) async {
   try {
+    final db = await LocalDB.instance.database;
+
     var results = await db.rawQuery(
         "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = ?",
-        [subCountyID]
-    );
+        [subCountyID]);
 
-    List<NameID> toReturn = results.map((e) => NameID(name: e['name'].toString(), id: e['id'].toString())).toList();
+    List<NameID> toReturn = results
+        .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
+        .toList();
     return toReturn;
-  } catch(err) {
+  } catch (err) {
     throw "Could Not Get Organization units From sub county";
   }
 }
