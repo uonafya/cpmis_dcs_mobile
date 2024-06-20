@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import '../models/registry/personal_details_model.dart';
 import '../models/registry/registry_caregiver_model.dart';
 import '../models/registry/registry_cbo_chv_model.dart';
@@ -153,21 +154,11 @@ class RegistryProvider extends ChangeNotifier {
   }
 
   void submit() {
-    print(registryPersonalDetailsModel.toJson());
-    print(_registryIdentificationModel.toJson());
-    print(_registryContactDetailsModel.toJson());
-    print("[");
-    caregivers.forEach((value) {print(value.toJson());});
-    print("]");
-    print("[");
-    siblings.forEach((value) {print(value.toJson());});
-    print("]");
-    print(_registryLocationModel.toJson());
-    print(_registryCboChvModel.toJson());
-
     RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
     RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
     clearState();
-    print(registerNewChildModel.toJson());
+    if (kDebugMode) {
+      print(registerNewChildModel.toJson());
+    }
   }
 }
