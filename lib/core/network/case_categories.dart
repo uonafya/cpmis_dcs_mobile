@@ -61,3 +61,23 @@ Future<List<NameID>> getCategoriesFromDB() async{
     throw "Could Not Get Categories";
   }
 }
+
+Future<List<String>> getSubCategoriesFromDB(String categoryName) async {
+  try {
+    var db = await localdb.database;
+
+    var results = await db.query(
+      categoriesTable,
+      distinct: true,
+      where: "name = ?",
+      columns: ['subcategory'],
+      whereArgs: [categoryName]
+    );
+
+    List<String> toReturn = results.map((e) => e['subcategory'].toString()).toList();
+
+    return toReturn;
+  } catch(err) {
+    throw "Could Not Get Sub categories";
+  }
+}
