@@ -3,6 +3,7 @@ import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants/constants.dart';
@@ -403,6 +404,18 @@ class LocalDB {
             ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
             ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
             );
+
+            
+    ''');
+
+    // Organization unit
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $organizationUnitsTable (
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        name TEXT,
+        primaryUnit INTEGER
+       );
     ''');
 
     await db.execute('''
@@ -415,6 +428,7 @@ class LocalDB {
         ${CaseClosureTable.interventionList} TEXT
       );
     ''');
+
 
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
@@ -439,6 +453,42 @@ class LocalDB {
     ${CourtSessionTable.courtOrder} TEXT
   );
 ''');
+
+    // Social Inquiry
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $socialInquiryTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        case_recommendation TEXT,
+        case_history TEXT,
+        sub_county_children_office TEXT,
+        case_observation TEXT,
+        officer_name TEXT,
+        officer_phone TEXT,
+        date_of_social_inquiry TEXT,
+        case_id TEXT,
+        form_id TEXT
+
+      );
+    ''');
+  }
+
+  //Insert social inquiry form data
+  Future<void> insertSocialInquiryForm(
+      SocialInquiryFormModel socialInquiryForm) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert(
+        socialInquiryTable,
+        socialInquiryForm.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
+
   }
 
   // insert multiple caseload records

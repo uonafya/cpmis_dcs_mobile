@@ -1,4 +1,6 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
+import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 
 class CaseReportingCRSFormModel {
   String originator;
@@ -336,7 +338,7 @@ class CRSForm {
 
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
     jsonToReturn['reporting_orgunit'] = caseReporting?.reportingOrganizationalUnit;
-    jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
+    jsonToReturn['date_case_reported'] = convertDateToYMD(caseReporting?.dateCaseReported ?? DateTime.now());
 
     jsonToReturn['child'] = {};
     jsonToReturn['siblings'] = [];
@@ -380,12 +382,25 @@ class CRSForm {
     }
 
     if (caseData?.summonsIssued == true) {
-      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon;
+      jsonToReturn['date_of_summon'] = convertDateToYMD(caseData?.dateOfSummon ?? DateTime.now());
     }
 
     jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;
     jsonToReturn['future_needs'] = caseData?.futureNeeds;
 
     return jsonToReturn;
+  }
+  
+  Future<void> sendToUpstream() async{
+    try {
+      // Convert to JSON 
+      var json = toJSON();
+      
+      // Submit
+      var request = await httpClient.request("${cpimsApiUrl}mobile/crs/", "POST", json);
+      print("Submitted Succesfully");
+    } catch(err) {
+      throw "Could Not Send To Upstream";
+    }
   }
 }

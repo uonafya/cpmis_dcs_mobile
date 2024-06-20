@@ -2,6 +2,8 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/notification_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 import 'package:flutter/foundation.dart';
 
@@ -62,6 +64,34 @@ class ApiService {
     } catch (e) {
       if (kDebugMode) {
         print('Error occurred while inserting caseload data $e');
+      }
+    }
+  }
+
+  Future<List<NotificationModel>> getNotifications() async {
+    final response = await httpClient.request(
+      'mobile/notifications/',
+      'GET',
+      {},
+    );
+
+    return response.data
+        .map<NotificationModel>(
+            (notification) => NotificationModel.fromJson(notification))
+        .toList();
+  }
+
+  Future<void> sendSocialInquiry(SocialInquiryFormModel inquiry) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/forms/',
+        'POST',
+        inquiry.toJson(),
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending social inquiry $e');
       }
     }
   }

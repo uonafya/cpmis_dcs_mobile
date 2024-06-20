@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/child_case_history_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/family_background_widget.dart';
 import 'package:cpims_dcs_mobile/views/screens/social_inquiry/widgets/personal_information_widget.dart';
@@ -11,11 +13,13 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class SocialInquiry extends StatefulWidget {
   const SocialInquiry({super.key, required this.crsDetails});
-  final CRSForm crsDetails;
+  final CaseLoadModel crsDetails;
   @override
   State<SocialInquiry> createState() => _CRSHomeState();
 }
@@ -57,29 +61,6 @@ class _CRSHomeState extends State<SocialInquiry> {
     }
   }
 
-  void submitForm() {
-    if (formKey.currentState!.validate()) {
-      // All form fields are valid, retrieve the values
-      String caseHistory = caseHistoryController.text;
-      String caseObservation = caseObservationController.text;
-      String caseRecommendation = caseRecomendationController.text;
-      String caseSubCounty = caseSubCountyController.text;
-      String nameOfOfficer = nameOfOfficerController.text;
-      String officerTelephone = officerTelephoneController.text;
-
-      // Print the values of all the form fields
-      print('Case History: $caseHistory');
-      print('Case Observation: $caseObservation');
-      print('Case Recommendation: $caseRecommendation');
-      print('Case Sub-County: $caseSubCounty');
-      print('Name of Officer: $nameOfOfficer');
-      print('Officer Telephone: $officerTelephone');
-      print('Date of Social Inquiry: $dateOfSocialInquiry');
-
-      // Rest of submission logic or API calls here
-    }
-  }
-
   final caseHistoryController = TextEditingController();
   final caseObservationController = TextEditingController();
   final caseRecomendationController = TextEditingController();
@@ -87,25 +68,40 @@ class _CRSHomeState extends State<SocialInquiry> {
   final nameOfOfficerController = TextEditingController();
   final officerTelephoneController = TextEditingController();
   String? dateOfSocialInquiry;
+  void submitForm() async {
+    // if (formKey.currentState!.validate()) {
+    final inquiry = SocialInquiryFormModel(
+        caseHistory: caseHistoryController.text,
+        caseObservation: caseObservationController.text,
+        caseRecommendation: caseRecomendationController.text,
+        subCountyChildrenOffice: caseSubCountyController.text,
+        officerName: nameOfOfficerController.text,
+        officerPhone: officerTelephoneController.text,
+        caseId: widget.crsDetails.caseID,
+        dateOfSocialInquiry: dateOfSocialInquiry);
+    print(inquiry.toJson());
+    final db = LocalDB.instance;
+    await db.insertSocialInquiryForm(inquiry);
+    Get.back();
+    showSuccessSnackBar(context, "Social Inquiry Form Submitted Successfully");
+    // }
+  }
 
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      final db = await LocalDB.instance.database;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> socialInquiryWidgets = [
       PersonalInformationWidget(
-        childDetails: widget.crsDetails.about!.initialDetails,
+        caseLoad: widget.crsDetails,
       ),
       FamilyBackgroundWidget(
-        caseDetails: widget.crsDetails.caseReporting!,
+        caseLoadModel: widget.crsDetails,
       ),
       ChildCaseHistoryWidget(
         caseHistoryController: caseHistoryController,
@@ -134,7 +130,6 @@ class _CRSHomeState extends State<SocialInquiry> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: formKey,
             child: ListView(
               children: [
@@ -236,9 +231,11 @@ class _CRSHomeState extends State<SocialInquiry> {
                     selectedIndex == 2
                         ? Expanded(
                             child: CustomButton(
-                              text: 'Submit Form FMSI005F',
+                              text: 'Submit',
                               textColor: Colors.white,
-                              onTap: submitForm,
+                              onTap: () {
+                                submitForm();
+                              },
                             ),
                           )
                         : const SizedBox(),
