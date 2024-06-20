@@ -2,9 +2,11 @@ import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
+import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/locations.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
@@ -127,11 +129,14 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
               height: 30,
             ),
             CustomButton(
-              child: Text("Get categories"),
+              child: Text("Save Organizational Units"),
               onTap: () async{
-                await saveCategoriesInDB();
+                var db = await localdb.database;
+                var results = await getCountries();
+                print(results);
               },
             ),
+            const SizedBox(height: 10,),
             Row(
               children: <Widget>[
                 Expanded(
