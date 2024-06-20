@@ -3,9 +3,11 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/controller/registry_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/theme.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
+import 'package:cpims_dcs_mobile/core/network/locations.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/login_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/splash_screen.dart';
@@ -50,6 +52,11 @@ class _CPIMSState extends State<CPIMS> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      await loadLocationFromUpstream();
+      final counties = await getCounties();
+      print(counties);
+    });
   }
 
   @override
