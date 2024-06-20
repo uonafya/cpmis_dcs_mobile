@@ -131,6 +131,17 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeCaregiver(RegistryCaregiverModel value) {
+    caregivers.remove(value);
+    notifyListeners();
+
+  }
+
+  void removeSibling(RegistrySiblingModel value) {
+    siblings.remove(value);
+    notifyListeners();
+  }
+
   void submit() {
     print(registryPersonalDetailsModel.toJson());
     print(_registryIdentificationModel.toJson());
