@@ -144,7 +144,7 @@ class LocalDB {
             reportingOrgUnitID INTEGER NOT NULL,          
             dateCaseReported TEXT NOT NULL,
             childID TEXT NOT NULL,
-            countryID INTEGER,
+            country TEXT,
             city TEXT,
             houseEconomic TEXT NOT NULL,
             mentalConditionStatus TEXT NOT NULL,
