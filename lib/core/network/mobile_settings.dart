@@ -22,6 +22,33 @@ Future<void> saveOrganizationUnits() async{
   }
 }
 
+Future<List<OrganizationUnit>> getOrganizationalUnits(String? type) async{
+  try {
+    var db = await localdb.database;
+    List<Map<String, dynamic>> results;
+
+    if (type == null) {
+      results = await db.query(
+        organizationUnitsTable,
+        distinct: true,
+        columns: ['id', 'type', 'name', 'primaryUnit'],
+      );
+    } else {
+      results = await db.query(
+        organizationUnitsTable,
+        distinct: true,
+        columns: ['id', 'type', 'name', 'primaryUnit'],
+        where: "type = ?",
+        whereArgs: [type]
+      );
+    }
+
+    return results.map((e) => OrganizationUnit(id: e['id'], name: e['name'].toString(), primaryUnit: e['primaryUnit'] == 1, type: e['type'].toString())).toList();
+  } catch(err) {
+    throw "Could Not Get Organzational Units";
+  }
+}
+
 Future<void> saveOrganizationalUnitsToDB(Database db, List<dynamic> units) async{
   try {
     var batch = db.batch();

@@ -19,4 +19,9 @@ class OrganizationUnit {
 
     return OrganizationUnit(id: id, name: name, primaryUnit: primaryUnit, type: type);
   }
+
+  @override
+  String toString() {
+    return "id: $id; name: $name; primaryUnit: $primaryUnit; type: $type";
+  }
 }

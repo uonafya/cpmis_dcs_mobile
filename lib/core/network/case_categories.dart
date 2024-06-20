@@ -10,12 +10,9 @@ Future<void> saveCategoriesInDB() async {
   try {
     var db = await localdb.database;
     var request = await httpClient.request("${cpimsApiUrl}v1/settings/?field_name=case_category_id", "GET", null);
-
-    print(request.toString());
     var categories = request.data.map((e) => CategoriesFromUpstream.fromJSON(e)).toList();
 
     saveCategories(db, categories);
-    print("Save categories done");
   } catch(err) {
     print(err.toString());
     throw "Could Not Save Categories";
