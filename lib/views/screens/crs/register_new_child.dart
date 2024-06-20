@@ -1,7 +1,6 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
@@ -19,6 +18,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +26,6 @@ import '../../../controller/registry_provider.dart';
 import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
-
-
 
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
@@ -200,10 +198,13 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       lastDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       showInitialDate: true,
-                      initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                      initialDate: registryProvider
+                              .registryPersonalDetailsModel.dateOfBirth.isEmpty
+                          ? null
+                          : DateFormat('yyyy-MM-dd').parse(registryProvider
+                              .registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
-                        dateOfBirth =
-                            DateFormat('yyyy-MM-dd').format(val);
+                        dateOfBirth = DateFormat('yyyy-MM-dd').format(val);
                         registryProvider.setDateOfBirth(dateOfBirth);
                       },
                       validator: (val) {
@@ -348,11 +349,20 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           onTap: () {
                             var crsAbout = AboutChildCRSFormModel(
                                 initialDetails: InitialChildDetails(
-                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
-                                  firstName: registryProvider.registryPersonalDetailsModel.firstName,
-                                  otherNames: registryProvider.registryPersonalDetailsModel.otherNames ?? "",
-                                  sex: registryProvider.registryPersonalDetailsModel.sex,
-                                  surname: registryProvider.registryPersonalDetailsModel.surname,
+                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(
+                                      registryProvider
+                                          .registryPersonalDetailsModel
+                                          .dateOfBirth),
+                                  firstName: registryProvider
+                                      .registryPersonalDetailsModel.firstName,
+                                  otherNames: registryProvider
+                                          .registryPersonalDetailsModel
+                                          .otherNames ??
+                                      "",
+                                  sex: registryProvider
+                                      .registryPersonalDetailsModel.sex,
+                                  surname: registryProvider
+                                      .registryPersonalDetailsModel.surname,
                                 ),
                                 familyStatus: [],
                                 houseEconomicStatus: "");

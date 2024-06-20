@@ -1,6 +1,4 @@
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import '../models/registry/personal_details_model.dart';
 import '../models/registry/registry_caregiver_model.dart';
@@ -13,17 +11,43 @@ import '../models/registry/registry_sibling_model.dart';
 class RegistryProvider extends ChangeNotifier {
   // final RegisterNewChildModel _registerNewChildModel = RegisterNewChildModel();
 
-  final RegistryPersonalDetailsModel _registryPersonalDetailsModel = RegistryPersonalDetailsModel(personType: "", childOVCProgram: false, firstName: "", surname: "", sex: "", dateOfBirth: "", workforceIdName: "", datePaperFormFilled: "", childClass: "");
-  final RegistryIdentificationModel _registryIdentificationModel = RegistryIdentificationModel(birthRegistrationNumber: "", givenName: "", countryOfOrigin: "", tribe: "", religion:  "");
-  final RegistryContactDetailsModel _registryContactDetailsModel = RegistryContactDetailsModel(designatedPhoneNumber: "", otherMobileNumber: "", emailAddress: "", physicalLocation: "");
-  final RegistryLocationModel _registryLocationModel = RegistryLocationModel(county: "", subCounty: "", ward: "");
+  final RegistryPersonalDetailsModel _registryPersonalDetailsModel =
+      RegistryPersonalDetailsModel(
+          personType: "",
+          childOVCProgram: false,
+          firstName: "",
+          surname: "",
+          sex: "",
+          dateOfBirth: "",
+          workforceIdName: "",
+          datePaperFormFilled: "",
+          childClass: "");
+  final RegistryIdentificationModel _registryIdentificationModel =
+      RegistryIdentificationModel(
+          birthRegistrationNumber: "",
+          givenName: "",
+          countryOfOrigin: "",
+          tribe: "",
+          religion: "");
+  final RegistryContactDetailsModel _registryContactDetailsModel =
+      RegistryContactDetailsModel(
+          designatedPhoneNumber: "",
+          otherMobileNumber: "",
+          emailAddress: "",
+          physicalLocation: "");
+  final RegistryLocationModel _registryLocationModel =
+      RegistryLocationModel(county: "", subCounty: "", ward: "");
   final List<RegistryCaregiverModel> _caregivers = [];
   final List<RegistrySiblingModel> _siblings = [];
-  final RegistryCboChvModel _registryCboChvModel = RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
+  final RegistryCboChvModel _registryCboChvModel =
+      RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
 
-  RegistryPersonalDetailsModel get registryPersonalDetailsModel => _registryPersonalDetailsModel;
-  RegistryIdentificationModel get registryIdentificationModel => _registryIdentificationModel;
-  RegistryContactDetailsModel get registryContactDetailsModel => _registryContactDetailsModel;
+  RegistryPersonalDetailsModel get registryPersonalDetailsModel =>
+      _registryPersonalDetailsModel;
+  RegistryIdentificationModel get registryIdentificationModel =>
+      _registryIdentificationModel;
+  RegistryContactDetailsModel get registryContactDetailsModel =>
+      _registryContactDetailsModel;
   RegistryLocationModel get registryLocationModel => _registryLocationModel;
   List<RegistryCaregiverModel> get caregivers => _caregivers;
   List<RegistrySiblingModel> get siblings => _siblings;
@@ -131,23 +155,6 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  void submit() {
-    print(registryPersonalDetailsModel.toJson());
-    print(_registryIdentificationModel.toJson());
-    print(_registryContactDetailsModel.toJson());
-    print("[");
-    for (var value in caregivers) {print(value.toJson());}
-    print("]");
-    print("[");
-    for (var value in siblings) {print(value.toJson());}
-    print("]");
-    print(_registryLocationModel.toJson());
-    print(_registryCboChvModel.toJson());
-
-    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
-    RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
-
   void removeCaregiver(RegistryCaregiverModel value) {
     caregivers.remove(value);
     notifyListeners();
@@ -170,7 +177,22 @@ class RegistryProvider extends ChangeNotifier {
 
   Future<void> submit() async {
     try {
-      RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+      RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(
+          personType: registryPersonalDetailsModel.personType,
+          childOVCProgram: false,
+          firstName: registryPersonalDetailsModel.firstName,
+          surname: registryPersonalDetailsModel.surname,
+          sex: registryPersonalDetailsModel.sex,
+          dateOfBirth: registryPersonalDetailsModel.dateOfBirth,
+          childClass: registryPersonalDetailsModel.childClass,
+          workforceIdName: registryPersonalDetailsModel.workforceIdName,
+          datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled,
+          registryIdentificationModel: registryIdentificationModel,
+          registryContactDetailsModel: registryContactDetailsModel,
+          registryLocationModel: registryLocationModel,
+          caregivers: caregivers,
+          siblings: siblings,
+          registryCboChvModel: registryCboChvModel);
       await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
       clearState();
@@ -183,6 +205,5 @@ class RegistryProvider extends ChangeNotifier {
       }
     }
     RegisterNewChildQuery.getRegistryFormDetails();
-
   }
 }
