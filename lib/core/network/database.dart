@@ -23,7 +23,7 @@ class LocalDB {
       final path = join(dbPath, filePath);
       return await openDatabase(
         path,
-        version: 5,
+        version: 7,
         onCreate: _initialise,
         onUpgrade: (db, oldVersion, newVersion) {
           if (oldVersion < newVersion) {
@@ -73,7 +73,7 @@ class LocalDB {
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $childTable(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
             othername TEXT,
@@ -143,8 +143,8 @@ class LocalDB {
             reportingSubcountyID INTEGER NOT NULL,
             reportingOrgUnitID INTEGER NOT NULL,          
             dateCaseReported TEXT NOT NULL,
-            childID INTEGER NOT NULL,
-            countryID INTEGER NOT NULL,
+            childID TEXT NOT NULL,
+            country TEXT,
             city TEXT,
             houseEconomic TEXT NOT NULL,
             mentalConditionStatus TEXT NOT NULL,
@@ -159,7 +159,6 @@ class LocalDB {
             FOREIGN KEY(subCountyID) REFERENCES geolocations(id),
             FOREIGN KEY(wardID) REFERENCES geolocations(id),
             FOREIGN KEY(sublocationID) REFERENCES geolocations(id),
-            FOREIGN KEY(countryID) REFERENCES geolocations(id),
             FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
             FOREIGN KEY(childID) REFERENCES people(id),
             FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
@@ -236,7 +235,9 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $categoriesTable (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            subcategory TEXT,
+            orderNo INTEGER
           );
        ''');
 
@@ -254,7 +255,9 @@ class LocalDB {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             categoryID TEXT NOT NULL,
-            condition TEXT NOT NULL,
+            placeOfEvent TEXT NOT NULL,
+            caseNature TEXT NOT NULL,
+            dateOfEvent TEXT NOT NULL,
             FOREIGN KEY(categoryID) REFERENCES categories(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
@@ -299,64 +302,38 @@ class LocalDB {
           );
        ''');
 
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFormPerpetrators (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            perpetratorID INT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id),
+            FOREIGN KEY(perpetratorID) REFERENCES $perpetratorTable(id)
+        );
+        ''');
+
     // Creating registry tables
-
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryIdentificationTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      birthRegistrationNumber TEXT,
-      givenName TEXT,
-      countryOfOrigin TEXT,
-      tribe TEXT,
-      religion TEXT
-    )
+      CREATE TABLE IF NOT EXISTS $registryFormDetails (
+        personType TEXT NOT NULL,
+        isCaregiver BOOLEAN,
+        childOVCProgram BOOLEAN NOT NULL,
+        firstName TEXT NOT NULL,
+        surname TEXT NOT NULL,
+        otherNames TEXT,
+        sex TEXT NOT NULL,
+        dateOfBirth TEXT NOT NULL,
+        registryIdentificationModel TEXT NOT NULL,
+        registryContactDetailsModel TEXT NOT NULL,
+        registryLocationModel TEXT NOT NULL,
+        caregivers TEXT NOT NULL,
+        siblings TEXT NOT NULL,
+        registryCboChvModel TEXT NOT NULL,
+        workforceIdName TEXT NOT NULL,
+        datePaperFormFilled TEXT NOT NULL
+      );
     ''');
 
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryContactTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      designatedPhoneNumber TEXT,
-      otherMobileNumber TEXT,
-      emailAddress TEXT,
-      physicalLocation TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryLocationTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      county TEXT,
-      subCounty TEXT,
-      ward TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryCaregiverTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      relationship TEXT,
-      contactNumber TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registrySiblingTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      age INTEGER,
-      gender TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryCboChvTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      cboParentUnit TEXT,
-      ovcProgramEnrollment TEXT,
-      chv TEXT
-    )
-    ''');
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
@@ -438,7 +415,7 @@ class LocalDB {
     ''');
   }
 
-  // insert multiple caseload records
+   // insert multiple caseload records
   Future<void> insertMultipleCaseLoad(
     List<CaseLoadModel> caseLoadModelData,
   ) async {
@@ -532,6 +509,8 @@ class LocalDB {
     }
   }
 }
+
+var localdb = LocalDB._init();
 
 class CaseLoadTableFields {
   static final List<String> values = [
@@ -642,5 +621,3 @@ class CaseCategoriesTable {
   static const String placeOfEvent = 'place_of_event';
   static const String caseNature = 'case_nature';
 }
-
-var localdb = LocalDB._init();

@@ -155,6 +155,8 @@ class CRSDetails extends StatelessWidget {
           InkWell(
             onTap: () {
               final crsDetails = CRSForm(
+                  childID: "",
+                  caseID: "",
                   caseReporting: CaseReportingCRSFormModel(
                     county: "Nairobi",
                     subCounty: "Makadara",
@@ -192,7 +194,7 @@ class CRSDetails extends StatelessWidget {
                       familyStatus: [],
                       closeFriends: [],
                       hobbies: []),
-                  medical: const MedicalCRSFormModel(
+                  medical: MedicalCRSFormModel(
                       mentalConditionStatus: "Appears Not Okay",
                       mentalCondition: [
                         "Anxiety",
@@ -207,8 +209,11 @@ class CRSDetails extends StatelessWidget {
                   caseData: CaseDataCRSFormModel(
                       serialNumber: "A1931",
                       offenderKnown: "Yes",
+                      caseNarration: "",
                       crsCategories: [],
-                      perpetrators: ["Karl"],
+                      perpetrators: [
+                        const Perpetrators(firstName: "Karl", lastName: "")
+                      ],
                       riskLevel: 'Medium',
                       referralsPresent: true,
                       summonsIssued: true,

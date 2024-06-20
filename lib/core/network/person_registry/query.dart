@@ -1,36 +1,35 @@
+import 'dart:convert';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/models/registry/registry_identification_details_model.dart';
+import 'package:cpims_dcs_mobile/models/registry/personal_details_model.dart';
 
-class PersonRegistryQuery {
-  // insert queries
-  Future<void> insertPersonIdentification(
-      RegistryIdentificationModel person) async {
-    // Insert the person's identification details into the database
+
+
+class RegisterNewChildQuery {
+  static Future<void> insertRegistryFormDetails(RegisterNewChildModel child) async {
     try {
       final db = await LocalDB.instance.database;
-      await db.insert(registryIdentificationTable, person.toJson());
+        // Insert personal details
+        await db.insert(registryFormDetails, {
+          'personType': child.personType,
+          'isCaregiver': child.isCaregiver,
+          'childOVCProgram': child.childOVCProgram,
+          'firstName': child.firstName,
+          'surname': child.surname,
+          'otherNames': child.otherNames,
+          'sex': child.sex,
+          'dateOfBirth': child.dateOfBirth.toIso8601String(),
+          'registryIdentificationModel': jsonEncode(child.registryIdentificationModel.toJson()),
+          'registryContactDetailsModel': jsonEncode(child.registryContactDetailsModel.toJson()),
+          'registryLocationModel': jsonEncode(child.registryLocationModel.toJson()),
+          'caregivers': jsonEncode(child.caregivers.map((c) => c.toJson()).toList()),
+          'siblings': jsonEncode(child.siblings.map((s) => s.toJson()).toList()),
+          'registryCboChvModel': jsonEncode(child.registryCboChvModel.toJson()),
+          'workforceIdName': child.workforceIdName,
+          'datePaperFormFilled': child.datePaperFormFilled,
+        });
     } catch (e) {
-      print("Error inserting person identification: $e");
-    }
-  }
-
-  // select queries
-  Future<RegistryIdentificationModel> getPersonIdentification() async {
-    // Get the person's identification details from the database
-    try {
-      final db = await LocalDB.instance.database;
-      final List<Map<String, dynamic>> maps =
-          await db.query(registryIdentificationTable);
-      return RegistryIdentificationModel.fromJson(maps.first);
-    } catch (e) {
-      print("Error getting person identification: $e");
-      return RegistryIdentificationModel(
-          birthRegistrationNumber: "",
-          givenName: "",
-          countryOfOrigin: "",
-          tribe: "",
-          religion: "");
+      print("Error inserting new child: $e");
     }
   }
 }
