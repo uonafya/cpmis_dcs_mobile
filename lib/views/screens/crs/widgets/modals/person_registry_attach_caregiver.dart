@@ -160,7 +160,7 @@ class _PersonRegistryAttachCareGiverState
             onChanged: (value) {
               setState(() {
                 phoneNumber = value;
-              });;
+              });
             },
           ),
           Row(

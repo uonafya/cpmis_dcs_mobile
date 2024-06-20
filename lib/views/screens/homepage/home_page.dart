@@ -1,15 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:convert';
 
 import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
-import 'package:cpims_dcs_mobile/views/screens/homepage/force_synch_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';

@@ -1,8 +1,4 @@
-import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
@@ -16,7 +12,6 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +41,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   Widget build(BuildContext context) {
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked =
+    bool isChecked =
         registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
@@ -116,11 +111,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       style: TextStyle(color: kTextGrey),
                     ),
                     Checkbox(
-                      value: _isChecked,
+                      value: isChecked,
                       onChanged: (bool? value) {
                         setState(() {
-                          _isChecked = value ?? false; // Update the state
-                          registryProvider.setIsCaregiver(_isChecked);
+                          isChecked = value ?? false; // Update the state
+                          registryProvider.setIsCaregiver(isChecked);
                         });
                       },
                     ),

@@ -21,7 +21,7 @@ class ClosureFollowupModel {
     if (json['intervention_list'] != null) {
       interventionList = <InterventionList>[];
       json['intervention_list'].forEach((v) {
-        interventionList!.add(new InterventionList.fromJson(v));
+        interventionList!.add(InterventionList.fromJson(v));
       });
     }
     caseClosureNotes = json['case_closure_notes'];
@@ -29,16 +29,16 @@ class ClosureFollowupModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['case_outcome'] = this.caseOutcome;
-    data['transfered_to'] = this.transferedTo;
-    if (this.interventionList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['case_outcome'] = caseOutcome;
+    data['transfered_to'] = transferedTo;
+    if (interventionList != null) {
       data['intervention_list'] =
-          this.interventionList!.map((v) => v.toJson()).toList();
+          interventionList!.map((v) => v.toJson()).toList();
     }
-    data['case_closure_notes'] = this.caseClosureNotes;
-    data['date_of_case_closure'] = this.dateOfCaseClosure;
+    data['case_closure_notes'] = caseClosureNotes;
+    data['date_of_case_closure'] = dateOfCaseClosure;
     return data;
   }
 
@@ -66,9 +66,9 @@ class InterventionList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['intervention'] = this.intervention;
-    data['case_category'] = this.caseCategory;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['intervention'] = intervention;
+    data['case_category'] = caseCategory;
     return data;
   }
 
