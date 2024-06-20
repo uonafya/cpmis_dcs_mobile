@@ -163,6 +163,7 @@ class _PersonRegistryAttachCareGiverState
               });;
             },
           ),
+          const SizedBox(height: 15),
           Row(
             children: [
               Expanded(
@@ -177,7 +178,7 @@ class _PersonRegistryAttachCareGiverState
               const SizedBox(width: 15),
               Expanded(
                 child: CustomButton(
-                  text: "Submut",
+                  text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
                     RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);

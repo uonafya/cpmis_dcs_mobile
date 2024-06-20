@@ -1,10 +1,12 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_location_subform.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -38,6 +40,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   final birthRegIdController = TextEditingController();
   int formStep = 0;
+  String currentClass = "";
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +179,18 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     const CustomTextField(hintText: 'Date of Birth'),
+                    const SizedBox(height: 15),
+                    h2Text("Class"),
+                    CustomDropdown(
+                      initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
+                      items: childClass,
+                      onChanged: (value) {
+                        setState(() {
+                          currentClass = value;
+                          registryProvider.setChildClass(currentClass);
+                        });
+                      },
+                    ),
                     const SizedBox(
                       height: 15,
                     ),

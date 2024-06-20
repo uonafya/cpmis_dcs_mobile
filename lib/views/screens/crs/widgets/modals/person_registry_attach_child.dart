@@ -126,6 +126,7 @@ class _PersonRegistryAttachSiblingModalState
               });
           },
         ),
+        const SizedBox(height: 15),
         Row(
           children: [
             Expanded(
@@ -140,7 +141,7 @@ class _PersonRegistryAttachSiblingModalState
             const SizedBox(width: 15),
             Expanded(
               child: CustomButton(
-                text: "Submut",
+                text: "Submit",
                 textColor: Colors.white,
                 onTap: () {
                   RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, currentClass: currentClass);
