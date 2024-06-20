@@ -80,7 +80,7 @@ class CRSDetails extends StatelessWidget {
                   child: const Row(
                     children: [
                       Icon(
-                        Icons.edit,
+                        Icons.add,
                         size: 16,
                         color: Colors.white,
                       ),
@@ -88,7 +88,7 @@ class CRSDetails extends StatelessWidget {
                         width: 4,
                       ),
                       Text(
-                        "Edit",
+                        "Register New Case",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -104,7 +104,7 @@ class CRSDetails extends StatelessWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: Colors.blue[600],
                       borderRadius: BorderRadius.circular(4)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -126,31 +126,6 @@ class CRSDetails extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 14,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.print,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      "Print",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           const SizedBox(
@@ -158,75 +133,7 @@ class CRSDetails extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              final crsDetails = CRSForm(
-                  childID: "",
-                  caseID: "",
-                  caseReporting: CaseReportingCRSFormModel(
-                    county: "Nairobi",
-                    subCounty: "Makadara",
-                    city: "Nairobi",
-                    location: "Makadara Sub County",
-                    obNumber: "N/A",
-                    country: "Kenya",
-                    originator: "Mother",
-                    placeOfOccurence: true,
-                    policeStation: "Maka Police Station",
-                    reporterFirstName: "Ann",
-                    reporterLastName: "Kathambi",
-                    reporterOtherName: "Njeru",
-                    reporterPhoneNumber: "0713532868",
-                    reportingOrganizationalUnit: "Makadara Sub County",
-                    reportingSubCounty: "Makadara",
-                    courtFileNumber: "NB/47/287/5/29/3004/2024",
-                    courtName: "Makadara Law Courts",
-                    dateCaseReported: DateTime.now(),
-                    subLocation: "Maksadara",
-                    village: "Maka Village",
-                    ward: "Maka Ward",
-                  ),
-                  about: AboutChildCRSFormModel(
-                      initialDetails: InitialChildDetails(
-                        firstName: "Baby",
-                        surname: "Kathambi",
-                        otherNames: "",
-                        sex: "Female",
-                        dateOfBirth: DateTime.now(),
-                        age: 7,
-                      ),
-                      siblingDetails: [],
-                      houseEconomicStatus: "Good",
-                      familyStatus: [],
-                      closeFriends: [],
-                      hobbies: []),
-                  medical: MedicalCRSFormModel(
-                      mentalConditionStatus: "Appears Not Okay",
-                      mentalCondition: [
-                        "Anxiety",
-                        "Depression",
-                        "Stress",
-                        "Trauma"
-                      ],
-                      physicalConditionStatus: "Appears Normal",
-                      physicalCondition: ["Tired"],
-                      otherConditionStatus: "Appears not well",
-                      otherCondition: ["Sick", "Weak", "Tired"]),
-                  caseData: CaseDataCRSFormModel(
-                      serialNumber: "A1931",
-                      offenderKnown: "Yes",
-                      caseNarration: "",
-                      crsCategories: [],
-                      perpetrators: [
-                        const Perpetrators(firstName: "Karl", lastName: "")
-                      ],
-                      riskLevel: 'Medium',
-                      referralsPresent: true,
-                      summonsIssued: true,
-                      dateOfSummon: DateTime.now(),
-                      immediateNeeds: ["Clothing", "Food", "Shelter"],
-                      futureNeeds: ["Clothing", "Food", "Shelter"]));
-              Get.to(() => SocialInquiry(
-                    crsDetails: crsDetails,
-                  ));
+              Get.to(() => SocialInquiry(crsDetails: caseLoad));
             },
             child: Text(
               "Social Inquiry Form",
