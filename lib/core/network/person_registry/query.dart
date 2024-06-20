@@ -12,8 +12,8 @@ class RegisterNewChildQuery {
         // Insert personal details
         await db.insert(registryFormDetails, {
           'personType': child.personType,
-          'isCaregiver': child.isCaregiver,
-          'childOVCProgram': child.childOVCProgram,
+          'isCaregiver': child.isCaregiver == true ?1:0,
+          'childOVCProgram': child.childOVCProgram ?1:0,
           'firstName': child.firstName,
           'surname': child.surname,
           'otherNames': child.otherNames,
