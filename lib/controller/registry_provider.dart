@@ -153,7 +153,22 @@ class RegistryProvider extends ChangeNotifier {
     _registryCboChvModel.clear();
   }
 
+  bool isComplete() {
+    return _registryPersonalDetailsModel.isComplete() &&
+    _registryIdentificationModel.isComplete() &&
+    _registryContactDetailsModel.isComplete() &&
+    _registryLocationModel.isComplete() &&
+    _registryCboChvModel.isComplete();
+  }
+
+  bool isNotComplete() {
+    return !isComplete();
+  }
+
   void submit() {
+    if (isNotComplete()) {
+      return;
+    }
     RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
     RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
     clearState();

@@ -198,7 +198,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       },
                     ),
                     const SizedBox(height: 15),
-                    h2Text("Class"),
+                    const Text('Class *',
+                        style: TextStyle(color: kTextGrey)),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
                       items: childClass,
@@ -326,6 +327,12 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     text: 'Submit',
                     textColor: Colors.white,
                     onTap: () {
+                      if (registryProvider.isNotComplete()) {
+                        if (context.mounted) {
+                          errorSnackBar(context, 'Please enter all required fields. (*)');
+                        }
+                        return;
+                      }
                       print("ID :${birthRegIdController.text}");
                       registryProvider.submit();
                       Get.off(() => const CaseRegistrationSheet());

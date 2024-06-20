@@ -37,4 +37,8 @@ class RegistryContactDetailsModel {
     emailAddress = "";
     physicalLocation = "";
   }
+
+  bool isComplete() {
+    return designatedPhoneNumber.isNotEmpty;
+  }
 }

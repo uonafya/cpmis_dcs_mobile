@@ -81,8 +81,12 @@ class RegistryPersonalDetailsModel {
   }
 
   bool isComplete() {
-
-    return true;
+    return personType.isNotEmpty &&
+    firstName.isNotEmpty &&
+    surname.isNotEmpty &&
+    sex.isNotEmpty &&
+    dateOfBirth.isNotEmpty &&
+    childClass.isNotEmpty;
   }
 }
 
