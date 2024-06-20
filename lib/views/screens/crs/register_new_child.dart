@@ -268,22 +268,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
               ]),
             Row(
               children: [
-                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
-                    ? Expanded(
-                        child: CustomButton(
-                          text: 'Submit',
-                          textColor: Colors.white,
-                          onTap: () {
-                            print("ID :${birthRegIdController.text}");
-                            // Get.to(() => const CaseRegistrationSheet());
-                            registryProvider.submit();
-                          },
-                        ),
-                      )
-                    : const SizedBox(),
-                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
-                    ? const SizedBox(width: 15)
-                    : const SizedBox.shrink(),
                 Expanded(
                   child: CustomButton(
                     text: formStep == 0
@@ -294,6 +278,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             ? 'Cancel'
                             : "Back",
                     textColor: Colors.white,
+                    color: formStep == 1 &&
+                        selectedStep ==
+                            REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? kTextGrey
+                    : kPrimaryColor,
                     onTap: () {
                       if (formStep == 0) {
                         setState(() {
@@ -310,6 +299,22 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     },
                   ),
                 ),
+                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? const SizedBox(width: 15)
+                    : const SizedBox.shrink(),
+                selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? Expanded(
+                  child: CustomButton(
+                    text: 'Submit',
+                    textColor: Colors.white,
+                    onTap: () {
+                      print("ID :${birthRegIdController.text}");
+                      registryProvider.submit();
+                      Get.to(() => const CaseRegistrationSheet());
+                    },
+                  ),
+                )
+                    : const SizedBox(),
               ],
             ),
             const SizedBox(height: 20),
