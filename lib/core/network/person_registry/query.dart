@@ -23,7 +23,7 @@ class RegisterNewChildQuery {
           'surname': child.surname,
           'otherNames': child.otherNames,
           'sex': child.sex,
-          'dateOfBirth': child.dateOfBirth.toIso8601String(),
+          'dateOfBirth': child.dateOfBirth,
           'registryIdentificationModel': jsonEncode(child.registryIdentificationModel.toJson()),
           'registryContactDetailsModel': jsonEncode(child.registryContactDetailsModel.toJson()),
           'registryLocationModel': jsonEncode(child.registryLocationModel.toJson()),
@@ -52,7 +52,7 @@ class RegisterNewChildQuery {
           surname: maps[i]['surname'],
           otherNames: maps[i]['otherNames'],
           sex: maps[i]['sex'],
-          dateOfBirth: DateTime.parse(maps[i]['dateOfBirth']),
+          dateOfBirth: maps[i]['dateOfBirth'],
           childClass: "",  // TODO : Add key for childClass
           registryIdentificationModel: RegistryIdentificationModel.fromJson(jsonDecode(maps[i]['registryIdentificationModel'])),
           registryContactDetailsModel: RegistryContactDetailsModel.fromJson(jsonDecode(maps[i]['registryContactDetailsModel'])),

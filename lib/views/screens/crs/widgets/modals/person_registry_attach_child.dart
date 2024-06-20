@@ -5,10 +5,12 @@ import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dar
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
 import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_date_picker.dart';
 
 class PersonRegistryAttachSiblingModal extends StatefulWidget {
   const PersonRegistryAttachSiblingModal({super.key});
@@ -25,7 +27,7 @@ class _PersonRegistryAttachSiblingModalState
   String firstName = "";
   String surName = "";
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex = "";
   String currentClass = "";
   String? remarks;
@@ -87,12 +89,20 @@ class _PersonRegistryAttachSiblingModalState
         ),
         const SizedBox(height: 15),
         h2Text("Date of Birth"),
-        CustomTextField(
-            hintText: 'Date of Birth',
-          onChanged: (value) {
-              setState(() {
-              });
-    },
+        CustomDatePicker(
+          hintText: 'Date of Birth',
+          lastDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          onChanged: (val) {
+            dateOfBirth =
+                DateFormat('yyyy-MM-dd').format(val);
+          },
+          validator: (val) {
+            if (val!.isEmpty) {
+              return 'Please select a date';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 15),
         h2Text("Sex"),
@@ -144,7 +154,7 @@ class _PersonRegistryAttachSiblingModalState
                 text: "Submit",
                 textColor: Colors.white,
                 onTap: () {
-                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, currentClass: currentClass);
+                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass);
                   registryProvider.addSibling(sibling);
                   Navigator.pop(context);
                 },

@@ -2,7 +2,7 @@ class RegistrySiblingModel {
   String firstName;
   String surName;
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex;
   String currentClass;
   String? remarks;

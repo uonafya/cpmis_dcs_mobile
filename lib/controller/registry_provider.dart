@@ -12,7 +12,7 @@ import '../models/registry/registry_sibling_model.dart';
 class RegistryProvider extends ChangeNotifier {
   // final RegisterNewChildModel _registerNewChildModel = RegisterNewChildModel();
 
-  final RegistryPersonalDetailsModel _registryPersonalDetailsModel = RegistryPersonalDetailsModel(personType: "", childOVCProgram: false, firstName: "", surname: "", sex: "", dateOfBirth: DateTime.now(), workforceIdName: "", datePaperFormFilled: "", childClass: "");
+  final RegistryPersonalDetailsModel _registryPersonalDetailsModel = RegistryPersonalDetailsModel(personType: "", childOVCProgram: false, firstName: "", surname: "", sex: "", dateOfBirth: "", workforceIdName: "", datePaperFormFilled: "", childClass: "");
   final RegistryIdentificationModel _registryIdentificationModel = RegistryIdentificationModel(birthRegistrationNumber: "", givenName: "", countryOfOrigin: "", tribe: "", religion:  "");
   final RegistryContactDetailsModel _registryContactDetailsModel = RegistryContactDetailsModel(designatedPhoneNumber: "", otherMobileNumber: "", emailAddress: "", physicalLocation: "");
   final RegistryLocationModel _registryLocationModel = RegistryLocationModel(county: "", subCounty: "", ward: "");
@@ -52,7 +52,7 @@ class RegistryProvider extends ChangeNotifier {
     _registryPersonalDetailsModel.sex = value;
   }
 
-  void setDateOfBirth(DateTime value) {
+  void setDateOfBirth(String value) {
     _registryPersonalDetailsModel.dateOfBirth = value;
   }
 
@@ -154,7 +154,7 @@ class RegistryProvider extends ChangeNotifier {
   }
 
   void submit() {
-    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: DateTime.now(), childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+    RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
     RegisterNewChildQuery.insertRegistryFormDetails(registerNewChildModel);
     clearState();
     if (kDebugMode) {
