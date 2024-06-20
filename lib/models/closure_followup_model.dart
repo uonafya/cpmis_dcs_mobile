@@ -41,6 +41,17 @@ class ClosureFollowupModel {
     data['date_of_case_closure'] = this.dateOfCaseClosure;
     return data;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'case_id': caseId,
+      'case_outcome': caseOutcome,
+      'transfered_to': transferedTo,
+      'intervention_list': interventionList?.map((e) => e.toMap()).toList() ?? [],
+      'case_closure_notes': caseClosureNotes,
+      'date_of_case_closure': dateOfCaseClosure,
+    };
+  }
 }
 
 class InterventionList {
@@ -59,5 +70,12 @@ class InterventionList {
     data['intervention'] = this.intervention;
     data['case_category'] = this.caseCategory;
     return data;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'intervention': intervention,
+      'case_category': caseCategory,
+    };
   }
 }

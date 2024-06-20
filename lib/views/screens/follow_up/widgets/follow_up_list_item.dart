@@ -51,9 +51,7 @@ class FollowUpListItem extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-                    onTap: () {
-                      Get.to(() => const CRSDetails());
-                    },
+                    onTap: () {},
                     child: const Icon(
                       Icons.remove_red_eye,
                       color: kPrimaryColor,

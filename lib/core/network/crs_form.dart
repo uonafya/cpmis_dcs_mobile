@@ -19,24 +19,18 @@ class CRSDatabaseForm {
         "obNumber": form.caseReporting?.obNumber,
         "placeOfOccurence":
             boolToStr(form.caseReporting?.placeOfOccurence ?? false),
-        "subCountyID": int.parse(form.caseReporting!.subCounty),
+        "subCountyID": 1,
         "village": form.caseReporting?.village,
-        "wardID": form.caseReporting?.ward != null
-            ? int.parse(form.caseReporting!.ward!)
-            : null,
-        "sublocationID": form.caseReporting?.ward != null
-            ? int.parse(form.caseReporting!.ward!)
-            : null,
+        "wardID": 1,
+        "sublocationID": 1,
         "reportingSubcountyID":
-            int.parse(form.caseReporting!.reportingSubCounty),
+            1,
         "reportingOrgUnitID":
-            int.parse(form.caseReporting!.reportingOrganizationalUnit),
+            1,
         "dateCaseReported":
             form.caseReporting!.dateCaseReported!.toIso8601String(),
         "childID": form.childID,
-        "countryID": form.caseReporting?.country != null
-            ? int.parse(form.caseReporting!.country)
-            : null,
+        "country": form.caseReporting?.country,
         "city": form.caseReporting?.city,
         "houseEconomic": form.about!.houseEconomicStatus,
         "mentalConditionStatus": form.medical!.mentalConditionStatus,
@@ -112,10 +106,10 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.crsCategories.length; j++) {
         await db.insert(crsFormCategoriesTable, {
           "formID": form.caseID,
-          "categoryID": form.caseData!.crsCategories[j].category,
-          "placeOfEvent": form.caseData!.crsCategories[j].placeOfEvent,
-          "caseNature": form.caseData!.crsCategories[j].caseNature,
-          "dateOfEvent": form.caseData!.crsCategories[j].dateOfEvent,
+          "categoryID": form.caseData?.crsCategories[j].category,
+          "placeOfEvent": form.caseData?.crsCategories[j].placeOfEvent,
+          "caseNature": form.caseData?.crsCategories[j].caseNature,
+          "dateOfEvent": form.caseData?.crsCategories[j].dateOfEvent,
         });
 
         // Inserting sub categories
