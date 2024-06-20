@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
@@ -421,6 +422,21 @@ class LocalDB {
     ${ServiceFollowupTable.encounterNotes} TEXT,
     ${ServiceFollowupTable.caseCategoryId} TEXT,
     ${ServiceFollowupTable.serviceProvidedList} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSessionTable(
+    ${CourtSessionTable.courtSessionCase} TEXT PRIMARY KEY,
+    ${CourtSessionTable.courtSessionType} TEXT,
+    ${CourtSessionTable.dateOfCourtEvent} TEXT,
+    ${CourtSessionTable.courtNotes} TEXT,
+    ${CourtSessionTable.nextHearingDate} TEXT,
+    ${CourtSessionTable.nextMentionDate} TEXT,
+    ${CourtSessionTable.pleaTaken} TEXT,
+    ${CourtSessionTable.applicationOutcome} TEXT,
+    ${CourtSessionTable.courtOutcome} TEXT,
+    ${CourtSessionTable.courtOrder} TEXT
   );
 ''');
   }

@@ -48,6 +48,7 @@ const String perpetratorCaseLoadTable = "perpetratorCaseLoad";
 const String caseLoadCategoryTable = "caseLoadCategory";
 const String caseClosureTable = "caseClosure";
 const String serviceFollowupTable = "serviceFollowup";
+const String courtSessionTable = "courtSession";
 
 const String registryIdentificationTable = "registry_identification";
 const String registryContactTable = "registry_contact";
