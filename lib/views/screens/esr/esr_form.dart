@@ -69,6 +69,7 @@ class _ESRFormState extends State<ESRForm> {
                   text: controller.selectedIndex <= 0 ? 'Cancel' : 'Previous',
                   onTap: () {
                     if (controller.selectedIndex == 0) {
+                      controller.clearData();
                       Navigator.pop(context);
                     }
                     _scrollController.animateTo(
@@ -98,10 +99,7 @@ class _ESRFormState extends State<ESRForm> {
                     // );
 
                     try {
-                      await controller.handleSubmit();
-                      Get.back();
-                      showSuccessSnackBar(
-                          context, "Successfully submitted ESR form.");
+                      await controller.handleSubmit(context);
                     } catch (e) {
                       showErrorSnackBar(context,
                           "Failed to ESRsubmit form. Please try again.");
@@ -123,22 +121,22 @@ class _ESRFormState extends State<ESRForm> {
 List<Map<String, dynamic>> esrStepperData = [
   {
     'title': 'Household Geolocation',
-    'subtitle': 'Reporter and additional details',
+    'subtitle': 'Geographical details of the household',
     'onTap': () {},
   },
   {
     'title': 'BENEFITS FROM SOCIAL ASSISTANCE PROGRAMMES',
-    'subtitle': 'Name and additional details',
+    'subtitle': 'Benefits received by the household',
     'onTap': () => {},
   },
   {
     'title': 'Household Demographics',
-    'subtitle': 'Medical history and additional details',
+    'subtitle': 'House hold member listing',
     'onTap': () => {},
   },
   {
     'title': 'Family',
-    'subtitle': 'Medical history and additional details',
+    'subtitle': 'Details of the family members',
     'onTap': () => {},
   },
 ];

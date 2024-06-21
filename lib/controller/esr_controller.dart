@@ -1,8 +1,13 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class ESRController with ChangeNotifier {
+  final householdGeolocationFormKey = GlobalKey<FormState>();
+  final householdDemographicFormKey = GlobalKey<FormState>();
+  final benefitsFormKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> familyMembers = [];
   List<Map<String, dynamic>> familyMembersDetails = [];
   String selectedCounty = 'Please select';
@@ -20,7 +25,7 @@ class ESRController with ChangeNotifier {
   final firstNameController = TextEditingController();
   final middleNameController = TextEditingController();
   final surnameController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+
   String doesHaveId = 'Type';
   String relationship = "Please select";
   String sex = "Please select";
@@ -35,7 +40,7 @@ class ESRController with ChangeNotifier {
   String hasFormalJob = "Please select";
   String recommendSupport = "Please select";
   final memberCaregiver = TextEditingController();
-  final lastReceivedBenefitController = TextEditingController();
+  final specifiedBenefit = TextEditingController();
   final specifyInKindController = TextEditingController();
   String kindOfBenefits = 'Please select';
   String householdReceivingBenefits = 'Please select';
@@ -241,6 +246,26 @@ class ESRController with ChangeNotifier {
     middleNameController.clear();
     surnameController.clear();
     doesHaveId = 'Type';
+    relationship = "Please select";
+
+    sex = "Please select";
+    dateOfBirth = null;
+    maritalStatus = "Please select";
+    doesSufferChronic = "Please select";
+    disabilityRequire24Care = "Please select";
+    typeOfDisability = "Please select";
+    learningInstitution = "Please select";
+    highestLearning = "Please select";
+    doingLast = "Please select";
+    hasFormalJob = "Please select";
+    recommendSupport = "Please select";
+    memberCaregiver.clear();
+    specifiedBenefit.clear();
+    specifyInKindController.clear();
+    kindOfBenefits = 'Please select';
+    householdReceivingBenefits = 'Please select';
+
+    notifyListeners();
   }
 
   void setSelectedIndex(int index) {
@@ -249,7 +274,7 @@ class ESRController with ChangeNotifier {
   }
 
   void addMember() {
-    if (formKey.currentState!.validate()) {
+    if (householdDemographicFormKey.currentState!.validate()) {
       addFamilyMember({
         'firstName': firstNameController.text,
         'middleName': middleNameController.text,
@@ -261,8 +286,22 @@ class ESRController with ChangeNotifier {
     }
   }
 
-  Future<void> handleSubmit() async {
+  Future<void> handleSubmit(BuildContext context) async {
     if (selectedIndex < esrStepperWidgets.length - 1) {
+      if (selectedIndex == 0) {
+        if (!householdGeolocationFormKey.currentState!.validate()) {
+          return;
+        } else if (selectedIndex == 1) {
+          if (!householdDemographicFormKey.currentState!.validate()) {
+            return;
+          } else if (selectedIndex == 2) {
+            if (!benefitsFormKey.currentState!.validate()) {
+              return;
+            }
+          }
+        }
+      }
+
       setSelectedIndex(selectedIndex + 1);
     } else {
       final data = {
@@ -278,8 +317,8 @@ class ESRController with ChangeNotifier {
         "years": yearsController.text,
         "months": monthsController.text,
         "household_benefits": householdReceivingBenefits,
-        "kind_benefits": kindOfBenefits,
-        "amount_benefit": lastReceivedBenefitController.text,
+        "benefit_type": kindOfBenefits,
+        "specified_benefit": specifiedBenefit.text,
         "family_members": [
           for (var i = 0; i < familyMembers.length; i++)
             {
@@ -307,8 +346,9 @@ class ESRController with ChangeNotifier {
             }
         ]
       };
-
       await apiService.sendESRForm(data);
+      Get.back();
+      showSuccessSnackBar(context, "Successfully submitted ESR form.");
     }
   }
 }
