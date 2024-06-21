@@ -1,5 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/models/esr_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -264,7 +266,7 @@ class ESRController with ChangeNotifier {
     specifyInKindController.clear();
     kindOfBenefits = 'Please select';
     householdReceivingBenefits = 'Please select';
-
+    setSelectedIndex(0);
     notifyListeners();
   }
 
@@ -346,7 +348,16 @@ class ESRController with ChangeNotifier {
             }
         ]
       };
-      await apiService.sendESRForm(data);
+      final esrForm = ESRFormModel.fromJson(data);
+      // await apiService.sendESRForm(data);
+      final isSaved = await LocalDB.instance.saveESRForm(esrForm);
+
+      if (!isSaved) {
+        showErrorSnackBar(
+            context, "Failed to submit ESR form. Please try again.");
+        return;
+      }
+      clearData();
       Get.back();
       showSuccessSnackBar(context, "Successfully submitted ESR form.");
     }

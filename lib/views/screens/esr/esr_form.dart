@@ -25,6 +25,15 @@ class _ESRFormState extends State<ESRForm> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      Provider.of<ESRController>(context, listen: false).clearData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = Provider.of<ESRController>(context);
     return Scaffold(
