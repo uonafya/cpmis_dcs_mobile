@@ -5,6 +5,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 class CustomDropdown extends StatefulWidget {
   /// The initial value(s) of the dropdown. This can either be a single value(String) or a list of values(List<String>)
   final dynamic initialValue;
+  final String? Function(String? val)? validator;
 
   /// The list of items to be displayed in the dropdown
   final List<String> items;
@@ -19,6 +20,7 @@ class CustomDropdown extends StatefulWidget {
   const CustomDropdown(
       {super.key,
       required this.initialValue,
+      this.validator,
       this.isMultiSelect = false,
       required this.items,
       required this.onChanged,
@@ -123,6 +125,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                     onChanged: (value) => widget.onChanged(value),
                   )
                 : DropdownSearch<String>(
+                    validator: widget.validator,
                     popupProps: PopupProps.menu(
                       showSelectedItems: true,
                       searchFieldProps: TextFieldProps(

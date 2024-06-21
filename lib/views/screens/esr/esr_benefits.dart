@@ -32,54 +32,80 @@ class _ESRBenefitsState extends State<ESRBenefits> {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<ESRController>(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Is the household receiving benefits from any of the Social Assistance Programmes?',
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomDropdown(
-            initialValue: controller.householdReceivingBenefits,
-            items: houseHoldBenefitsList,
-            onChanged: (val) {
-              controller.setHouseholdReceivingBenefits(val);
-            }),
-        const SizedBox(
-          height: 14,
-        ),
-        const Text(
-          'What type of the BENEFITS do you Receive?',
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomDropdown(
-            initialValue: controller.kindOfBenefits,
-            items: kindOfBenefitsList,
-            onChanged: (val) {
-              controller.setKindOfBenefits(val);
-            }),
-        const SizedBox(
-          height: 14,
-        ),
-        const Text(
-          'How much benefit did you last receive?',
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextField(
-          controller: controller.lastReceivedBenefitController,
-          hintText: "Ksh...",
-        ),
-       
-        const SizedBox(
-          height: 14,
-        ),
-      ],
+    return Form(
+      key: controller.benefitsFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Is the household receiving benefits from any of the Social Assistance Programmes?',
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          CustomDropdown(
+              initialValue: controller.householdReceivingBenefits,
+              items: houseHoldBenefitsList,
+              validator: (val) {
+                if (val == 'Please select') {
+                  return 'Please select benefits';
+                }
+                return null;
+              },
+              onChanged: (val) {
+                controller.setHouseholdReceivingBenefits(val);
+              }),
+          const SizedBox(
+            height: 14,
+          ),
+          const Text(
+            'What type of the BENEFITS do you Receive?',
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          CustomDropdown(
+              initialValue: controller.kindOfBenefits,
+              validator: (val) {
+                if (val == 'Please select') {
+                  return 'Please select ';
+                }
+                return null;
+              },
+              items: kindOfBenefitsList,
+              onChanged: (val) {
+                controller.setKindOfBenefits(val);
+              }),
+          const SizedBox(
+            height: 14,
+          ),
+          if (controller.kindOfBenefits == "Others" ||
+              controller.kindOfBenefits == "In-kind")
+            const Text(
+              'Specify the benefit',
+            ),
+          if (controller.kindOfBenefits == "Others" ||
+              controller.kindOfBenefits == "In-kind")
+            const SizedBox(
+              height: 6,
+            ),
+          if (controller.kindOfBenefits == "Others" ||
+              controller.kindOfBenefits == "In-kind")
+            CustomTextField(
+              controller: controller.specifiedBenefit,
+              hintText: "Type the benefit",
+              validator: (val) {
+                if (val!.isEmpty) {
+                  return "Benefit is required";
+                }
+                return null;
+              },
+            ),
+          const SizedBox(
+            height: 14,
+          ),
+        ],
+      ),
     );
   }
 }
