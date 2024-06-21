@@ -51,7 +51,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   Widget build(BuildContext context) {
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked =
+    bool isChecked =
         registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
@@ -121,11 +121,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       style: TextStyle(color: kTextGrey),
                     ),
                     Checkbox(
-                      value: _isChecked,
+                      value: isChecked,
                       onChanged: (bool? value) {
                         setState(() {
-                          _isChecked = value ?? false; // Update the state
-                          registryProvider.setIsCaregiver(_isChecked);
+                          isChecked = value ?? false; // Update the state
+                          registryProvider.setIsCaregiver(isChecked);
                         });
                       },
                     ),
@@ -398,7 +398,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             var crsAbout = AboutChildCRSFormModel(
                                 initialDetails: initDetails,
                                 siblingDetails: siblings,
-                                caregivers: caregivers,
+                                caregivers: caregivers, 
                                 familyStatus: [],
                                 houseEconomicStatus: "");
                             registryProvider.submit();
