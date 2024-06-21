@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -158,12 +159,12 @@ class CRSDatabaseForm {
       // Store Perpetrators
       for (var j = 0; j < form.caseData!.perpetrators.length; j++) {
         var perp = form.caseData!.perpetrators[j];
-        var perpid = await db.insert(crsOtherConditionTable, {
+        var perpid = await db.insert(perpetratorTable, {
           "firstName": perp.firstName,
           "surname": perp.lastName,
           "otherNames": perp.othernames,
           "sex": perp.sex,
-          "dob": perp.dateOfBirth?.toIso8601String(),
+          "dob": convertDateToYMD(perp.dateOfBirth),
           "relationshipType": perp.relationshipType
         });
 
