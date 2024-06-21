@@ -46,7 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       },
     },
     {
-      "title": "CCI Transfer",
+      "title": "CCI Transition form",
       "onTap": () {
         Get.back();
 
