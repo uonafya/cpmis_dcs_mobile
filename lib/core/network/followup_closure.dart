@@ -88,6 +88,7 @@ class ClosureDatabaseHelper {
 class CaseClosureTable {
   static final List<String> values = [
     caseID,
+    formId,
     caseOutcome,
     transferredTo,
     caseClosureNotes,
@@ -96,6 +97,7 @@ class CaseClosureTable {
   ];
 
   static const String caseID = 'case_id';
+  static const String formId = 'form_id';
   static const String caseOutcome = 'case_outcome';
   static const String transferredTo = 'transfered_to';
   static const String caseClosureNotes = 'case_closure_notes';

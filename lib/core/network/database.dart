@@ -423,6 +423,7 @@ class LocalDB {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
         ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.formId} TEXT,
         ${CaseClosureTable.caseOutcome} TEXT,
         ${CaseClosureTable.transferredTo} TEXT,
         ${CaseClosureTable.caseClosureNotes} TEXT,
