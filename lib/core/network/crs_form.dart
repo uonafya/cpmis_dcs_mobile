@@ -10,6 +10,7 @@ class CRSDatabaseForm {
       // Insert into form table
       await db.insert(crsTable, {
         "id": formID,
+        "caseReporter": form.caseReporting?.originator,
         "courtName": form.caseReporting?.courtName,
         "reporterPhoneNumber": form.caseReporting?.reporterPhoneNumber,
         "reporterLastName": form.caseReporting?.reporterLastName,
@@ -18,18 +19,14 @@ class CRSDatabaseForm {
         "reporterOtherName": form.caseReporting?.reporterOtherName,
         "policeStation": form.caseReporting?.policeStation,
         "obNumber": form.caseReporting?.obNumber,
-        "placeOfOccurence":
-            boolToStr(form.caseReporting?.placeOfOccurence ?? false),
-        "subCountyID": 1,
+        "placeOfOccurence": form.caseReporting?.placeOfOccurence == true ? 1: 0,
         "village": form.caseReporting?.village,
-        "wardID": 1,
-        "sublocationID": 1,
-        "reportingSubcountyID":
-            1,
-        "reportingOrgUnitID":
-            1,
-        "dateCaseReported":
-            form.caseReporting!.dateCaseReported!.toIso8601String(),
+        "ward": form.caseReporting?.ward,
+        "county": form.caseReporting?.county,
+        "subCounty": form.caseReporting?.subCounty,
+        "reportingSubCounty": form.caseReporting?.reportingSubCounty,
+        "reportingOrgUnit": form.caseReporting?.reportingOrganizationalUnit,
+        "dateCaseReported": convertDateToYMD(form.caseReporting!.dateCaseReported!),
         "childID": "",
         "country": form.caseReporting?.country,
         "city": form.caseReporting?.city,
@@ -39,10 +36,13 @@ class CRSDatabaseForm {
         "otherConditionStatus": form.medical!.otherConditionStatus,
         "caseSerialNumber": form.caseData?.serialNumber ?? "",
         "offenderKnown": form.caseData?.offenderKnown ?? "",
+        "location": form.caseReporting?.location,
+        "subLocation": form.caseReporting?.subLocation,
         "riskLevel": form.caseData?.riskLevel,
         "referralPresent": form.caseData?.referralsPresent == true ? 1 : 0,
         "summonsIssued": form.caseData?.referralsPresent == true ? 1 : 0,
         "dateOfSummon": form.caseData?.dateOfSummon?.toIso8601String(),
+        "caseNarration": form.caseData?.caseNarration
       });
 
       // Insert into family status
@@ -107,7 +107,7 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.crsCategories.length; j++) {
         await db.insert(crsFormCategoriesTable, {
           "formID": formID,
-          "categoryID": "CSCU",
+          "categoryID": form.caseData?.crsCategories[j].category,
           "placeOfEvent": form.caseData?.crsCategories[j].placeOfEvent,
           "caseNature": form.caseData?.crsCategories[j].caseNature,
           "dateOfEvent": form.caseData?.crsCategories[j].dateOfEvent,
@@ -120,6 +120,7 @@ class CRSDatabaseForm {
           var subCateg = form.caseData!.crsCategories[j].subcategory![l];
           await db.insert(crsFormSubCategoriesTable, {
             "crsFormCategoryID": formID,
+            "categoryID": form.caseData?.crsCategories[j].category,
             "subCategoryID": subCateg,
           });
         }
@@ -141,7 +142,7 @@ class CRSDatabaseForm {
       // Immediate needs
       for (var j = 0; j < form.caseData!.immediateNeeds.length; j++) {
         var immediate = form.caseData!.immediateNeeds[j];
-        await db.insert(crsOtherConditionTable, {
+        await db.insert(crsImmediateTable, {
           "formID": formID,
           "need": immediate,
         });
@@ -150,7 +151,7 @@ class CRSDatabaseForm {
       // Future needs
       for (var j = 0; j < form.caseData!.futureNeeds.length; j++) {
         var future = form.caseData!.futureNeeds[j];
-        await db.insert(crsOtherConditionTable, {
+        await db.insert(crsFutureNeedsTable, {
           "formID": formID,
           "need": future,
         });

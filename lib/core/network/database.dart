@@ -135,21 +135,24 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsTable(
             id TEXT PRIMARY KEY,
+            caseReporter TEXT NOT NULL,
             courtName TEXT,
             reporterPhoneNumber TEXT,
             reporterLastName TEXT,
             reporterFirstName TEXT,
             courtFileNumber TEXT,
             reporterOtherName TEXT,
+            county TEXT NOT NULL,
+            subCounty TEXT NOT NULL,
             policeStation TEXT,
             obNumber TEXT,
-            placeOfOccurence TEXT NOT NULL,
-            subCountyID INTEGER NOT NULL,
+            placeOfOccurence INTEGER NOT NULL,
             village TEXT,
-            wardID INTEGER,
-            sublocationID INTEGER,
-            reportingSubcountyID INTEGER NOT NULL,
-            reportingOrgUnitID INTEGER NOT NULL,          
+            ward TEXT,
+            location TEXT,
+            subLocation TEXT,
+            reportingSubCounty TEXT NOT NULL,
+            reportingOrgUnit TEXT NOT NULL,          
             dateCaseReported TEXT NOT NULL,
             childID TEXT NOT NULL,
             country TEXT,
@@ -164,12 +167,7 @@ class LocalDB {
             referralPresent INT NOT NULL,
             summonsIssued INT NOT NULL,
             dateOfSummon TEXT,
-            FOREIGN KEY(subCountyID) REFERENCES geolocations(id),
-            FOREIGN KEY(wardID) REFERENCES geolocations(id),
-            FOREIGN KEY(sublocationID) REFERENCES geolocations(id),
-            FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
-            FOREIGN KEY(childID) REFERENCES people(id),
-            FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
+            caseNarration TEXT
           );
        ''');
 
@@ -266,7 +264,6 @@ class LocalDB {
             placeOfEvent TEXT NOT NULL,
             caseNature TEXT NOT NULL,
             dateOfEvent TEXT NOT NULL,
-            FOREIGN KEY(categoryID) REFERENCES $metadataTable(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
@@ -275,9 +272,9 @@ class LocalDB {
         CREATE TABLE IF NOT EXISTS $crsFormSubCategoriesTable(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             crsFormCategoryID INTEGER NOT NULL,
+            categoryID TEXT NOT NULL,
             subCategoryID TEXT NOT NULL,
-            FOREIGN KEY(crsFormCategoryID) REFERENCES crsFormCategories(id),
-            FOREIGN KEY(subCategoryID) REFERENCES subcategories(id)
+            FOREIGN KEY(crsFormCategoryID) REFERENCES $crsFormCategoriesTable(id)
           );
        ''');
 
