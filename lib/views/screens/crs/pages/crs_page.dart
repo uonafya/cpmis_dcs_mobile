@@ -26,10 +26,7 @@ import '../../../../models/case_load/case_load_model.dart';
 class CaseRegistrationSheet extends StatefulWidget {
   const CaseRegistrationSheet({
     super.key,
-    this.caseLoad,
   });
-
-  final CaseLoadModel? caseLoad;
 
   @override
   State<CaseRegistrationSheet> createState() => _CaseRegistrationSheetState();
@@ -39,54 +36,6 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
   var selectedStep = 0;
   bool hasConcented = false;
   final ScrollController _scrollController = ScrollController();
-
-  AboutChildCRSFormModel? crsAbout;
-
-  @override
-  void initState() {
-    _initializeData();
-    super.initState();
-  }
-
-  void _initializeData() {
-    final List<SiblingsModel>? caseLoadSiblings = widget.caseLoad?.siblings;
-    List<SiblingDetails> siblings = [];
-    if (caseLoadSiblings != null) {
-      for (var caseLoadSibling in caseLoadSiblings) {
-        // siblings.add(
-        //
-        // );
-        // siblings.add(SiblingDetails(
-        //   childID: int.tryParse(caseLoadSibling.childPersonId ?? "") ?? 0,
-        //   siblingID: int.tryParse(caseLoadSibling.siblingPersonId ?? "") ?? 0,
-        //   dateLinked:
-        //       DateFormat("yyyy-MM-dd").parse(caseLoadSibling.dateLinked ?? ""),
-        //   dateUnlinked: DateFormat("yyyy-MM-dd")
-        //       .parse(caseLoadSibling.dateDelinked ?? ""),
-        // ));
-      }
-    }
-    crsAbout = AboutChildCRSFormModel(
-      initialDetails: InitialChildDetails(
-        sex: widget.caseLoad?.ovcSex ?? "",
-        dateOfBirth: DateTime.now(),
-        surName: widget.caseLoad?.ovcSurname ?? "",
-        firstName: widget.caseLoad?.ovcFirstName ?? "",
-        otherNames: widget.caseLoad?.ovcOtherNames ?? "",
-      ),
-      // initialDetails: InitialChildDetails(
-      //   firstName: widget.caseLoad?.ovcFirstName ?? "",
-      //   otherNames: widget.caseLoad?.ovcOtherNames ?? "",
-      //   /sex: widget.caseLoad?.ovcSex ?? "",
-      //   surname: widget.caseLoad?.ovcSurname ?? "",
-      // ),
-      familyStatus: [],
-      houseEconomicStatus: "",
-      siblingDetails: siblings,
-    );
-    print("Sibling details: $siblings");
-    // Provider.of<CRSFormProvider>(context, listen: false).about = crsAbout!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +71,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             ),
                           ),
                           TextSpan(
-                            text: "${model.form.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surName}| ".toUpperCase(),
+                            text:
+                                "${model.form.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surName}| "
+                                    .toUpperCase(),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -136,9 +87,15 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             ),
                           ),
                           TextSpan(
-                            text: model.form.about?.initialDetails.dateOfBirth == null
+                            text: model.form.about?.initialDetails
+                                        .dateOfBirth ==
+                                    null
                                 ? ""
-                                : getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year |" : "${getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!)} Years |",
+                                : getAgeFromDateOf(model.form.about!
+                                            .initialDetails.dateOfBirth!) <
+                                        1
+                                    ? "Under 1 Year |"
+                                    : "${getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!)} Years |",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -167,23 +124,25 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 // Form body
                 hasConcented == false
                     ? ConsentForm(
-                  update: (bool value) {
-                    setState(() {
-                      hasConcented = value;
-                    });
-                  },
-                  message: "You have concented to filling the form",
-                )
+                        update: (bool value) {
+                          setState(() {
+                            hasConcented = value;
+                          });
+                        },
+                        message: "You have concented to filling the form",
+                      )
                     : Container(
-                  decoration: BoxDecoration(
-                      border:
-                      Border.all(color: Colors.grey[300]!, width: 1.0),
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(5.0))),
-                  padding: const EdgeInsets.all(15.0),
-                  child: crsStepperWidgets[selectedStep],
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey[300]!, width: 1.0),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5.0))),
+                        padding: const EdgeInsets.all(15.0),
+                        child: crsStepperWidgets[selectedStep],
+                      ),
+                const SizedBox(
+                  height: 10,
                 ),
-                const SizedBox(height: 10,),
                 Row(
                   children: <Widget>[
                     Expanded(
