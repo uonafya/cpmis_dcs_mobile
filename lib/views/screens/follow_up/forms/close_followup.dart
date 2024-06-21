@@ -39,6 +39,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
   void handleAddService() async {
     // caseID captured from elsewhere
     String? caseId = "1233";
+    String? formId = "closure_followup";
 
     if (courtSessionType == "Please select") {
       Get.snackbar("Error", "Please select a court session type.");
@@ -61,6 +62,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
     // Create model instance
     ClosureFollowupModel closureFollowupModel = ClosureFollowupModel(
       caseId: caseId,
+      formId: formId,
       caseOutcome: courtSessionType,
       dateOfCaseClosure: dateOfService,
       caseClosureNotes: courtNotes.text,

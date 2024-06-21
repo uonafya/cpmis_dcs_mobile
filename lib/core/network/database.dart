@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
@@ -423,6 +425,7 @@ class LocalDB {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
         ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.formId} TEXT,
         ${CaseClosureTable.caseOutcome} TEXT,
         ${CaseClosureTable.transferredTo} TEXT,
         ${CaseClosureTable.caseClosureNotes} TEXT,
@@ -430,7 +433,6 @@ class LocalDB {
         ${CaseClosureTable.interventionList} TEXT
       );
     ''');
-
 
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
@@ -443,7 +445,9 @@ class LocalDB {
 
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $courtSessionTable(
-    ${CourtSessionTable.courtSessionCase} TEXT PRIMARY KEY,
+    ${CourtSessionTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSessionTable.formId} TEXT,
+    ${CourtSessionTable.courtSessionCase} TEXT,
     ${CourtSessionTable.courtSessionType} TEXT,
     ${CourtSessionTable.dateOfCourtEvent} TEXT,
     ${CourtSessionTable.courtNotes} TEXT,
@@ -472,6 +476,7 @@ class LocalDB {
 
       );
     ''');
+
       // CCI transition form Database
       await db.execute('''
             CREATE TABLE IF NOT EXISTS cciTransition (
@@ -507,6 +512,28 @@ class LocalDB {
             created_at TEXT
     )
     ''');
+
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSummonsTable(
+    ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSummonsTable.honoured} TEXT,
+    ${CourtSummonsTable.honouredDate} TEXT,
+    ${CourtSummonsTable.summonDate} TEXT,
+    ${CourtSummonsTable.summonNote} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $referralTable(
+    ${ReferralTable.caseId} TEXT PRIMARY KEY,
+    ${ReferralTable.caseCategory} TEXT,
+    ${ReferralTable.referralActor} TEXT,
+    ${ReferralTable.specifiedReferral} TEXT,
+    ${ReferralTable.referralFor} TEXT
+  );
+''');
+
   }
   //Insert social inquiry form data
   Future<void> insertSocialInquiryForm(
@@ -524,7 +551,6 @@ class LocalDB {
         print("Error inserting social inquiry form data: $e");
       }
     }
-
   }
 
   // Save CCI Transition form method

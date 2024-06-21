@@ -1,5 +1,6 @@
 class ClosureFollowupModel {
   String? caseId;
+  String? formId;
   String? caseOutcome;
   String? transferedTo;
   List<InterventionList>? interventionList;
@@ -8,6 +9,7 @@ class ClosureFollowupModel {
 
   ClosureFollowupModel(
       {this.caseId,
+      this.formId,
       this.caseOutcome,
       this.transferedTo,
       this.interventionList,
@@ -16,6 +18,7 @@ class ClosureFollowupModel {
 
   ClosureFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
+    formId = json['form_id'];
     caseOutcome = json['case_outcome'];
     transferedTo = json['transfered_to'];
     if (json['intervention_list'] != null) {
@@ -29,11 +32,12 @@ class ClosureFollowupModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['case_id'] = caseId;
-    data['case_outcome'] = caseOutcome;
-    data['transfered_to'] = transferedTo;
-    if (interventionList != null) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['case_id'] = this.caseId;
+    data['form_id'] = this.formId;
+    data['case_outcome'] = this.caseOutcome;
+    data['transfered_to'] = this.transferedTo;
+    if (this.interventionList != null) {
       data['intervention_list'] =
           interventionList!.map((v) => v.toJson()).toList();
     }
@@ -45,9 +49,11 @@ class ClosureFollowupModel {
   Map<String, dynamic> toMap() {
     return {
       'case_id': caseId,
+      'form_id': formId,
       'case_outcome': caseOutcome,
       'transfered_to': transferedTo,
-      'intervention_list': interventionList?.map((e) => e.toMap()).toList() ?? [],
+      'intervention_list':
+          interventionList?.map((e) => e.toMap()).toList() ?? [],
       'case_closure_notes': caseClosureNotes,
       'date_of_case_closure': dateOfCaseClosure,
     };
