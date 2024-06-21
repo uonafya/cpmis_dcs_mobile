@@ -192,6 +192,7 @@ class RegistryProvider extends ChangeNotifier {
           registryCboChvModel: registryCboChvModel);
       await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
+
       clearState();
       if (kDebugMode) {
         print(registerNewChildModel.toJson());

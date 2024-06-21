@@ -136,7 +136,6 @@ class Caregivers extends BaseCRSFormModel {
   final String relationshipToChild;
   final String nationalIdNumber;
   final String? phoneNumber;
-  final bool isRegistered;
 
   Caregivers(
       {
@@ -147,8 +146,7 @@ class Caregivers extends BaseCRSFormModel {
       required super.sex,
       required this.relationshipToChild,
       required this.nationalIdNumber,
-      this.phoneNumber,
-      required this.isRegistered});
+      this.phoneNumber});
 
   @override
   Map<String, dynamic> toJSON() {
@@ -160,8 +158,7 @@ class Caregivers extends BaseCRSFormModel {
       "date_of_birth": convertDateToYMD(dateOfBirth),
       "relationship_to_child": relationshipToChild,
       "national_id_number": nationalIdNumber,
-      "phone_number": phoneNumber,
-      "is_registered": isRegistered
+      "phone_number": phoneNumber
     };
   }
 }

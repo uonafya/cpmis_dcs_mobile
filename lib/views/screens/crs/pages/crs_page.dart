@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
@@ -22,6 +20,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../../models/case_load/case_load_model.dart';
 
 class CaseRegistrationSheet extends StatefulWidget {
   const CaseRegistrationSheet({
@@ -53,29 +53,39 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
     List<SiblingDetails> siblings = [];
     if (caseLoadSiblings != null) {
       for (var caseLoadSibling in caseLoadSiblings) {
-        siblings.add(SiblingDetails(
-          childID: int.tryParse(caseLoadSibling.childPersonId ?? "") ?? 0,
-          siblingID: int.tryParse(caseLoadSibling.siblingPersonId ?? "") ?? 0,
-          dateLinked:
-              DateFormat("yyyy-MM-dd").parse(caseLoadSibling.dateLinked ?? ""),
-          dateUnlinked: DateFormat("yyyy-MM-dd")
-              .parse(caseLoadSibling.dateDelinked ?? ""),
-        ));
+        // siblings.add(
+        //
+        // );
+        // siblings.add(SiblingDetails(
+        //   childID: int.tryParse(caseLoadSibling.childPersonId ?? "") ?? 0,
+        //   siblingID: int.tryParse(caseLoadSibling.siblingPersonId ?? "") ?? 0,
+        //   dateLinked:
+        //       DateFormat("yyyy-MM-dd").parse(caseLoadSibling.dateLinked ?? ""),
+        //   dateUnlinked: DateFormat("yyyy-MM-dd")
+        //       .parse(caseLoadSibling.dateDelinked ?? ""),
+        // ));
       }
     }
     crsAbout = AboutChildCRSFormModel(
       initialDetails: InitialChildDetails(
+        sex: widget.caseLoad?.ovcSex ?? "",
+        dateOfBirth: DateTime.now(),
+        surName: widget.caseLoad?.ovcSurname ?? "",
         firstName: widget.caseLoad?.ovcFirstName ?? "",
         otherNames: widget.caseLoad?.ovcOtherNames ?? "",
-        sex: widget.caseLoad?.ovcSex ?? "",
-        surname: widget.caseLoad?.ovcSurname ?? "",
       ),
+      // initialDetails: InitialChildDetails(
+      //   firstName: widget.caseLoad?.ovcFirstName ?? "",
+      //   otherNames: widget.caseLoad?.ovcOtherNames ?? "",
+      //   /sex: widget.caseLoad?.ovcSex ?? "",
+      //   surname: widget.caseLoad?.ovcSurname ?? "",
+      // ),
       familyStatus: [],
       houseEconomicStatus: "",
       siblingDetails: siblings,
     );
     print("Sibling details: $siblings");
-    Provider.of<CRSFormProvider>(context, listen: false).about = crsAbout!;
+    // Provider.of<CRSFormProvider>(context, listen: false).about = crsAbout!;
   }
 
   @override
@@ -112,23 +122,23 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             ),
                           ),
                           TextSpan(
-                            text: "${model.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surName}| ".toUpperCase(),
+                            text: "${model.form.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surName}| ".toUpperCase(),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: "${model.about?.initialDetails.sex} | ",
+                            text: "${model.form.about?.initialDetails.sex} | ",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
                           TextSpan(
-                            text: model.about?.initialDetails.dateOfBirth == null
+                            text: model.form.about?.initialDetails.dateOfBirth == null
                                 ? ""
-                                : getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year |" : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years |",
+                                : getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year |" : "${getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!)} Years |",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -217,7 +227,8 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             var db = await localdb.database;
                             var uuid = const Uuid();
                             var formID = uuid.v4();
-                            CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+                            // CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+                            await form.sendToUpstream();
 
                             Get.to(() => const FollowUpHome());
                           }

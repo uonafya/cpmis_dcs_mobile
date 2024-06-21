@@ -228,8 +228,6 @@ class _PersonRegistryAttachCareGiverState
                       });
                       return;
                     }
-                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
-
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);
                   },

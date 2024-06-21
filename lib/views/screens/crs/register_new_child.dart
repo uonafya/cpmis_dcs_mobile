@@ -421,8 +421,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                                   sex: car.sex,
                                   relationshipToChild: car.relationshipToChild,
                                   nationalIdNumber: car.nationalIdNumber,
-                                  phoneNumber: car.phoneNumber,
-                                  isRegistered: car.isRegistered));
+                                  phoneNumber: car.phoneNumber)); }
 
                             if (registryProvider.isNotComplete()) {
                               if (context.mounted) {
@@ -435,13 +434,13 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             var crsAbout = AboutChildCRSFormModel(
                                 initialDetails: initDetails,
                                 siblingDetails: siblings,
-                                caregivers: caregivers, 
+                                caregivers: caregivers,
                                 familyStatus: [],
                                 houseEconomicStatus: "");
                             registryProvider.submit();
-                            Get.off(() => const CaseRegistrationSheet());
                             Provider.of<CRSFormProvider>(context, listen: false)
                                 .about = crsAbout;
+                            Get.off(() => const CaseRegistrationSheet());
                           },
                         ),
                       )
