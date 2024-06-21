@@ -126,11 +126,9 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
                 },
                 onChanged: (val) async {
                   controller.setLocation(val);
-                  final locationId = locationList
-                      .firstWhere((element) => element.name == val)
-                      .id;
+                 
                   final values = await getSubLocationFromLocation(
-                      int.tryParse(locationId) ?? 0);
+                      controller.location);
                   subLocation.addAll(values);
 
                   setState(() {});

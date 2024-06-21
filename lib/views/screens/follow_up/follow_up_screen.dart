@@ -134,8 +134,10 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    builder: (context) => const SingleChildScrollView(
-                          child: FollowupActions(),
+                    builder: (context) => SingleChildScrollView(
+                          child: FollowupActions(
+                            caseLoad: widget.caseLoadModel,
+                          ),
                         ));
               },
             ),

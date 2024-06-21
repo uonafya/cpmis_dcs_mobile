@@ -97,19 +97,19 @@ class ApiService {
     }
   }
 
-  Future<void> sendClosureFollowup(ClosureFollowupModel closure) async {
+  Future<void> sendClosureFollowup(Map<String, dynamic> closure) async {
     try {
       final response = await httpClient.request(
         'mobile/follow_up/',
         'POST',
-        closure.toJson(),
+        closure,
       );
       print(response.data);
     } catch (e) {
       if (kDebugMode) {
         print('Error occurred while sending closure followup $e');
       }
-      throw e; 
+      throw e;
     }
   }
 
