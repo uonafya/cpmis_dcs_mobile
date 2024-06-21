@@ -1,5 +1,7 @@
+import 'package:cpims_dcs_mobile/views/notifications/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/route_manager.dart';
 
 AppBar customAppBar() {
   return AppBar(
@@ -16,7 +18,9 @@ AppBar customAppBar() {
     ),
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.to(() => const NotificationsScreen());
+        },
         icon: const Icon(
           FontAwesomeIcons.bell,
           size: 20,

@@ -1,6 +1,8 @@
+import 'package:cpims_dcs_mobile/controller/esr_controller.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class ESRBenefits extends StatefulWidget {
   const ESRBenefits({super.key});
@@ -10,8 +12,6 @@ class ESRBenefits extends StatefulWidget {
 }
 
 class _ESRBenefitsState extends State<ESRBenefits> {
-  String householdReceivingBenefits = 'Please select';
-
   final houseHoldBenefitsList = [
     'Please select',
     'CT-OVC',
@@ -22,18 +22,16 @@ class _ESRBenefitsState extends State<ESRBenefits> {
     'Other-specify'
   ];
 
-  String kindOfBenefits = 'Please select';
-
   final kindOfBenefitsList = [
     'Please select',
     'Cash',
     'In-kind',
     'Others',
   ];
-  final lastReceivedBenefitController = TextEditingController();
-  final specifyInKindController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<ESRController>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -44,12 +42,10 @@ class _ESRBenefitsState extends State<ESRBenefits> {
           height: 10,
         ),
         CustomDropdown(
-            initialValue: householdReceivingBenefits,
+            initialValue: controller.householdReceivingBenefits,
             items: houseHoldBenefitsList,
             onChanged: (val) {
-              setState(() {
-                householdReceivingBenefits = val;
-              });
+              controller.setHouseholdReceivingBenefits(val);
             }),
         const SizedBox(
           height: 14,
@@ -61,12 +57,10 @@ class _ESRBenefitsState extends State<ESRBenefits> {
           height: 10,
         ),
         CustomDropdown(
-            initialValue: kindOfBenefits,
+            initialValue: controller.kindOfBenefits,
             items: kindOfBenefitsList,
             onChanged: (val) {
-              setState(() {
-                kindOfBenefits = val;
-              });
+              controller.setKindOfBenefits(val);
             }),
         const SizedBox(
           height: 14,
@@ -78,22 +72,10 @@ class _ESRBenefitsState extends State<ESRBenefits> {
           height: 10,
         ),
         CustomTextField(
-          controller: lastReceivedBenefitController,
+          controller: controller.lastReceivedBenefitController,
           hintText: "Ksh...",
         ),
-        const SizedBox(
-          height: 14,
-        ),
-        const Text(
-          'Specify IN-KIND of benefit',
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomTextField(
-          controller: specifyInKindController,
-          hintText: "...",
-        ),
+       
         const SizedBox(
           height: 14,
         ),

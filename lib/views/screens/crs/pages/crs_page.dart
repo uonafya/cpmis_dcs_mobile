@@ -1,11 +1,14 @@
+import 'dart:ffi';
+
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
-import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/core/network/locations.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -13,14 +16,19 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CaseRegistrationSheet extends StatefulWidget {
-  const CaseRegistrationSheet({super.key});
+  const CaseRegistrationSheet({
+    super.key,
+    this.caseLoad,
+  });
+
+  final CaseLoadModel? caseLoad;
 
   @override
   State<CaseRegistrationSheet> createState() => _CaseRegistrationSheetState();
@@ -30,6 +38,44 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
   var selectedStep = 0;
   bool hasConcented = false;
   final ScrollController _scrollController = ScrollController();
+
+  AboutChildCRSFormModel? crsAbout;
+
+  @override
+  void initState() {
+    _initializeData();
+    super.initState();
+  }
+
+  void _initializeData() {
+    final List<SiblingsModel>? caseLoadSiblings = widget.caseLoad?.siblings;
+    List<SiblingDetails> siblings = [];
+    if (caseLoadSiblings != null) {
+      for (var caseLoadSibling in caseLoadSiblings) {
+        siblings.add(SiblingDetails(
+          childID: int.tryParse(caseLoadSibling.childPersonId ?? "") ?? 0,
+          siblingID: int.tryParse(caseLoadSibling.siblingPersonId ?? "") ?? 0,
+          dateLinked:
+              DateFormat("yyyy-MM-dd").parse(caseLoadSibling.dateLinked ?? ""),
+          dateUnlinked: DateFormat("yyyy-MM-dd")
+              .parse(caseLoadSibling.dateDelinked ?? ""),
+        ));
+      }
+    }
+    crsAbout = AboutChildCRSFormModel(
+      initialDetails: InitialChildDetails(
+        firstName: widget.caseLoad?.ovcFirstName ?? "",
+        otherNames: widget.caseLoad?.ovcOtherNames ?? "",
+        sex: widget.caseLoad?.ovcSex ?? "",
+        surname: widget.caseLoad?.ovcSurname ?? "",
+      ),
+      familyStatus: [],
+      houseEconomicStatus: "",
+      siblingDetails: siblings,
+    );
+    print("Sibling details: $siblings");
+    Provider.of<CRSFormProvider>(context, listen: false).about = crsAbout!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +173,13 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
               height: 30,
             ),
             CustomButton(
-              child: Text("Get categories"),
-              onTap: () async{
+              child: const Text("Get categories"),
+              onTap: () async {
                 await saveCategoriesInDB();
               },
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Row(
               children: <Widget>[
@@ -171,6 +220,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                         debugPrint("--------------------------------");
 
                         // Save to DB
+                        var form = cprdata.form;
                         var db = await localdb.database;
                         var uuid = const Uuid();
                         var formID = uuid.v4();

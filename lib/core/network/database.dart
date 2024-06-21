@@ -1,5 +1,11 @@
+import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants/constants.dart';
@@ -324,6 +330,7 @@ class LocalDB {
         otherNames TEXT,
         sex TEXT NOT NULL,
         dateOfBirth TEXT NOT NULL,
+        childClass Text NOT NULL,
         registryIdentificationModel TEXT NOT NULL,
         registryContactDetailsModel TEXT NOT NULL,
         registryLocationModel TEXT NOT NULL,
@@ -334,7 +341,6 @@ class LocalDB {
         datePaperFormFilled TEXT NOT NULL
       );
     ''');
-
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
@@ -402,21 +408,197 @@ class LocalDB {
             ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
             ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
             );
+
+            
+    ''');
+
+    // Organization unit
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $organizationUnitsTable (
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        name TEXT,
+        primaryUnit INTEGER
+       );
     ''');
 
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $caseClosureTable(
-        case_id TEXT PRIMARY KEY,
-        case_outcome TEXT,
-        transfered_to TEXT,
-        case_closure_notes TEXT,
-        date_of_case_closure TEXT,
-        intervention_list TEXT
+        ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.formId} TEXT,
+        ${CaseClosureTable.caseOutcome} TEXT,
+        ${CaseClosureTable.transferredTo} TEXT,
+        ${CaseClosureTable.caseClosureNotes} TEXT,
+        ${CaseClosureTable.dateOfCaseClosure} TEXT,
+        ${CaseClosureTable.interventionList} TEXT
       );
     ''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
+    ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.encounterNotes} TEXT,
+    ${ServiceFollowupTable.caseCategoryId} TEXT,
+    ${ServiceFollowupTable.serviceProvidedList} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSessionTable(
+    ${CourtSessionTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSessionTable.formId} TEXT,
+    ${CourtSessionTable.courtSessionCase} TEXT,
+    ${CourtSessionTable.courtSessionType} TEXT,
+    ${CourtSessionTable.dateOfCourtEvent} TEXT,
+    ${CourtSessionTable.courtNotes} TEXT,
+    ${CourtSessionTable.nextHearingDate} TEXT,
+    ${CourtSessionTable.nextMentionDate} TEXT,
+    ${CourtSessionTable.pleaTaken} TEXT,
+    ${CourtSessionTable.applicationOutcome} TEXT,
+    ${CourtSessionTable.courtOutcome} TEXT,
+    ${CourtSessionTable.courtOrder} TEXT
+  );
+''');
+
+    // Social Inquiry
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $socialInquiryTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        case_recommendation TEXT,
+        case_history TEXT,
+        sub_county_children_office TEXT,
+        case_observation TEXT,
+        officer_name TEXT,
+        officer_phone TEXT,
+        date_of_social_inquiry TEXT,
+        case_id TEXT,
+        form_id TEXT
+
+      );
+    ''');
+
+      // CCI transition form Database
+      await db.execute('''
+            CREATE TABLE IF NOT EXISTS cciTransition (
+            cci_id TEXT NOT NULL,
+            cci_name TEXT NOT NULL,
+            nccs_registered TEXT,
+            cci_reg_no TEXT,
+            cci_date_of_reg TEXT,
+            cci_valid_yrs TEXT,
+            cci_other_reg TEXT,
+            cci_serves_disabled TEXT,
+            cci_gender TEXT,
+            cci_accommodate_ages TEXT,
+            transition_started TEXT,
+            basis_transition TEXT,
+            legal_framework_strategy TEXT,
+            stakeholder_engagement TEXT,
+            make_decision TEXT,
+            assessment_ TEXT,
+            strategic_plan TEXT,
+            org_planning TEXT,
+            prog_planning TEXT,
+            transition_planning TEXT,
+            employee_development TEXT,
+            piloting_and_validation TEXT,
+            program_implementation TEXT,
+            monitoring_and_evaluation TEXT,
+            cci_transition_to TEXT,
+            survival_rights TEXT,
+            development_rights TEXT,
+            protection_rights TEXT,
+            participation_rights TEXT
+            created_at TEXT
+    )
+    ''');
+
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSummonsTable(
+    ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSummonsTable.honoured} TEXT,
+    ${CourtSummonsTable.honouredDate} TEXT,
+    ${CourtSummonsTable.summonDate} TEXT,
+    ${CourtSummonsTable.summonNote} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $referralTable(
+    ${ReferralTable.caseId} TEXT PRIMARY KEY,
+    ${ReferralTable.caseCategory} TEXT,
+    ${ReferralTable.referralActor} TEXT,
+    ${ReferralTable.specifiedReferral} TEXT,
+    ${ReferralTable.referralFor} TEXT
+  );
+''');
+
+  }
+  //Insert social inquiry form data
+  Future<void> insertSocialInquiryForm(
+      SocialInquiryFormModel socialInquiryForm) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert(
+        socialInquiryTable,
+        socialInquiryForm.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
   }
 
-   // insert multiple caseload records
+  // Save CCI Transition form method
+  //Insert social inquiry form data
+  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAgeGroupsOne,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert("cciTransition",{
+        "cci_id": "909090",
+        'cci_name': selectedCCI,
+        'nccs_registered': cciNCCSRegistered,
+        'cci_reg_no': cciRegNo,
+        'cci_date_of_reg': cciRegDate,
+        'cci_valid_yrs': cciRegValidYrs,
+        'cci_other_reg': cciOtherRegistered,
+        'cci_serves_disabled': cciServesDisabled,
+        'cci_gender': cciServesGender,
+        'cci_accommodate_ages': cciAgeGroupsOne,
+        'transition_started': cciStartedTransition,
+        'basis_transition': cciBasisOfTransition,
+        'legal_framework_strategy': cciLegaFramework,
+        'stakeholder_engagement': cciStakeholderEngagement,
+        'make_decision': cciMakeDecision,
+        'assessment_': cciAssessment,
+        'strategic_plan': cciStrategicPlanning,
+        'org_planning': cciOrganizationPlanning,
+        'prog_planning': cciProgramPlanning,
+        'transition_planning': cciTransitionPlanning,
+        'employee_development': cciEmployeeDev,
+        'piloting_and_validation': cciPilotValidation,
+        'program_implementation': cciProgramImplementation,
+        'monitoring_and_evaluation': cciMonitorEvaluate,
+        'cci_transition_to': cciTransitionTo,
+        'survival_rights': cciSurvivalRights,
+        'development_rights': cciDevRights,
+        'protection_rights': cciProtectionRights,
+        'participation_rights': cciParticipationRights
+      });
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
+
+  }
+
+  // insert multiple caseload records
   Future<void> insertMultipleCaseLoad(
     List<CaseLoadModel> caseLoadModelData,
   ) async {

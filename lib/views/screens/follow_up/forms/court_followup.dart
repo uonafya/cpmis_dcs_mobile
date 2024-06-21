@@ -1,3 +1,6 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:cpims_dcs_mobile/models/court_session_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -53,7 +56,7 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   ];
   String? nextHearingDate;
   List<String> courtOrders = [];
-  final courtOrderOptions = [
+  final List<ValueItem<String>> courtOrderOptions = [
     const ValueItem(
         label: "Re-unification and Re-integration",
         value: "Re-unification and Re-integration"),
@@ -67,27 +70,12 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
-  // void handleAddService() {
-  //   final courtSession = CourtSessionModel(
-  //     applicationOutcome:
-  //         applicationOutcome == "Please select" ? null : applicationOutcome,
-  //     courtNotes: courtNotes.text,
-  //     courtSessionCase: caseCategory == "Please select" ? null : caseCategory,
-  //     courtOutcome: courtOutcome == "Please select" ? null : courtOutcome,
-  //     nextHearingDate: nextHearingDate,
-  //     nextMentionDate: dateOfMention,
-  //     pleaTaken: pleaTaken == "Please select" ? null : pleaTaken,
-  //     dateOfCourtEvent: dateOfService,
-  //     courtSessionType:
-  //         courtSessionType == "Please select" ? null : courtSessionType,
-  //     courtOrder: courtOrders.isNotEmpty ? courtOrders : null,
-  //   );
+  final CourtDatabaseHelper courtDatabaseHelper = CourtDatabaseHelper();
 
-  //   print(courtSession.toJson());
-  //   // Get.back();
-  // }
+  void handleAddService() async {
+    String? caseId = "1213";
+    String? formId = "sessions_followup";
 
-  void handleAddService() {
     if (caseCategory == "Please select") {
       Get.snackbar("Error", "Please select a case category.");
       return;
@@ -105,6 +93,8 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
 
     // Create model instance
     CourtSessionModel courtSessionModel = CourtSessionModel(
+      caseId: caseId,
+      formId: formId,
       applicationOutcome:
           applicationOutcome == "Please select" ? null : applicationOutcome,
       courtNotes: courtNotes.text,
@@ -122,12 +112,18 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
     print(courtSessionModel.toJson());
 
     // Convert model to JSON
-    Map<String, dynamic> dataToSend = courtSessionModel.toJson();
+    // Map<String, dynamic> dataToSend = courtSessionModel.toJson();
 
     try {
-      Get.back(); // Navigate back
+      print('Db initialization & saving court session...');
+      var db = await localdb.database;
+      await courtDatabaseHelper.insertCourtSession(courtSessionModel);
+      print('Saved court session :)');
+
+      Get.back();
       Get.snackbar("Success", "Court session saved successfully.");
     } catch (e) {
+      print(e.toString());
       Get.snackbar("Error", "Failed to save court session.");
     }
   }
@@ -270,7 +266,7 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
                       const SizedBox(height: 6),
                       CustomDropDownMultiSelect(
                         options: courtOrderOptions,
-                        onOptionSelected: (selectedOptions) {
+                        onOptionSelected: (List<String> selectedOptions) {
                           setState(() {
                             courtOrders = selectedOptions;
                           });
@@ -308,6 +304,69 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
           const SizedBox(height: 14),
           CustomButton(text: "Save", onTap: handleAddService),
           const SizedBox(height: 10),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(width: 10),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final CourtSessionModel? courtSessionModel =
+          //             await courtDatabaseHelper.getCourtSession(
+          //                 "1213"); // Replace with actual case ID
+
+          //         if (courtSessionModel != null) {
+          //           print(courtSessionModel.toJson());
+          //           Get.snackbar(
+          //               "Success", "Court session synced successfully.");
+          //         } else {
+          //           Get.snackbar(
+          //               "Error", "No court session found for this case ID.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(width: 10),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await courtDatabaseHelper.deleteCourtSession(
+          //               "1213"); // Replace with actual case ID
+          //           Get.snackbar(
+          //               "Success", "Court session deleted successfully.");
+          //         } catch (e) {
+          //           print(e.toString());
+          //           Get.snackbar("Error", "Failed to delete court session.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );

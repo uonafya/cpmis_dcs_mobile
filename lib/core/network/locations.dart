@@ -4,8 +4,6 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../models/locationFromUpstream.dart';
-
 // Saving locations
 Future<void> saveLocation(Database db, List<dynamic> locations) async {
   try {
@@ -13,13 +11,16 @@ Future<void> saveLocation(Database db, List<dynamic> locations) async {
 
     for (var i = 0; i < locations.length; i++) {
       var location = locations[i];
-      batch.insert(geolocationTable, {
-        "id": location.id,
-        "code": location.areaCode,
-        "name": location.areaName,
-        "type": location.areaType,
-        "parent": location.parent
-      }, conflictAlgorithm: ConflictAlgorithm.replace);
+      batch.insert(
+          geolocationTable,
+          {
+            "id": location.id,
+            "code": location.areaCode,
+            "name": location.areaName,
+            "type": location.areaType,
+            "parent": location.parent
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace);
     }
 
     await batch.commit();
@@ -122,7 +123,7 @@ Future<List<NameID>> getSubLocationFromLocation(int locationID) async {
 }
 
 // Get ward
-Future<List<NameID>> getWardsFromSubCounty(int subCountyID) async {
+Future<List<NameID>> getWardsFromSubCounty(String subCountyID) async {
   try {
     final db = await LocalDB.instance.database;
 

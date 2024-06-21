@@ -172,48 +172,41 @@ const familyStatusOptions = [
 
 // CCI Transition tools
 List<String> yesNoOptions = [
-  pleaseSelect,
   "Yes",
   "No",
 ];
 
 List<String> cciAwareOptions = [
-  pleaseSelect,
   "Aware",
   "Moderately Aware",
   "Not Aware",
 ];
 
 List<String> cciDoneOptions = [
-  pleaseSelect,
   "Done",
   "Partly Done",
   "Not Done",
 ];
 
 List<String> cciDecisionOptions = [
-  pleaseSelect,
   "Decision Made",
   "Decision partly Made",
   "Decision not Made",
 ];
 
 List<String> cciProgramsOptions = [
-  pleaseSelect,
   "Child welfare program",
   "Rescue centre",
   "None",
 ];
 
 List<String> cciSurvivalRightsOptions = [
-  pleaseSelect,
   "Health",
   "Nutrition",
   "Shelter and Clothing",
 ];
 
 List<String> cciDevRightsOptions = [
-  pleaseSelect,
   "Education",
   "Leisure, recreation and play",
   "Access to Information",
@@ -221,7 +214,6 @@ List<String> cciDevRightsOptions = [
 ];
 
 List<String> cciProtectRightsOptions = [
-  pleaseSelect,
   "Legal aid and awareness",
   "Establishment of children clubs",
   "Family tracing, reunification and reintegration services",
@@ -239,7 +231,6 @@ List<String> cciProtectRightsOptions = [
 ];
 
 List<String> cciParticipateRightsOptions = [
-  pleaseSelect,
   "Establishment of talent development programmes to nurture creative skills among children",
   "Advocacy programmes targeting children and their families e.g. Media publications",
   "Establishment of school and community-based child rights clubs",
@@ -251,7 +242,6 @@ List<String> cciParticipateRightsOptions = [
 ];
 
 List<String> cciDisability = [
-  pleaseSelect,
   "Children with diabilities only",
   "Children without diabilities only",
   "Both Children with and without diabilities only",
@@ -263,11 +253,12 @@ const gender = [
   ValueItem<String>(label: "Intersex", value: "Intersex"),
 ];
 
-
-
-
+const genders = [
+ "Male", "Female", "Intersex"
+];
 
 // end of variables for CCI Transition tools
+
 List<String> childClass = [
   "NOT IN SCHOOL",
   "ECDE - Baby Class",

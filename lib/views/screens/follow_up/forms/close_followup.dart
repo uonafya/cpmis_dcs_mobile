@@ -1,6 +1,5 @@
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
-import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -39,7 +38,8 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
   void handleAddService() async {
     // caseID captured from elsewhere
-    String? caseId = "1234";
+    String? caseId = "1233";
+    String? formId = "closure_followup";
 
     if (courtSessionType == "Please select") {
       Get.snackbar("Error", "Please select a court session type.");
@@ -62,6 +62,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
     // Create model instance
     ClosureFollowupModel closureFollowupModel = ClosureFollowupModel(
       caseId: caseId,
+      formId: formId,
       caseOutcome: courtSessionType,
       dateOfCaseClosure: dateOfService,
       caseClosureNotes: courtNotes.text,
@@ -163,34 +164,63 @@ class _CourtFollowUpState extends State<CloseFollowup> {
             height: 20,
           ),
           // TODO: REMOVE IN PRODUCTION
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text(
-                'Upstream Test Syncing...',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              GestureDetector(
-                child: const Text(
-                  'Sync',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () async {
-                  final ClosureFollowupModel? closureFollowupModel =
-                      await closureDatabaseHelper
-                          .getClosureFollowup("SomeCaseId");
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final ClosureFollowupModel? closureFollowupModel =
+          //             await closureDatabaseHelper
+          //                 .getClosureFollowup("SomeCaseId");
 
-                  print(closureFollowupModel?.caseId);
-                },
-              )
-            ],
-          ),
+          //         print(closureFollowupModel?.caseId);
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await closureDatabaseHelper.deleteClosureFollowup("1233");
+          //           Get.snackbar("Success", "Delete successful.");
+          //         } catch (e) {
+          //           Get.snackbar("Error", "Failed to delete.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );

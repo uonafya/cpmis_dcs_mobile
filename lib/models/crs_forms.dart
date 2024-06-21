@@ -1,4 +1,5 @@
-import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 
 class CaseReportingCRSFormModel {
   String originator;
@@ -53,7 +54,7 @@ class InitialChildDetails {
   final String otherNames;
   final String sex;
   final DateTime? dateOfBirth;
-  final int age;
+  final int? age;
 
   const InitialChildDetails(
       {required this.firstName,
@@ -61,7 +62,7 @@ class InitialChildDetails {
       required this.otherNames,
       required this.sex,
       this.dateOfBirth,
-      required this.age});
+      this.age});
 }
 
 class SiblingDetails {
@@ -203,7 +204,7 @@ class Perpetrators {
     if (dateOfBirth != null) {
       json['date_of_birth'] = dateOfBirth!.toIso8601String();
     }
-    if(sex != null) {
+    if (sex != null) {
       json['sex'] = sex;
     }
     return json;
@@ -335,7 +336,8 @@ class CRSForm {
     }
 
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
-    jsonToReturn['reporting_orgunit'] = caseReporting?.reportingOrganizationalUnit;
+    jsonToReturn['reporting_orgunit'] =
+        caseReporting?.reportingOrganizationalUnit;
     jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
 
     jsonToReturn['child'] = {};
@@ -387,5 +389,18 @@ class CRSForm {
     jsonToReturn['future_needs'] = caseData?.futureNeeds;
 
     return jsonToReturn;
+  }
+
+  Future<void> sendToUpstream() async{
+    try {
+      // Convert to JSON
+      var json = toJSON();
+
+      // Submit
+      var request = await httpClient.request("${cpimsApiUrl}mobile/crs/", "POST", json);
+      print("Submitted Succesfully");
+    } catch(err) {
+      throw "Could Not Send To Upstream";
+    }
   }
 }

@@ -1,4 +1,7 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
@@ -108,7 +111,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 10),
                     const Text(
                       'Person Type *',
-                      style: TextStyle(color:kTextGrey),
+                      style: TextStyle(color: kTextGrey),
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
@@ -368,23 +371,43 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     : const SizedBox.shrink(),
                 selectedStep == REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
                     ? Expanded(
-                  child: CustomButton(
-                    text: 'Submit',
-                    textColor: Colors.white,
-                    onTap: () {
-                      if (registryProvider.isNotComplete()) {
-                        if (context.mounted) {
-                          errorSnackBar(context, 'Please enter all required fields. (*)');
-                        }
-                        registryProvider.setShouldValidateFields();
-                        return;
-                      }
-                      print("ID :${birthRegIdController.text}");
-                      registryProvider.submit();
-                      Get.off(() => const CaseRegistrationSheet());
-                    },
-                  ),
-                )
+                        child: CustomButton(
+                          text: 'Submit',
+                          textColor: Colors.white,
+                          onTap: () {
+                            if (registryProvider.isNotComplete()) {
+                              if (context.mounted) {
+                                errorSnackBar(context, 'Please enter all required fields. (*)');
+                              }
+                              registryProvider.setShouldValidateFields();
+                              return;
+                            }
+                            var crsAbout = AboutChildCRSFormModel(
+                                initialDetails: InitialChildDetails(
+                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(
+                                      registryProvider
+                                          .registryPersonalDetailsModel
+                                          .dateOfBirth),
+                                  firstName: registryProvider
+                                      .registryPersonalDetailsModel.firstName,
+                                  otherNames: registryProvider
+                                          .registryPersonalDetailsModel
+                                          .otherNames ??
+                                      "",
+                                  sex: registryProvider
+                                      .registryPersonalDetailsModel.sex,
+                                  surname: registryProvider
+                                      .registryPersonalDetailsModel.surname,
+                                ),
+                                familyStatus: [],
+                                houseEconomicStatus: "");
+                            registryProvider.submit();
+                            Get.off(() => const CaseRegistrationSheet());
+                            Provider.of<CRSFormProvider>(context, listen: false)
+                                .about = crsAbout;
+                          },
+                        ),
+                      )
                     : const SizedBox(),
               ],
             ),

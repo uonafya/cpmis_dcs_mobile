@@ -1,10 +1,9 @@
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class PersonalInformationWidget extends StatelessWidget {
-  const PersonalInformationWidget({super.key, required this.childDetails});
-  final InitialChildDetails childDetails;
+  const PersonalInformationWidget({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   // void initState() {
@@ -27,7 +26,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.firstName,
+          caseLoad.ovcFirstName ?? "-",
           style: const TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -37,7 +36,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.otherNames,
+          caseLoad.ovcOtherNames ?? "-",
           style: const TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 5),
@@ -47,7 +46,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.surname,
+          caseLoad.ovcSurname ?? "-",
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         ),
         const SizedBox(height: 5),
@@ -67,18 +66,7 @@ class PersonalInformationWidget extends StatelessWidget {
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
         Text(
-          childDetails.sex,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-        ),
-        const SizedBox(height: 5),
-        const Divider(),
-        const Text(
-          'DOB',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
-        ),
-        Text(
-          DateFormat("dd, MMM yyyy")
-              .format((childDetails.dateOfBirth ?? DateTime.now())),
+          caseLoad.ovcSex ?? "-",
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         ),
         const SizedBox(height: 5),
