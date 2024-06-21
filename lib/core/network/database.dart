@@ -442,7 +442,9 @@ class LocalDB {
 
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $courtSessionTable(
-    ${CourtSessionTable.courtSessionCase} TEXT PRIMARY KEY,
+    ${CourtSessionTable.caseId} TEXT PRIMARY KEY,
+    ${CourtSessionTable.formId} TEXT,
+    ${CourtSessionTable.courtSessionCase} TEXT,
     ${CourtSessionTable.courtSessionType} TEXT,
     ${CourtSessionTable.dateOfCourtEvent} TEXT,
     ${CourtSessionTable.courtNotes} TEXT,
