@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ClosureFollowupModel {
   String? caseId;
   String? formId;
@@ -7,14 +9,15 @@ class ClosureFollowupModel {
   String? caseClosureNotes;
   String? dateOfCaseClosure;
 
-  ClosureFollowupModel(
-      {this.caseId,
-      this.formId,
-      this.caseOutcome,
-      this.transferedTo,
-      this.interventionList,
-      this.caseClosureNotes,
-      this.dateOfCaseClosure});
+  ClosureFollowupModel({
+    this.caseId,
+    this.formId,
+    this.caseOutcome,
+    this.transferedTo,
+    this.interventionList,
+    this.caseClosureNotes,
+    this.dateOfCaseClosure,
+  });
 
   ClosureFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
@@ -23,9 +26,17 @@ class ClosureFollowupModel {
     transferedTo = json['transfered_to'];
     if (json['intervention_list'] != null) {
       interventionList = <InterventionList>[];
-      json['intervention_list'].forEach((v) {
-        interventionList!.add(InterventionList.fromJson(v));
-      });
+      if (json['intervention_list'] is String) {
+        // If it's a string, parse it as JSON
+        List<dynamic> list = jsonDecode(json['intervention_list']);
+        list.forEach((v) {
+          interventionList!.add(InterventionList.fromJson(v));
+        });
+      } else if (json['intervention_list'] is List) {
+        json['intervention_list'].forEach((v) {
+          interventionList!.add(InterventionList.fromJson(v));
+        });
+      }
     }
     caseClosureNotes = json['case_closure_notes'];
     dateOfCaseClosure = json['date_of_case_closure'];
