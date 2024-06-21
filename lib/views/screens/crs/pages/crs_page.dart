@@ -1,14 +1,8 @@
-import 'dart:ffi';
-
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/core/network/locations.dart';
-import 'package:cpims_dcs_mobile/core/network/metadata.dart';
-import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
@@ -174,12 +168,6 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
 
             const SizedBox(
               height: 30,
-            ),
-            CustomButton(
-              child: const Text("Get categories"),
-              onTap: () async {
-                await saveCategoriesInDB();
-              },
             ),
             const SizedBox(
               height: 10,
