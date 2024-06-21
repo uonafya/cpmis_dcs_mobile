@@ -20,29 +20,18 @@ class CourtDatabaseHelper {
     }
   }
 
-  Future<CourtSessionModel?> getCourtSession(String courtSessionCase) async {
+  Future<CourtSessionModel?> getCourtSession(String caseId) async {
     final db = await LocalDB.instance.database;
 
     try {
       var queryResults = await db.query(
         courtSessionTable,
-        where: '${CourtSessionTable.courtSessionCase} = ?',
-        whereArgs: [courtSessionCase],
+        where: '${CourtSessionTable.caseId} = ?',
+        whereArgs: [caseId],
       );
 
       if (queryResults.isNotEmpty) {
-        var courtOrder = queryResults.first[CourtSessionTable.courtOrder];
-
-        if (courtOrder is String) {
-          final updatedResult = {
-            ...queryResults.first,
-            CourtSessionTable.courtOrder: courtOrder.split(','),
-          };
-
-          return CourtSessionModel.fromJson(updatedResult);
-        } else {
-          return CourtSessionModel.fromJson(queryResults.first);
-        }
+        return CourtSessionModel.fromJson(queryResults.first);
       } else {
         return null;
       }
@@ -54,14 +43,14 @@ class CourtDatabaseHelper {
     return null;
   }
 
-  Future<void> deleteCourtSession(String courtSessionCase) async {
+  Future<void> deleteCourtSession(String caseId) async {
     final db = await LocalDB.instance.database;
 
     try {
       await db.delete(
         courtSessionTable,
-        where: '${CourtSessionTable.courtSessionCase} = ?',
-        whereArgs: [courtSessionCase],
+        where: '${CourtSessionTable.caseId} = ?',
+        whereArgs: [caseId],
       );
     } catch (e) {
       if (kDebugMode) {
@@ -73,6 +62,8 @@ class CourtDatabaseHelper {
 
 class CourtSessionTable {
   static final List<String> values = [
+    caseId,
+    formId,
     courtSessionCase,
     courtSessionType,
     dateOfCourtEvent,
@@ -85,6 +76,8 @@ class CourtSessionTable {
     courtOrder,
   ];
 
+  static const String caseId = 'case_id';
+  static const String formId = 'form_id';
   static const String courtSessionCase = 'court_session_case';
   static const String courtSessionType = 'court_session_type';
   static const String dateOfCourtEvent = 'date_of_court_event';
