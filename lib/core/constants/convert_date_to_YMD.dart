@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:intl/intl.dart';
 
 String convertDateToYMD(DateTime? date) {
