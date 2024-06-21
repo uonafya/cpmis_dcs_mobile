@@ -23,6 +23,7 @@ enum RadioButtonOptions { yes, no, na }
 const String organizationUnitsTable = "orgUnits";
 const String socialInquiryTable = "socialInquiry";
 const String geolocationTable = "geolocations";
+const String metadataTable = "metadata";
 const String usersTable = "users";
 const String childTable = "child";
 const String caregiverTable = "caregiver";
@@ -61,6 +62,7 @@ const String registryLocationTable = "registry_location";
 const String registryCaregiverTable = "registry_caregiver";
 const String registrySiblingTable = "registry_sibling";
 const String registryCboChvTable = "registry_cbo_chv";
+const String cciTransitionTable = "cciTransitionTable";
 
 const String registryFormDetails = "registry_form_details";
 

@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';
@@ -59,8 +58,6 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     print(courtSummonsModel.toJson());
 
     try {
-      print('Db initialization & saving court summons...');
-      var db = await localdb.database;
       final courtSummonsDatabaseHelper = CourtSummonsDatabaseHelper();
       await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
       print('Saved court summons :)');

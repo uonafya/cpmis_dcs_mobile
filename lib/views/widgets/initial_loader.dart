@@ -3,6 +3,7 @@ import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
+import 'package:cpims_dcs_mobile/core/network/metadata.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/foundation.dart';
@@ -34,7 +35,7 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
             // final prefs = await SharedPreferences.getInstance();
             // final accessToken = prefs.getString('access');
 
-            final String deviceID = await getDeviceID();
+            final String deviceID = await getDeviceID(context);
             if (kDebugMode) {
               print('Device ID: $deviceID');
             }
@@ -45,9 +46,9 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
             // fetch and insert caseload data to local db
             await apiService.fetchAndInsertCaseload(deviceID: deviceID);
             await loadLocationFromUpstream();
-            await saveCategoriesInDB();
             await saveOrganizationUnits();
             await saveCountries();
+            await saveMetadata();
           } else {
             // show dialog to user
             // to enable internet connection
@@ -63,27 +64,6 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
   }
 
   // get device Id
-  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-
-  Future<String> getDeviceID() async {
-    // get device id
-    String? deviceID = '';
-    if (Theme.of(context).platform == TargetPlatform.android) {
-      final AndroidDeviceInfo androidDeviceInfo =
-          await deviceInfoPlugin.androidInfo;
-      deviceID = androidDeviceInfo.id;
-      if (kDebugMode) {
-        print('Device ID $deviceID');
-      }
-    } else if (Theme.of(context).platform == TargetPlatform.iOS) {
-      final IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
-      deviceID = iosDeviceInfo.identifierForVendor;
-      if (kDebugMode) {
-        print(deviceID);
-      }
-    }
-    return deviceID!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,4 +93,26 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
       ),
     );
   }
+}
+
+Future<String> getDeviceID(BuildContext context) async {
+  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+
+  // get device id
+  String? deviceID = '';
+  if (Theme.of(context).platform == TargetPlatform.android) {
+    final AndroidDeviceInfo androidDeviceInfo =
+        await deviceInfoPlugin.androidInfo;
+    deviceID = androidDeviceInfo.id;
+    if (kDebugMode) {
+      print('Device ID $deviceID');
+    }
+  } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+    final IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
+    deviceID = iosDeviceInfo.identifierForVendor;
+    if (kDebugMode) {
+      print(deviceID);
+    }
+  }
+  return deviceID!;
 }

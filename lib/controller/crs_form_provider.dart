@@ -28,13 +28,12 @@ class CRSFormProvider extends ChangeNotifier {
   AboutChildCRSFormModel? get about {
     if (form.about == null) {
       var about = AboutChildCRSFormModel(
-          initialDetails: const InitialChildDetails(
-            firstName: "",
-            surname: "",
-            otherNames: "",
-            sex: "",
-            age: 2,
-          ),
+          initialDetails: InitialChildDetails(
+              firstName: "",
+              surName: "",
+              otherNames: "",
+              dateOfBirth: DateTime.now(),
+              sex: pleaseSelect),
           houseEconomicStatus: pleaseSelect,
           familyStatus: [],
           closeFriends: [],

@@ -105,13 +105,13 @@ Future<List<NameID>> getLocationsFromSubCounty(String subCountyName) async {
 }
 
 // Get sublocation
-Future<List<NameID>> getSubLocationFromLocation(int locationID) async {
+Future<List<NameID>> getSubLocationFromLocation(String locationName) async {
   try {
     final db = await LocalDB.instance.database;
 
     var results = await db.rawQuery(
-        "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = ?",
-        [locationID]);
+        "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = (SELECT id FROM $geolocationTable WHERE name = ? and type = ? LIMIT 1)",
+        [locationName, LocationTypes.location.value]);
 
     List<NameID> toReturn = results
         .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))
@@ -123,13 +123,13 @@ Future<List<NameID>> getSubLocationFromLocation(int locationID) async {
 }
 
 // Get ward
-Future<List<NameID>> getWardsFromSubCounty(String subCountyID) async {
+Future<List<NameID>> getWardsFromSubCounty(String subCountyName) async {
   try {
     final db = await LocalDB.instance.database;
 
-    var results = await db.rawQuery(
-        "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = ?",
-        [subCountyID]);
+   var results = await db.rawQuery(
+        "SELECT DISTINCT name, id FROM $geolocationTable WHERE parent = (SELECT id FROM $geolocationTable WHERE name = ? and type = ? LIMIT 1)",
+        [subCountyName, LocationTypes.subcounty.value]);
 
     List<NameID> toReturn = results
         .map((e) => NameID(name: e['name'].toString(), id: e['id'].toString()))

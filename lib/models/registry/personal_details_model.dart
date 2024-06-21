@@ -5,6 +5,8 @@ import 'package:cpims_dcs_mobile/models/registry/registry_identification_details
 import 'package:cpims_dcs_mobile/models/registry/registry_location_model.dart';
 import 'package:cpims_dcs_mobile/models/registry/registry_sibling_model.dart';
 
+import '../../core/utils/input_validation_utils.dart';
+
 class RegistryPersonalDetailsModel {
   String personType;
   bool? isCaregiver;
@@ -81,8 +83,12 @@ class RegistryPersonalDetailsModel {
   }
 
   bool isComplete() {
-
-    return true;
+    return personType.isNotEmpty &&
+        InputValidationUtils.isValidName(firstName) &&
+        InputValidationUtils.isValidName(surname) &&
+        sex.isNotEmpty &&
+        dateOfBirth.isNotEmpty &&
+        childClass.isNotEmpty;
   }
 }
 

@@ -7,12 +7,6 @@ class FamilyBackgroundWidget extends StatelessWidget {
   const FamilyBackgroundWidget({super.key, required this.caseLoadModel});
   final CaseLoadModel caseLoadModel;
 
-  // @override
-  // void initState() {
-  //   super.initState();,
-  //   printCRSDetails();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,32 +75,32 @@ class FamilyBackgroundWidget extends StatelessWidget {
         const SizedBox(height: 10),
         const Divider(),
         const SizedBox(height: 10),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Ward',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              '',
-              style: TextStyle(fontSize: 14),
+              caseLoadModel.occurrenceWardName ?? "-",
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),
         const SizedBox(height: 5),
         const SizedBox(height: 5),
         const Divider(),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Sub-county',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              '',
-              style: TextStyle(fontSize: 14),
+              caseLoadModel.occurrenceSubCountyName ?? "-",
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),

@@ -1,12 +1,15 @@
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/case_event_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_actions.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 
 class FollowUpScreen extends StatefulWidget {
-  const FollowUpScreen({super.key});
+  const FollowUpScreen({super.key, required this.caseLoadModel});
+  final CaseLoadModel caseLoadModel;
 
   @override
   State<FollowUpScreen> createState() => _FollowUpScreenState();
@@ -36,7 +39,11 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: customAppBar(),
+      drawer: const Drawer(
+        child: CustomDrawer(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Column(
@@ -60,25 +67,25 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                           color: Colors.grey[300]!,
                         ),
                         borderRadius: BorderRadius.circular(4)),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Case Serial",
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
-                              "CCO/47/287/5/29/3004/2018",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              widget.caseLoadModel.caseSerial ?? "-",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Column(
+                        const SizedBox(height: 10),
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -92,8 +99,8 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Column(
+                        const SizedBox(height: 10),
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -132,8 +139,10 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    builder: (context) => const SingleChildScrollView(
-                          child: FollowupActions(),
+                    builder: (context) => SingleChildScrollView(
+                          child: FollowupActions(
+                            caseLoad: widget.caseLoadModel,
+                          ),
                         ));
               },
             ),

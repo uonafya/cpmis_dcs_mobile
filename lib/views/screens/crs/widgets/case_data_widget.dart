@@ -438,8 +438,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                       CaseDataCRSFormModel update = model.caseData;
 
                       if (update.referrals == null ||
-                              update.referrals!.isEmpty ??
-                          false) {
+                          update.referrals!.isEmpty) {
                         update.referrals = [item];
                       } else {
                         update.referrals!.add(item);

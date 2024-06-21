@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
 import 'package:cpims_dcs_mobile/models/registry/registry_caregiver_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
@@ -8,8 +9,15 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
+import '../../../../../core/constants/constants.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
+
+const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid surname.";
+const String SEX_DROPDOWN_ERROR = "Please select a sex.";
+const String RELATIONSHIP_DROPDOWN_ERROR = "Please select a relationship.";
+const String ID_INPUT_ERROR = "Please select a national Id.";
 
 class PersonRegistryAttachCareGiver extends StatefulWidget {
   const PersonRegistryAttachCareGiver({super.key});
@@ -46,6 +54,12 @@ class _PersonRegistryAttachCareGiverState
   String nationalIdNumber = "";
   String? phoneNumber;
   bool isRegistered = false;
+  String? firstNameError = FIRST_NAME_INPUT_ERROR;
+  String? surNameError = SUR_NAME_INPUT_ERROR;
+  String? sexError = SEX_DROPDOWN_ERROR;
+  String? relationshipError = RELATIONSHIP_DROPDOWN_ERROR;
+  String? idError = ID_INPUT_ERROR;
+  bool shouldValidateFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,45 +75,35 @@ class _PersonRegistryAttachCareGiverState
             heading: "Attach Caregiver",
             hasClosePage: true,
           ),
-          Row(
-            children: [
-              h2Text("CPIMS registered caregiver"),
-              Checkbox(
-                value: _isChecked,
-                onChanged: (bool? value) {
-                  setState(() {
-                    _isChecked = value ?? false; // Update the state
-                    isRegistered = _isChecked;
-                  });
-                },
-              ),
-            ],
-          ),
           const SizedBox(height: 10),
-          h2Text("Search Caregiver"),
-          CustomTextField(
-            hintText: 'Caregiver - 5646',
-            onChanged: (value) {
-
-            },
-          ),
-          const SizedBox(height: 10),
-          h2Text("First Name"),
+          h2Text("First Name *"),
           CustomTextField(
             hintText: 'First Name',
+            error: shouldValidateFields ? firstNameError : null,
             onChanged: (value) {
               setState(() {
                 firstName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  firstNameError = FIRST_NAME_INPUT_ERROR;
+                  return;
+                }
+                firstNameError = null;
               });
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Surname"),
+          h2Text("Surname *"),
           CustomTextField(
             hintText: 'Surname',
+            error: shouldValidateFields ? surNameError : null,
             onChanged: (value) {
               setState(() {
                 surName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  surNameError = SUR_NAME_INPUT_ERROR;
+                  return;
+                }
+                surNameError = null;
               });
             },
           ),
@@ -131,34 +135,52 @@ class _PersonRegistryAttachCareGiverState
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Sex"),
+          h2Text("Sex *"),
           CustomDropdown(
             initialValue: "Please Select",
-            items: const ["Please Select", "Male", "Female"],
+            error: shouldValidateFields ? sexError : null,
+            items: const ["Male", "Female"],
             onChanged: (val) {
               setState(() {
                 sex = val;
+                if (val.isEmpty) {
+                  sexError = SEX_DROPDOWN_ERROR;
+                } else {
+                  sexError = null;
+                }
               });
             },
           ),
           const SizedBox(height: 15),
-          h2Text("Relationship with Child"),
+          h2Text("Relationship with Child *"),
           CustomDropdown(
             initialValue: "None",
+            error: shouldValidateFields ? relationshipError : null,
             items: childRelationship,
             onChanged: (val) {
               setState(() {
                 relationshipToChild = val;
+                if (val.toString().isEmpty) {
+                  relationshipError = RELATIONSHIP_DROPDOWN_ERROR;
+                } else {
+                  relationshipError = null;
+                }
               });
             },
           ),
           const SizedBox(height: 15),
-          h2Text("National ID No"),
+          h2Text("National ID No *"),
           CustomTextField(
             hintText: 'National ID',
+            error: shouldValidateFields ? idError : null,
             onChanged: (value) {
               setState(() {
                 nationalIdNumber = value;
+                if (value.isEmpty || value.length < 6) {
+                  idError = ID_INPUT_ERROR;
+                  return;
+                }
+                idError = null;
               });
             },
           ),
@@ -190,7 +212,22 @@ class _PersonRegistryAttachCareGiverState
                   text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
-                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
+
+                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
+
+                    int? nationalId;
+                    try {
+                      nationalId = int.parse(nationalIdNumber);
+                    } catch (e) {}
+                    if (firstName.isEmpty || surName.isEmpty || sex.isEmpty || relationshipToChild.isEmpty || nationalIdNumber.isEmpty) {
+                      if (context.mounted) {
+                        errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
+                      }
+                      setState(() {
+                        shouldValidateFields = true;
+                      });
+                      return;
+                    }
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);
                   },
