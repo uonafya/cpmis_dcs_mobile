@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ClosureDatabaseHelper {
-  // Insert closure follow-up data along with interventions as a JSON string
   Future<void> insertClosureFollowup(ClosureFollowupModel closureData) async {
     final db = await LocalDB.instance.database;
     try {
@@ -14,6 +13,7 @@ class ClosureDatabaseHelper {
         caseClosureTable,
         {
           CaseClosureTable.caseID: closureData.caseId,
+          CaseClosureTable.formId: closureData.formId,
           CaseClosureTable.caseOutcome: closureData.caseOutcome,
           CaseClosureTable.transferredTo: closureData.transferedTo,
           CaseClosureTable.caseClosureNotes: closureData.caseClosureNotes,
@@ -88,6 +88,7 @@ class ClosureDatabaseHelper {
 class CaseClosureTable {
   static final List<String> values = [
     caseID,
+    formId,
     caseOutcome,
     transferredTo,
     caseClosureNotes,
@@ -96,6 +97,7 @@ class CaseClosureTable {
   ];
 
   static const String caseID = 'case_id';
+  static const String formId = 'form_id';
   static const String caseOutcome = 'case_outcome';
   static const String transferredTo = 'transfered_to';
   static const String caseClosureNotes = 'case_closure_notes';

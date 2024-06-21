@@ -15,21 +15,6 @@ class ESRFamilyDetails extends StatefulWidget {
 }
 
 class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
-  String doesHaveId = 'Type';
-  String relationship = "Please select";
-  String sex = "Please select";
-  String? dateOfBirth;
-  String maritalStatus = "Please select";
-  String doesSufferChronic = "Please select";
-  String disabilityRequire24Care = "Please select";
-  String typeOfDisability = "Please select";
-  String learningInstitution = "Please select";
-  String highestLearning = "Please select";
-  String doingLast = "Please select";
-  String hasFormalJob = "Please select";
-  String recommendSupport = "Please select";
-  final memberCaregiver = TextEditingController();
-
   List<String> doesHaveIdList = [
     "Type",
     "National ID",
@@ -142,347 +127,273 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
     "Other",
   ];
 
-  bool get showMainCareGiver {
-    if (dateOfBirth == null) {
-      return false;
-    }
-
-    final date = DateTime.parse(dateOfBirth!);
-    //Check if dob is <17 or above 65
-    final age = DateTime.now().difference(date).inDays ~/ 365;
-    if ((age < 18 || age > 65) && disabilityRequire24Care == "Yes") {
-      return true;
-    }
-    return false;
-  }
-
-  int get age {
-    if (dateOfBirth == null) {
-      return 0;
-    }
-
-    final date = DateTime.parse(dateOfBirth!);
-    //Check if dob is <17 or above 65
-    return DateTime.now().difference(date).inDays ~/ 365;
-  }
-
-  List<Map<String, dynamic>> familyMembersDetails = [];
   int familyIndex = 0;
+  final familyFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final familyMembers =
-        Provider.of<ESRController>(context, listen: false).familyMembers;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "${familyIndex + 1}. ${familyMembers[familyIndex]["firstName"]} ${familyMembers[familyIndex]["middleName"]} ${familyMembers[familyIndex]["surname"]}",
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const Divider(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Does member have an ID number? *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: doesHaveId,
-                items: doesHaveIdList,
-                onChanged: (val) {
-                  setState(() {
-                    doesHaveId = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'What is member\'s relationship to the head of this household? *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: relationship,
-                items: relationshipList,
-                onChanged: (val) {
-                  setState(() {
-                    relationship = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'What is member‘s sex? *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: sex,
-                items: sexList,
-                onChanged: (val) {
-                  setState(() {
-                    sex = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'Date of birth *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDatePicker(
-                firstDate: DateTime(1950),
-                lastDate: DateTime.now(),
-                hintText: "Date of birth",
-                onChanged: (val) {
-                  setState(() {
-                    dateOfBirth = DateFormat("yyyy-MM-dd").format(val);
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'Marital status *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: maritalStatus,
-                items: maritalStatusList,
-                onChanged: (val) {
-                  setState(() {
-                    maritalStatus = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'Does member suffer from a chronic illness *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: doesSufferChronic,
-                items: doesSufferChronicList,
-                onChanged: (val) {
-                  setState(() {
-                    doesSufferChronic = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'What type of disability does member have? *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: typeOfDisability,
-                items: typeOfDisabilityList,
-                onChanged: (val) {
-                  setState(() {
-                    typeOfDisability = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            const Text(
-              'Does  disability require 24-hour care? *',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: disabilityRequire24Care,
-                items: doesSufferChronicList,
-                onChanged: (val) {
-                  setState(() {
-                    disabilityRequire24Care = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            if (showMainCareGiver)
+    final controller = Provider.of<ESRController>(context);
+    if (familyIndex >= controller.familyMembers.length) {
+      return const Center(
+        child: Text("All family members have been filled"),
+      );
+    }
+    return Form(
+      key: familyFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "${familyIndex + 1}. ${controller.familyMembers[familyIndex]["firstName"]} ${controller.familyMembers[familyIndex]["middleName"]} ${controller.familyMembers[familyIndex]["surname"]}",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               const Text(
-                'Who is member\'s name main caregiver?*',
+                'Does member have an ID number? *',
               ),
-            if (showMainCareGiver)
               const SizedBox(
                 height: 6,
               ),
-            if (showMainCareGiver)
-              CustomTextField(
-                  controller: memberCaregiver,
-                  hintText: "Enter caregiver name(optional)"),
-            if (showMainCareGiver)
+              CustomDropdown(
+                  initialValue: controller.doesHaveId,
+                  items: doesHaveIdList,
+                  onChanged: (val) {
+                    controller.setDoesHaveId(val);
+                  }),
               const SizedBox(
                 height: 14,
               ),
-            if (age >= 3)
               const Text(
-                'What is the school or learning institution attendance status of member?',
+                'What is member\'s relationship to the head of this household? *',
               ),
-            if (age >= 3)
               const SizedBox(
                 height: 6,
               ),
-            if (age >= 3)
               CustomDropdown(
-                  initialValue: learningInstitution,
-                  items: learningInstitutionList,
+                  initialValue: controller.relationship,
+                  items: relationshipList,
+                  onChanged: (val) {
+                    controller.setRelationship(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+              const Text(
+                'What is member‘s sex? *',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDropdown(
+                  initialValue: controller.sex,
+                  items: sexList,
+                  onChanged: (val) {
+                    controller.setSex(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+              const Text(
+                'Date of birth *',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDatePicker(
+                  firstDate: DateTime(1950),
+                  lastDate: DateTime.now(),
+                  hintText: "Date of birth",
                   onChanged: (val) {
                     setState(() {
-                      learningInstitution = val;
+                      controller
+                          .setDateOfBirth(DateFormat("yyyy-MM-dd").format(val));
                     });
                   }),
-            if (age >= 3)
               const SizedBox(
                 height: 14,
               ),
-            if (age >= 3)
               const Text(
-                'What is the highest STD/Form/Level reached by member?',
+                'Marital status *',
               ),
-            if (age >= 3)
               const SizedBox(
                 height: 6,
               ),
-            if (age >= 3)
               CustomDropdown(
-                  initialValue: highestLearning,
-                  items: highestLearningList,
+                  initialValue: controller.maritalStatus,
+                  items: maritalStatusList,
                   onChanged: (val) {
-                    setState(() {
-                      highestLearning = val;
-                    });
+                    controller.setMaritalStatus(val);
                   }),
-            if (age >= 3)
               const SizedBox(
                 height: 14,
               ),
-            const Text(
-              'What was member mainly doing during the last seven days?',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: doingLast,
-                items: doingLastList,
-                onChanged: (val) {
-                  setState(() {
-                    doingLast = val;
-                  });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-            if (age >= 3)
               const Text(
-                'Does member work on a formal job, teaching, public sector, NGO/FBO?',
+                'Does member suffer from a chronic illness *',
               ),
-            if (age >= 3)
               const SizedBox(
                 height: 6,
               ),
-            if (age >= 3)
               CustomDropdown(
-                  initialValue: hasFormalJob,
+                  initialValue: controller.doesSufferChronic,
                   items: doesSufferChronicList,
                   onChanged: (val) {
-                    setState(() {
-                      hasFormalJob = val;
-                    });
+                    controller.setDoesSufferChronic(val);
                   }),
-            if (age >= 3)
               const SizedBox(
                 height: 14,
               ),
-            const Text(
-              'Do you recommend this household to be considered for any support?',
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            CustomDropdown(
-                initialValue: recommendSupport,
-                items: doesSufferChronicList,
-                onChanged: (val) {
+              const Text(
+                'What type of disability does member have? *',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDropdown(
+                  initialValue: controller.typeOfDisability,
+                  items: typeOfDisabilityList,
+                  onChanged: (val) {
+                    controller.setTypeOfDisability(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+              const Text(
+                'Does  disability require 24-hour care? *',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDropdown(
+                  initialValue: controller.disabilityRequire24Care,
+                  items: doesSufferChronicList,
+                  onChanged: (val) {
+                    controller.setDisabilityRequire24Care(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+              if (controller.showMainCareGiver)
+                const Text(
+                  'Who is member\'s name main caregiver?*',
+                ),
+              if (controller.showMainCareGiver)
+                const SizedBox(
+                  height: 6,
+                ),
+              if (controller.showMainCareGiver)
+                CustomTextField(
+                    controller: controller.memberCaregiver,
+                    hintText: "Enter caregiver name(optional)"),
+              if (controller.showMainCareGiver)
+                const SizedBox(
+                  height: 14,
+                ),
+              if (controller.age >= 3)
+                const Text(
+                  'What is the school or learning institution attendance status of member?',
+                ),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 6,
+                ),
+              if (controller.age >= 3)
+                CustomDropdown(
+                    initialValue: controller.learningInstitution,
+                    items: learningInstitutionList,
+                    onChanged: (val) {
+                      controller.setLearningInstitution(val);
+                    }),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 14,
+                ),
+              if (controller.age >= 3)
+                const Text(
+                  'What is the highest STD/Form/Level reached by member?',
+                ),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 6,
+                ),
+              if (controller.age >= 3)
+                CustomDropdown(
+                    initialValue: controller.highestLearning,
+                    items: highestLearningList,
+                    onChanged: (val) {
+                      controller.setHighestLearning(val);
+                    }),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 14,
+                ),
+              const Text(
+                'What was member mainly doing during the last seven days?',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDropdown(
+                  initialValue: controller.doingLast,
+                  items: doingLastList,
+                  onChanged: (val) {
+                    controller.setDoingLast(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+              if (controller.age >= 3)
+                const Text(
+                  'Does member work on a formal job, teaching, public sector, NGO/FBO?',
+                ),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 6,
+                ),
+              if (controller.age >= 3)
+                CustomDropdown(
+                    initialValue: controller.hasFormalJob,
+                    items: doesSufferChronicList,
+                    onChanged: (val) {
+                      controller.setHasFormalJob(val);
+                    }),
+              if (controller.age >= 3)
+                const SizedBox(
+                  height: 14,
+                ),
+              const Text(
+                'Do you recommend this household to be considered for any support?',
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              CustomDropdown(
+                  initialValue: controller.recommendSupport,
+                  items: doesSufferChronicList,
+                  onChanged: (val) {
+                    controller.setRecommendSupport(val);
+                  }),
+              const SizedBox(
+                height: 14,
+              ),
+            ],
+          ),
+          if (familyIndex != controller.familyMembers.length)
+            CustomButton(
+                text: "Fill next member",
+                onTap: () {
+                  Provider.of<ESRController>(context, listen: false)
+                      .addFamilyMemberDetails();
+                  //Clear
+
                   setState(() {
-                    recommendSupport = val;
+                    familyIndex++;
                   });
-                }),
-            const SizedBox(
-              height: 14,
-            ),
-          ],
-        ),
-        CustomButton(
-            text: "Add",
-            onTap: () {
-              final memberCaregiver = TextEditingController();
-              final family = {
-                "doesHaveId": doesHaveId,
-                "relationship": relationship,
-                "sex": sex,
-                "date_of_birth": dateOfBirth,
-                "marital_status": maritalStatus,
-                "does_suffer_chronic": doesSufferChronic,
-                "disability_require_24_care": disabilityRequire24Care,
-                "type_of_disability": typeOfDisability,
-                "learning_institution": learningInstitution,
-                "highest_learning": highestLearning,
-                "doing_last": doingLast,
-                "has_formal_job": hasFormalJob,
-                "recommend_support": recommendSupport,
-                "main_caregiver": memberCaregiver.text
-              };
-              familyMembersDetails.add(family);
-              Provider.of<ESRController>(context, listen: false)
-                  .addFamilyMemberDetails(family);
-              //Clear
-              memberCaregiver.clear();
-              doesHaveId = 'Type';
-              relationship = "Please select";
-              sex = "Please select";
-              dateOfBirth = null;
-              maritalStatus = "Please select";
-              doesSufferChronic = "Please select";
-              disabilityRequire24Care = "Please select";
-              typeOfDisability = "Please select";
-              learningInstitution = "Please select";
-              highestLearning = "Please select";
-              doingLast = "Please select";
-              hasFormalJob = "Please select";
-              recommendSupport = "Please select";
-              setState(() {});
-              if (familyIndex == familyMembers.length - 1) {
-                return;
-              }
-              setState(() {
-                familyIndex++;
-              });
-            })
-      ],
+                })
+        ],
+      ),
     );
   }
 }

@@ -40,82 +40,38 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const Divider(),
-          const SizedBox(height: 10),
-          const Text(
-            'Initial Details:',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            ),
+        ),
+        const Divider(),
+        const SizedBox(height: 10),
+        const Text(
+          'Initial Details:',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
           ),
-          const SizedBox(height: 10),
-          RichText(
-            text: TextSpan(
-              text: "NAME: ",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kTextGrey,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text:
-                      model.about?.initialDetails.firstName.toUpperCase() ?? "",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
+        ),
+        const SizedBox(height: 10),
+        RichText(
+          text: TextSpan(
+            text: "NAME: ",
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: kTextGrey,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text:
+                    '${model.about?.initialDetails.firstName.toUpperCase()} ${model.about?.initialDetails.otherNames.toUpperCase()} ${model.about?.initialDetails.surname.toUpperCase()}',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          RichText(
-            text: TextSpan(
-              text: "SEX: ",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kTextGrey,
               ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: model.about?.initialDetails.sex ?? "",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
-          const SizedBox(height: 10),
-          RichText(
-            text: TextSpan(
-              text: "DOB: ",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kTextGrey,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: model.about?.initialDetails.dateOfBirth != null
-                      ? convertDateToYMD(
-                          model.about!.initialDetails.dateOfBirth!)
-                      : "",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
+
           const SizedBox(height: 10),
           RichText(
             text: TextSpan(
@@ -135,23 +91,120 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
                   ),
+
+        ),
+        const SizedBox(height: 10),
+        RichText(
+          text: TextSpan(
+            text: "SEX: ",
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: kTextGrey,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: model.about?.initialDetails.sex ?? "",
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          const Divider(),
-          const SizedBox(height: 10),
-          const Text(
-            'Siblings Details:',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
+        ),
+        const SizedBox(height: 10),
+        RichText(
+          text: TextSpan(
+            text: "DOB: ",
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: kTextGrey,
             ),
+            children: <TextSpan>[
+              TextSpan(
+                text: model.about?.initialDetails.dateOfBirth != null
+                    ? convertDateToYMD(model.about!.initialDetails.dateOfBirth!)
+                    : "",
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          // Siblings list
-          // no siblings found
+        ),
+        
+        const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
+        const Text(
+          'Siblings Details:',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(height: 10),
+        // Siblings list
+        if (model.about?.siblingDetails != null &&
+            model.about!.siblingDetails!.isNotEmpty)
+          Column(
+            children: model.about!.siblingDetails!
+                .map(
+                  (sibling) => Column(
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          text: "Date Linked: ",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: sibling.dateLinked.toString(),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      RichText(
+                        text: TextSpan(
+                          text: "Remarks: ",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: sibling.remarks.toString(),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          )
+        else
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(10),
@@ -161,142 +214,141 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
             ),
             child: const Text('No siblings found'),
           ),
-          const SizedBox(height: 10),
-          const Divider(),
-          const SizedBox(height: 10),
-          // house hold economic status
-          const Text(
-            'Household Economic Status:',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+        const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
+        // house hold economic status
+        const Text(
+          'Household Economic Status:',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 10),
-          CustomDropdown(
-            initialValue: model.about?.houseEconomicStatus ?? pleaseSelect,
-            items: houseEconomicStatusOptions,
-            onChanged: (dynamic item) {
-              var update = model.about;
-              update?.houseEconomicStatus = item;
-              model.about = update;
-            },
+        ),
+        const SizedBox(height: 10),
+        CustomDropdown(
+          initialValue: model.about?.houseEconomicStatus ?? pleaseSelect,
+          items: houseEconomicStatusOptions,
+          onChanged: (dynamic item) {
+            var update = model.about;
+            update?.houseEconomicStatus = item;
+            model.about = update;
+          },
+        ),
+        const SizedBox(height: 10),
+        const Divider(),
+        const SizedBox(height: 10),
+        const Text(
+          'Family Status:*',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 10),
-          const Divider(),
-          const SizedBox(height: 10),
-          const Text(
-            'Family Status:*',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 10),
-          CustomDropDownMultiSelect(
-            options: familyStatusOptions,
-            onOptionSelected: (List<String> value) {
-              var update = model.about;
+        ),
+        const SizedBox(height: 10),
+        CustomDropDownMultiSelect(
+          options: familyStatusOptions,
+          onOptionSelected: (List<String> value) {
+            var update = model.about;
 
-              if (update?.familyStatus.isEmpty ?? false) {
-                update?.familyStatus = value;
-              } else {
-                update?.familyStatus.addAll(value);
-              }
+            if (update?.familyStatus.isEmpty ?? false) {
+              update?.familyStatus = value;
+            } else {
+              update?.familyStatus.addAll(value);
+            }
 
-              model.about = update;
-            },
-            selectionType: SelectionType.multi,
-            hint: pleaseSelect,
+            model.about = update;
+          },
+          selectionType: SelectionType.multi,
+          hint: pleaseSelect,
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          'Close Friends:',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Close Friends:',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 10),
-          CustomTextField(
-            hintText: 'Type names + ENTER',
-            onFieldSubmitted: (String value) {
-              var update = model.about;
+        ),
+        const SizedBox(height: 10),
+        CustomTextField(
+          hintText: 'Type names + ENTER',
+          onFieldSubmitted: (String value) {
+            var update = model.about;
 
-              if (update?.closeFriends?.isEmpty ?? false) {
-                update?.closeFriends = [value];
-              } else {
-                update?.closeFriends?.add(value);
-              }
-              model.about = update;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: closeFriends
-                  .map(
-                    (String friend) => CustomSelectedItemPill(
-                      text: friend,
-                      onTap: () {
-                        var update = model.about;
+            if (update?.closeFriends?.isEmpty ?? false) {
+              update?.closeFriends = [value];
+            } else {
+              update?.closeFriends?.add(value);
+            }
+            model.about = update;
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: closeFriends
+                .map(
+                  (String friend) => CustomSelectedItemPill(
+                    text: friend,
+                    onTap: () {
+                      var update = model.about;
 
-                        update?.closeFriends?.remove(friend);
-                      },
-                    ),
-                  )
-                  .toList(),
-            ),
+                      update?.closeFriends?.remove(friend);
+                    },
+                  ),
+                )
+                .toList(),
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Hobbies:',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          'Hobbies:',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 10),
-          CustomTextField(
-            hintText: 'Type hobby + ENTER',
-            onFieldSubmitted: (String value) {
-              var update = model.about;
+        ),
+        const SizedBox(height: 10),
+        CustomTextField(
+          hintText: 'Type hobby + ENTER',
+          onFieldSubmitted: (String value) {
+            var update = model.about;
 
-              if (update?.hobbies?.isEmpty ?? false) {
-                update?.hobbies = [value];
-              } else {
-                update?.hobbies?.add(value);
-              }
-              model.about = update;
+            if (update?.hobbies?.isEmpty ?? false) {
+              update?.hobbies = [value];
+            } else {
+              update?.hobbies?.add(value);
+            }
+            model.about = update;
 
-              setState(() {
-                hobbies.add(value);
-              });
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: hobbies
-                  .map(
-                    (String hobby) => CustomSelectedItemPill(
-                      text: hobby,
-                      onTap: () {
-                        var update = model.about;
+            setState(() {
+              hobbies.add(value);
+            });
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: hobbies
+                .map(
+                  (String hobby) => CustomSelectedItemPill(
+                    text: hobby,
+                    onTap: () {
+                      var update = model.about;
 
-                        update?.hobbies?.remove(hobby);
-                      },
-                    ),
-                  )
-                  .toList(),
-            ),
+                      update?.hobbies?.remove(hobby);
+                    },
+                  ),
+                )
+                .toList(),
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }

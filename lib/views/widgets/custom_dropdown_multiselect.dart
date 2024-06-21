@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class CustomDropDownMultiSelect extends StatefulWidget {
-  final List<ValueItem> options;
+  final List<ValueItem<String>> options;
   final Function(List<String>) onOptionSelected;
   final SelectionType selectionType;
   final String hint;
@@ -22,17 +21,24 @@ class CustomDropDownMultiSelect extends StatefulWidget {
 }
 
 class _CustomDropDownMultiSelectState extends State<CustomDropDownMultiSelect> {
-  List<String> selectedValues = [];
+  List<ValueItem<String>> selectedValues = [];
 
   @override
   Widget build(BuildContext context) {
-    return MultiSelectDropDown(
+    return MultiSelectDropDown<String>(
       hint: widget.hint,
-      onOptionSelected: (selectedValues) {
+      onOptionSelected: (List<ValueItem<String>> selectedItems) {
         setState(() {
-          this.selectedValues = selectedValues.cast<String>().toList();
+          selectedValues = selectedItems;
         });
-        widget.onOptionSelected(selectedValues.cast<String>().toList());
+        // Convert ValueItem<String> to String before passing to the parent
+        // Filter out any null values and convert to non-nullable List<String>
+        List<String> nonNullableList = selectedItems
+            .map((item) => item.value)
+            .where((value) => value != null)
+            .cast<String>()
+            .toList();
+        widget.onOptionSelected(nonNullableList);
       },
       options: widget.options,
       maxItems: 35,
