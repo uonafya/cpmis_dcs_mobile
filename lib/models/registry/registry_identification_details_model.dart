@@ -42,4 +42,8 @@ class RegistryIdentificationModel {
     tribe = "";
     religion = "";
   }
+
+  bool isComplete() {
+    return true;
+  }
 }

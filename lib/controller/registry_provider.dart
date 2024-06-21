@@ -1,9 +1,5 @@
-import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
-
 import '../models/registry/personal_details_model.dart';
 import '../models/registry/registry_caregiver_model.dart';
 import '../models/registry/registry_cbo_chv_model.dart';
@@ -22,6 +18,7 @@ class RegistryProvider extends ChangeNotifier {
   final List<RegistryCaregiverModel> _caregivers = [];
   final List<RegistrySiblingModel> _siblings = [];
   final RegistryCboChvModel _registryCboChvModel = RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
+  bool _shouldValidateFields = false;
 
   RegistryPersonalDetailsModel get registryPersonalDetailsModel => _registryPersonalDetailsModel;
   RegistryIdentificationModel get registryIdentificationModel => _registryIdentificationModel;
@@ -30,6 +27,7 @@ class RegistryProvider extends ChangeNotifier {
   List<RegistryCaregiverModel> get caregivers => _caregivers;
   List<RegistrySiblingModel> get siblings => _siblings;
   RegistryCboChvModel get registryCboChvModel => _registryCboChvModel;
+  bool get shouldValidateFields => _shouldValidateFields;
 
   void setPersonType(String value) {
     _registryPersonalDetailsModel.personType = value;
@@ -143,6 +141,11 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShouldValidateFields() {
+    _shouldValidateFields = true;
+    notifyListeners();
+  }
+
   void clearState() {
     _registryPersonalDetailsModel.clear();
     _registryIdentificationModel.clear();
@@ -151,11 +154,42 @@ class RegistryProvider extends ChangeNotifier {
     _caregivers.clear();
     _siblings.clear();
     _registryCboChvModel.clear();
+    _shouldValidateFields = false;
+  }
+
+  bool isComplete() {
+    return _registryPersonalDetailsModel.isComplete() &&
+    _registryIdentificationModel.isComplete() &&
+    _registryContactDetailsModel.isComplete() &&
+    _registryLocationModel.isComplete() &&
+    _registryCboChvModel.isComplete();
+  }
+
+  bool isNotComplete() {
+    return !isComplete();
   }
 
   Future<void> submit() async {
+    if (isNotComplete()) {
+      return;
+    }
     try {
-      RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(personType: registryPersonalDetailsModel.personType, childOVCProgram: false, firstName: registryPersonalDetailsModel.firstName, surname: registryPersonalDetailsModel.surname, sex: registryPersonalDetailsModel.sex, dateOfBirth: registryPersonalDetailsModel.dateOfBirth, childClass: registryPersonalDetailsModel.childClass, workforceIdName: registryPersonalDetailsModel.workforceIdName, datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled, registryIdentificationModel: registryIdentificationModel, registryContactDetailsModel: registryContactDetailsModel, registryLocationModel: registryLocationModel, caregivers: caregivers, siblings: siblings, registryCboChvModel: registryCboChvModel);
+      RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(
+          personType: registryPersonalDetailsModel.personType,
+          childOVCProgram: false,
+          firstName: registryPersonalDetailsModel.firstName,
+          surname: registryPersonalDetailsModel.surname,
+          sex: registryPersonalDetailsModel.sex,
+          dateOfBirth: registryPersonalDetailsModel.dateOfBirth,
+          childClass: registryPersonalDetailsModel.childClass,
+          workforceIdName: registryPersonalDetailsModel.workforceIdName,
+          datePaperFormFilled: registryPersonalDetailsModel.datePaperFormFilled,
+          registryIdentificationModel: registryIdentificationModel,
+          registryContactDetailsModel: registryContactDetailsModel,
+          registryLocationModel: registryLocationModel,
+          caregivers: caregivers,
+          siblings: siblings,
+          registryCboChvModel: registryCboChvModel);
       await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
       clearState();

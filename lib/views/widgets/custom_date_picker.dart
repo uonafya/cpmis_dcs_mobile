@@ -15,7 +15,8 @@ class CustomDatePicker extends StatefulWidget {
       this.suffixIcon,
       this.validator,
       this.showInitialDate = false,
-      this.labelText});
+      this.labelText,
+      this.error});
   final DateTime? initialDate;
   final DateTime? firstDate;
   final DateTime? lastDate;
@@ -24,6 +25,7 @@ class CustomDatePicker extends StatefulWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final bool showInitialDate;
+  final String? error;
   final String? Function(String?)? validator;
 
   final Function(DateTime) onChanged;
@@ -57,6 +59,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       },
       child: CustomTextField(
         enabled: false,
+        error: widget.error,
         suffixIcon: widget.suffixIcon ?? Icons.calendar_today,
         labelText: widget.labelText,
         hintText: widget.hintText,

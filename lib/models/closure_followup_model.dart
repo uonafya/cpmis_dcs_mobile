@@ -1,5 +1,6 @@
 class ClosureFollowupModel {
   String? caseId;
+  String? formId;
   String? caseOutcome;
   String? transferedTo;
   List<InterventionList>? interventionList;
@@ -8,6 +9,7 @@ class ClosureFollowupModel {
 
   ClosureFollowupModel(
       {this.caseId,
+      this.formId,
       this.caseOutcome,
       this.transferedTo,
       this.interventionList,
@@ -16,12 +18,13 @@ class ClosureFollowupModel {
 
   ClosureFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
+    formId = json['form_id'];
     caseOutcome = json['case_outcome'];
     transferedTo = json['transfered_to'];
     if (json['intervention_list'] != null) {
       interventionList = <InterventionList>[];
       json['intervention_list'].forEach((v) {
-        interventionList!.add(new InterventionList.fromJson(v));
+        interventionList!.add(InterventionList.fromJson(v));
       });
     }
     caseClosureNotes = json['case_closure_notes'];
@@ -31,23 +34,26 @@ class ClosureFollowupModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['case_id'] = this.caseId;
+    data['form_id'] = this.formId;
     data['case_outcome'] = this.caseOutcome;
     data['transfered_to'] = this.transferedTo;
     if (this.interventionList != null) {
       data['intervention_list'] =
-          this.interventionList!.map((v) => v.toJson()).toList();
+          interventionList!.map((v) => v.toJson()).toList();
     }
-    data['case_closure_notes'] = this.caseClosureNotes;
-    data['date_of_case_closure'] = this.dateOfCaseClosure;
+    data['case_closure_notes'] = caseClosureNotes;
+    data['date_of_case_closure'] = dateOfCaseClosure;
     return data;
   }
 
   Map<String, dynamic> toMap() {
     return {
       'case_id': caseId,
+      'form_id': formId,
       'case_outcome': caseOutcome,
       'transfered_to': transferedTo,
-      'intervention_list': interventionList?.map((e) => e.toMap()).toList() ?? [],
+      'intervention_list':
+          interventionList?.map((e) => e.toMap()).toList() ?? [],
       'case_closure_notes': caseClosureNotes,
       'date_of_case_closure': dateOfCaseClosure,
     };
@@ -66,9 +72,9 @@ class InterventionList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['intervention'] = this.intervention;
-    data['case_category'] = this.caseCategory;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['intervention'] = intervention;
+    data['case_category'] = caseCategory;
     return data;
   }
 

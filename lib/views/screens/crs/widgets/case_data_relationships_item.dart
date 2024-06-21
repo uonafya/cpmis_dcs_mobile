@@ -107,7 +107,7 @@ class CaseDataRelationshipItem extends StatelessWidget {
               onPressed: () {
                 removeItem(index);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.red,
               ),

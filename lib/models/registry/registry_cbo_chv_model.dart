@@ -32,4 +32,10 @@ class RegistryCboChvModel {
     ovcProgramEnrollment = "";
     chv = "";
   }
+
+  bool isComplete() {
+    return cboParentUnit.isNotEmpty &&
+    ovcProgramEnrollment.isNotEmpty &&
+    chv.isNotEmpty;
+  }
 }

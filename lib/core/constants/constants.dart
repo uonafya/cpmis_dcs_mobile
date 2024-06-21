@@ -53,6 +53,8 @@ const String caseLoadCategoryTable = "caseLoadCategory";
 const String caseClosureTable = "caseClosure";
 const String serviceFollowupTable = "serviceFollowup";
 const String courtSessionTable = "courtSession";
+const String courtSummonsTable = "courtSummons";
+const String referralTable = "referral";
 
 const String registryIdentificationTable = "registry_identification";
 const String registryContactTable = "registry_contact";
@@ -60,6 +62,7 @@ const String registryLocationTable = "registry_location";
 const String registryCaregiverTable = "registry_caregiver";
 const String registrySiblingTable = "registry_sibling";
 const String registryCboChvTable = "registry_cbo_chv";
+const String cciTransitionTable = "cciTransitionTable";
 
 const String registryFormDetails = "registry_form_details";
 
@@ -139,4 +142,17 @@ showSuccessSnackBar(BuildContext context, String message) {
     dragToClose: true,
     applyBlurEffect: true,
   );
+}
+
+// calculate age from date of birth
+int calculateAge(DateTime birthDate) {
+  DateTime currentDate = DateTime.now();
+  int age = currentDate.year - birthDate.year;
+  int month1 = currentDate.month;
+  int month2 = birthDate.month;
+  if (month2 > month1 ||
+      (month1 == month2 && currentDate.day < birthDate.day)) {
+    age--;
+  }
+  return age;
 }

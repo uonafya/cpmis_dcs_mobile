@@ -14,7 +14,6 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:provider/provider.dart';
@@ -108,7 +107,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             ),
 
             // et details of perpetrator if known
-            if (model.caseData.offenderKnown == AllegedPerpetratorOptions.known.value)
+            if (model.caseData.offenderKnown ==
+                AllegedPerpetratorOptions.known.value)
               Column(
                 children: [
                   const Align(
@@ -154,10 +154,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   const SizedBox(
                     height: smallSpacing,
                   ),
-                  CustomTextField(
-                    controller: surname,
-                    hintText: "Surname"
-                  ),
+                  CustomTextField(controller: surname, hintText: "Surname"),
                   const SizedBox(
                     height: mediumSpacing,
                   ),
@@ -209,23 +206,24 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   const SizedBox(
                     height: smallSpacing,
                   ),
-                  perpetratorDOB != null ?
-                  CustomDatePicker(
-                    initialDate: perpetratorDOB,
-                      firstDate: DateTime(1950),
-                      lastDate: DateTime.now(),
-                      onChanged: (DateTime time) {
-                        setState(() {
-                          perpetratorDOB = time;
-                        });
-                      }) : CustomDatePicker(
-                      firstDate: DateTime(1950),
-                      lastDate: DateTime.now(),
-                      onChanged: (DateTime time) {
-                        setState(() {
-                          perpetratorDOB = time;
-                        });
-                      }),
+                  perpetratorDOB != null
+                      ? CustomDatePicker(
+                          initialDate: perpetratorDOB,
+                          firstDate: DateTime(1950),
+                          lastDate: DateTime.now(),
+                          onChanged: (DateTime time) {
+                            setState(() {
+                              perpetratorDOB = time;
+                            });
+                          })
+                      : CustomDatePicker(
+                          firstDate: DateTime(1950),
+                          lastDate: DateTime.now(),
+                          onChanged: (DateTime time) {
+                            setState(() {
+                              perpetratorDOB = time;
+                            });
+                          }),
                   const SizedBox(
                     height: mediumSpacing,
                   ),
@@ -437,7 +435,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                     addReferral: (CRSReferral item) {
                       CaseDataCRSFormModel update = model.caseData;
 
-                      if (update.referrals == null || update.referrals!.isEmpty ?? false) {
+                      if (update.referrals == null ||
+                          update.referrals!.isEmpty) {
                         update.referrals = [item];
                       } else {
                         update.referrals!.add(item);
@@ -513,12 +512,9 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
 
             // Case Narration
             const Align(
-              alignment: Alignment.centerLeft,
-              child: CompulsaryQuestion(question: "Case Narration")
-            ),
-            const SizedBox(
-              height: smallSpacing
-            ),
+                alignment: Alignment.centerLeft,
+                child: CompulsaryQuestion(question: "Case Narration")),
+            const SizedBox(height: smallSpacing),
             CustomTextField(
               maxLines: 10,
               onChanged: (String text) {
