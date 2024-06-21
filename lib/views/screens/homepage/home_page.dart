@@ -1,10 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
-
 import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
+import 'package:cpims_dcs_mobile/core/utils/sync_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
@@ -83,7 +83,15 @@ class _HomepageState extends State<Homepage> {
                               ),
                             ),
                             onTap: () {
-                              syncData();
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => const Dialog(
+                                  child: SingleChildScrollView(
+                                    child: SyncModal(),
+                                  ),
+                                ),
+                              );
                             })
                       ],
                     ),

@@ -1,11 +1,18 @@
 import 'dart:convert';
+import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
+import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/metadata.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
+
 import 'package:intl/intl.dart';
+import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
+import 'package:flutter/cupertino.dart';
 
 // Mapping functions
 int mapCaseOutcome(String outcome) {
@@ -28,12 +35,29 @@ int mapCaseCategory(String category) {
   return categoryMap[category] ?? 0;
 }
 
-Future<void> syncData() async {
+Future<void> syncData(BuildContext context) async {
+  final String deviceID = await getDeviceID(context);
+
+  await Future.wait([
+    //TO UPSTREAM
+    sendClosureUpstream(),
+    sendSocialInquiryUpstream(),
+    sendESRUpstream(),
+    //FROM UPSTREAM
+    apiService.fetchAndInsertCaseload(deviceID: deviceID),
+    loadLocationFromUpstream(),
+    saveOrganizationUnits(),
+    saveCountries(),
+    saveMetadata(),
+  ]);
+}
+
+Future<void> sendSocialInquiryUpstream() async {
   final db = await LocalDB.instance.database;
-  final closureDatabaseHelper = ClosureDatabaseHelper();
+
   //Get all social inquiries
   final inquiries = await db.query(socialInquiryTable);
-  print(inquiries);
+  print("INQUIRIES: $inquiries");
   for (var inquiry in inquiries) {
     final inq = SocialInquiryFormModel.fromJson(inquiry);
     await apiService.sendSocialInquiry(inq);
@@ -42,15 +66,13 @@ Future<void> syncData() async {
     await db
         .delete(socialInquiryTable, where: 'id = ?', whereArgs: [inquiryId]);
   }
+}
+
+Future<void> sendClosureUpstream() async {
+  final db = await LocalDB.instance.database;
 
   // Sync closure followups
   final closures = await db.query(caseClosureTable);
-
-  print("Case IDs being submitted:");
-  for (var closure in closures) {
-    final caseId = closure[CaseClosureTable.caseID];
-    print(caseId);
-  }
 
   for (var closure in closures) {
     try {
@@ -80,10 +102,10 @@ Future<void> syncData() async {
 
       // Print the format of the synced data
       print("Synced data format for case ${closureModel.caseId}:");
-      print(JsonEncoder.withIndent('  ').convert(apiSubmissionData));
+      print(const JsonEncoder.withIndent('  ').convert(apiSubmissionData));
 
       await apiService.sendClosureFollowup(apiSubmissionData);
-
+      final closureDatabaseHelper = ClosureDatabaseHelper();
       final caseId = closure[CaseClosureTable.caseID];
       if (caseId != null && caseId is String) {
         await closureDatabaseHelper.deleteClosureFollowup(caseId);
@@ -100,4 +122,17 @@ Future<void> syncData() async {
       continue;
     }
   }
+}
+
+Future<void> sendESRUpstream() async {
+  final db = LocalDB.instance;
+
+  //Get all ESR forms
+  final esrForms = await db.getESRForms();
+  print("ESR FORMS: $esrForms");
+
+  for (var esr in esrForms) {
+    await apiService.sendESRForm(esr.toJson());
+  }
+  db.deleteAllESRForms();
 }

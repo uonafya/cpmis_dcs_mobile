@@ -58,8 +58,6 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     print(courtSummonsModel.toJson());
 
     try {
-      print('Db initialization & saving court summons...');
-      var db = await localdb.database;
       final courtSummonsDatabaseHelper = CourtSummonsDatabaseHelper();
       await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
       print('Saved court summons :)');
