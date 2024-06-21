@@ -1,8 +1,10 @@
+import 'package:cpims_dcs_mobile/controller/esr_controller.dart';
 import 'package:cpims_dcs_mobile/core/network/locations.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class ESRHouseholdGeolocation extends StatefulWidget {
   const ESRHouseholdGeolocation({super.key});
@@ -13,15 +15,6 @@ class ESRHouseholdGeolocation extends StatefulWidget {
 }
 
 class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
-  String selectedCounty = 'Please select';
-
-  String selectedSubCounty = 'Please select';
-  String location = 'Please select';
-  String selectedSubLocation = 'Please select';
-  String selectedVillage = 'Please select';
-  final villageElderController = TextEditingController();
-  final nearestChurchMosqueController = TextEditingController();
-  final nearestSchoolController = TextEditingController();
   List<NameID> counties = [
     const NameID(name: 'Please select', id: '1'),
   ];
@@ -49,177 +42,175 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'County *',
+    final controller = Provider.of<ESRController>(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'County *',
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        CustomDropdown(
+            initialValue: controller.selectedCounty,
+            items: counties.map((e) => e.name).toList(),
+            onChanged: (val) async {
+              controller.setSelectedCounty(val);
+
+              final values =
+                  await getSubCountiesOfCounty(controller.selectedCounty);
+              subCounty.addAll(values);
+              setState(() {});
+            }),
+        if (controller.selectedCounty != 'Please select')
+          const SizedBox(
+            height: 14,
           ),
+        if (controller.selectedCounty != 'Please select')
+          const Text(
+            'Sub County *',
+          ),
+        if (controller.selectedCounty != 'Please select')
           const SizedBox(
             height: 10,
           ),
+        if (controller.selectedCounty != 'Please select')
           CustomDropdown(
-              initialValue: selectedCounty,
-              items: counties.map((e) => e.name).toList(),
+              initialValue: controller.selectedSubCounty,
+              items: subCounty.map((e) => e.name).toList(),
               onChanged: (val) async {
-                selectedCounty = val;
-                selectedSubCounty = 'Please select';
-                selectedSubLocation = 'Please select';
-                location = 'Please select';
+                controller.setSelectedSubCounty(val);
 
-                final values = await getSubCountiesOfCounty(selectedCounty);
-                subCounty.addAll(values);
+                final values = await getLocationsFromSubCounty(
+                    controller.selectedSubCounty);
+
+                locationList.addAll(values);
+
                 setState(() {});
               }),
-          if (selectedCounty != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
-          if (selectedCounty != 'Please select')
-            const Text(
-              'Sub County *',
-            ),
-          if (selectedCounty != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (selectedCounty != 'Please select')
-            CustomDropdown(
-                initialValue: selectedSubCounty,
-                items: subCounty.map((e) => e.name).toList(),
-                onChanged: (val) async {
-                  selectedSubCounty = val;
-
-                  selectedSubLocation = 'Please select';
-                  location = 'Please select';
-                  final values =
-                      await getLocationsFromSubCounty(selectedCounty);
-                  print(values);
-                  locationList.addAll(values);
-
-                  setState(() {});
-                }),
-          const SizedBox(
-            height: 14,
-          ),
-          if (selectedSubCounty != 'Please select')
-            const Text(
-              'Location *',
-            ),
-          if (selectedSubCounty != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (selectedSubCounty != 'Please select')
-            CustomDropdown(
-                initialValue: location,
-                items: locationList.map((e) => e.name).toList(),
-                onChanged: (val) async {
-                  location = val;
-
-                  selectedSubLocation = 'Please select';
-
-                  final values = await getSubCountiesOfCounty(selectedCounty);
-                  subLocation.addAll(values);
-
-                  setState(() {});
-                }),
-          if (selectedSubCounty != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
-          if (location != 'Please select')
-            const Text(
-              'Sub Location *',
-            ),
-          if (location != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (location != 'Please select')
-            CustomDropdown(
-                initialValue: selectedSubLocation,
-                items: subLocation.map((e) => e.name).toList(),
-                onChanged: (val) async {
-                  selectedSubLocation = val;
-
-                  setState(() {});
-                }),
-          if (location != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
-          if (selectedSubLocation != 'Please select')
-            const Text(
-              'Village Elder',
-            ),
-          if (selectedSubLocation != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (selectedSubLocation != 'Please select')
-            CustomTextField(
-              hintText: 'Village Elder',
-              controller: villageElderController,
-            ),
-          if (selectedSubLocation != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
+        const SizedBox(
+          height: 14,
+        ),
+        if (controller.selectedSubCounty != 'Please select')
           const Text(
-            'Duration of residence in this place',
+            'Location *',
           ),
+        if (controller.selectedSubCounty != 'Please select')
           const SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: CustomTextField(
-                  hintText: 'Years',
-                  controller: nearestSchoolController,
-                ),
-              ),
-              const SizedBox(
-                width: 14,
-              ),
-              Expanded(
-                child: CustomTextField(
-                  hintText: 'Months',
-                  controller: nearestSchoolController,
-                ),
-              ),
-            ],
-          ),
+        if (controller.selectedSubCounty != 'Please select')
+          CustomDropdown(
+              initialValue: controller.location,
+              items: locationList.map((e) => e.name).toList(),
+              onChanged: (val) async {
+                controller.setLocation(val);
+                final locationId = locationList
+                    .firstWhere((element) => element.name == val)
+                    .id;
+                final values = await getSubLocationFromLocation(
+                    int.tryParse(locationId) ?? 0);
+                subLocation.addAll(values);
+
+                setState(() {});
+              }),
+        if (controller.selectedSubCounty != 'Please select')
           const SizedBox(
             height: 14,
           ),
+        if (controller.location != 'Please select')
           const Text(
-            'Nearest Church/Mosque',
+            'Sub Location *',
           ),
+        if (controller.location != 'Please select')
           const SizedBox(
             height: 10,
           ),
+        if (controller.location != 'Please select')
+          CustomDropdown(
+              initialValue: controller.selectedSubLocation,
+              items: subLocation.map((e) => e.name).toList(),
+              onChanged: (val) async {
+                controller.setSelectedSubLocation(val);
+
+                setState(() {});
+              }),
+        if (controller.location != 'Please select')
+          const SizedBox(
+            height: 14,
+          ),
+        if (controller.selectedSubLocation != 'Please select')
+          const Text(
+            'Village Elder',
+          ),
+        if (controller.selectedSubLocation != 'Please select')
+          const SizedBox(
+            height: 10,
+          ),
+        if (controller.selectedSubLocation != 'Please select')
           CustomTextField(
-            hintText: 'Nearest Church/Mosque',
-            controller: nearestChurchMosqueController,
+            hintText: 'Village Elder',
+            controller: controller.villageElderController,
           ),
+        if (controller.selectedSubLocation != 'Please select')
           const SizedBox(
             height: 14,
           ),
-          const Text(
-            'Nearest School',
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            hintText: 'Nearest School',
-            controller: nearestSchoolController,
-          ),
-        ],
-      ),
+        const Text(
+          'Duration of residence in this place',
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                hintText: 'Years',
+                controller: controller.yearsController,
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            const SizedBox(
+              width: 14,
+            ),
+            Expanded(
+              child: CustomTextField(
+                hintText: 'Months',
+                controller: controller.monthsController,
+                keyboardType: TextInputType.number,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 14,
+        ),
+        const Text(
+          'Nearest Church/Mosque',
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        CustomTextField(
+          hintText: 'Nearest Church/Mosque',
+          controller: controller.nearestChurchMosqueController,
+        ),
+        const SizedBox(
+          height: 14,
+        ),
+        const Text(
+          'Nearest School',
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        CustomTextField(
+          hintText: 'Nearest School',
+          controller: controller.nearestSchoolController,
+        ),
+      ],
     );
   }
 }
