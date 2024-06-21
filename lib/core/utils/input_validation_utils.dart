@@ -1,4 +1,4 @@
-class InputValidationUtils {
+abstract class InputValidationUtils {
   static bool isValidName(String name) {
     return name.isNotEmpty && name.length >= 2;
   }

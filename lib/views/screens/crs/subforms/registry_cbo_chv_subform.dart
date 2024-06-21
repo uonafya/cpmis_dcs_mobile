@@ -41,14 +41,15 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
   String selectedCBO = 'Select Parent Unit';
   String selectedOVC = 'Please Select One';
   String selectedCHV = 'Please Select One';
-  String? cboError = CBO_DROPDOWN_ERROR;
-  String? ovcError = OVC_DROPDOWN_ERROR;
-  String? chvError = CHV_DROPDOWN_ERROR;
 
   @override
   Widget build(BuildContext context) {
 
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
+    String? cboError = registryProvider.registryCboChvModel.cboParentUnit.isEmpty? CBO_DROPDOWN_ERROR : null;
+    String? ovcError = registryProvider.registryCboChvModel.ovcProgramEnrollment.isEmpty? OVC_DROPDOWN_ERROR : null;
+    String? chvError = registryProvider.registryCboChvModel.chv.isEmpty? CHV_DROPDOWN_ERROR : null;
 
     return SubformWrapper(
       title: "CBO/CHV Details",
@@ -61,7 +62,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
           items: cboCriteria,
-          error: cboError,
+          error: registryProvider.shouldValidateFields ? cboError : null,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;
@@ -86,7 +87,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
           items: ovcCriteria,
-          error: ovcError,
+          error: registryProvider.shouldValidateFields ? ovcError : null,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;
@@ -111,7 +112,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.chv.isNotEmpty ? registryProvider.registryCboChvModel.chv : selectedCHV,
           items: chvCriteria,
-          error: chvError,
+          error: registryProvider.shouldValidateFields ? chvError : null,
           onChanged: (val) {
             setState(() {
               selectedCHV = val;

@@ -38,14 +38,14 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
   String selectedCounty = 'Please Select';
   String selectedSubCounty = 'Please Select';
   String selectedWard = 'Please Select';
-  String? countyError = COUNTY_DROPDOWN_ERROR;
-  String? subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
-  String? wardError = WARD_DROPDOWN_ERROR;
-
   @override
   Widget build(BuildContext context) {
 
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
+    String? countyError = registryProvider.registryLocationModel.county.isEmpty? COUNTY_DROPDOWN_ERROR : null;
+    String? subCountyError = registryProvider.registryLocationModel.subCounty.isEmpty? SUBCOUNTY_DROPDOWN_ERROR : null;
+    String? wardError = registryProvider.registryLocationModel.ward.isEmpty? WARD_DROPDOWN_ERROR : null;
 
     return SubformWrapper(
         title: "Location",
@@ -67,7 +67,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
               CustomDropdown(
                 initialValue: registryProvider.registryLocationModel.county.isNotEmpty ? registryProvider.registryLocationModel.county : selectedCounty,
                 items: countyCriteria,
-                error: countyError,
+                error: registryProvider.shouldValidateFields ? countyError : null,
                 onChanged: (val) {
                   setState(() {
                     selectedCounty = val;
@@ -101,7 +101,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.subCounty.isNotEmpty ? registryProvider.registryLocationModel.subCounty : selectedSubCounty,
                   items: subcountyCriteria,
-                  error: subCountyError,
+                  error: registryProvider.shouldValidateFields ? subCountyError : null,
                   onChanged: (val) {
                     setState(() {
                       selectedSubCounty = val;
@@ -126,7 +126,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
                   items: wardCriteria,
-                  error: wardError,
+                  error: registryProvider.shouldValidateFields ? wardError : null,
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;

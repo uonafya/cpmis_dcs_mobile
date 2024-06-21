@@ -84,8 +84,8 @@ class RegistryPersonalDetailsModel {
 
   bool isComplete() {
     return personType.isNotEmpty &&
-        InputValidationUtils.isInvalidName(firstName) &&
-        InputValidationUtils.isInvalidName(surname) &&
+        InputValidationUtils.isValidName(firstName) &&
+        InputValidationUtils.isValidName(surname) &&
         sex.isNotEmpty &&
         dateOfBirth.isNotEmpty &&
         childClass.isNotEmpty;

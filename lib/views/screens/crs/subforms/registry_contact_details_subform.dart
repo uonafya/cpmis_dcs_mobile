@@ -18,12 +18,12 @@ class RegistryContactDetailsSubform extends StatefulWidget {
 
 class _RegistryContactDetailsSubformState
     extends State<RegistryContactDetailsSubform> {
+
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    String? designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
+    String? designatedPhoneNumberError = InputValidationUtils.isInvalidPhoneNumber(registryProvider.registryContactDetailsModel.designatedPhoneNumber) ? DESIGNATED_PHONE_NUMBER_INPUT_ERROR : null;
 
     return SubformWrapper(
       title: "Contact Information",
@@ -36,21 +36,18 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
-          error: designatedPhoneNumberError,
+          // error: designatedPhoneNumberError,
+          error: registryProvider.shouldValidateFields ? designatedPhoneNumberError : null,
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
-            if (InputValidationUtils.isInvalidPhoneNumber(value)) {
-              designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
-            } else {
-              designatedPhoneNumberError = null;
-            }
+            setState(() {
+              if (InputValidationUtils.isInvalidPhoneNumber(value)) {
+                designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
+              } else {
+                designatedPhoneNumberError = null;
+              }
+            });
             registryProvider.setDesignatedPhoneNumber(value);
-          },
-          validator: (val) {
-            if (val!.isEmpty) {
-              return "Please enter required details.";
-            }
-            return null;
           },
         ),
         const SizedBox(height: 15),

@@ -114,7 +114,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
                       items: personCriteria,
-                      error: personTypeError,
+                      error: registryProvider.shouldValidateFields ? personTypeError : null,
                       onChanged: (val) {
                         setState(() {
                           if (val.isEmpty) {
@@ -149,7 +149,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'First Name',
-                      error: firstNameError,
+                      error: registryProvider.shouldValidateFields ? firstNameError : null,
                       initialValue: registryProvider.registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
                         setState(() {
@@ -170,7 +170,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Surname',
-                      error: surNameError,
+                      error: registryProvider.shouldValidateFields ? surNameError : null,
                       initialValue: registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
                         setState(() {
@@ -203,7 +203,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
                       items: const ["Please Select", "Male", "Female"],
-                      error: sexError,
+                      error: registryProvider.shouldValidateFields ? sexError : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -226,7 +226,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       lastDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       showInitialDate: true,
-                      error: dobError,
+                      error: registryProvider.shouldValidateFields ? dobError : null,
                       initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
                         setState(() {
@@ -242,7 +242,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
                       items: childClass,
-                      error: classError,
+                      error: registryProvider.shouldValidateFields ? classError : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -376,6 +376,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                         if (context.mounted) {
                           errorSnackBar(context, 'Please enter all required fields. (*)');
                         }
+                        registryProvider.setShouldValidateFields();
                         return;
                       }
                       print("ID :${birthRegIdController.text}");
