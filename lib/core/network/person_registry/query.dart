@@ -17,13 +17,14 @@ class RegisterNewChildQuery {
       final db = await LocalDB.instance.database;
       // Insert personal details
       await db.insert(registryFormDetails, {
-        'personType': child.personType,
+        // we're defaulting perosnType to child
+        'personType': "TBVC",
         'isCaregiver': child.isCaregiver == true ? 1 : 0,
         'childOVCProgram': child.childOVCProgram ? 1 : 0,
         'firstName': child.firstName,
         'surname': child.surname,
         'otherNames': child.otherNames,
-        'sex': child.sex,
+        'sex': child.sex == "Male" ? "SMAL" : "SFEM",
         'dateOfBirth': child.dateOfBirth,
         'childClass': child.childClass,
         'registryIdentificationModel': jsonEncode(child.registryIdentificationModel.toJson()),

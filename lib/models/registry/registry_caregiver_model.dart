@@ -28,8 +28,8 @@ class RegistryCaregiverModel {
       'surName': surName,
       'otherNames': otherNames,
       'dateOfBirth': dateOfBirth,
-      'sex': sex,
-      'relationshipToChild': relationshipToChild,
+      'sex': sex == "Male" ? "SMAL" : "SFEM",
+      'relationshipToChild': mapRelationshipToChild(relationshipToChild),
       'nationalIdNumber': nationalIdNumber,
       'phoneNumber': phoneNumber,
     };
@@ -57,5 +57,23 @@ class RegistryCaregiverModel {
     relationshipToChild = "";
     nationalIdNumber = "";
     phoneNumber = null;
+  }
+
+  String mapRelationshipToChild(String outcome) {
+    final Map<String, String> relationshipOutcome = {
+      "None": "CGNN",
+      "Adoptive father": "CGAF",
+      "Adoptive mother": "CGAM",
+      "Foster father": "CGFF",
+      "Foster mother": "CGFM",
+      "Other relative": "CGOR",
+      "Parent (Father)": "CGPF",
+      "Parent (Mother)": "CGPM",
+      "Guardian": "CGGU",
+      "Next of Kin": "CGNK",
+      "Other": "CGOT"
+    };
+
+    return relationshipOutcome[outcome] ?? "CGNN";
   }
 }

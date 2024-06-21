@@ -20,7 +20,7 @@ class RegistryIdentificationModel {
       'givenName': givenName,
       'countryOfOrigin': countryOfOrigin,
       'tribe': tribe,
-      'religion': religion,
+      'religion': mapReligionOutcome(religion),
     };
   }
 
@@ -29,7 +29,7 @@ class RegistryIdentificationModel {
     return RegistryIdentificationModel(
       birthRegistrationNumber: json['birthRegistrationNumber'] ?? "",
       givenName: json['givenName'] ?? "",
-      countryOfOrigin: json['countryOfOrigin']  ?? "",
+      countryOfOrigin: json['countryOfOrigin'] ?? "",
       tribe: json['tribe'] ?? "",
       religion: json['religion'] ?? "",
     );
@@ -45,5 +45,17 @@ class RegistryIdentificationModel {
 
   bool isComplete() {
     return true;
+  }
+
+  String mapReligionOutcome(String outcome) {
+    final Map<String, String> religionOutcomeMap = {
+      "Christian": "RECH",
+      "Muslim": "REMU",
+      "Buddhist": "REBU",
+      "Atheist": "REAT",
+      "Other": "REOT"
+    };
+
+    return religionOutcomeMap[outcome] ?? "RECH";
   }
 }
