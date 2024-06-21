@@ -33,22 +33,22 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
     String? caseId = "1232";
 
     if (caseCategory == "Please select") {
-      Get.snackbar("Error", "Please select a case category.");
+      showErrorSnackBar(context, "Please select a case category.");
       return;
     }
 
     if (referral == "Please select") {
-      Get.snackbar("Error", "Please select a referral actor.");
+      showErrorSnackBar(context, "Please select a referral actor.");
       return;
     }
 
     if (specifiedReferral == "Please select") {
-      Get.snackbar("Error", "Please select a specified referral.");
+      showErrorSnackBar(context, "Please select a specified referral.");
       return;
     }
 
     if (referralFor == "Please select") {
-      Get.snackbar("Error", "Please select what the referral is for.");
+      showErrorSnackBar(context, "Please select what the referral is for.");
       return;
     }
 
@@ -71,10 +71,10 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
       print('Saved referral :)');
 
       Get.back(); // Navigate back
-      Get.snackbar("Success", "Referral added successfully.");
+      showSuccessSnackBar(context, "Referral added successfully.");
     } catch (e) {
       print(e.toString());
-      Get.snackbar("Error", "Failed to save referral. Please try again.");
+      showErrorSnackBar(context, "Failed to save referral. Please try again.");
     }
   }
 
