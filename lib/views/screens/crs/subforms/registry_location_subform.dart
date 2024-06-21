@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
 
-
-
+const String COUNTY_DROPDOWN_ERROR = "Please select a county.";
+const String SUBCOUNTY_DROPDOWN_ERROR = "Please select sub-county.";
+const String WARD_DROPDOWN_ERROR = "Please select a ward.";
 
 class RegistryLocationSubform extends StatefulWidget {
   const RegistryLocationSubform({super.key});
@@ -37,6 +38,9 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
   String selectedCounty = 'Please Select';
   String selectedSubCounty = 'Please Select';
   String selectedWard = 'Please Select';
+  String? countyError = COUNTY_DROPDOWN_ERROR;
+  String? subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
+  String? wardError = WARD_DROPDOWN_ERROR;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +67,23 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
               CustomDropdown(
                 initialValue: registryProvider.registryLocationModel.county.isNotEmpty ? registryProvider.registryLocationModel.county : selectedCounty,
                 items: countyCriteria,
+                error: countyError,
                 onChanged: (val) {
                   setState(() {
                     selectedCounty = val;
                     registryProvider.setCounty(selectedCounty);
+                    selectedSubCounty = "";
+                    selectedWard = "";
+                    registryProvider.setSubCounty("");
+                    registryProvider.setWard("");
+                    if (val.isEmpty) {
+                      countyError = COUNTY_DROPDOWN_ERROR;
+                      subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
+                      wardError = WARD_DROPDOWN_ERROR;
+                    } else {
+                      countyError = null;
+                    }
+                    
                   });
                 },
               ),
@@ -84,10 +101,19 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.subCounty.isNotEmpty ? registryProvider.registryLocationModel.subCounty : selectedSubCounty,
                   items: subcountyCriteria,
+                  error: subCountyError,
                   onChanged: (val) {
                     setState(() {
                       selectedSubCounty = val;
                       registryProvider.setSubCounty(selectedSubCounty);
+                      selectedWard = "";
+                      registryProvider.setWard("");
+                      if (val.isEmpty) {
+                        subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
+                        wardError = WARD_DROPDOWN_ERROR;
+                      } else {
+                        subCountyError = null;
+                      }
                     });
                   },
                 ),
@@ -100,10 +126,16 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
                   items: wardCriteria,
+                  error: wardError,
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;
                       registryProvider.setWard(selectedWard);
+                      if (val.isEmpty) {
+                        wardError = WARD_DROPDOWN_ERROR;
+                      } else {
+                        wardError = null;
+                      }
                     });
                   },
                 ),
