@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
@@ -11,6 +12,7 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
     // For each form
     for (var i = 0; i < forms.length; i++) {
       var formID = forms[i]['id'];
+      var rawForm = forms[i];
       // Get family status
       var rawFamilyStatus = await db.query(crsFamilyStatusTable,
           distinct: true,
@@ -135,24 +137,77 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
       for (var i = 0; i < perpsList.length; i++) {
         var perpID = perpsList[i]['perpetratorID'];
 
-        var rawPerp = await db.query(
-          perpetratorTable,
-          distinct: true,
-          where: "id = ?",
-          whereArgs: [perpID],
-          columns: ['firstName', 'surname', "otherNames", 'sex', 'dob', 'relationshipType']
-        );
+        var rawPerp = await db.query(perpetratorTable,
+            distinct: true,
+            where: "id = ?",
+            whereArgs: [
+              perpID
+            ],
+            columns: [
+              'firstName',
+              'surname',
+              "otherNames",
+              'sex',
+              'dob',
+              'relationshipType'
+            ]);
 
         perpetrators.add(Perpetrators(
-            firstName: rawPerp[0]['firstName'].toString(),
-            lastName: rawPerp[0]['surname'].toString(),
-            relationshipType: rawPerp[0]['relationshipType'].toString(),
-            othernames: rawPerp[0]['otherNames'].toString(),
-            sex: rawPerp[0]['sex'].toString(),
-            // dateOfBirth: rawPerp[0]['dob'].toString(),
-            // age: ,
+          firstName: rawPerp[0]['firstName'].toString(),
+          lastName: rawPerp[0]['surname'].toString(),
+          relationshipType: rawPerp[0]['relationshipType'].toString(),
+          othernames: rawPerp[0]['otherNames'].toString(),
+          sex: rawPerp[0]['sex'].toString(),
+          // dateOfBirth: rawPerp[0]['dob'].toString(),
+          // age: ,
         ));
       }
+
+      CRSForm form = CRSForm(
+        caseReporting: CaseReportingCRSFormModel(
+          courtFileNumber: rawForm['courtFileNumber'].toString(),
+          courtName: rawForm['courtName'].toString(),
+          originator: "TO BE FILLED",
+          placeOfOccurence: strToBool(rawForm['placeOfOccurence'].toString()),
+          country: rawForm['country'].toString(),
+          county: rawForm['country'].toString(),
+          subCounty: "TO BE FILLED",
+          reportingSubCounty: "TO BE FILLED",
+          reportingOrganizationalUnit: "TO BE FILLED",
+          city: rawForm['city'].toString(),
+          dateCaseReported: DateTime.now(),
+        ),
+        caseData: CaseDataCRSFormModel(
+          serialNumber: "TO BE FAILED", 
+          offenderKnown: "TO BE FILLED", 
+          crsCategories: categories, 
+          riskLevel: rawForm['riskLevel'].toString(), 
+          referralsPresent: rawForm['referralPresent'] == 1, 
+          summonsIssued: rawForm['summonsIssued'] == 1, 
+          immediateNeeds: immediateNeeds, 
+          futureNeeds: futureNeeds, 
+          caseNarration: "TO BE FILLED", 
+          perpetrators: perpetrators,
+        ),
+        about: AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: "", 
+            surname: "", 
+            otherNames: "", 
+            sex: "",
+          ), 
+          houseEconomicStatus: rawForm['houseEconomic'].toString(), 
+          familyStatus: familyStatus,
+        ),
+        medical: MedicalCRSFormModel(
+          mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
+          mentalCondition: mentalCondition,
+          physicalConditionStatus: rawForm['physicalConditionStatus'].toString(),
+          physicalCondition: physicalConditions,
+          otherConditionStatus: rawForm['otherConditionStatus'].toString(),
+          otherCondition: otherConditions
+        ),
+      );
     }
     return [];
   } catch (err) {

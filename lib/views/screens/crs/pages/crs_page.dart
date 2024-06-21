@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/fetch_crs_from_database.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
@@ -175,7 +176,8 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
             CustomButton(
               child: const Text("Get categories"),
               onTap: () async {
-                await saveCategoriesInDB();
+                var results = await fetchCRSFormsFromDB();
+                print(results);
               },
             ),
             const SizedBox(

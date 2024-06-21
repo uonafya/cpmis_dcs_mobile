@@ -30,7 +30,7 @@ class CRSDatabaseForm {
             1,
         "dateCaseReported":
             form.caseReporting!.dateCaseReported!.toIso8601String(),
-        "childID": form.childID,
+        "childID": "",
         "country": form.caseReporting?.country,
         "city": form.caseReporting?.city,
         "houseEconomic": form.about!.houseEconomicStatus,
@@ -173,11 +173,8 @@ class CRSDatabaseForm {
           "formID": formID,
           "perpetratorID": perpid,
         });
-
-        print("CRS stored");
       }
     } catch (err) {
-      print(err.toString());
       throw "Could Not Store Form In Database";
     }
   }

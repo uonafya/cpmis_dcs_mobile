@@ -258,8 +258,6 @@ class CaseDataCRSFormModel {
 }
 
 class CRSForm {
-  String caseID;
-  String childID;
   CaseReportingCRSFormModel? caseReporting;
   AboutChildCRSFormModel? about;
   MedicalCRSFormModel? medical;
@@ -270,8 +268,6 @@ class CRSForm {
     this.about,
     this.medical,
     this.caseData,
-    required this.caseID,
-    required this.childID,
   });
 
   Map<String, dynamic> toJSON() {
