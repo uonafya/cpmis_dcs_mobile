@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class ReferralsFollowUp extends StatefulWidget {
   const ReferralsFollowUp({super.key});
