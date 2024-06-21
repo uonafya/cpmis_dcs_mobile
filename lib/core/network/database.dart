@@ -423,6 +423,7 @@ class LocalDB {
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
     ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.formId} TEXT,
     ${ServiceFollowupTable.encounterNotes} TEXT,
     ${ServiceFollowupTable.caseCategoryId} TEXT,
     ${ServiceFollowupTable.serviceProvidedList} TEXT

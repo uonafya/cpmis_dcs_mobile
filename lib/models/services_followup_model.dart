@@ -1,11 +1,13 @@
 class ServiceFollowupModel {
   String? caseId;
+  String? formId;
   String? encounterNotes;
   String? caseCategoryId;
   List<ServiceProvidedList>? serviceProvidedList;
 
   ServiceFollowupModel({
     this.caseId,
+    this.formId,
     this.encounterNotes,
     this.caseCategoryId,
     this.serviceProvidedList,
@@ -13,6 +15,7 @@ class ServiceFollowupModel {
 
   ServiceFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
+    formId = json['form_id'];
     encounterNotes = json['encounter_notes'];
     caseCategoryId = json['case_category_id'];
     if (json['service_provided_list'] != null) {
@@ -26,6 +29,7 @@ class ServiceFollowupModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['case_id'] = caseId;
+    data['form_id'] = formId;
     data['encounter_notes'] = encounterNotes;
     data['case_category_id'] = caseCategoryId;
     if (serviceProvidedList != null) {
@@ -38,6 +42,7 @@ class ServiceFollowupModel {
   Map<String, dynamic> toMap() {
     return {
       'case_id': caseId,
+      'form_id': formId,
       'encounter_notes': encounterNotes,
       'case_category_id': caseCategoryId,
       'service_provided_list':
