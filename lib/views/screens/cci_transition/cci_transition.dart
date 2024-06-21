@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -5,9 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
-import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
+import 'package:intl/intl.dart';
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+
+DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
 class CCI extends StatefulWidget {
   const CCI({super.key});
@@ -17,11 +23,52 @@ class CCI extends StatefulWidget {
 }
 
 class _CCIState extends State<CCI> {
-  final placeOfServiceController = TextEditingController();
-  String registrationType = 'Please Select';
-  String selectedQuestion = pleaseSelect;
-  List<String> genders = [];
-  Map<String, dynamic> selectedValues = {"cci_registered": false};
+  List<String> orgUnits = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      final data = await getOrganizationalUnits(null);
+      orgUnits = data.map((e) => e.name ?? "-").toList();
+      setState(() {});
+    });
+  }
+  List<String> cciGenders = [];
+  String selectedCCI = 'Please Select a CCI';
+  bool? cciNCCSRegistered = false;
+  final cciRegNo = TextEditingController();
+  String cciRegDate = '';
+  final cciRegValidYrs = TextEditingController();
+  bool? cciOtherRegistered = false;
+  String cciRegOtherType = "";
+  String cciServesDisabled = "";
+  String cciServesGender = "";
+  bool? cciAgeGroupsOne =false;
+  bool? cciAgeGroupsTwo =false;
+  bool? cciAgeGroupsThree=false;
+  bool? cciAgeGroupsFour =false;
+  bool? cciAgeGroupsFive =false;
+  String cciStartedTransition = pleaseSelect;
+  String cciBasisOfTransition = pleaseSelect;
+  String cciLegaFramework = pleaseSelect;
+  String cciStakeholderEngagement = pleaseSelect;
+  String cciMakeDecision = pleaseSelect;
+  String cciAssessment = pleaseSelect;
+  String cciStrategicPlanning = pleaseSelect;
+  String cciOrganizationPlanning = pleaseSelect;
+  String cciProgramPlanning = pleaseSelect;
+  String cciTransitionPlanning = pleaseSelect;
+  String cciEmployeeDev = pleaseSelect;
+  String cciPilotValidation = pleaseSelect;
+  String cciProgramImplementation = pleaseSelect;
+  String cciMonitorEvaluate = pleaseSelect;
+  String cciTransitionTo = pleaseSelect;
+  List<String> cciSurvivalRights = [];
+  List<String> cciDevRights = [];
+  List<String> cciProtectionRights = [];
+  List<String> cciParticipationRights = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +86,7 @@ class _CCIState extends State<CCI> {
               child: ListView(
                 children: [
                   const SizedBox(height: 14),
-                  const Text("CCI Form",
+                  const Text("CCI Transition Form",
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -69,191 +116,212 @@ class _CCIState extends State<CCI> {
                             const SizedBox(
                               height: 15,
                             ),
-                            CustomTextField(
-                              hintText: "Name of the CCI",
-                              controller: placeOfServiceController,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Name of the CCI is required";
-                                }
-                                return null;
-                              },
-                            ),
+                            CustomDropdown(
+                                initialValue: selectedCCI,
+                                items: orgUnits,
+                                onChanged: (val) {
+                                  setState(() {
+                                    selectedCCI = val;
+                                  });
+                                }),
                             const SizedBox(
                               height: 10,
                             ),
                             const Text("Is it registered with NCCS ?"),
                             Checkbox(
-                                value: selectedValues['cci_registered'],
+                                value:cciNCCSRegistered,
                                 onChanged: (val) {
                                   setState(() {
-                                    selectedValues['cci_registered'] = val;
+                                    cciNCCSRegistered = val;
                                   });
                                 }),
+                            if (cciNCCSRegistered == true)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  CustomTextField(
+                                    hintText: "if Yes, Registration number",
+                                    controller: cciRegNo,
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return "Registration Number required";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    'Date of registration *',
+                                    style: TextStyle(color: kTextGrey),
+                                  ),
+                                  CustomDatePicker(
+                                      hintText: 'Date of Registration',
+                                      onChanged: (val) {
+                                        setState(() {
+                                          cciRegDate = dateFormat.format(val);
+                                        });
+                                      }),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    'Valid Unitl (Yrs)  *',
+                                    style: TextStyle(color: kTextGrey),
+                                  ),
+                                  CustomTextField(
+                                      hintText: 'Valid until: (in years)',
+                                      controller: cciRegValidYrs,
+                                      validator: (val) {
+                                        if (val!.isEmpty) {
+                                          return "Valid years required";
+                                        }
+                                        return null;
+                                      }),
+                                ],
+                              ),
                             const SizedBox(
                               height: 10,
                             ),
-                            CustomTextField(
-                              hintText: "if Yes, Registration number",
-                              controller: placeOfServiceController,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Registration Number required";
-                                }
-                                return null;
-                              },
-                            ),
+                            if (cciNCCSRegistered == false)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    'CCI registered by another entity ?',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        backgroundColor: Colors.amberAccent),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                      "CCI Registered by another Entity"),
+                                  Checkbox(
+                                      value: cciOtherRegistered,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          cciOtherRegistered = val;
+                                        });
+                                      }),
+                                  if (cciOtherRegistered != false)
+                                    Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        const Text("Select Registration type:"),
+                                        CustomDropdown(
+                                          initialValue: "Please Select",
+                                          items: const [
+                                            "Please Select",
+                                            "NGO",
+                                            "CBO",
+                                            "FBO",
+                                            "Trust",
+                                            "Company",
+                                            "Society"
+                                          ],
+                                          onChanged: (val) {
+                                            setState(() {
+                                              cciRegOtherType = val;
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomTextField(
+                                          hintText:
+                                          "if Yes, Registration number",
+                                          controller: cciRegNo,
+                                          validator: (val) {
+                                            if (val!.isEmpty) {
+                                              return "Registration Number required";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        const Text(
+                                          'Date of registration *',
+                                          style: TextStyle(color: kTextGrey),
+                                        ),
+                                        CustomDatePicker(
+                                            hintText: 'Date of Registration',
+                                            onChanged: (val) {
+                                              setState(() {
+                                                cciRegDate= dateFormat.format(val);
+                                              });
+                                            }),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        const Text(
+                                          'Valid until: (in years) *',
+                                          style: TextStyle(color: kTextGrey),
+                                        ),
+                                        CustomTextField(
+                                            hintText:
+                                            'Other Entity Valid until: (in years)',
+                                            controller: cciRegValidYrs,
+                                            onChanged: (val) {
+                                              setState(() {
+
+                                              });
+                                            }),
+                                      ],
+                                    ),
+                                ],
+                              ),
                             const SizedBox(
                               height: 10,
                             ),
                             const Text(
-                              'Date of registration *',
-                              style: TextStyle(color: kTextGrey),
-                            ),
-                            CustomDatePicker(
-                                hintText: 'Date of Registration',
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "cci_registered_date", () => val);
-                                  });
-                                }),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'Date of expiry (valid till) *',
-                              style: TextStyle(color: kTextGrey),
-                            ),
-                            CustomDatePicker(
-                                hintText: 'Date of expiry',
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "cci_registered_date_expiry",
-                                        () => val);
-                                  });
-                                }),
-                            const Text(
-                              'CCI registered by another entity ?',
+                              'Category of Accommodated Children',
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                   backgroundColor: Colors.amberAccent),
                             ),
-                            const Text(
-                                "Is it registered with another Entity ?"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "other_entity_registered", () => val);
-                                  });
-                                }),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text("Select Registration type:"),
-                            CustomDropdown(
-                              initialValue: "Please Select",
-                              items: const [
-                                "Please Select",
-                                "NGO",
-                                "CBO",
-                                "FBO",
-                                "Trust",
-                                "Company",
-                                "Society"
-                              ],
-                              onChanged: (val) {
-                                setState(() {
-                                  selectedValues.putIfAbsent(
-                                      "other_registered_type", () => val);
-                                });
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            CustomTextField(
-                              hintText: "if Yes, Registration number",
-                              controller: placeOfServiceController,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Registration Number required";
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'Date of registration *',
-                              style: TextStyle(color: kTextGrey),
-                            ),
-                            CustomDatePicker(
-                                hintText: 'Date of Registration',
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "other_date_registered", () => val);
-                                  });
-                                }),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'Date of expiry (valid till) *',
-                              style: TextStyle(color: kTextGrey),
-                            ),
-                            CustomDatePicker(
-                                hintText: 'Date of expiry',
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "other_date_registered_expiry",
-                                        () => val);
-                                  });
-                                }),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'Category of children Accommodated',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  backgroundColor: Colors.amberAccent),
-                            ),
                             const SizedBox(
                               height: 10,
                             ),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue: "Select Disability",
                                 items: cciDisability,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "cci_serves_disabled", () => item);
+                                    cciServesDisabled = item;
                                   });
                                 }),
                             const SizedBox(
                               height: 10,
                             ),
-                            CustomDropDownMultiSelect(
-                                options: gender,
-                                onOptionSelected: (List<String> value) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "select_geneders_served", () => value);
-                                  });
-                                },
-                                selectionType: SelectionType.multi,
-                                hint: "Select Genders"),
+                            CustomDropdown(
+                              items: genders,
+                              isMultiSelect: true,
+                              initialValue: ["Please Select Sex: "],
+                              onChanged: (item) {
+                                setState(() {
+                                  cciServesGender = item.join(";");
+                                });
+                                print(cciServesGender);
+                              },
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -261,75 +329,100 @@ class _CCIState extends State<CCI> {
                             const SizedBox(
                               height: 15,
                             ),
-                            const Text("0-4 Years"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "child_accom_0_4_yrs", () => val);
-                                  });
-                                }),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value:
+                                    cciAgeGroupsOne,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        cciAgeGroupsOne =
+                                            val;
+                                      });
+                                    }),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text("0-4 Years"),
+                              ],
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text("5 - 9 Years"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "child_accom_5_9_yrs", () => val);
-                                  });
-                                }),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value:
+                                    cciAgeGroupsTwo,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        cciAgeGroupsTwo =
+                                            val;
+                                      });
+                                    }),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text("5 - 9 Years"),
+                              ],
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text("10 -14 Years"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "child_accom_10_14_yrs", () => val);
-                                  });
-                                }),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value:
+                                    cciAgeGroupsThree,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        cciAgeGroupsThree = val;
+                                      });
+                                    }),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text("10 -14 Years"),
+                              ],
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text("15 - 17 Years"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "child_accom_15_17_yrs", () => val);
-                                  });
-                                }),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value:
+                                    cciAgeGroupsFour,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        cciAgeGroupsFour = val;
+                                      });
+                                    }),
+                                const SizedBox(width: 5),
+                                const Text("15 - 17 Years"),
+                              ],
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text("18+ Years ?"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "child_accom_18+_yrs", () => val);
-                                  });
-                                }),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value: cciAgeGroupsFive,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        cciAgeGroupsFive = val;
+                                      });
+                                    }),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text("18+ Years ?"),
+                              ],
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text("Is it registered with NCCS ?"),
-                            Checkbox(
-                                value: false,
-                                onChanged: (val) {
-                                  setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "cci_registered", () => val);
-                                  });
-                                }),
                             const SizedBox(
                               height: 10,
                             ),
@@ -347,13 +440,13 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Has the CCI started the transitioning process? "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciStartedTransition,
                                 items: yesNoOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    // selectedQuestion = item;
-                                    selectedValues.putIfAbsent(
-                                        "cci_started_transiton", () => item);
+                                    cciStartedTransition =
+                                        item;
                                   });
                                 }),
                             const SizedBox(
@@ -362,12 +455,12 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Learning the reason and basis for transition  "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciBasisOfTransition,
                                 items: cciAwareOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "reason_basis_transition", () => item);
+                                    cciBasisOfTransition =  item;
                                   });
                                 }),
                             const SizedBox(
@@ -376,12 +469,12 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Understanding the legal framework/strategy  "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciLegaFramework,
                                 items: cciAwareOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "legal_framework_strategy", () => item);
+                                    cciLegaFramework=  item;
                                   });
                                 }),
                             const SizedBox(
@@ -389,12 +482,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Stakeholder engagement  "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciStakeholderEngagement,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "stakeholder_engagement", () => item);
+                                    cciStakeholderEngagement =item;
                                   });
                                 }),
                             const SizedBox(
@@ -402,12 +495,11 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Making the decision  "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue: cciMakeDecision,
                                 items: cciDecisionOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "making_decision", () => item);
+                                    cciMakeDecision = item;
                                   });
                                 }),
                             const SizedBox(
@@ -426,11 +518,11 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Assessment"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue: cciAssessment,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedQuestion = item;
+                                    cciAssessment = item;
                                   });
                                 }),
                             const SizedBox(
@@ -438,12 +530,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Strategic Planning"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciStrategicPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "strategic_planning", () => item);
+                                    cciStrategicPlanning = item;
                                   });
                                 }),
                             const SizedBox(
@@ -451,12 +543,11 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Organizational planning"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue: cciOrganizationPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "org_planning", () => item);
+                                    cciOrganizationPlanning = item;
                                   });
                                 }),
                             const SizedBox(
@@ -464,12 +555,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Program planning"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciProgramPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "program_planning", () => item);
+                                    cciProgramPlanning = item;
                                   });
                                 }),
                             const SizedBox(
@@ -477,12 +568,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Transition planning"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciTransitionPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "transiton_planning", () => item);
+                                    cciTransitionPlanning = item;
                                   });
                                 }),
                             const SizedBox(
@@ -501,12 +592,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Employee Development"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
-                                items: yesNoOptions,
+                                initialValue:
+                                cciEmployeeDev,
+                                items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "employee_development", () => item);
+                                    cciEmployeeDev = item;
                                   });
                                 }),
                             const SizedBox(
@@ -514,12 +605,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Piloting and validation "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
-                                items: cciAwareOptions,
+                                initialValue:
+                                cciPilotValidation,
+                                items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "piloting_validation", () => item);
+                                    cciPilotValidation = item;
                                   });
                                 }),
                             const SizedBox(
@@ -527,12 +618,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Program implementation"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
-                                items: cciAwareOptions,
+                                initialValue:
+                                cciProgramImplementation,
+                                items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "program_implement", () => item);
+                                    cciProgramImplementation = item;
                                   });
                                 }),
                             const SizedBox(
@@ -540,12 +631,11 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Monitoring and evaluation"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue: cciMonitorEvaluate,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "monitoring_eval", () => item);
+                                    cciMonitorEvaluate = item;
                                   });
                                 }),
                             const SizedBox(
@@ -554,12 +644,12 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Which programme has the CCI transition to? "),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                initialValue:
+                                cciTransitionTo,
                                 items: cciProgramsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "program_transition_to", () => item);
+                                    cciTransitionTo = item;
                                   });
                                 }),
                             const SizedBox(
@@ -578,12 +668,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Survival rights"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                isMultiSelect: true,
+                                initialValue: cciSurvivalRights,
                                 items: cciSurvivalRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "survival_rights", () => item);
+                                    cciSurvivalRights= item;
                                   });
                                 }),
                             const SizedBox(
@@ -591,12 +681,12 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Development rights"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                isMultiSelect: true,
+                                initialValue: cciDevRights,
                                 items: cciDevRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "dev_rights", () => item);
+                                    cciDevRights = item;
                                   });
                                 }),
                             const SizedBox(
@@ -604,12 +694,13 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Protection rights"),
                             CustomDropdown(
-                                initialValue: selectedQuestion,
+                                isMultiSelect: true,
+                                initialValue:
+                                cciProtectionRights,
                                 items: cciProtectRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "protection_rights", () => item);
+                                    cciProtectionRights = item;
                                   });
                                 }),
                             const SizedBox(
@@ -617,15 +708,15 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Participation rights"),
                             CustomDropdown(
-                                initialValue: const [pleaseSelect],
                                 isMultiSelect: true,
+                                initialValue:
+                                cciParticipationRights,
                                 items: cciParticipateRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    selectedValues.putIfAbsent(
-                                        "participate_rights", () => item);
+                                    cciParticipationRights = item;
                                   });
-                                  print(selectedValues);
+                                  print(cciParticipationRights);
                                 }),
                             const SizedBox(
                               height: 10,
@@ -634,9 +725,42 @@ class _CCIState extends State<CCI> {
                         ),
                         const SizedBox(height: 10),
                         const SizedBox(height: 10),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
+                        CustomButton(
+                          text: 'Submit',
+                          onTap:  () async {
+                            final db = LocalDB.instance;
+                            db.saveCciTransition(
+                              selectedCCI: selectedCCI,
+                              cciNCCSRegistered: cciNCCSRegistered,
+                              cciRegNo: cciRegNo.text,
+                              cciRegDate: cciRegDate,
+                              cciRegValidYrs: cciRegValidYrs.text,
+                              cciOtherRegistered: cciOtherRegistered,
+                              cciServesDisabled: cciServesDisabled,
+                              cciServesGender: cciServesGender,
+                              cciAgeGroupsOne: cciAgeGroupsOne,
+                              cciStartedTransition: cciStartedTransition,
+                              cciBasisOfTransition: cciBasisOfTransition,
+                              cciLegaFramework: cciLegaFramework,
+                              cciStakeholderEngagement: cciStakeholderEngagement,
+                              cciMakeDecision: cciMakeDecision,
+                              cciAssessment: cciAssessment,
+                              cciStrategicPlanning: cciStrategicPlanning,
+                              cciOrganizationPlanning: cciOrganizationPlanning,
+                              cciProgramPlanning: cciProgramPlanning,
+                              cciTransitionPlanning: cciTransitionPlanning,
+                              cciEmployeeDev: cciEmployeeDev,
+                              cciPilotValidation: cciPilotValidation,
+                              cciProgramImplementation: cciProgramImplementation,
+                              cciMonitorEvaluate: cciMonitorEvaluate,
+                              cciTransitionTo: cciTransitionTo,
+                              cciSurvivalRights: cciSurvivalRights.join(";"),
+                              cciDevRights: cciDevRights.join(";"),
+                              cciProtectionRights: cciProtectionRights.join(";"),
+                              cciParticipationRights: cciParticipationRights.join(";"),
+                            );
+                            print();
+                          },
                         ),
                       ],
                     ),
