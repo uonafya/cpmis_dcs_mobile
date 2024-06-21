@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/enum/app_enums.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/get_age_from_dob.dart';
+
 class AboutChildWidget extends StatefulWidget {
   const AboutChildWidget({super.key});
 
@@ -27,6 +29,18 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CRSFormProvider>(builder: (context, model, _) {
+      String age = "";
+      if (model.about?.initialDetails.dateOfBirth == null) {
+        age = "";
+      } else {
+        var ageInt = getAgeFromDateOf(model.about!.initialDetails!.dateOfBirth!);
+        if (ageInt < 1) {
+          age = "Under 1";
+        } else {
+          age = age.toString();
+        }
+      }
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -115,17 +129,17 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           ),
           const SizedBox(height: 10),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               text: "AGE(YEARS): ",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: kTextGrey,
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: "Under 1 year",
-                  style: TextStyle(
+                  text: "$age year",
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
