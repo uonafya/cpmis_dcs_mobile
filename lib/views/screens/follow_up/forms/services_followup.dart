@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/services_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -11,7 +12,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class ServicesFollowUp extends StatefulWidget {
-  const ServicesFollowUp({super.key});
+  const ServicesFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<ServicesFollowUp> createState() => _ServicesFollowUpState();
@@ -32,8 +34,8 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
   final ServiceDatabaseHelper serviceDatabaseHelper = ServiceDatabaseHelper();
 
   void handleAddService() async {
-    // Assuming caseId is captured elsewhere
-    String? caseId = "1231";
+    String? caseId = widget.caseLoad.caseID;
+    String? formId = "services_followup";
 
     if (caseCategory == "Please select") {
       Get.snackbar("Error", "Please select case category.");
@@ -68,6 +70,7 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
     // ServiceFollowupModel instance with captured values
     final serviceFollowupModel = ServiceFollowupModel(
       caseId: caseId,
+      formId: formId,
       encounterNotes: encounterNotesController.text,
       caseCategoryId: caseCategory,
       serviceProvidedList: serviceProvidedList,

@@ -13,6 +13,7 @@ class ServiceDatabaseHelper {
         serviceFollowupTable,
         {
           ServiceFollowupTable.caseID: serviceData.caseId,
+          ServiceFollowupTable.formId: serviceData.formId,
           ServiceFollowupTable.encounterNotes: serviceData.encounterNotes,
           ServiceFollowupTable.caseCategoryId: serviceData.caseCategoryId,
           ServiceFollowupTable.serviceProvidedList:
@@ -83,12 +84,14 @@ class ServiceDatabaseHelper {
 class ServiceFollowupTable {
   static final List<String> values = [
     caseID,
+    formId,
     encounterNotes,
     caseCategoryId,
     serviceProvidedList,
   ];
 
   static const String caseID = 'case_id';
+  static const String formId = 'form_id';
   static const String encounterNotes = 'encounter_notes';
   static const String caseCategoryId = 'case_category_id';
   static const String serviceProvidedList = 'service_provided_list';
