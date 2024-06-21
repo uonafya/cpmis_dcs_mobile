@@ -265,7 +265,7 @@ class LocalDB {
             placeOfEvent TEXT NOT NULL,
             caseNature TEXT NOT NULL,
             dateOfEvent TEXT NOT NULL,
-            FOREIGN KEY(categoryID) REFERENCES categories(id),
+            FOREIGN KEY(categoryID) REFERENCES $metadataTable(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
@@ -459,6 +459,16 @@ class LocalDB {
         case_id TEXT,
         form_id TEXT
 
+      );
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $metadataTable(
+        id TEXT PRIMARY KEY,
+        fieldName TEXT,
+        description TEXT,
+        subCategory TEXT,
+        orderNo INTEGER
       );
     ''');
 

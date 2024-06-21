@@ -1,4 +1,3 @@
-
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
@@ -7,7 +6,6 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -170,12 +168,6 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
 
             const SizedBox(
               height: 30,
-            ),
-            CustomButton(
-              child: const Text("Get categories"),
-              onTap: () async {
-                await saveCategoriesInDB();
-              },
             ),
             const SizedBox(
               height: 10,
