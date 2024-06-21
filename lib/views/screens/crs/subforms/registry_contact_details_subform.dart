@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
+import '../../../../core/utils/input_validation_utils.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../widgets/subform_wrapper.dart';
 
@@ -38,9 +39,7 @@ class _RegistryContactDetailsSubformState
           error: designatedPhoneNumberError,
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
-            const pattern = r'^(01|07)\d{8}$';
-            final regExp = RegExp(pattern);
-            if (value.isEmpty || !regExp.hasMatch(value) ) {
+            if (InputValidationUtils.isInvalidPhoneNumber(value)) {
               designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
             } else {
               designatedPhoneNumberError = null;

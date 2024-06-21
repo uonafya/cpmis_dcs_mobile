@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_caregiver_sibling_subform.dart';
@@ -152,7 +153,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       initialValue: registryProvider.registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
                         setState(() {
-                          if (value.isEmpty || value.length < 2) {
+                          if (InputValidationUtils.isInvalidName(value)) {
                             firstNameError = FIRST_NAME_INPUT_ERROR;
                             return;
                           }
@@ -173,7 +174,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       initialValue: registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
                         setState(() {
-                          if (value.isEmpty || value.length < 3) {
+                          if (InputValidationUtils.isInvalidName(value)) {
                             surNameError = SUR_NAME_INPUT_ERROR;
                             return;
                           }

@@ -1,3 +1,5 @@
+import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
+
 class RegistryContactDetailsModel {
   String designatedPhoneNumber;
   String otherMobileNumber;
@@ -39,8 +41,6 @@ class RegistryContactDetailsModel {
   }
 
   bool isComplete() {
-    const pattern = r'^(01|07)\d{8}$';
-    final regExp = RegExp(pattern);
-    return designatedPhoneNumber.isNotEmpty && regExp.hasMatch(designatedPhoneNumber);
+    return InputValidationUtils.isValidPhoneNumber(designatedPhoneNumber);
   }
 }
