@@ -5,18 +5,18 @@ import 'package:provider/provider.dart';
 import '../../../../controller/registry_provider.dart';
 import '../../../widgets/custom_button.dart';
 
-
 class SelectedRegistrySiblingCard extends StatefulWidget {
   const SelectedRegistrySiblingCard({super.key, required this.sibling});
   final RegistrySiblingModel sibling;
   @override
-  State<SelectedRegistrySiblingCard> createState() => _SelectedRegistrySiblingCardState();
+  State<SelectedRegistrySiblingCard> createState() =>
+      _SelectedRegistrySiblingCardState();
 }
 
-class _SelectedRegistrySiblingCardState extends State<SelectedRegistrySiblingCard> {
+class _SelectedRegistrySiblingCardState
+    extends State<SelectedRegistrySiblingCard> {
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
     return Container(
@@ -40,7 +40,8 @@ class _SelectedRegistrySiblingCardState extends State<SelectedRegistrySiblingCar
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      ("${widget.sibling.firstName} ${widget.sibling.surName}").toUpperCase(),
+                      ("${widget.sibling.firstName} ${widget.sibling.surName}")
+                          .toUpperCase(),
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     const Text(

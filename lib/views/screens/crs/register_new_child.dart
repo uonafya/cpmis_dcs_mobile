@@ -1,7 +1,6 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
@@ -28,8 +27,6 @@ import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
-
-
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
 
@@ -54,7 +51,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   Widget build(BuildContext context) {
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked =
+    bool isChecked =
         registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
@@ -124,11 +121,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       style: TextStyle(color: kTextGrey),
                     ),
                     Checkbox(
-                      value: _isChecked,
+                      value: isChecked,
                       onChanged: (bool? value) {
                         setState(() {
-                          _isChecked = value ?? false; // Update the state
-                          registryProvider.setIsCaregiver(_isChecked);
+                          isChecked = value ?? false; // Update the state
+                          registryProvider.setIsCaregiver(isChecked);
                         });
                       },
                     ),
@@ -201,10 +198,13 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       lastDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       showInitialDate: true,
-                      initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
+                      initialDate: registryProvider
+                              .registryPersonalDetailsModel.dateOfBirth.isEmpty
+                          ? null
+                          : DateFormat('yyyy-MM-dd').parse(registryProvider
+                              .registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
-                        dateOfBirth =
-                            DateFormat('yyyy-MM-dd').format(val);
+                        dateOfBirth = DateFormat('yyyy-MM-dd').format(val);
                         registryProvider.setDateOfBirth(dateOfBirth);
                       },
                       validator: (val) {
@@ -347,14 +347,58 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           text: 'Submit',
                           textColor: Colors.white,
                           onTap: () {
+                            List<SiblingDetails> siblings = [];
+                            for (var i = 0;
+                                i < registryProvider.siblings.length;
+                                i++) {
+                              var sibling = registryProvider.siblings[i];
+                              siblings.add(SiblingDetails(
+                                firstName: sibling.firstName,
+                                surName: sibling.surName,
+                                otherNames: sibling.otherNames,
+                                dateOfBirth:
+                                    convertYMDtoDate(sibling.dateOfBirth),
+                                sex: sibling.sex,
+                                currentClass: sibling.currentClass,
+                                remarks: sibling.remarks,
+                                dateLinked: DateTime.now(),
+                              ));
+                            }
+                            var initDetails = InitialChildDetails(
+                                firstName: registryProvider
+                                    .registryPersonalDetailsModel.firstName,
+                                surName: registryProvider
+                                    .registryPersonalDetailsModel.surname,
+                                otherNames: registryProvider
+                                    .registryPersonalDetailsModel.otherNames,
+                                currentClass: registryProvider
+                                    .registryPersonalDetailsModel.childClass,
+                                remarks: "",
+                                dateOfBirth: convertYMDtoDate(registryProvider
+                                    .registryPersonalDetailsModel.dateOfBirth),
+                                sex: registryProvider
+                                    .registryPersonalDetailsModel.sex);
+
+                            List<Caregivers> caregivers = [];
+                            for (var i = 0;
+                                i < registryProvider.caregivers.length;
+                                i++) {
+                              var car = registryProvider.caregivers[i];
+                              caregivers.add(Caregivers(
+                                  firstName: car.firstName,
+                                  surName: car.surName,
+                                  otherNames: car.otherNames,
+                                  dateOfBirth: convertYMDtoDate(car.dateOfBirth),
+                                  sex: car.sex,
+                                  relationshipToChild: car.relationshipToChild,
+                                  nationalIdNumber: car.nationalIdNumber,
+                                  phoneNumber: car.phoneNumber,
+                                  isRegistered: car.isRegistered));
+                            }
                             var crsAbout = AboutChildCRSFormModel(
-                                initialDetails: InitialChildDetails(
-                                  dateOfBirth: DateFormat("yyyy-MM-dd").parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
-                                  firstName: registryProvider.registryPersonalDetailsModel.firstName,
-                                  otherNames: registryProvider.registryPersonalDetailsModel.otherNames ?? "",
-                                  sex: registryProvider.registryPersonalDetailsModel.sex,
-                                  surname: registryProvider.registryPersonalDetailsModel.surname,
-                                ),
+                                initialDetails: initDetails,
+                                siblingDetails: siblings,
+                                caregivers: caregivers, 
                                 familyStatus: [],
                                 houseEconomicStatus: "");
                             registryProvider.submit();
