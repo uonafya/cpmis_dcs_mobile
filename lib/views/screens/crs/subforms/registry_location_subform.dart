@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../controller/registry_provider.dart';
 
 const String COUNTY_DROPDOWN_ERROR = "Please select a county.";
-const String SUBCOUNTY_DROPDOWN_ERROR = "Please select sub-county.";
+const String SUBCOUNTY_DROPDOWN_ERROR = "Please select a sub-county.";
 const String WARD_DROPDOWN_ERROR = "Please select a ward.";
 
 class RegistryLocationSubform extends StatefulWidget {

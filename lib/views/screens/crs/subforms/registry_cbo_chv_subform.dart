@@ -6,6 +6,10 @@ import '../../../../controller/registry_provider.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../widgets/custom_dropdown.dart';
 
+const String CBO_DROPDOWN_ERROR = "Please select a parent unit.";
+const String OVC_DROPDOWN_ERROR = "Please select an OVH program.";
+const String CHV_DROPDOWN_ERROR = "Please select a CHV.";
+
 class RegistryCBOandCHVSubform extends StatefulWidget {
   const RegistryCBOandCHVSubform({super.key});
 
@@ -37,6 +41,9 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
   String selectedCBO = 'Select Parent Unit';
   String selectedOVC = 'Please Select One';
   String selectedCHV = 'Please Select One';
+  String? cboError = CBO_DROPDOWN_ERROR;
+  String? ovcError = OVC_DROPDOWN_ERROR;
+  String? chvError = CHV_DROPDOWN_ERROR;
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +61,16 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
           items: cboCriteria,
+          error: cboError,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;
               registryProvider.setCboParentUnit(selectedCBO);
+              if (val.isEmpty) {
+                cboError = CBO_DROPDOWN_ERROR;
+              } else {
+                cboError = null;
+              }
             });
           },
         ),
@@ -73,10 +86,16 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
           items: ovcCriteria,
+          error: ovcError,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;
               registryProvider.setOvcProgramEnrolment(selectedOVC);
+              if (val.isEmpty) {
+                ovcError = OVC_DROPDOWN_ERROR;
+              } else {
+                ovcError = null;
+              }
             });
           },
         ),
@@ -92,10 +111,16 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.chv.isNotEmpty ? registryProvider.registryCboChvModel.chv : selectedCHV,
           items: chvCriteria,
+          error: chvError,
           onChanged: (val) {
             setState(() {
               selectedCHV = val;
               registryProvider.setChv(selectedCHV);
+              if (val.isEmpty) {
+                chvError = CHV_DROPDOWN_ERROR;
+              } else {
+                chvError = null;
+              }
             });
           },
         ),
