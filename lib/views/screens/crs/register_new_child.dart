@@ -202,7 +202,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
-                      items: const ["Please Select", "Male", "Female"],
+                      items: const ["Male", "Female"],
                       error: registryProvider.shouldValidateFields ? sexError : null,
                       onChanged: (value) {
                         setState(() {

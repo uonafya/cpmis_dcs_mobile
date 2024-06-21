@@ -20,19 +20,16 @@ class RegistryCBOandCHVSubform extends StatefulWidget {
 
 class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
   List<String> cboCriteria = [
-    'Select Parent Unit',
     'UO27664 - CARITAS DOHB',
     'U73643 - KARAYA',
   ];
   List<String> ovcCriteria = [
-    'Please Select One',
     'OVC',
     'Preventive',
     'Dreams',
     'Fs/Other',
   ];
   List<String> chvCriteria = [
-    'Select CHV',
     'RUTH AKINYI',
     'ANNA. OWINO',
     'DAMARIS. OTOLO',
