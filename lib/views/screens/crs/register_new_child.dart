@@ -24,6 +24,13 @@ import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
+const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid sur name.";
+const String PERSON_TYPE_DROPDOWN_ERROR = "Please select a person type.";
+const String SEX_DROPDOWN_ERROR = "Please select a sex.";
+const String CLASS_DROPDOWN_ERROR = "Please select a class.";
+const String DOB_INPUT_ERROR = "Please select a date of birth.";
+
 class RegisterNewChildScreen extends StatefulWidget {
   const RegisterNewChildScreen({super.key});
 
@@ -43,6 +50,12 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   int formStep = 0;
   String currentClass = "";
   String dateOfBirth = "";
+  String? firstNameError = FIRST_NAME_INPUT_ERROR;
+  String? surNameError = SUR_NAME_INPUT_ERROR;
+  String? personTypeError = PERSON_TYPE_DROPDOWN_ERROR;
+  String? sexError = SEX_DROPDOWN_ERROR;
+  String? classError = CLASS_DROPDOWN_ERROR;
+  String? dobError = DOB_INPUT_ERROR;
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +107,20 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 10),
                     const Text(
                       'Person Type *',
-                      style: TextStyle(color: kTextGrey),
+                      style: TextStyle(color:kTextGrey),
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
                       items: personCriteria,
+                      error: personTypeError,
                       onChanged: (val) {
                         setState(() {
+                          if (val.isEmpty) {
+                            personTypeError = PERSON_TYPE_DROPDOWN_ERROR;
+                          } else {
+                            personTypeError = null;
+                          }
                           selectedPersonCriteria = val;
                           registryProvider.setPersonType(selectedPersonCriteria);
                         });
@@ -129,10 +148,18 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'First Name',
+                      error: firstNameError,
                       initialValue: registryProvider.registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
-                          registryProvider.setFirstName(value);
-    },
+                        setState(() {
+                          if (value.isEmpty || value.length < 2) {
+                            firstNameError = FIRST_NAME_INPUT_ERROR;
+                            return;
+                          }
+                          firstNameError = null;
+                        });
+                        registryProvider.setFirstName(value);
+                      },
                     ),
                     const SizedBox(height: 15),
                     const Text(
@@ -142,10 +169,18 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Surname',
+                      error: surNameError,
                       initialValue: registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty || value.length < 3) {
+                            surNameError = SUR_NAME_INPUT_ERROR;
+                            return;
+                          }
+                          surNameError = null;
+                        });
                           registryProvider.setSurname(value);
-    },
+                       },
                     ),
                     const SizedBox(height: 15),
                     const Text('Other Names',
@@ -167,8 +202,14 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
                       items: const ["Please Select", "Male", "Female"],
+                      error: sexError,
                       onChanged: (value) {
                         setState(() {
+                          if (value.isEmpty) {
+                            sexError = SEX_DROPDOWN_ERROR;
+                          } else {
+                            sexError = null;
+                          }
                           selectedPersonCriteria = value;
                           registryProvider.setSex(value);
                         });
@@ -184,17 +225,14 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       lastDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       showInitialDate: true,
+                      error: dobError,
                       initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
-                        dateOfBirth =
-                            DateFormat('yyyy-MM-dd').format(val);
+                        setState(() {
+                          dobError = null;
+                        });
+                        dateOfBirth = DateFormat('yyyy-MM-dd').format(val);
                         registryProvider.setDateOfBirth(dateOfBirth);
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return 'Please select a date';
-                        }
-                        return null;
                       },
                     ),
                     const SizedBox(height: 15),
@@ -203,8 +241,14 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
                       items: childClass,
+                      error: classError,
                       onChanged: (value) {
                         setState(() {
+                          if (value.isEmpty) {
+                            classError = CLASS_DROPDOWN_ERROR;
+                          } else {
+                            classError = null;
+                          }
                           currentClass = value;
                           registryProvider.setChildClass(currentClass);
                         });

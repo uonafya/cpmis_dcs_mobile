@@ -82,8 +82,8 @@ class RegistryPersonalDetailsModel {
 
   bool isComplete() {
     return personType.isNotEmpty &&
-    firstName.isNotEmpty &&
-    surname.isNotEmpty &&
+    firstName.isNotEmpty && firstName.length >= 2 &&
+    surname.isNotEmpty && surname.length >= 2  &&
     sex.isNotEmpty &&
     dateOfBirth.isNotEmpty &&
     childClass.isNotEmpty;
