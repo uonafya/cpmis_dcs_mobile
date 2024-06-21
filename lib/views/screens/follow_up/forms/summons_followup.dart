@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';

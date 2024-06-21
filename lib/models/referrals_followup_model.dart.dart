@@ -22,12 +22,12 @@ class ReferralModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['case_category'] = this.caseCategory;
-    data['referral_actor'] = this.referralActor;
-    data['specified_referral'] = this.specifiedReferral;
-    data['referral_for'] = this.referralFor;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['case_category'] = caseCategory;
+    data['referral_actor'] = referralActor;
+    data['specified_referral'] = specifiedReferral;
+    data['referral_for'] = referralFor;
     return data;
   }
 

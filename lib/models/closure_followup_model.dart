@@ -32,12 +32,12 @@ class ClosureFollowupModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['form_id'] = this.formId;
-    data['case_outcome'] = this.caseOutcome;
-    data['transfered_to'] = this.transferedTo;
-    if (this.interventionList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['form_id'] = formId;
+    data['case_outcome'] = caseOutcome;
+    data['transfered_to'] = transferedTo;
+    if (interventionList != null) {
       data['intervention_list'] =
           interventionList!.map((v) => v.toJson()).toList();
     }
