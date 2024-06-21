@@ -5,6 +5,8 @@ import '../../../../controller/registry_provider.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../widgets/subform_wrapper.dart';
 
+const String DESIGNATED_PHONE_NUMBER_INPUT_ERROR = "Please enter a valid phone number.";
+
 class RegistryContactDetailsSubform extends StatefulWidget {
   const RegistryContactDetailsSubform({super.key});
 
@@ -20,6 +22,8 @@ class _RegistryContactDetailsSubformState
 
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
+    String? designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
+
     return SubformWrapper(
       title: "Contact Information",
       shouldAlwaysAutoValidate: registryProvider.shouldValidateFields,
@@ -31,8 +35,16 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
+          error: designatedPhoneNumberError,
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
+            const pattern = r'^(01|07)\d{8}$';
+            final regExp = RegExp(pattern);
+            if (value.isEmpty || !regExp.hasMatch(value) ) {
+              designatedPhoneNumberError = DESIGNATED_PHONE_NUMBER_INPUT_ERROR;
+            } else {
+              designatedPhoneNumberError = null;
+            }
             registryProvider.setDesignatedPhoneNumber(value);
           },
           validator: (val) {

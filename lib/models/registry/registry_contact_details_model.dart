@@ -39,6 +39,8 @@ class RegistryContactDetailsModel {
   }
 
   bool isComplete() {
-    return designatedPhoneNumber.isNotEmpty;
+    const pattern = r'^(01|07)\d{8}$';
+    final regExp = RegExp(pattern);
+    return designatedPhoneNumber.isNotEmpty && regExp.hasMatch(designatedPhoneNumber);
   }
 }
