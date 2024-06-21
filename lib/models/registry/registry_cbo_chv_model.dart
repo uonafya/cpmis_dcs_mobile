@@ -26,4 +26,10 @@ class RegistryCboChvModel {
       chv: json['chv'] ?? "",
     );
   }
+
+  void clear() {
+    cboParentUnit = "";
+    ovcProgramEnrollment = "";
+    chv = "";
+  }
 }

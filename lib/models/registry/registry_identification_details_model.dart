@@ -34,4 +34,12 @@ class RegistryIdentificationModel {
       religion: json['religion'] ?? "",
     );
   }
+
+  void clear() {
+    birthRegistrationNumber = "";
+    givenName = "";
+    countryOfOrigin = "";
+    tribe = "";
+    religion = "";
+  }
 }

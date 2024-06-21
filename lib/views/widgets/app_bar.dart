@@ -19,7 +19,7 @@ AppBar customAppBar() {
     actions: [
       IconButton(
         onPressed: () {
-          Get.to(() => NotificationsScreen());
+          Get.to(() => const NotificationsScreen());
         },
         icon: const Icon(
           FontAwesomeIcons.bell,

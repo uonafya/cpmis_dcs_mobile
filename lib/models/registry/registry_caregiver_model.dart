@@ -3,7 +3,7 @@ class RegistryCaregiverModel {
   String firstName;
   String surName;
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex;
   String relationshipToChild;
   String nationalIdNumber;
@@ -49,7 +49,20 @@ class RegistryCaregiverModel {
       relationshipToChild: json['relationshipToChild'],
       nationalIdNumber: json['nationalIdNumber'],
       phoneNumber: json['phoneNumber'],
-      isRegistered: json['isRegistered'] == true,
+      isRegistered: json['isRegistered'],
     );
+  }
+
+  void clear() {
+    id = "";
+    firstName = "";
+    surName = "";
+    otherNames = null;
+    dateOfBirth = null;
+    sex = "";
+    relationshipToChild = "";
+    nationalIdNumber = "";
+    phoneNumber = null;
+    isRegistered = false;
   }
 }

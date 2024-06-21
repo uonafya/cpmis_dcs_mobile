@@ -30,4 +30,11 @@ class RegistryContactDetailsModel {
       physicalLocation: json['physicalLocation'],
     );
   }
+
+  void clear() {
+    designatedPhoneNumber = "";
+    otherMobileNumber = "";
+    emailAddress = "";
+    physicalLocation = "";
+  }
 }

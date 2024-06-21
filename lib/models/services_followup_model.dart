@@ -24,13 +24,13 @@ class ServiceFollowupModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['encounter_notes'] = this.encounterNotes;
-    data['case_category_id'] = this.caseCategoryId;
-    if (this.serviceProvidedList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['encounter_notes'] = encounterNotes;
+    data['case_category_id'] = caseCategoryId;
+    if (serviceProvidedList != null) {
       data['service_provided_list'] =
-          this.serviceProvidedList!.map((v) => v.toJson()).toList();
+          serviceProvidedList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -67,11 +67,11 @@ class ServiceProvidedList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['service_provided'] = this.serviceProvided;
-    data['service_provider'] = this.serviceProvider;
-    data['place_of_service'] = this.placeOfService;
-    data['date_of_encounter_event'] = this.dateOfEncounterEvent;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['service_provided'] = serviceProvided;
+    data['service_provider'] = serviceProvider;
+    data['place_of_service'] = placeOfService;
+    data['date_of_encounter_event'] = dateOfEncounterEvent;
     return data;
   }
 
