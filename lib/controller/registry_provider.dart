@@ -195,6 +195,7 @@ class RegistryProvider extends ChangeNotifier {
           registryCboChvModel: registryCboChvModel);
       await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
+      await RegisterNewChildQuery.getRegistryFormDetailById(1);
       clearState();
       if (kDebugMode) {
         print(registerNewChildModel.toJson());
@@ -205,5 +206,6 @@ class RegistryProvider extends ChangeNotifier {
       }
     }
     RegisterNewChildQuery.getRegistryFormDetails();
+    RegisterNewChildQuery.getRegistryFormDetailById(1);
   }
 }
