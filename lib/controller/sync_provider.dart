@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
@@ -73,6 +75,7 @@ Future<void> sendClosureUpstream() async {
 
   // Sync closure followups
   final closures = await db.query(caseClosureTable);
+  print("CLOSURE:$closures ");
 
   for (var closure in closures) {
     try {
@@ -101,7 +104,7 @@ Future<void> sendClosureUpstream() async {
       };
 
       // Print the format of the synced data
-      print("Synced data format for case ${closureModel.caseId}:");
+
       print(const JsonEncoder.withIndent('  ').convert(apiSubmissionData));
 
       await apiService.sendClosureFollowup(apiSubmissionData);
@@ -109,15 +112,10 @@ Future<void> sendClosureUpstream() async {
       final caseId = closure[CaseClosureTable.caseID];
       if (caseId != null && caseId is String) {
         await closureDatabaseHelper.deleteClosureFollowup(caseId);
-        print("Successfully synced and deleted case $caseId");
       } else {
         print('Invalid caseId for deletion: $caseId');
       }
     } catch (e, stackTrace) {
-      print('Error processing closure followup:');
-      print('Data: ${jsonEncode(closure)}');
-      print('Error: $e');
-      print('Stack trace: $stackTrace');
       // Continue with the next closure instead of throwing an exception
       continue;
     }
