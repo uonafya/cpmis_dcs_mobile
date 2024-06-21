@@ -29,17 +29,6 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CRSFormProvider>(builder: (context, model, _) {
-      String age = "";
-      if (model.about?.initialDetails.dateOfBirth == null) {
-        age = "";
-      } else {
-        var ageInt = getAgeFromDateOf(model.about!.initialDetails!.dateOfBirth!);
-        if (ageInt < 1) {
-          age = "Under 1";
-        } else {
-          age = age.toString();
-        }
-      }
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +127,9 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: "$age year",
+                  text: model.about?.initialDetails.dateOfBirth == null
+                      ? ""
+                      : getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year " : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years ",
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,

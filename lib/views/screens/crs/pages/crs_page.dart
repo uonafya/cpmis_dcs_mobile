@@ -38,17 +38,6 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
       ),
       body: Consumer<CRSFormProvider>(
         builder: (context, model, _) {
-          String age = "";
-          if (model.about?.initialDetails.dateOfBirth == null) {
-            age = "";
-          } else {
-            var ageInt = getAgeFromDateOf(model.about!.initialDetails!.dateOfBirth!);
-            if (ageInt < 1) {
-              age = "Under 1";
-            } else {
-              age = age.toString();
-            }
-          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: ListView(
@@ -74,7 +63,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             ),
                           ),
                           TextSpan(
-                            text: "${model.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surname}| ".toUpperCase(),
+                            text: "${model.about?.initialDetails.firstName} ${model.about?.initialDetails.otherNames} ${model.about?.initialDetails.surName}| ".toUpperCase(),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -88,7 +77,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             ),
                           ),
                           TextSpan(
-                            text: "$age year ||".toUpperCase(),
+                            text: model.about?.initialDetails.dateOfBirth == null
+                                ? ""
+                                : getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year |" : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years |",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
