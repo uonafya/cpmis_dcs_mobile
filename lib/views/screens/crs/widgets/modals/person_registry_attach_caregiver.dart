@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
 import 'package:cpims_dcs_mobile/models/registry/registry_caregiver_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
@@ -11,6 +12,12 @@ import '../../../../../controller/registry_provider.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
+
+const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid surname.";
+const String SEX_DROPDOWN_ERROR = "Please select a sex.";
+const String RELATIONSHIP_DROPDOWN_ERROR = "Please select a relationship.";
+const String ID_INPUT_ERROR = "Please select a national Id.";
 
 class PersonRegistryAttachCareGiver extends StatefulWidget {
   const PersonRegistryAttachCareGiver({super.key});
@@ -47,6 +54,12 @@ class _PersonRegistryAttachCareGiverState
   String nationalIdNumber = "";
   String? phoneNumber;
   bool isRegistered = false;
+  String? firstNameError = FIRST_NAME_INPUT_ERROR;
+  String? surNameError = SUR_NAME_INPUT_ERROR;
+  String? sexError = SEX_DROPDOWN_ERROR;
+  String? relationshipError = RELATIONSHIP_DROPDOWN_ERROR;
+  String? idError = ID_INPUT_ERROR;
+  bool shouldValidateFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +79,15 @@ class _PersonRegistryAttachCareGiverState
           h2Text("First Name *"),
           CustomTextField(
             hintText: 'First Name',
+            error: shouldValidateFields ? firstNameError : null,
             onChanged: (value) {
               setState(() {
                 firstName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  firstNameError = FIRST_NAME_INPUT_ERROR;
+                  return;
+                }
+                firstNameError = null;
               });
             },
           ),
@@ -76,9 +95,15 @@ class _PersonRegistryAttachCareGiverState
           h2Text("Surname *"),
           CustomTextField(
             hintText: 'Surname',
+            error: shouldValidateFields ? surNameError : null,
             onChanged: (value) {
               setState(() {
                 surName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  surNameError = SUR_NAME_INPUT_ERROR;
+                  return;
+                }
+                surNameError = null;
               });
             },
           ),
@@ -113,10 +138,16 @@ class _PersonRegistryAttachCareGiverState
           h2Text("Sex *"),
           CustomDropdown(
             initialValue: "Please Select",
-            items: const ["Please Select", "Male", "Female"],
+            error: shouldValidateFields ? sexError : null,
+            items: const ["Male", "Female"],
             onChanged: (val) {
               setState(() {
                 sex = val;
+                if (val.isEmpty) {
+                  sexError = SEX_DROPDOWN_ERROR;
+                } else {
+                  sexError = null;
+                }
               });
             },
           ),
@@ -124,10 +155,16 @@ class _PersonRegistryAttachCareGiverState
           h2Text("Relationship with Child *"),
           CustomDropdown(
             initialValue: "None",
+            error: shouldValidateFields ? relationshipError : null,
             items: childRelationship,
             onChanged: (val) {
               setState(() {
                 relationshipToChild = val;
+                if (val.toString().isEmpty) {
+                  relationshipError = RELATIONSHIP_DROPDOWN_ERROR;
+                } else {
+                  relationshipError = null;
+                }
               });
             },
           ),
@@ -135,9 +172,15 @@ class _PersonRegistryAttachCareGiverState
           h2Text("National ID No *"),
           CustomTextField(
             hintText: 'National ID',
+            error: shouldValidateFields ? idError : null,
             onChanged: (value) {
               setState(() {
                 nationalIdNumber = value;
+                if (value.isEmpty || value.length < 6) {
+                  idError = ID_INPUT_ERROR;
+                  return;
+                }
+                idError = null;
               });
             },
           ),
@@ -177,6 +220,9 @@ class _PersonRegistryAttachCareGiverState
                       if (context.mounted) {
                         errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
                       }
+                      setState(() {
+                        shouldValidateFields = true;
+                      });
                       return;
                     }
                     RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);

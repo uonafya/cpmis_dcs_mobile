@@ -26,7 +26,7 @@ import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
 
 const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
-const String SUR_NAME_INPUT_ERROR = "Please enter a valid sur name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid surname.";
 const String PERSON_TYPE_DROPDOWN_ERROR = "Please select a person type.";
 const String SEX_DROPDOWN_ERROR = "Please select a sex.";
 const String CLASS_DROPDOWN_ERROR = "Please select a class.";

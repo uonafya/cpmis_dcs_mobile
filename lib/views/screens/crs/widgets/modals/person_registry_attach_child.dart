@@ -10,8 +10,14 @@ import 'package:provider/provider.dart';
 
 import '../../../../../controller/registry_provider.dart';
 import '../../../../../core/constants/constants.dart';
+import '../../../../../core/utils/input_validation_utils.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
+
+const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid surname.";
+const String SEX_DROPDOWN_ERROR = "Please select a sex.";
+const String CLASS_DROPDOWN_ERROR = "Please select a class.";
 
 class PersonRegistryAttachSiblingModal extends StatefulWidget {
   const PersonRegistryAttachSiblingModal({super.key});
@@ -23,7 +29,6 @@ class PersonRegistryAttachSiblingModal extends StatefulWidget {
 
 class _PersonRegistryAttachSiblingModalState
     extends State<PersonRegistryAttachSiblingModal> {
-  bool _isChecked = false;
 
   String firstName = "";
   String surName = "";
@@ -32,6 +37,11 @@ class _PersonRegistryAttachSiblingModalState
   String sex = "";
   String currentClass = "";
   String? remarks;
+  String? firstNameError = FIRST_NAME_INPUT_ERROR;
+  String? surNameError = SUR_NAME_INPUT_ERROR;
+  String? sexError = SEX_DROPDOWN_ERROR;
+  String? classError = CLASS_DROPDOWN_ERROR;
+  bool shouldValidateFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,22 +58,34 @@ class _PersonRegistryAttachSiblingModalState
         const SizedBox(height: 10),
         h2Text("First Name *"),
         CustomTextField(
-            hintText: 'First Name',
+          hintText: 'First Name',
+          error: shouldValidateFields ? firstNameError : null,
           onChanged: (value) {
               setState(() {
                 firstName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  firstNameError = FIRST_NAME_INPUT_ERROR;
+                  return;
+                }
+                firstNameError = null;
               });
-    },
+          },
         ),
         const SizedBox(height: 15),
         h2Text("Surname *"),
         CustomTextField(
-            hintText: 'Surname',
+          hintText: 'Surname',
+          error: shouldValidateFields ? surNameError : null,
           onChanged: (value) {
-              setState(() {
-                surName = value;
-              });
-    },
+            setState(() {
+              surName = value;
+              if (InputValidationUtils.isInvalidName(value)) {
+                surNameError = SUR_NAME_INPUT_ERROR;
+                return;
+              }
+              surNameError = null;
+            });
+          },
         ),
         const SizedBox(height: 15),
         h2Text("Other Name(s)"),
@@ -96,10 +118,16 @@ class _PersonRegistryAttachSiblingModalState
         h2Text("Sex *"),
         CustomDropdown(
           initialValue: "Please Select",
-          items: const ["Please Select", "Male", "Female"],
+          error: shouldValidateFields ? sexError : null,
+          items: const [ "Male", "Female"],
           onChanged: (value) {
             setState(() {
               sex = value;
+              if (value.isEmpty) {
+                sexError = SEX_DROPDOWN_ERROR;
+              } else {
+                sexError = null;
+              }
             });
           },
         ),
@@ -108,9 +136,15 @@ class _PersonRegistryAttachSiblingModalState
         CustomDropdown(
           initialValue: "Please Select",
           items: childClass,
+          error: shouldValidateFields ? classError : null,
           onChanged: (value) {
             setState(() {
               currentClass = value;
+              if (value.toString().isEmpty) {
+                classError = CLASS_DROPDOWN_ERROR;
+              } else {
+                classError = null;
+              }
             });
           },
         ),
@@ -146,6 +180,9 @@ class _PersonRegistryAttachSiblingModalState
                     if (context.mounted) {
                       errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
                     }
+                    setState(() {
+                      shouldValidateFields = true;
+                    });
                     return;
                   }
                   RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass);
