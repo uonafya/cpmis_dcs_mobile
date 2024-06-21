@@ -1,8 +1,3 @@
-import 'dart:ffi';
-import 'dart:typed_data';
-
-import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
-
 class CciTransitionModel {
   String? cciId;
   String? cciName;
@@ -69,7 +64,7 @@ class CciTransitionModel {
   });
 
   CciTransitionModel.fromJson(Map<String, dynamic> json) {
-    cciId   = json['cci_id'];
+    cciId = json['cci_id'];
     cciName = json['cci_name'];
     nccsRegistered = json['nccs_registered'];
     cciRegNo = json['cci_reg_no'];
@@ -103,7 +98,7 @@ class CciTransitionModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['cci_id'] = cciId  ;
+    data['cci_id'] = cciId;
     data['cci_name'] = cciName;
     data['nccs_registered'] = nccsRegistered;
     data['cci_reg_no'] = cciRegNo;

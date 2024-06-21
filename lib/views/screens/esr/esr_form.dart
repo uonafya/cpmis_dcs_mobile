@@ -12,7 +12,6 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
 class ESRForm extends StatefulWidget {
@@ -24,6 +23,15 @@ class ESRForm extends StatefulWidget {
 
 class _ESRFormState extends State<ESRForm> {
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      Provider.of<ESRController>(context, listen: false).clearData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

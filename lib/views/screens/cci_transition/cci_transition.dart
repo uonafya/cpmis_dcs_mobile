@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -314,7 +313,7 @@ class _CCIState extends State<CCI> {
                             CustomDropdown(
                               items: genders,
                               isMultiSelect: true,
-                              initialValue: ["Please Select Sex: "],
+                              initialValue: const ["Please Select Sex: "],
                               onChanged: (item) {
                                 setState(() {
                                   cciServesGender = item.join(";");

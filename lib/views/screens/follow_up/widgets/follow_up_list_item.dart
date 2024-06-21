@@ -1,10 +1,12 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class FollowUpListItem extends StatelessWidget {
-  const FollowUpListItem({super.key});
+  const FollowUpListItem({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +19,19 @@ class FollowUpListItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "BABY KATHAMBI",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  "${caseLoad.ovcFirstName} ${caseLoad.ovcSurname} ${caseLoad.ovcOtherNames}",
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                Text("CCO/47/287/5/29/3004/2018	"),
-                SizedBox(
+                Text(caseLoad.caseSerial ?? "-"),
+                const SizedBox(
                   height: 8,
                 ),
-                Text(
+                const Text(
                   "PID: 174675",
                   style: TextStyle(color: Colors.grey),
                 ),
@@ -39,11 +41,11 @@ class FollowUpListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "INACTIVE",
-                style: TextStyle(fontSize: 12, color: Colors.red),
+              Text(
+                caseLoad.caseStatus ?? "-",
+                style: const TextStyle(fontSize: 12, color: Colors.red),
               ),
-              const Text("Female"),
+              Text(caseLoad.ovcSex ?? "-"),
               const SizedBox(
                 height: 10,
               ),
@@ -70,7 +72,7 @@ class FollowUpListItem extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(() => const FollowUpScreen());
+                      Get.to(() => FollowUpScreen(caseLoadModel: caseLoad));
                     },
                     child: const Icon(
                       Icons.barcode_reader,

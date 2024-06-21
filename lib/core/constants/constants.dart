@@ -23,6 +23,7 @@ enum RadioButtonOptions { yes, no, na }
 const String organizationUnitsTable = "orgUnits";
 const String socialInquiryTable = "socialInquiry";
 const String geolocationTable = "geolocations";
+const String metadataTable = "metadata";
 const String usersTable = "users";
 const String childTable = "child";
 const String caregiverTable = "caregiver";

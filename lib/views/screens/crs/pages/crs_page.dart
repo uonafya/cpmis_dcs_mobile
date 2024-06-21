@@ -7,7 +7,6 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -186,7 +185,8 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             var db = await localdb.database;
                             var uuid = const Uuid();
                             var formID = uuid.v4();
-                            // CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+                            
+                            CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
                             await form.sendToUpstream();
 
                             Get.to(() => const FollowUpHome());

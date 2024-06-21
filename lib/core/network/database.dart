@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/esr_form_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,7 +31,7 @@ class LocalDB {
       final path = join(dbPath, filePath);
       return await openDatabase(
         path,
-        version: 7,
+        version: 9,
         onCreate: _initialise,
         onUpgrade: (db, oldVersion, newVersion) {
           if (oldVersion < newVersion) {
@@ -265,7 +266,7 @@ class LocalDB {
             placeOfEvent TEXT NOT NULL,
             caseNature TEXT NOT NULL,
             dateOfEvent TEXT NOT NULL,
-            FOREIGN KEY(categoryID) REFERENCES categories(id),
+            FOREIGN KEY(categoryID) REFERENCES $metadataTable(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
        ''');
@@ -462,8 +463,18 @@ class LocalDB {
       );
     ''');
 
-      // CCI transition form Database
-      await db.execute('''
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $metadataTable(
+        id TEXT PRIMARY KEY,
+        fieldName TEXT,
+        description TEXT,
+        subCategory TEXT,
+        orderNo INTEGER
+      );
+    ''');
+
+    // CCI transition form Database
+    await db.execute('''
             CREATE TABLE IF NOT EXISTS cciTransition (
             cci_id TEXT NOT NULL,
             cci_name TEXT NOT NULL,
@@ -498,7 +509,6 @@ class LocalDB {
     )
     ''');
 
-
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $courtSummonsTable(
     ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
@@ -519,7 +529,151 @@ class LocalDB {
   );
 ''');
 
+//ESR FORMS
+    const String createESRFormTable = '''
+CREATE TABLE esr_form (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  form_id TEXT,
+  county TEXT,
+  sub_county TEXT,
+  location TEXT,
+  sub_location TEXT,
+  village TEXT,
+  village_elder TEXT,
+  nearest_church_mosque TEXT,
+  nearest_school TEXT,
+  years TEXT,
+  months TEXT,
+  household_benefits TEXT,
+  benefit_type TEXT,
+  specified_benefit TEXT
+)
+''';
+
+    const String createFamilyMembersTable = '''
+CREATE TABLE family_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  esr_form_id INTEGER,
+  first_name TEXT,
+  middle_name TEXT,
+  surname TEXT,
+  doesHaveId TEXT,
+  relationship TEXT,
+  sex TEXT,
+  date_of_birth TEXT,
+  marital_status TEXT,
+  does_suffer_chronic TEXT,
+  disability_require_24_care TEXT,
+  type_of_disability TEXT,
+  learning_institution TEXT,
+  highest_learning TEXT,
+  doing_last TEXT,
+  has_formal_job TEXT,
+  recommend_support TEXT,
+  main_caregiver TEXT,
+  FOREIGN KEY (esr_form_id) REFERENCES esr_form (id)
+)
+''';
+
+    await db.execute(createESRFormTable);
+    await db.execute(createFamilyMembersTable);
   }
+
+  //Insert ESR
+  Future<bool> saveESRForm(ESRFormModel esrForm) async {
+    Database db = await database;
+
+    // Start a transaction to ensure all operations complete or none do
+    return await db.transaction((txn) async {
+      try {
+        // Insert the main ESR form data
+        int esrFormId = await txn.insert('esr_form', {
+          'form_id': esrForm.formId,
+          'county': esrForm.county,
+          'sub_county': esrForm.subCounty,
+          'location': esrForm.location,
+          'sub_location': esrForm.subLocation,
+          'village': esrForm.village,
+          'village_elder': esrForm.villageElder,
+          'nearest_church_mosque': esrForm.nearestChurchMosque,
+          'nearest_school': esrForm.nearestSchool,
+          'years': esrForm.years,
+          'months': esrForm.months,
+          'household_benefits': esrForm.householdBenefits,
+          'benefit_type': esrForm.benefitType,
+          'specified_benefit': esrForm.specifiedBenefit,
+        });
+
+        // Insert family members if they exist
+        if (esrForm.familyMembers != null) {
+          for (var familyMember in esrForm.familyMembers!) {
+            await txn.insert('family_members', {
+              'esr_form_id': esrFormId,
+              'first_name': familyMember.firstName,
+              'middle_name': familyMember.middleName,
+              'surname': familyMember.surname,
+              'doesHaveId': familyMember.doesHaveId,
+              'relationship': familyMember.relationship,
+              'sex': familyMember.sex,
+              'date_of_birth': familyMember.dateOfBirth,
+              'marital_status': familyMember.maritalStatus,
+              'does_suffer_chronic': familyMember.doesSufferChronic,
+              'disability_require_24_care':
+                  familyMember.disabilityRequire24Care,
+              'type_of_disability': familyMember.typeOfDisability,
+              'learning_institution': familyMember.learningInstitution,
+              'highest_learning': familyMember.highestLearning,
+              'doing_last': familyMember.doingLast,
+              'has_formal_job': familyMember.hasFormalJob,
+              'recommend_support': familyMember.recommendSupport,
+              'main_caregiver': familyMember.mainCaregiver,
+            });
+          }
+        }
+
+        return true; // Successfully saved
+      } catch (e) {
+        print('Error saving ESR form: $e');
+        return false; // Failed to save
+      }
+    });
+  }
+
+  Future<List<ESRFormModel>> getESRForms() async {
+    Database db = await database;
+    List<ESRFormModel> esrForms = [];
+
+    // First, get all ESR forms
+    List<Map<String, dynamic>> esrMaps = await db.query('esr_form');
+
+    for (var esrMap in esrMaps) {
+      // Create ESRFormModel object
+      ESRFormModel esrForm = ESRFormModel.fromJson(esrMap);
+
+      // Get associated family members
+      List<Map<String, dynamic>> familyMemberMaps = await db.query(
+        'family_members',
+        where: 'esr_form_id = ?',
+        whereArgs: [esrMap['id']],
+      );
+
+      // Create FamilyMembers objects and add to ESRFormModel
+      esrForm.familyMembers = familyMemberMaps
+          .map((familyMap) => FamilyMembers.fromJson(familyMap))
+          .toList();
+
+      esrForms.add(esrForm);
+    }
+
+    return esrForms;
+  }
+
+  //Delete all data from ESR form table
+  Future<void> deleteAllESRForms() async {
+    Database db = await database;
+    await db.delete('esr_form');
+  }
+
   //Insert social inquiry form data
   Future<void> insertSocialInquiryForm(
       SocialInquiryFormModel socialInquiryForm) async {
@@ -540,10 +694,39 @@ class LocalDB {
 
   // Save CCI Transition form method
   //Insert social inquiry form data
-  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAgeGroupsOne,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
+  Future<void> saveCciTransition(
+      {selectedCCI,
+      cciNCCSRegistered,
+      final cciRegNo,
+      cciRegDate,
+      cciRegValidYrs,
+      cciOtherRegistered,
+      cciRegOtherType,
+      cciServesDisabled,
+      cciServesGender,
+      cciAgeGroupsOne,
+      cciStartedTransition,
+      cciBasisOfTransition,
+      cciLegaFramework,
+      cciStakeholderEngagement,
+      cciMakeDecision,
+      cciAssessment,
+      cciStrategicPlanning,
+      cciOrganizationPlanning,
+      cciProgramPlanning,
+      cciTransitionPlanning,
+      cciEmployeeDev,
+      cciPilotValidation,
+      cciProgramImplementation,
+      cciMonitorEvaluate,
+      cciTransitionTo,
+      cciSurvivalRights,
+      cciDevRights,
+      cciProtectionRights,
+      cciParticipationRights}) async {
     try {
       final db = await instance.database;
-      final id = await db.insert("cciTransition",{
+      final id = await db.insert("cciTransition", {
         "cci_id": "909090",
         'cci_name': selectedCCI,
         'nccs_registered': cciNCCSRegistered,
@@ -580,7 +763,6 @@ class LocalDB {
         print("Error inserting social inquiry form data: $e");
       }
     }
-
   }
 
   // insert multiple caseload records
