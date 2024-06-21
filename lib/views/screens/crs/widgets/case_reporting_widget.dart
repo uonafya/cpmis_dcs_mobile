@@ -1,9 +1,13 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/locations.dart';
+import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_forms_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CaseReportingWidget extends StatefulWidget {
   const CaseReportingWidget({super.key});
@@ -13,17 +17,37 @@ class CaseReportingWidget extends StatefulWidget {
 }
 
 class _CaseReportingWidgetState extends State<CaseReportingWidget> {
-  RadioButtonOptions? isInCountry;
+  RadioButtonOptions? isInCountry = RadioButtonOptions.yes;
 
   String selectedCounty = pleaseSelect;
   String selectedSubCounty = pleaseSelect;
 
-  String caseReporter = pleaseSelect;
-
   DateTime dateOfCaseOpening = DateTime.now();
+
+  List<NameID> counties = [
+    const NameID(name: pleaseSelect, id: '1'),
+  ];
+
+  List<NameID> subCounties = [
+    const NameID(name: pleaseSelect, id: '1'),
+  ];
+
+  List<NameID> wardsList = [
+    const NameID(name: pleaseSelect, id: '1'),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      counties = await getCounties();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<CRSFormProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -45,128 +69,191 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         ),
         const SizedBox(height: 10),
         CustomDropdown(
-          initialValue: caseReporter,
+          initialValue: model.caseReport.originator,
           items: caseReporterOptions,
-          onChanged: (item) {
-            setState(() {
-              caseReporter = item;
-            });
+          onChanged: (dynamic item) {
+            var update = model.caseReport;
+            update.originator = item;
+            model.caseReport = update;
           },
         ),
         const SizedBox(height: 20),
-        if (caseReporter == "Court")
-          const Column(
+        if (model.caseReport.originator == "Court")
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Court Name:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'Court Name'),
-              SizedBox(height: 20),
-              Divider(),
-              Text(
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.courtName = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Court Name'),
+              const SizedBox(height: 20),
+              const Divider(),
+              const Text(
                 'Court File Number:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'Court Name'),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.courtFileNumber = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Court Name'),
+              const SizedBox(height: 20),
             ],
           )
-        else if (caseReporter == "Police")
-          const Column(
+        else if (model.caseReport.originator == "Police")
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Police Station Name:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'Police Station Name'),
-              SizedBox(height: 20),
-              Divider(),
-              Text(
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.policeStation = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Police Station Name'),
+              const SizedBox(height: 20),
+              const Divider(),
+              const Text(
                 'OB Number:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'OB Number'),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.obNumber = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'OB Number'),
+              const SizedBox(height: 20),
             ],
           )
-        else if (caseReporter == "Father" ||
-            caseReporter == "Helpline 116" ||
-            caseReporter == "Mother" ||
-            caseReporter == "Probation" ||
-            caseReporter == "Chief" ||
-            caseReporter == "Immigration" ||
-            caseReporter == "Labour Officers" ||
-            caseReporter == "Helpline 1195" ||
-            caseReporter == "Service Providers" ||
-            caseReporter == "Ministry of Tourism" ||
-            caseReporter == "Trade Union" ||
-            caseReporter == "Other relatives" ||
-            caseReporter == "Diplomatic missions" ||
-            caseReporter == "Other Government Agencies" ||
-            caseReporter == "Other non-relative(s)")
-          const Column(
+        else if (model.caseReport.originator == "Father" ||
+            model.caseReport.originator == "Helpline 116" ||
+            model.caseReport.originator == "Mother" ||
+            model.caseReport.originator == "Probation" ||
+            model.caseReport.originator == "Chief" ||
+            model.caseReport.originator == "Immigration" ||
+            model.caseReport.originator == "Labour Officers" ||
+            model.caseReport.originator == "Helpline 1195" ||
+            model.caseReport.originator == "Service Providers" ||
+            model.caseReport.originator == "Ministry of Tourism" ||
+            model.caseReport.originator == "Trade Union" ||
+            model.caseReport.originator == "Other relatives" ||
+            model.caseReport.originator == "Diplomatic missions" ||
+            model.caseReport.originator == "Other Government Agencies" ||
+            model.caseReport.originator == "Other non-relative(s)")
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Reporter Name(s):*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'First Name'),
-              SizedBox(height: 20),
-              CustomTextField(hintText: 'Surname'),
-              SizedBox(height: 20),
-              CustomTextField(hintText: 'Middle Name'),
-              SizedBox(height: 20),
-              Divider(),
-              Text(
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.reporterFirstName = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'First Name'),
+              const SizedBox(height: 20),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.reporterLastName = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Surname'),
+              const SizedBox(height: 20),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.reporterOtherName = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Middle Name'),
+              const SizedBox(height: 20),
+              const Divider(),
+              const Text(
                 'Reporter Phone Number:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'Phone Number'),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.reporterPhoneNumber = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Phone Number'),
+              const SizedBox(height: 20),
             ],
           )
-        else if (caseReporter == "Self")
-          const Column(
+        else if (model.caseReport.originator == "Self")
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Reporter Phone Number:*',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
-              CustomTextField(hintText: 'Phone Number'),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
+              CustomTextField(
+                  onChanged: (String value) {
+                    var update = model.caseReport;
+
+                    update.reporterPhoneNumber = value;
+                    model.caseReport = update;
+                  },
+                  hintText: 'Phone Number'),
+              const SizedBox(height: 20),
             ],
           )
         else
@@ -188,6 +275,9 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           value: RadioButtonOptions.yes,
           groupValue: isInCountry,
           onChanged: (value) {
+            var update = model.caseReport;
+            update.placeOfOccurence = RadioButtonOptions.yes == value;
+            model.caseReport = update;
             setState(() {
               isInCountry = value;
             });
@@ -198,6 +288,9 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
           value: RadioButtonOptions.no,
           groupValue: isInCountry,
           onChanged: (value) {
+            var update = model.caseReport;
+            update.placeOfOccurence = RadioButtonOptions.yes == value;
+            model.caseReport = update;
             setState(() {
               isInCountry = value;
             });
@@ -213,24 +306,38 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   const Text('County *'),
                   const SizedBox(height: 10),
                   CustomDropdown(
-                    initialValue: selectedCounty,
-                    items: countiesOptions,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedCounty = item;
-                      });
+                    initialValue: model.caseReport.county,
+                    items: counties.map((e) => e.name).toList(),
+                    onChanged: (item) async {
+                      selectedCounty = item;
+                      selectedSubCounty = pleaseSelect;
+                      final values =
+                          await getSubCountiesOfCounty(selectedCounty);
+
+                      subCounties = values;
+                      model.caseReport.subCounty = pleaseSelect;
+                      setState(() {});
                     },
                   ),
                   const SizedBox(height: 20),
                   const Text('Sub County *'),
                   const SizedBox(height: 10),
                   CustomDropdown(
-                    initialValue: selectedSubCounty,
-                    items: subcountiesOptions,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedCounty = item;
-                      });
+                    initialValue: model.caseReport.subCounty,
+                    items: subCounties.map((e) => e.name).toList(),
+                    onChanged: (item) async {
+                      var update = model.caseReport;
+                      update.subCounty = item;
+                      model.caseReport = update;
+
+                      final selectedSubCounty =
+                          subCounties.firstWhere((e) => e.name == item);
+                      final values =
+                          await getWardsFromSubCounty(selectedSubCounty.id);
+
+                      wardsList = values;
+                      model.caseReport.ward = pleaseSelect;
+                      setState(() {});
                     },
                   ),
                   const SizedBox(height: 10),
@@ -239,47 +346,84 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   const Text('Ward *'),
                   const SizedBox(height: 10),
                   CustomDropdown(
-                    initialValue: selectedSubCounty,
+                    initialValue: model.caseReport.ward ?? pleaseSelect,
+                    items: wardsList.map((e) => e.name).toList(),
+                    onChanged: (item) async {
+                      var update = model.caseReport;
+                      update.ward = item;
+                      model.caseReport = update;
+
+                      final values =
+                          await getSubCountiesOfCounty(selectedCounty);
+
+                      subCounties = values;
+                      setState(() {});
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('Village/Estate *'),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    initialValue: model.caseReport.village,
+                    onChanged: (String item) {
+                      var update = model.caseReport;
+                      update.village = item;
+                      model.caseReport = update;
+                    },
+                    hintText: 'Village/Estate',
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  const Text('Location *'),
+                  const SizedBox(height: 10),
+                  CustomDropdown(
+                    initialValue: model.caseReport.location ?? pleaseSelect,
                     items: subcountiesOptions,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedCounty = item;
-                      });
+                    onChanged: (dynamic item) {
+                      var update = model.caseReport;
+                      update.location = item;
+                      model.caseReport = update;
                     },
                   ),
                   const SizedBox(height: 20),
                   const Text('Sub Location *'),
                   const SizedBox(height: 10),
                   CustomDropdown(
-                    initialValue: selectedSubCounty,
+                    initialValue: model.caseReport.subLocation ?? pleaseSelect,
                     items: subcountiesOptions,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedCounty = item;
-                      });
+                    onChanged: (dynamic item) {
+                      var update = model.caseReport;
+                      update.subLocation = item;
+                      model.caseReport = update;
                     },
                   ),
+                  const SizedBox(height: 10),
                 ],
               )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 10),
                   const Text('Country *'),
                   const SizedBox(height: 10),
                   CustomDropdown(
-                    initialValue: selectedCounty,
+                    initialValue: model.caseReport.country,
                     items: countiesOptions,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedCounty = item;
-                      });
+                    onChanged: (dynamic item) {
+                      var update = model.caseReport;
+                      update.country = item;
+                      model.caseReport = update;
                     },
                   ),
                   const SizedBox(height: 20),
                   const Text('City/Town *'),
                   const SizedBox(height: 10),
-                  const CustomTextField(
+                  CustomTextField(
+                    onChanged: (String item) {
+                      var update = model.caseReport;
+                      update.city = item;
+                      model.caseReport = update;
+                    },
                     hintText: 'City/Town',
                   ),
                 ],
@@ -299,24 +443,24 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         const Text('Sub County *'),
         const SizedBox(height: 10),
         CustomDropdown(
-          initialValue: selectedCounty,
+          initialValue: model.caseReport.reportingSubCounty,
           items: countiesOptions,
-          onChanged: (item) {
-            setState(() {
-              selectedCounty = item;
-            });
+          onChanged: (dynamic item) {
+            var update = model.caseReport;
+            update.reportingSubCounty = item;
+            model.caseReport = update;
           },
         ),
         const SizedBox(height: 20),
         const Text('Organizational Unit *'),
         const SizedBox(height: 10),
         CustomDropdown(
-          initialValue: selectedCounty,
+          initialValue: model.caseReport.reportingOrganizationalUnit,
           items: countiesOptions,
-          onChanged: (item) {
-            setState(() {
-              selectedCounty = item;
-            });
+          onChanged: (dynamic item) {
+            var update = model.caseReport;
+            update.reportingOrganizationalUnit = item;
+            model.caseReport = update;
           },
         ),
         const SizedBox(height: 20),
@@ -333,10 +477,11 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         const SizedBox(height: 10),
         CustomFormsDatePicker(
           hintText: 'Date of Case Opening',
+          lastDate: DateTime.now(),
           onDateSelected: (DateTime selectedDate) {
-            setState(() {
-              dateOfCaseOpening = selectedDate;
-            });
+            var update = model.caseReport;
+            update.dateCaseReported = selectedDate;
+            model.caseReport = update;
           },
         )
       ],

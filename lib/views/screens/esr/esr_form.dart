@@ -1,5 +1,7 @@
+import 'package:cpims_dcs_mobile/controller/esr_controller.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_benefits.dart';
+import 'package:cpims_dcs_mobile/views/screens/esr/esr_family_details.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_household_demographic.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_household_geolocation.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -8,6 +10,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ESRForm extends StatefulWidget {
   const ESRForm({super.key});
@@ -96,6 +99,9 @@ class _ESRFormState extends State<ESRForm> {
                     setState(() {
                       if (selectedIndex < esrStepperWidgets.length - 1) {
                         selectedIndex++;
+                      } else {
+                        Provider.of<ESRController>(context, listen: false)
+                            .submitForm();
                       }
                     });
                   },
@@ -128,10 +134,16 @@ List<Map<String, dynamic>> esrStepperData = [
     'subtitle': 'Medical history and additional details',
     'onTap': () => {},
   },
+  {
+    'title': 'Family',
+    'subtitle': 'Medical history and additional details',
+    'onTap': () => {},
+  },
 ];
 
 List<Widget> esrStepperWidgets = [
   const ESRHouseholdGeolocation(),
   const ESRBenefits(),
   const ESRHouseholdDemographic(),
+  const ESRFamilyDetails(),
 ];

@@ -1,6 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
+
+import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
+import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
@@ -21,23 +25,18 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  List<Map<String, String>> formsList = [
-    {'formType': 'form1a', 'endpoint': 'F1A'},
-    {'formType': 'form1b', 'endpoint': 'F1B'},
-  ];
+  List<String> orgUnits = [];
 
-  late int formOneACount = 0;
-  late int formOneBCount = 0;
-  late int cparaCount = 0;
-  late int ovcSubpopulatoiCount = 0;
-  late int cptCount = 0;
+  @override
+  void initState() {
+    super.initState();
 
-  // late int
-  int? updatedCountA = 0;
-  int? updatedCountB = 0;
-  int? updatedCountCpara = 0;
-  int? updatedCountOvcSubpopulation = 0;
-  int? updatedCptCount = 0;
+    Future.delayed(Duration.zero, () async {
+      final data = await getOrganizationalUnits(null);
+      orgUnits = data.map((e) => e.name ?? "-").toList();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +55,9 @@ class _HomepageState extends State<Homepage> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   children: [
                     const SizedBox(height: 20),
-                    const Text(
-                      'Mathare - Dashboard',
-                      style: TextStyle(
+                    Text(
+                      preferences.getString("org_unit") ?? "-",
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -83,7 +82,9 @@ class _HomepageState extends State<Homepage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            onTap: () {})
+                            onTap: () {
+                              syncData();
+                            })
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -95,14 +96,11 @@ class _HomepageState extends State<Homepage> {
                         secondaryColor: Color(0xff630122),
                       ),
                     StatisticsItem(
-                      title: 'UNSYNCED RECORDS',
+                      title: 'ORGANISATIONS',
                       icon: FontAwesomeIcons.arrowsRotate,
                       color: const Color(0xffa10036),
                       secondaryColor: const Color(0xff630122),
-                      form1ACount: 1,
-                      form1BCount: 1,
-                      cpaCount: 1,
-                      cparaCount: 1,
+                      otherItems: orgUnits,
                       onClick: () {},
                     ),
                     // StatisticsItem(
@@ -159,44 +157,46 @@ class _HomepageState extends State<Homepage> {
                         //   color: Color(0xff49B6D5),
                         //   secondaryColor: Color(0xff2C6E80),
                         // ),
-                        const StatisticsGridItem(
+                        StatisticsGridItem(
                           title: 'Org Unit Id',
-                          value: "11010",
+                          value: preferences.getString("org_unit_id") ?? "0",
                           icon: FontAwesomeIcons.orcid,
                           color: Colors.black54,
                           secondaryColor: Colors.black87,
                         ),
-                        const StatisticsGridItem(
+                        StatisticsGridItem(
                           title: 'ACTIVE OVC',
-                          value: '5116',
+                          value: preferences.getString("children") ?? "0",
                           icon: FontAwesomeIcons.person,
                           color: kPrimaryColor,
-                          secondaryColor: Color(0xff0E6668),
-                        ),
-                        const StatisticsGridItem(
-                          title: 'CAREGIVERS/GUARDIANS',
-                          value: "10",
-                          icon: FontAwesomeIcons.peopleGroup,
-                          color: Color(0xff348FE2),
-                          secondaryColor: Color(0xff1F5788),
-                        ),
-                        const StatisticsGridItem(
-                          title: 'WORKFORCE MEMBERS',
-                          value: "100",
-                          icon: Icons.people,
-                          color: Color(0xff727DB6),
-                          secondaryColor: Color(0xff454A6D),
-                        ),
-                        const StatisticsGridItem(
-                          title: 'ORG UNITS/CBOs',
-                          value: "10",
-                          icon: FontAwesomeIcons.landmark,
-                          color: Color(0xff49B6D5),
-                          secondaryColor: Color(0xff2C6E80),
+                          secondaryColor: const Color(0xff0E6668),
                         ),
                         StatisticsGridItem(
-                          title: 'HOUSEHOLDS',
-                          value: "10",
+                          title: 'CAREGIVERS/GUARDIANS',
+                          value: preferences.getString("caregivers") ?? "0",
+                          icon: FontAwesomeIcons.peopleGroup,
+                          color: const Color(0xff348FE2),
+                          secondaryColor: const Color(0xff1F5788),
+                        ),
+                        StatisticsGridItem(
+                          title: 'WORKFORCE MEMBERS',
+                          value:
+                              preferences.getString("workforce_members") ?? "0",
+                          icon: Icons.people,
+                          color: const Color(0xff727DB6),
+                          secondaryColor: const Color(0xff454A6D),
+                        ),
+                        StatisticsGridItem(
+                          title: 'ORG UNITS/CBOs',
+                          value:
+                              preferences.getString("org_units_count") ?? "0",
+                          icon: FontAwesomeIcons.landmark,
+                          color: const Color(0xff49B6D5),
+                          secondaryColor: const Color(0xff2C6E80),
+                        ),
+                        StatisticsGridItem(
+                          title: 'NGO',
+                          value: preferences.getString("ngo") ?? "-",
                           icon: FontAwesomeIcons.house,
                           color: const Color(0xffFE5C57),
                           secondaryColor: const Color(0xff9A3734),

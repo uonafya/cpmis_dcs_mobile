@@ -1,5 +1,9 @@
+import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants/constants.dart';
@@ -23,7 +27,7 @@ class LocalDB {
       final path = join(dbPath, filePath);
       return await openDatabase(
         path,
-        version: 5,
+        version: 7,
         onCreate: _initialise,
         onUpgrade: (db, oldVersion, newVersion) {
           if (oldVersion < newVersion) {
@@ -73,7 +77,7 @@ class LocalDB {
 
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $childTable(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             firstName TEXT NOT NULL,
             surname TEXT NOT NULL,
             othername TEXT,
@@ -143,8 +147,8 @@ class LocalDB {
             reportingSubcountyID INTEGER NOT NULL,
             reportingOrgUnitID INTEGER NOT NULL,          
             dateCaseReported TEXT NOT NULL,
-            childID INTEGER NOT NULL,
-            countryID INTEGER NOT NULL,
+            childID TEXT NOT NULL,
+            country TEXT,
             city TEXT,
             houseEconomic TEXT NOT NULL,
             mentalConditionStatus TEXT NOT NULL,
@@ -159,7 +163,6 @@ class LocalDB {
             FOREIGN KEY(subCountyID) REFERENCES geolocations(id),
             FOREIGN KEY(wardID) REFERENCES geolocations(id),
             FOREIGN KEY(sublocationID) REFERENCES geolocations(id),
-            FOREIGN KEY(countryID) REFERENCES geolocations(id),
             FOREIGN KEY(reportingSubcountyID) REFERENCES geolocations(id),
             FOREIGN KEY(childID) REFERENCES people(id),
             FOREIGN KEY(reportingOrgUnitID) REFERENCES geolocations(id)
@@ -236,7 +239,9 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $categoriesTable (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            subcategory TEXT,
+            orderNo INTEGER
           );
        ''');
 
@@ -254,7 +259,9 @@ class LocalDB {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             formID TEXT NOT NULL,
             categoryID TEXT NOT NULL,
-            condition TEXT NOT NULL,
+            placeOfEvent TEXT NOT NULL,
+            caseNature TEXT NOT NULL,
+            dateOfEvent TEXT NOT NULL,
             FOREIGN KEY(categoryID) REFERENCES categories(id),
             FOREIGN KEY(formID) REFERENCES crs(id)
           );
@@ -299,11 +306,20 @@ class LocalDB {
           );
        ''');
 
+    await db.execute('''
+        CREATE TABLE IF NOT EXISTS $crsFormPerpetrators (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            formID TEXT NOT NULL,
+            perpetratorID INT NOT NULL,
+            FOREIGN KEY(formID) REFERENCES crs(id),
+            FOREIGN KEY(perpetratorID) REFERENCES $perpetratorTable(id)
+        );
+        ''');
+
     // Creating registry tables
-
-
     await db.execute('''
       CREATE TABLE IF NOT EXISTS $registryFormDetails (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
         personType TEXT NOT NULL,
         isCaregiver BOOLEAN,
         childOVCProgram BOOLEAN NOT NULL,
@@ -312,6 +328,7 @@ class LocalDB {
         otherNames TEXT,
         sex TEXT NOT NULL,
         dateOfBirth TEXT NOT NULL,
+        childClass Text NOT NULL,
         registryIdentificationModel TEXT NOT NULL,
         registryContactDetailsModel TEXT NOT NULL,
         registryLocationModel TEXT NOT NULL,
@@ -321,79 +338,6 @@ class LocalDB {
         workforceIdName TEXT NOT NULL,
         datePaperFormFilled TEXT NOT NULL
       );
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registrtPersonalDetails (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      personType TEXT,
-      isCaregiver BOOLEAN,
-      childOVCProgram BOOLEAN,
-      firstName TEXT,
-      surname TEXT,
-      otherNames TEXT,
-      sex TEXT,
-      dateOfBirth TEXT,
-      workforceIdName TEXT,
-      datePaperFormFilled TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryIdentificationTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      birthRegistrationNumber TEXT,
-      givenName TEXT,
-      countryOfOrigin TEXT,
-      tribe TEXT,
-      religion TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryContactTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      designatedPhoneNumber TEXT,
-      otherMobileNumber TEXT,
-      emailAddress TEXT,
-      physicalLocation TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryLocationTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      county TEXT,
-      subCounty TEXT,
-      ward TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryCaregiverTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      relationship TEXT,
-      contactNumber TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registrySiblingTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      age INTEGER,
-      gender TEXT
-    )
-    ''');
-
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS $registryCboChvTable (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      cboParentUnit TEXT,
-      ovcProgramEnrollment TEXT,
-      chv TEXT
-    )
     ''');
 
     await db.execute('''
@@ -462,7 +406,91 @@ class LocalDB {
             ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
             ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
             );
+
+            
     ''');
+
+    // Organization unit
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $organizationUnitsTable (
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        name TEXT,
+        primaryUnit INTEGER
+       );
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $caseClosureTable(
+        ${CaseClosureTable.caseID} TEXT PRIMARY KEY,
+        ${CaseClosureTable.caseOutcome} TEXT,
+        ${CaseClosureTable.transferredTo} TEXT,
+        ${CaseClosureTable.caseClosureNotes} TEXT,
+        ${CaseClosureTable.dateOfCaseClosure} TEXT,
+        ${CaseClosureTable.interventionList} TEXT
+      );
+    ''');
+
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
+    ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.encounterNotes} TEXT,
+    ${ServiceFollowupTable.caseCategoryId} TEXT,
+    ${ServiceFollowupTable.serviceProvidedList} TEXT
+  );
+''');
+
+    await db.execute('''
+  CREATE TABLE IF NOT EXISTS $courtSessionTable(
+    ${CourtSessionTable.courtSessionCase} TEXT PRIMARY KEY,
+    ${CourtSessionTable.courtSessionType} TEXT,
+    ${CourtSessionTable.dateOfCourtEvent} TEXT,
+    ${CourtSessionTable.courtNotes} TEXT,
+    ${CourtSessionTable.nextHearingDate} TEXT,
+    ${CourtSessionTable.nextMentionDate} TEXT,
+    ${CourtSessionTable.pleaTaken} TEXT,
+    ${CourtSessionTable.applicationOutcome} TEXT,
+    ${CourtSessionTable.courtOutcome} TEXT,
+    ${CourtSessionTable.courtOrder} TEXT
+  );
+''');
+
+    // Social Inquiry
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $socialInquiryTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        case_recommendation TEXT,
+        case_history TEXT,
+        sub_county_children_office TEXT,
+        case_observation TEXT,
+        officer_name TEXT,
+        officer_phone TEXT,
+        date_of_social_inquiry TEXT,
+        case_id TEXT,
+        form_id TEXT
+
+      );
+    ''');
+  }
+
+  //Insert social inquiry form data
+  Future<void> insertSocialInquiryForm(
+      SocialInquiryFormModel socialInquiryForm) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert(
+        socialInquiryTable,
+        socialInquiryForm.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
+
   }
 
   // insert multiple caseload records
@@ -559,6 +587,8 @@ class LocalDB {
     }
   }
 }
+
+var localdb = LocalDB._init();
 
 class CaseLoadTableFields {
   static final List<String> values = [
@@ -669,5 +699,3 @@ class CaseCategoriesTable {
   static const String placeOfEvent = 'place_of_event';
   static const String caseNature = 'case_nature';
 }
-
-var localdb = LocalDB._init();

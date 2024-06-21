@@ -2,7 +2,7 @@ class RegistrySiblingModel {
   String firstName;
   String surName;
   String? otherNames;
-  DateTime? dateOfBirth;
+  String? dateOfBirth;
   String sex;
   String currentClass;
   String? remarks;
@@ -39,5 +39,16 @@ class RegistrySiblingModel {
       currentClass: json['currentClass'],
       remarks: json['remarks'],
     );
+  }
+
+  void clear() {
+    firstName = "";
+    surName = "";
+    otherNames = null;
+    dateOfBirth = null;
+    sex = "";
+    currentClass = "";
+    remarks = null;
+
   }
 }

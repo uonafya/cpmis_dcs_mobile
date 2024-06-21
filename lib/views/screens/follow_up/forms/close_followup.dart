@@ -1,3 +1,5 @@
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -32,9 +34,11 @@ class _CourtFollowUpState extends State<CloseFollowup> {
   List<dynamic> selectedServices = [];
   String? dateOfService;
 
+  final ClosureDatabaseHelper closureDatabaseHelper = ClosureDatabaseHelper();
+
   void handleAddService() async {
     // caseID captured from elsewhere
-    String? caseId = "SomeCaseId";
+    String? caseId = "1233";
 
     if (courtSessionType == "Please select") {
       Get.snackbar("Error", "Please select a court session type.");
@@ -65,12 +69,11 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
     print(closureFollowupModel.toJson());
 
-    // Convert model to JSON
-    Map<String, dynamic> dataToSend = closureFollowupModel.toJson();
-
     try {
-      // Placeholder for sending data to backend
-      // final response = await YourService.sendClosureFollowup(dataToSend);
+      print('Db initialization & saving to closure...');
+      var db = await localdb.database;
+      await closureDatabaseHelper.insertClosureFollowup(closureFollowupModel);
+      print('Saved to closure :)');
 
       Get.back(); // Navigate back
       Get.snackbar("Success", "Case closure saved successfully.");
@@ -156,8 +159,66 @@ class _CourtFollowUpState extends State<CloseFollowup> {
           ),
           CustomButton(text: "Save", onTap: handleAddService),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
+          // TODO: REMOVE IN PRODUCTION
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Upstream Test Syncing...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Sync',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         final ClosureFollowupModel? closureFollowupModel =
+          //             await closureDatabaseHelper
+          //                 .getClosureFollowup("SomeCaseId");
+
+          //         print(closureFollowupModel?.caseId);
+          //       },
+          //     )
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     const Text(
+          //       'Deletion Test...',
+          //       style: TextStyle(color: Colors.grey),
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //     GestureDetector(
+          //       child: const Text(
+          //         'Delete',
+          //         style: TextStyle(
+          //           color: Colors.red,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       onTap: () async {
+          //         try {
+          //           await closureDatabaseHelper.deleteClosureFollowup("1233");
+          //           Get.snackbar("Success", "Delete successful.");
+          //         } catch (e) {
+          //           Get.snackbar("Error", "Failed to delete.");
+          //         }
+          //       },
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );

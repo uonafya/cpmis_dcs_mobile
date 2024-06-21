@@ -274,3 +274,10 @@ List<String> reasonOptions = [
 ];
 
 List<String> sexOptions = [pleaseSelect, "Male", "Female", "Other"];
+
+YesNo boolToYesNo(bool? item) {
+  if (item == true) {
+    return YesNo.yes;
+  }
+  return YesNo.no;
+}

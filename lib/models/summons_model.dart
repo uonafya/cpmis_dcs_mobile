@@ -21,12 +21,12 @@ class CourtSummonsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['honoured'] = this.honoured;
-    data['honoured_date'] = this.honouredDate;
-    data['summon_date'] = this.summonDate;
-    data['summon_note'] = this.summonNote;
-    data['case_id'] = this.caseId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['honoured'] = honoured;
+    data['honoured_date'] = honouredDate;
+    data['summon_date'] = summonDate;
+    data['summon_note'] = summonNote;
+    data['case_id'] = caseId;
     return data;
   }
 }

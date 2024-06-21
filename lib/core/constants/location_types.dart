@@ -6,9 +6,9 @@ extension LocationTypesExtension on LocationTypes {
       case LocationTypes.country:
         return "country";
       case LocationTypes.county:
-        return "county";
+        return "GPRV";
       case LocationTypes.subcounty:
-        return "subcounty";
+        return "GDIS";
       case LocationTypes.location:
         return "location";
       case LocationTypes.sublocation:
@@ -16,7 +16,7 @@ extension LocationTypesExtension on LocationTypes {
       case LocationTypes.orgunit:
         return "orgunit";
       case LocationTypes.ward:
-        return "ward";
+        return "GWRD";
       default:
         throw "Invalid Location Type";
     }

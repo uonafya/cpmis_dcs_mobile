@@ -1,4 +1,5 @@
-import 'package:cpims_dcs_mobile/views/screens/esr/lists.dart';
+import 'package:cpims_dcs_mobile/core/network/locations.dart';
+import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,13 +14,38 @@ class ESRHouseholdGeolocation extends StatefulWidget {
 
 class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
   String selectedCounty = 'Please select';
-  String selectedConstituency = 'Please select';
+
   String selectedSubCounty = 'Please select';
+  String location = 'Please select';
   String selectedSubLocation = 'Please select';
   String selectedVillage = 'Please select';
   final villageElderController = TextEditingController();
   final nearestChurchMosqueController = TextEditingController();
   final nearestSchoolController = TextEditingController();
+  List<NameID> counties = [
+    const NameID(name: 'Please select', id: '1'),
+  ];
+  List<NameID> consistuency = [
+    const NameID(name: 'Please select', id: '1'),
+  ];
+  List<NameID> subCounty = [
+    const NameID(name: 'Please select', id: '1'),
+  ];
+  List<NameID> locationList = [
+    const NameID(name: 'Please select', id: '1'),
+  ];
+  List<NameID> subLocation = [
+    const NameID(name: 'Please select', id: '1'),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      counties = await getCounties();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +61,16 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
           ),
           CustomDropdown(
               initialValue: selectedCounty,
-              items: countyList,
-              onChanged: (val) {
-                setState(() {
-                  selectedCounty = val;
-                });
+              items: counties.map((e) => e.name).toList(),
+              onChanged: (val) async {
+                selectedCounty = val;
+                selectedSubCounty = 'Please select';
+                selectedSubLocation = 'Please select';
+                location = 'Please select';
+
+                final values = await getSubCountiesOfCounty(selectedCounty);
+                subCounty.addAll(values);
+                setState(() {});
               }),
           if (selectedCounty != 'Please select')
             const SizedBox(
@@ -47,101 +78,92 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
             ),
           if (selectedCounty != 'Please select')
             const Text(
-              'Constituency *',
-            ),
-          if (selectedCounty != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (selectedCounty != 'Please select')
-            CustomDropdown(
-                initialValue: selectedCounty,
-                items: countyList,
-                onChanged: (val) {
-                  setState(() {
-                    selectedConstituency = val;
-                  });
-                }),
-          if (selectedConstituency != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
-          if (selectedConstituency != 'Please select')
-            const Text(
               'Sub County *',
             ),
-          if (selectedConstituency != 'Please select')
+          if (selectedCounty != 'Please select')
             const SizedBox(
               height: 10,
             ),
-          if (selectedConstituency != 'Please select')
+          if (selectedCounty != 'Please select')
             CustomDropdown(
-                initialValue: selectedCounty,
-                items: countyList,
-                onChanged: (val) {
-                  setState(() {
-                    selectedSubCounty = val;
-                  });
+                initialValue: selectedSubCounty,
+                items: subCounty.map((e) => e.name).toList(),
+                onChanged: (val) async {
+                  selectedSubCounty = val;
+
+                  selectedSubLocation = 'Please select';
+                  location = 'Please select';
+                  final values =
+                      await getLocationsFromSubCounty(selectedCounty);
+                  print(values);
+                  locationList.addAll(values);
+
+                  setState(() {});
                 }),
           const SizedBox(
             height: 14,
           ),
           if (selectedSubCounty != 'Please select')
             const Text(
+              'Location *',
+            ),
+          if (selectedSubCounty != 'Please select')
+            const SizedBox(
+              height: 10,
+            ),
+          if (selectedSubCounty != 'Please select')
+            CustomDropdown(
+                initialValue: location,
+                items: locationList.map((e) => e.name).toList(),
+                onChanged: (val) async {
+                  location = val;
+
+                  selectedSubLocation = 'Please select';
+
+                  final values = await getSubCountiesOfCounty(selectedCounty);
+                  subLocation.addAll(values);
+
+                  setState(() {});
+                }),
+          if (selectedSubCounty != 'Please select')
+            const SizedBox(
+              height: 14,
+            ),
+          if (location != 'Please select')
+            const Text(
               'Sub Location *',
             ),
-          if (selectedCounty != 'Please select')
+          if (location != 'Please select')
             const SizedBox(
               height: 10,
             ),
-          if (selectedSubCounty != 'Please select')
+          if (location != 'Please select')
             CustomDropdown(
-                initialValue: selectedCounty,
-                items: countyList,
-                onChanged: (val) {
-                  setState(() {
-                    selectedSubLocation = val;
-                  });
+                initialValue: selectedSubLocation,
+                items: subLocation.map((e) => e.name).toList(),
+                onChanged: (val) async {
+                  selectedSubLocation = val;
+
+                  setState(() {});
                 }),
-          if (selectedSubCounty != 'Please select')
+          if (location != 'Please select')
             const SizedBox(
               height: 14,
             ),
           if (selectedSubLocation != 'Please select')
-            const Text(
-              'Village *',
-            ),
-          if (selectedSubLocation != 'Please select')
-            const SizedBox(
-              height: 10,
-            ),
-          if (selectedSubLocation != 'Please select')
-            CustomDropdown(
-                initialValue: selectedCounty,
-                items: countyList,
-                onChanged: (val) {
-                  setState(() {
-                    selectedVillage = val;
-                  });
-                }),
-          if (selectedVillage != 'Please select')
-            const SizedBox(
-              height: 14,
-            ),
-          if (selectedVillage != 'Please select')
             const Text(
               'Village Elder',
             ),
-          if (selectedVillage != 'Please select')
+          if (selectedSubLocation != 'Please select')
             const SizedBox(
               height: 10,
             ),
-          if (selectedVillage != 'Please select')
+          if (selectedSubLocation != 'Please select')
             CustomTextField(
               hintText: 'Village Elder',
               controller: villageElderController,
             ),
-          if (selectedVillage != 'Please select')
+          if (selectedSubLocation != 'Please select')
             const SizedBox(
               height: 14,
             ),
