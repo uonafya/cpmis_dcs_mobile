@@ -129,7 +129,9 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 await saveCategoriesInDB();
               },
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Row(
               children: <Widget>[
                 Expanded(

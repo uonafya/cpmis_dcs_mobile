@@ -18,9 +18,11 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.hintText,
     this.onFieldSubmitted,
+    this.keyboardType,
   });
 
   final String? labelText;
+  final TextInputType? keyboardType;
   final String? hintText;
   final Function(String val)? onChanged;
   final IconData? prefixIcon;
@@ -50,6 +52,7 @@ class CustomTextField extends StatelessWidget {
       enabled: enabled,
       initialValue: initialValue,
       cursorColor: kPrimaryColor,
+      keyboardType: keyboardType,
       textInputAction: textInputAction,
       textAlignVertical: TextAlignVertical.center,
       maxLines: maxLines,
