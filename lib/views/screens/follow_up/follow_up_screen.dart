@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/case_event_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_actions.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
@@ -38,7 +39,11 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: customAppBar(),
+      drawer: const Drawer(
+        child: CustomDrawer(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Column(
