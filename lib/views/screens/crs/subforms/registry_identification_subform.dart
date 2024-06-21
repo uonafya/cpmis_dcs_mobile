@@ -20,19 +20,16 @@ class RegistryIdentificationSubform extends StatefulWidget {
 class _RegistryIdentificationSubformState
     extends State<RegistryIdentificationSubform> {
   List<String> countryCriteria = [
-    'Please Select',
     'Kenya',
     'Tanzania',
     'Ethopia',
   ];
   List<String> tribeCriteria = [
-    'Please Select',
     'Kikuyu',
     'Kamba',
     'Kalenjin',
   ];
   List<String> religionCriteria = [
-    'Please Select',
     'Christian',
     'Muslim',
     'Buddhist',
@@ -40,7 +37,7 @@ class _RegistryIdentificationSubformState
     'Other',
   ];
 
-  String selectedCountry = 'Kenya';
+  String selectedCountry = 'Please Select';
   String selectedTribe = 'Please Select';
   String selectedReligion = 'Please Select';
 
@@ -97,25 +94,38 @@ class _RegistryIdentificationSubformState
             setState(() {
               selectedCountry = val;
               registryProvider.setCountryOfOrigin(selectedCountry);
+              if (val != "Kenya") {
+                selectedTribe = "Please Select";
+                registryProvider.setTribe("");
+              }
             });
           },
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        const Divider(),
-        const Text('Tribe:'),
-        const SizedBox(height: 6),
-        CustomDropdown(
-          initialValue: registryProvider.registryIdentificationModel.tribe.isNotEmpty ? registryProvider.registryIdentificationModel.tribe : selectedTribe,
-          items: tribeCriteria,
-          onChanged: (val) {
-            setState(() {
-              selectedTribe = val;
-              registryProvider.setTribe(selectedTribe);
-            });
-          },
-        ),
+        selectedCountry == "Kenya"
+        ?
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              const Divider(),
+              const Text('Tribe:'),
+              const SizedBox(height: 6),
+              CustomDropdown(
+                initialValue: registryProvider.registryIdentificationModel.tribe.isNotEmpty ? registryProvider.registryIdentificationModel.tribe : selectedTribe,
+                items: tribeCriteria,
+                onChanged: (val) {
+                  setState(() {
+                    selectedTribe = val;
+                    registryProvider.setTribe(selectedTribe);
+                  });
+                },
+              ),
+            ],
+          )
+        :
+          Container(),
         const SizedBox(
           height: 15,
         ),

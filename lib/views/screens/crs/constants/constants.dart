@@ -260,7 +260,6 @@ const genders = [
 // end of variables for CCI Transition tools
 
 List<String> childClass = [
-  "Please Select",
   "NOT IN SCHOOL",
   "ECDE - Baby Class",
   "ECDE - Middle Class",

@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.maxLines = 1,
     this.hintText,
+    this.error,
     this.onFieldSubmitted,
     this.keyboardType,
   });
@@ -34,6 +35,7 @@ class CustomTextField extends StatelessWidget {
   final String? initialValue;
   final TextEditingController? controller;
   final int maxLines;
+  final String? error;
   final void Function(String)? onFieldSubmitted;
 
   @override
@@ -57,6 +59,7 @@ class CustomTextField extends StatelessWidget {
       textAlignVertical: TextAlignVertical.center,
       maxLines: maxLines,
       decoration: InputDecoration(
+        errorText: error,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         labelText: labelText,
@@ -79,6 +82,11 @@ class CustomTextField extends StatelessWidget {
           color: Colors.black,
           fontSize: 18.0,
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: const BorderSide(color: Colors.redAccent),
+        ),
+        errorStyle: const TextStyle(color: Colors.redAccent),
         prefixIcon: prefixIcon != null
             ? Icon(
                 prefixIcon,
