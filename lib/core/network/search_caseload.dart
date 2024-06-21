@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
 import 'package:flutter/foundation.dart';
 
 class SearchCaseLoad {
@@ -35,13 +40,128 @@ class SearchCaseLoad {
       );
 
       if (ovcQuery.isNotEmpty) {
-        List<CaseLoadModel> ovcData = [];
+        List<CaseLoadModel> ovcDataList = [];
 
         for (var ovc in ovcQuery) {
-          ovcData.add(CaseLoadModel.fromJson(ovc));
+          // Decode JSON fields
+          Map<String, dynamic> ovcData = Map<String, dynamic>.from(ovc);
+
+          if (ovcData[CaseLoadTableFields.perpetrators] != null) {
+            ovcData[CaseLoadTableFields.perpetrators] =
+                (jsonDecode(ovcData[CaseLoadTableFields.perpetrators] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => PerpetratorModel.fromJson(e).toJson())
+                    .toList();
+          }
+          // siblings
+          if (ovcData[CaseLoadTableFields.siblings] != null) {
+            ovcData[CaseLoadTableFields.siblings] =
+                (jsonDecode(ovcData[CaseLoadTableFields.siblings] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => SiblingsModel.fromJson(e).toJson())
+                    .toList();
+          }
+
+          // caregivers
+          if (ovcData[CaseLoadTableFields.caregivers] != null) {
+            ovcData[CaseLoadTableFields.caregivers] =
+                (jsonDecode(ovcData[CaseLoadTableFields.caregivers] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => CaregiverModel.fromJson(e).toJson())
+                    .toList();
+          }
+
+          // case categories
+          if (ovcData[CaseLoadTableFields.caseCategories] != null) {
+            ovcData[CaseLoadTableFields.caseCategories] = (jsonDecode(
+                        ovcData[CaseLoadTableFields.caseCategories] as String)
+                    as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // household economic status
+          if (ovcData[CaseLoadTableFields.householdEconomicStatus] != null) {
+            ovcData[CaseLoadTableFields.householdEconomicStatus] = (jsonDecode(
+                    ovcData[CaseLoadTableFields.householdEconomicStatus]
+                        as String) as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // mental condition
+          if (ovcData[CaseLoadTableFields.mentalCondition] != null) {
+            ovcData[CaseLoadTableFields.mentalCondition] = (jsonDecode(
+                        ovcData[CaseLoadTableFields.mentalCondition] as String)
+                    as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // physical condition
+          if (ovcData[CaseLoadTableFields.physicalCondition] != null) {
+            ovcData[CaseLoadTableFields.physicalCondition] = (jsonDecode(
+                    ovcData[CaseLoadTableFields.physicalCondition]
+                        as String) as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // other condition
+          if (ovcData[CaseLoadTableFields.otherCondition] != null) {
+            ovcData[CaseLoadTableFields.otherCondition] = (jsonDecode(
+                        ovcData[CaseLoadTableFields.otherCondition] as String)
+                    as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // immediate needs
+          if (ovcData[CaseLoadTableFields.immediateNeeds] != null) {
+            ovcData[CaseLoadTableFields.immediateNeeds] = (jsonDecode(
+                        ovcData[CaseLoadTableFields.immediateNeeds] as String)
+                    as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList();
+          }
+
+          // future needs
+          if (ovcData[CaseLoadTableFields.futureNeeds] != null) {
+            ovcData[CaseLoadTableFields.futureNeeds] =
+                (jsonDecode(ovcData[CaseLoadTableFields.futureNeeds] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => e.toString())
+                    .toList();
+          }
+
+          // friends
+          if (ovcData[CaseLoadTableFields.friends] != null) {
+            ovcData[CaseLoadTableFields.friends] =
+                (jsonDecode(ovcData[CaseLoadTableFields.friends] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => e.toString())
+                    .toList();
+          }
+
+          // hobbies
+          if (ovcData[CaseLoadTableFields.hobbies] != null) {
+            ovcData[CaseLoadTableFields.hobbies] =
+                (jsonDecode(ovcData[CaseLoadTableFields.hobbies] as String)
+                        as List<dynamic>?)
+                    ?.map((e) => e.toString())
+                    .toList();
+          }
+
+          // Convert summonStatus from 1/0 to true/false
+          if (ovcData[CaseLoadTableFields.summonStatus] != null) {
+            ovcData[CaseLoadTableFields.summonStatus] =
+                ovcData[CaseLoadTableFields.summonStatus] == 1 ? true : false;
+          }
+
+          ovcDataList.add(CaseLoadModel.fromJson(ovcData));
         }
 
-        return ovcData;
+        return ovcDataList;
       } else {
         return null;
       }

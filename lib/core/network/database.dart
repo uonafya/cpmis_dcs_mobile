@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
-import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
@@ -343,73 +344,57 @@ class LocalDB {
     ''');
 
     await db.execute('''
-        CREATE TABLE IF NOT EXISTS $caregiverCaseLoadTable (
-            ${CaregiversCaseloadTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-            ${CaregiversCaseloadTable.caseID} TEXT NOT NULL,
-            ${CaregiversCaseloadTable.caregiverCpimsId} TEXT NOT NULL,
-            ${CaregiversCaseloadTable.relationshipType} TEXT NOT NULL,
-            ${CaregiversCaseloadTable.guardianPerson} TEXT NOT NULL,
-            ${CaregiversCaseloadTable.dateLinked} TEXT NOT NULL,
-            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
-          );
-       ''');
-
-    await db.execute('''
-        CREATE TABLE IF NOT EXISTS $siblingsCaseLoadTable (
-            ${SiblingsCaseLoadTable.id} INTEGER PRIMARY KEY,
-            ${SiblingsCaseLoadTable.caseID} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.childPersonId} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.siblingPersonId} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.dateLinked} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.dateDelinked} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.remarks} TEXT NOT NULL,
-            ${SiblingsCaseLoadTable.isVoid} INTEGER NOT NULL,
-            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
-          );
-       ''');
-
-    await db.execute('''
-        CREATE TABLE IF NOT EXISTS $perpetratorCaseLoadTable(
-            ${PerpetratorsCaseloadTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-            ${PerpetratorsCaseloadTable.caseID} TEXT NOT NULL,
-            ${PerpetratorsCaseloadTable.firstName} TEXT NOT NULL,
-            ${PerpetratorsCaseloadTable.surName} TEXT NOT NULL,
-            ${PerpetratorsCaseloadTable.ovcOtherNames} TEXT,
-            ${PerpetratorsCaseloadTable.relationshipType} TEXT,
-            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
-          );
-       ''');
-
-    await db.execute('''
-        CREATE TABLE IF NOT EXISTS $caseLoadCategoryTable(
-            ${CaseCategoriesTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-            ${CaseCategoriesTable.caseID} TEXT NOT NULL,
-            ${CaseCategoriesTable.caseCaregory} TEXT NOT NULL,
-            ${CaseCategoriesTable.dateOfEvent} TEXT NOT NULL,
-            ${CaseCategoriesTable.placeOfEvent} TEXT NOT NULL,
-            ${CaseCategoriesTable.caseNature} TEXT,
-            FOREIGN KEY(case_id) REFERENCES $caseLoadTable(${CaseLoadTableFields.caseID})
-          );
-       ''');
-
-    await db.execute('''
         CREATE TABLE IF NOT EXISTS $caseLoadTable (
+            ${CaseLoadTableFields.orgUnitName} TEXT,
+            ${CaseLoadTableFields.orgUnitId} INTEGER,
+            ${CaseLoadTableFields.reportSubCountyName} TEXT,
+            ${CaseLoadTableFields.reportSubCountyId} INTEGER,
+            ${CaseLoadTableFields.occurrenceCountyName} TEXT,
+            ${CaseLoadTableFields.occurrenceCountyId} INTEGER,
+            ${CaseLoadTableFields.occurrenceSubCountyName} TEXT,
+            ${CaseLoadTableFields.occurrenceSubCountyId} INTEGER,
+            ${CaseLoadTableFields.occurrenceWardName} TEXT,
+            ${CaseLoadTableFields.occurrenceVillageName} TEXT,
             ${CaseLoadTableFields.caseID} TEXT PRIMARY KEY,
-            ${CaseLoadTableFields.caseSerial} TEXT NOT NULL,
-            ${CaseLoadTableFields.caseReporter} TEXT NOT NULL,
-            ${CaseLoadTableFields.ovcCpimsId} TEXT NOT NULL,
-            ${CaseLoadTableFields.ovcFirstName} TEXT NOT NULL,
-            ${CaseLoadTableFields.ovcSurname} TEXT NOT NULL,
-            ${CaseLoadTableFields.ovcOtherNames} TEXT NOT NULL,
-            ${CaseLoadTableFields.ovcSex} TEXT NOT NULL,
-            ${CaseLoadTableFields.perpetratorStatus} TEXT NOT NULL,
-            ${CaseLoadTableFields.riskLevel} TEXT NOT NULL,
-            ${CaseLoadTableFields.dateCaseOpened} TEXT NOT NULL,
-            ${CaseLoadTableFields.caseStatus} TEXT NOT NULL,
-            ${CaseLoadTableFields.caseRemarks} TEXT NOT NULL
-            );
-
-            
+            ${CaseLoadTableFields.caseSerial} TEXT,
+            ${CaseLoadTableFields.perpetratorStatus} TEXT,
+            ${CaseLoadTableFields.perpetrators} TEXT,
+            ${CaseLoadTableFields.ovcCpimsId} TEXT,
+            ${CaseLoadTableFields.ovcFirstName} TEXT,
+            ${CaseLoadTableFields.ovcSurname} TEXT,
+            ${CaseLoadTableFields.ovcOtherNames} TEXT,
+            ${CaseLoadTableFields.ovcSex} TEXT,
+            ${CaseLoadTableFields.siblings} TEXT,
+            ${CaseLoadTableFields.caregivers} TEXT,
+            ${CaseLoadTableFields.caseCategories} TEXT,
+            ${CaseLoadTableFields.riskLevel} TEXT,
+            ${CaseLoadTableFields.dateCaseOpened} TEXT,
+            ${CaseLoadTableFields.caseReporterfirstName} TEXT,
+            ${CaseLoadTableFields.caseReporterOtherNames} TEXT,
+            ${CaseLoadTableFields.caseReporterSurName} TEXT,
+            ${CaseLoadTableFields.caseReporterContacts} TEXT,
+            ${CaseLoadTableFields.caseReporter} TEXT,
+            ${CaseLoadTableFields.courtName} TEXT,
+            ${CaseLoadTableFields.courtNumber} TEXT,
+            ${CaseLoadTableFields.policeStationName} TEXT,
+            ${CaseLoadTableFields.obNumber} TEXT,
+            ${CaseLoadTableFields.caseStatus} TEXT,
+            ${CaseLoadTableFields.referralPresent} TEXT,
+            ${CaseLoadTableFields.timeStampCreated} TEXT,
+            ${CaseLoadTableFields.createdBy} TEXT,
+            ${CaseLoadTableFields.personId} TEXT,
+            ${CaseLoadTableFields.caseRemarks} TEXT,
+            ${CaseLoadTableFields.dateOfSummon} TEXT,
+            ${CaseLoadTableFields.summonStatus} INTEGER,
+            ${CaseLoadTableFields.householdEconomicStatus} TEXT,
+            ${CaseLoadTableFields.mentalCondition} TEXT,
+            ${CaseLoadTableFields.physicalCondition} TEXT,
+            ${CaseLoadTableFields.otherCondition} TEXT,
+            ${CaseLoadTableFields.immediateNeeds} TEXT,
+            ${CaseLoadTableFields.futureNeeds} TEXT,
+            ${CaseLoadTableFields.friends} TEXT,
+            ${CaseLoadTableFields.hobbies} TEXT
+            );  
     ''');
 
     // Organization unit
@@ -529,78 +514,83 @@ class LocalDB {
         batch.insert(
           caseLoadTable,
           {
+            CaseLoadTableFields.orgUnitName: caseLoadModel.orgUnitName,
+            CaseLoadTableFields.orgUnitId: caseLoadModel.orgUnitId,
+            CaseLoadTableFields.reportSubCountyName:
+                caseLoadModel.reportSubCountyName,
+            CaseLoadTableFields.reportSubCountyId:
+                caseLoadModel.reportSubCountyId,
+            CaseLoadTableFields.occurrenceCountyName:
+                caseLoadModel.occurrenceCountyName,
+            CaseLoadTableFields.occurrenceCountyId:
+                caseLoadModel.occurrenceCountyId,
+            CaseLoadTableFields.occurrenceSubCountyName:
+                caseLoadModel.occurrenceSubCountyName,
+            CaseLoadTableFields.occurrenceSubCountyId:
+                caseLoadModel.occurrenceSubCountyId,
+            CaseLoadTableFields.occurrenceWardName:
+                caseLoadModel.occurrenceWardName,
+            CaseLoadTableFields.occurrenceVillageName:
+                caseLoadModel.occurrenceVillageName,
             CaseLoadTableFields.caseID: caseLoadModel.caseID,
             CaseLoadTableFields.caseSerial: caseLoadModel.caseSerial,
-            CaseLoadTableFields.caseReporter: caseLoadModel.caseReporter,
+            CaseLoadTableFields.perpetratorStatus:
+                caseLoadModel.perpetratorStatus,
+            CaseLoadTableFields.perpetrators:
+                jsonEncode(caseLoadModel.perpetrators),
             CaseLoadTableFields.ovcCpimsId: caseLoadModel.ovcCpimsId,
             CaseLoadTableFields.ovcFirstName: caseLoadModel.ovcFirstName,
             CaseLoadTableFields.ovcSurname: caseLoadModel.ovcSurname,
             CaseLoadTableFields.ovcOtherNames: caseLoadModel.ovcOtherNames,
             CaseLoadTableFields.ovcSex: caseLoadModel.ovcSex,
-            CaseLoadTableFields.perpetratorStatus:
-                caseLoadModel.perpetratorStatus,
+            CaseLoadTableFields.siblings: jsonEncode(caseLoadModel.siblings),
+            CaseLoadTableFields.caregivers:
+                jsonEncode(caseLoadModel.caregivers),
+            CaseLoadTableFields.caseCategories:
+                jsonEncode(caseLoadModel.caseCategories),
             CaseLoadTableFields.riskLevel: caseLoadModel.riskLevel,
             CaseLoadTableFields.dateCaseOpened: caseLoadModel.dateCaseOpened,
+            CaseLoadTableFields.caseReporterfirstName:
+                caseLoadModel.caseReporterfirstName,
+            CaseLoadTableFields.caseReporterOtherNames:
+                caseLoadModel.caseReporterOtherNames,
+            CaseLoadTableFields.caseReporterSurName:
+                caseLoadModel.caseReporterSurName,
+            CaseLoadTableFields.caseReporterContacts:
+                caseLoadModel.caseReporterContacts,
+            CaseLoadTableFields.caseReporter: caseLoadModel.caseReporter,
+            CaseLoadTableFields.courtName: caseLoadModel.courtName,
+            CaseLoadTableFields.courtNumber: caseLoadModel.courtNumber,
+            CaseLoadTableFields.policeStationName:
+                caseLoadModel.policeStationName,
+            CaseLoadTableFields.obNumber: caseLoadModel.obNumber,
             CaseLoadTableFields.caseStatus: caseLoadModel.caseStatus,
+            CaseLoadTableFields.referralPresent: caseLoadModel.referralPresent,
+            CaseLoadTableFields.timeStampCreated:
+                caseLoadModel.timeStampCreated,
+            CaseLoadTableFields.createdBy: caseLoadModel.createdBy,
+            CaseLoadTableFields.personId: caseLoadModel.personId,
             CaseLoadTableFields.caseRemarks: caseLoadModel.caseRemarks,
+            CaseLoadTableFields.dateOfSummon: caseLoadModel.dateOfSummon,
+            CaseLoadTableFields.summonStatus:
+                caseLoadModel.summonStatus == true ? 1 : 0,
+            CaseLoadTableFields.householdEconomicStatus:
+                jsonEncode(caseLoadModel.householdEconomicStatus),
+            CaseLoadTableFields.mentalCondition:
+                jsonEncode(caseLoadModel.mentalCondition),
+            CaseLoadTableFields.physicalCondition:
+                jsonEncode(caseLoadModel.physicalCondition),
+            CaseLoadTableFields.otherCondition:
+                jsonEncode(caseLoadModel.otherCondition),
+            CaseLoadTableFields.immediateNeeds:
+                jsonEncode(caseLoadModel.immediateNeeds),
+            CaseLoadTableFields.futureNeeds:
+                jsonEncode(caseLoadModel.futureNeeds),
+            CaseLoadTableFields.friends: jsonEncode(caseLoadModel.friends),
+            CaseLoadTableFields.hobbies: jsonEncode(caseLoadModel.hobbies),
           },
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
-
-        // Insert related perpetrators
-        if (caseLoadModel.perpetrators != null) {
-          for (final PerpetratorModel perpetrator
-              in caseLoadModel.perpetrators!) {
-            final perpetratorMap = perpetrator
-                .toMap(); // Convert PerpetratorModel to Map<String, dynamic>
-            perpetratorMap['case_id'] =
-                caseLoadModel.caseID; // Add the case_id field
-            batch.insert(
-              perpetratorCaseLoadTable,
-              perpetratorMap,
-              conflictAlgorithm: ConflictAlgorithm.replace,
-            );
-          }
-        }
-
-        // Insert related case categories
-        if (caseLoadModel.caseCategories != null) {
-          for (final caseCategory in caseLoadModel.caseCategories!) {
-            final caseCategoryMap = caseCategory.toMap();
-            caseCategoryMap['case_id'] = caseLoadModel.caseID;
-            batch.insert(
-              caseLoadCategoryTable,
-              caseCategoryMap,
-              conflictAlgorithm: ConflictAlgorithm.replace,
-            );
-          }
-        }
-
-        // Insert related caregivers
-        if (caseLoadModel.caregivers != null) {
-          for (final caregiver in caseLoadModel.caregivers!) {
-            final caregiverMap = caregiver.toMap();
-            caregiverMap['case_id'] = caseLoadModel.caseID;
-            batch.insert(
-              caregiverCaseLoadTable,
-              caregiverMap,
-              conflictAlgorithm: ConflictAlgorithm.replace,
-            );
-          }
-        }
-
-        // Insert related siblings
-        if (caseLoadModel.siblings != null) {
-          for (final sibling in caseLoadModel.siblings!) {
-            final siblingMap = sibling.toMap();
-            siblingMap['case_id'] = caseLoadModel.caseID;
-            batch.insert(
-              siblingsCaseLoadTable,
-              siblingMap,
-              conflictAlgorithm: ConflictAlgorithm.replace,
-            );
-          }
-        }
       }
       await batch.commit(noResult: true);
     } catch (e) {
@@ -615,110 +605,104 @@ var localdb = LocalDB._init();
 
 class CaseLoadTableFields {
   static final List<String> values = [
+    orgUnitName,
+    orgUnitId,
+    reportSubCountyName,
+    reportSubCountyId,
+    occurrenceCountyName,
+    occurrenceCountyId,
+    occurrenceSubCountyName,
+    occurrenceSubCountyId,
+    occurrenceWardName,
+    occurrenceVillageName,
     caseID,
     caseSerial,
-    caseReporter,
+    perpetratorStatus,
+    perpetrators,
     ovcCpimsId,
     ovcFirstName,
     ovcSurname,
     ovcOtherNames,
     ovcSex,
-    perpetratorStatus,
+    siblings,
+    caregivers,
+    caseCategories,
     riskLevel,
     dateCaseOpened,
+    caseReporterfirstName,
+    caseReporterOtherNames,
+    caseReporterSurName,
+    caseReporterContacts,
+    caseReporter,
+    courtName,
+    courtNumber,
+    policeStationName,
+    obNumber,
     caseStatus,
-    caseCategories,
+    referralPresent,
+    timeStampCreated,
+    createdBy,
+    personId,
     caseRemarks,
+    dateOfSummon,
+    summonStatus,
+    householdEconomicStatus,
+    mentalCondition,
+    physicalCondition,
+    otherCondition,
+    immediateNeeds,
+    futureNeeds,
+    friends,
+    hobbies,
   ];
 
+  static const String orgUnitName = 'org_unit_name';
+  static const String orgUnitId = 'org_unit_id';
+  static const String reportSubCountyName = 'report_subcounty_name';
+  static const String reportSubCountyId = 'report_subcounty_id';
+  static const String occurrenceCountyName = 'occurence_county_name';
+  static const String occurrenceCountyId = 'occurence_county_id';
+  static const String occurrenceSubCountyName = 'occurence_subcounty_name';
+  static const String occurrenceSubCountyId = 'occurence_subcounty_id';
+  static const String occurrenceWardName = 'occurence_ward';
+  static const String occurrenceVillageName = 'occurence_village';
   static const String caseID = 'case_id';
   static const String caseSerial = 'case_serial';
-  static const String caseReporter = 'case_reporter';
+  static const String perpetratorStatus = 'perpetrator_status';
+  static const String perpetrators = 'perpetrators';
   static const String ovcCpimsId = 'ovc_cpims_id';
   static const String ovcFirstName = 'ovc_first_name';
   static const String ovcSurname = 'ovc_surname';
   static const String ovcOtherNames = 'ovc_other_names';
   static const String ovcSex = 'ovc_sex';
-  static const String perpetratorStatus = 'perpetrator_status';
+  static const String siblings = 'siblings';
+  static const String caregivers = 'caregivers';
+  static const String caseCategories = 'case_categories';
   static const String riskLevel = 'risk_level';
   static const String dateCaseOpened = 'date_case_opened';
+  static const String caseReporterfirstName = 'case_reporter_first_name';
+  static const String caseReporterOtherNames = 'case_reporter_other_names';
+  static const String caseReporterSurName = 'case_reporter_surname';
+  static const String caseReporterContacts = 'case_reporter_contacts';
+  static const String caseReporter = 'case_reporter';
+  static const String courtName = 'court_name';
+  static const String courtNumber = 'court_number';
+  static const String policeStationName = 'police_station';
+  static const String obNumber = 'ob_number';
   static const String caseStatus = 'case_status';
-  static const String caseCategories = 'case_categories';
+  static const String referralPresent = 'referral_present';
+  static const String timeStampCreated = 'timestamp_created';
+  static const String createdBy = 'created_by';
+  static const String personId = 'person_id';
   static const String caseRemarks = 'case_remarks';
-}
-
-class PerpetratorsCaseloadTable {
-  static final List<String> values = [
-    id,
-    caseID,
-    firstName,
-    surName,
-    ovcOtherNames,
-    relationshipType
-  ];
-
-  static const String id = 'id';
-  static const String caseID = 'case_id';
-  static const String firstName = 'first_name';
-  static const String surName = 'surname';
-  static const String ovcOtherNames = 'ovc_other_names';
-  static const String relationshipType = 'relationship_type';
-}
-
-class CaregiversCaseloadTable {
-  static final List<String> values = [
-    id,
-    caseID,
-    caregiverCpimsId,
-    relationshipType,
-    guardianPerson,
-    dateLinked
-  ];
-
-  static const String id = 'id';
-  static const String caseID = 'case_id';
-  static const String caregiverCpimsId = 'caregiver_cpims_id';
-  static const String relationshipType = 'relationship_type';
-  static const String guardianPerson = 'guardian_person';
-  static const String dateLinked = 'date_linked';
-}
-
-class SiblingsCaseLoadTable {
-  static final List<String> values = [
-    id,
-    caseID,
-    childPersonId,
-    siblingPersonId,
-    dateLinked,
-    dateDelinked,
-    remarks,
-    isVoid
-  ];
-
-  static const String id = 'id';
-  static const String caseID = 'case_id';
-  static const String childPersonId = 'child_person_id';
-  static const String siblingPersonId = 'sibling_person_id';
-  static const String dateLinked = 'date_linked';
-  static const String dateDelinked = 'date_delinked';
-  static const String remarks = 'remarks';
-  static const String isVoid = 'is_void';
-}
-
-class CaseCategoriesTable {
-  static final List<String> values = [
-    id,
-    caseID,
-    caseCaregory,
-    dateOfEvent,
-    placeOfEvent,
-    caseNature
-  ];
-
-  static const String id = 'id';
-  static const String caseID = 'case_id';
-  static const String caseCaregory = 'case_category';
-  static const String dateOfEvent = 'date_of_event';
-  static const String placeOfEvent = 'place_of_event';
-  static const String caseNature = 'case_nature';
+  static const String dateOfSummon = 'date_of_summon';
+  static const String summonStatus = 'summon_status';
+  static const String householdEconomicStatus = 'household_economic_status';
+  static const String mentalCondition = 'mental_condition';
+  static const String physicalCondition = 'physical_condition';
+  static const String otherCondition = 'other_condition';
+  static const String immediateNeeds = 'immediate_needs';
+  static const String futureNeeds = 'future_needs';
+  static const String friends = 'friends';
+  static const String hobbies = 'hobbies';
 }
