@@ -1,5 +1,7 @@
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -12,6 +14,8 @@ import 'package:intl/intl.dart';
 
 class CloseFollowup extends StatefulWidget {
   const CloseFollowup({super.key});
+  // final CaseLoadModel caseLoad;
+  // required this.caseLoad
 
   @override
   State<CloseFollowup> createState() => _CourtFollowUpState();
@@ -38,6 +42,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
   void handleAddService() async {
     // caseID captured from elsewhere
+    // String? caseId = caseLoad.caseID;
     String? caseId = "1233";
     String? formId = "closure_followup";
 
@@ -48,6 +53,11 @@ class _CourtFollowUpState extends State<CloseFollowup> {
 
     if (dateOfService == null) {
       Get.snackbar("Error", "Please fill in the date of service.");
+      return;
+    }
+
+    if (caseCategory == "Please select") {
+      Get.snackbar("Error", "Please select a case category.");
       return;
     }
 
@@ -186,7 +196,6 @@ class _CourtFollowUpState extends State<CloseFollowup> {
           //         final ClosureFollowupModel? closureFollowupModel =
           //             await closureDatabaseHelper
           //                 .getClosureFollowup("SomeCaseId");
-
           //         print(closureFollowupModel?.caseId);
           //       },
           //     )
