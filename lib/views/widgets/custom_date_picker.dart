@@ -14,6 +14,7 @@ class CustomDatePicker extends StatefulWidget {
       required this.onChanged,
       this.suffixIcon,
       this.validator,
+      this.showInitialDate = false,
       this.labelText});
   final DateTime? initialDate;
   final DateTime? firstDate;
@@ -22,6 +23,7 @@ class CustomDatePicker extends StatefulWidget {
   final String? labelText;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final bool showInitialDate;
   final String? Function(String?)? validator;
 
   final Function(DateTime) onChanged;
@@ -35,6 +37,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (widget.showInitialDate && widget.initialDate != null) {
+      pickedDate.text = DateFormat('dd/MM/yyyy').format(widget.initialDate!);
+    }
+
     return GestureDetector(
       onTap: () {
         showDatePicker(

@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
@@ -13,7 +12,6 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_date_picker.dart';
 import 'package:cpims_dcs_mobile/views/widgets/footer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 

@@ -141,3 +141,16 @@ showSuccessSnackBar(BuildContext context, String message) {
     applyBlurEffect: true,
   );
 }
+
+// calculate age from date of birth
+int calculateAge(DateTime birthDate) {
+  DateTime currentDate = DateTime.now();
+  int age = currentDate.year - birthDate.year;
+  int month1 = currentDate.month;
+  int month2 = birthDate.month;
+  if (month2 > month1 ||
+      (month1 == month2 && currentDate.day < birthDate.day)) {
+    age--;
+  }
+  return age;
+}

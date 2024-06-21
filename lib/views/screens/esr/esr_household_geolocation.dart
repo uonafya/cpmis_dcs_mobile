@@ -1,6 +1,5 @@
 import 'package:cpims_dcs_mobile/core/network/locations.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
-import 'package:cpims_dcs_mobile/views/screens/esr/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
