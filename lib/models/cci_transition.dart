@@ -1,6 +1,3 @@
-
-
-
 class CciTransitionModel {
   String? cciId;
   String? cciName;

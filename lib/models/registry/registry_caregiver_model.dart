@@ -10,6 +10,7 @@ class RegistryCaregiverModel {
   String? phoneNumber;
 
   RegistryCaregiverModel({
+
     this.id,
     required this.firstName,
     required this.surName,
@@ -23,7 +24,6 @@ class RegistryCaregiverModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'firstName': firstName,
       'surName': surName,
       'otherNames': otherNames,
@@ -37,7 +37,6 @@ class RegistryCaregiverModel {
 
   factory RegistryCaregiverModel.fromJson(Map<String, dynamic> json) {
     return RegistryCaregiverModel(
-      id: json['id'],
       firstName: json['firstName'],
       surName: json['surName'],
       otherNames: json['otherNames'],
@@ -50,7 +49,6 @@ class RegistryCaregiverModel {
   }
 
   void clear() {
-    id = "";
     firstName = "";
     surName = "";
     otherNames = null;

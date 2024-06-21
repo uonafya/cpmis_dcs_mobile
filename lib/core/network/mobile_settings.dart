@@ -1,4 +1,3 @@
-
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
@@ -13,7 +12,6 @@ Future<void> saveOrganizationUnits() async {
     // Get settings from upstream
     var results =
         await httpClient.request("${cpimsApiUrl}mobile/settings/", "GET", null);
-    print(results);
     final syncTimestamp = results.data['sync_timestamp'];
 
     // Get organizational units

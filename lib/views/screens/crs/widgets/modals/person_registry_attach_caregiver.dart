@@ -212,6 +212,9 @@ class _PersonRegistryAttachCareGiverState
                   text: "Submit",
                   textColor: Colors.white,
                   onTap: () {
+
+                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
+
                     int? nationalId;
                     try {
                       nationalId = int.parse(nationalIdNumber);
@@ -225,7 +228,6 @@ class _PersonRegistryAttachCareGiverState
                       });
                       return;
                     }
-                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(id: id, firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);
                   },

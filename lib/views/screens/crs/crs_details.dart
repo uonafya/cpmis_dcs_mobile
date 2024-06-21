@@ -1,5 +1,8 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
@@ -9,6 +12,8 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CRSDetails extends StatelessWidget {
   const CRSDetails({super.key, required this.caseLoad});
@@ -68,10 +73,44 @@ class CRSDetails extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Get.to(
-                    () => CaseRegistrationSheet(
-                      caseLoad: caseLoad,
+                  final List<SiblingsModel>? caseLoadSiblings =
+                      caseLoad.siblings;
+
+                  List<SiblingDetails> siblings = [];
+
+                  if (caseLoadSiblings != null) {
+                    for (var caseLoadSibling in caseLoadSiblings) {
+                      siblings.add(SiblingDetails(
+                        firstName: "Wakili",
+                        surName: "Mkuu",
+                        sex: "Male",
+                        dateOfBirth: DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.dateLinked ?? ""),
+                        dateLinked: DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.dateDelinked ?? ""),
+                        dateUnlinked: DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.dateDelinked ?? ""),
+                      ));
+                    }
+                  }
+
+                  AboutChildCRSFormModel? crsAbout = AboutChildCRSFormModel(
+                    initialDetails: InitialChildDetails(
+                      sex: caseLoad.ovcSex ?? "",
+                      dateOfBirth: DateTime.now(),
+                      surName: caseLoad.ovcSurname ?? "",
+                      firstName: caseLoad.ovcFirstName ?? "",
+                      otherNames: caseLoad.ovcOtherNames ?? "",
                     ),
+                    familyStatus: [],
+                    houseEconomicStatus: "",
+                    siblingDetails: siblings,
+                  );
+                  Provider.of<CRSFormProvider>(context, listen: false).about =
+                      crsAbout;
+
+                  Get.to(
+                    () => const CaseRegistrationSheet(),
                   );
                 },
                 child: Container(

@@ -5,20 +5,19 @@ import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
 
-
 class SelectedRegistryCaregiverCard extends StatefulWidget {
   const SelectedRegistryCaregiverCard({super.key, required this.caregiver});
   final RegistryCaregiverModel caregiver;
 
   @override
-  State<SelectedRegistryCaregiverCard> createState() => _SelectedRegistryCaregiverCardState();
+  State<SelectedRegistryCaregiverCard> createState() =>
+      _SelectedRegistryCaregiverCardState();
 }
 
-class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregiverCard> {
-
+class _SelectedRegistryCaregiverCardState
+    extends State<SelectedRegistryCaregiverCard> {
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
     return Container(
@@ -26,10 +25,10 @@ class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregive
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         border: Border(
-            top: BorderSide(
-              color: Colors.grey[300]!,
-              width: 1.0,
-            ),
+          top: BorderSide(
+            color: Colors.grey[300]!,
+            width: 1.0,
+          ),
         ),
       ),
       child: Row(
@@ -42,11 +41,9 @@ class _SelectedRegistryCaregiverCardState extends State<SelectedRegistryCaregive
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      ("${widget.caregiver.firstName} ${widget.caregiver.surName}").toUpperCase(),
+                      ("${widget.caregiver.firstName} ${widget.caregiver.surName}")
+                          .toUpperCase(),
                       style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      "ID: ${widget.caregiver.id}",
                     ),
                   ],
                 ),
