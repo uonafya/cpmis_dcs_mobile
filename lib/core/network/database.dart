@@ -589,7 +589,7 @@ class LocalDB {
         'protection_rights': cciProtectionRights,
         'participation_rights': cciParticipationRights
       });
-      print();
+      print(id);
     } catch (e) {
       if (kDebugMode) {
         print("Error inserting social inquiry form data: $e");

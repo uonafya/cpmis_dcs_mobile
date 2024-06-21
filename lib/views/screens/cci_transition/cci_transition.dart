@@ -759,7 +759,6 @@ class _CCIState extends State<CCI> {
                               cciProtectionRights: cciProtectionRights.join(";"),
                               cciParticipationRights: cciParticipationRights.join(";"),
                             );
-                            print();
                           },
                         ),
                       ],
