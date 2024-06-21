@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/controller/esr_controller.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_benefits.dart';
@@ -10,6 +12,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
 class ESRForm extends StatefulWidget {
@@ -20,11 +23,11 @@ class ESRForm extends StatefulWidget {
 }
 
 class _ESRFormState extends State<ESRForm> {
-  int selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<ESRController>(context);
     return Scaffold(
       appBar: customAppBar(),
       drawer: const Drawer(
@@ -39,11 +42,9 @@ class _ESRFormState extends State<ESRForm> {
           CustomStepperWidget(
             data: esrStepperData,
             onTap: (int index) {
-              setState(() {
-                selectedIndex = index;
-              });
+              controller.setSelectedIndex(index);
             },
-            selectedIndex: selectedIndex,
+            selectedIndex: controller.selectedIndex,
           ),
           const SizedBox(
             height: 20,
@@ -55,7 +56,7 @@ class _ESRFormState extends State<ESRForm> {
                 border: Border.all(color: Colors.grey[300]!, width: 1.0),
                 borderRadius: const BorderRadius.all(Radius.circular(5.0))),
             padding: const EdgeInsets.all(15.0),
-            child: esrStepperWidgets[selectedIndex],
+            child: esrStepperWidgets[controller.selectedIndex],
           ),
 
           const SizedBox(
@@ -65,9 +66,9 @@ class _ESRFormState extends State<ESRForm> {
             children: <Widget>[
               Expanded(
                 child: CustomButton(
-                  text: selectedIndex <= 0 ? 'Cancel' : 'Previous',
+                  text: controller.selectedIndex <= 0 ? 'Cancel' : 'Previous',
                   onTap: () {
-                    if (selectedIndex == 0) {
+                    if (controller.selectedIndex == 0) {
                       Navigator.pop(context);
                     }
                     _scrollController.animateTo(
@@ -75,11 +76,10 @@ class _ESRFormState extends State<ESRForm> {
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.easeInOut,
                     );
-                    setState(() {
-                      if (selectedIndex > 0) {
-                        selectedIndex--;
-                      }
-                    });
+
+                    if (controller.selectedIndex > 0) {
+                      controller.setSelectedIndex(controller.selectedIndex - 1);
+                    }
                   },
                   color: kTextGrey,
                 ),
@@ -87,23 +87,25 @@ class _ESRFormState extends State<ESRForm> {
               const SizedBox(width: 50),
               Expanded(
                 child: CustomButton(
-                  text: selectedIndex == esrStepperWidgets.length - 1
+                  text: controller.selectedIndex == esrStepperWidgets.length - 1
                       ? 'Submit'
                       : 'Next',
                   onTap: () async {
-                    _scrollController.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.easeInOut,
-                    );
-                    setState(() {
-                      if (selectedIndex < esrStepperWidgets.length - 1) {
-                        selectedIndex++;
-                      } else {
-                        Provider.of<ESRController>(context, listen: false)
-                            .submitForm();
-                      }
-                    });
+                    // _scrollController.animateTo(
+                    //   0,
+                    //   duration: const Duration(milliseconds: 100),
+                    //   curve: Curves.easeInOut,
+                    // );
+
+                    try {
+                      await controller.handleSubmit();
+                      Get.back();
+                      showSuccessSnackBar(
+                          context, "Successfully submitted ESR form.");
+                    } catch (e) {
+                      showErrorSnackBar(context,
+                          "Failed to ESRsubmit form. Please try again.");
+                    }
                   },
                 ),
               )

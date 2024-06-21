@@ -68,7 +68,11 @@ class CRSDetails extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Get.to(() => const CaseRegistrationSheet());
+                  Get.to(
+                    () => CaseRegistrationSheet(
+                      caseLoad: caseLoad,
+                    ),
+                  );
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -95,6 +95,21 @@ class ApiService {
       }
     }
   }
+
+  Future<void> sendESRForm(Map<String, dynamic> esr) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/forms/',
+        'POST',
+        esr,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending social inquiry $e');
+      }
+    }
+  }
 }
 
 final apiService = ApiService();

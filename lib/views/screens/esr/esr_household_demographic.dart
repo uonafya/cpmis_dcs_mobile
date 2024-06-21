@@ -14,16 +14,11 @@ class ESRHouseholdDemographic extends StatefulWidget {
 }
 
 class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
-  final firstNameController = TextEditingController();
-  final middleNameController = TextEditingController();
-  final surnameController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    final esrCController = Provider.of<ESRController>(context);
+    final controller = Provider.of<ESRController>(context);
     return Form(
-      key: formKey,
+      key: controller.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,7 +43,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
           ),
           CustomTextField(
             hintText: "First Name",
-            controller: firstNameController,
+            controller: controller.firstNameController,
             validator: (val) {
               if (val!.isEmpty) {
                 return "First Name is required";
@@ -67,7 +62,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
           ),
           CustomTextField(
             hintText: "Middle Name",
-            controller: middleNameController,
+            controller: controller.middleNameController,
           ),
           const SizedBox(
             height: 14,
@@ -80,7 +75,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
           ),
           CustomTextField(
             hintText: "Surname",
-            controller: surnameController,
+            controller: controller.surnameController,
             validator: (val) {
               if (val!.isEmpty) {
                 return "First Name is required";
@@ -94,26 +89,13 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
           CustomButton(
             text: "Add Member",
             onTap: () {
-              if (!formKey.currentState!.validate()) {
-                return;
-              }
-
-              esrCController.addFamilyMember({
-                "firstName": firstNameController.text,
-                "middleName": middleNameController.text,
-                "surname": surnameController.text,
-              });
-              setState(() {
-                firstNameController.clear();
-                middleNameController.clear();
-                surnameController.clear();
-              });
+              controller.addMember();
             },
           ),
           const SizedBox(
             height: 14,
           ),
-          ...esrCController.familyMembers.map((member) {
+          ...controller.familyMembers.map((member) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 4),
               decoration: BoxDecoration(
@@ -133,7 +115,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
                               height: 6,
                             ),
                             Text(
-                                "${esrCController.familyMembers.indexOf(member) + 1}. ${member['firstName']} ${member['middleName']} ${member['surname']}"),
+                                "${controller.familyMembers.indexOf(member) + 1}. ${member['firstName']} ${member['middleName']} ${member['surname']}"),
                             const SizedBox(
                               height: 6,
                             ),
@@ -145,7 +127,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
                       ),
                       InkWell(
                           onTap: () {
-                            esrCController.removeFamilyMember(member);
+                            controller.removeFamilyMember(member);
                           },
                           child: Container(
                             padding: const EdgeInsets.all(2),
