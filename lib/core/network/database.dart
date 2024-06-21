@@ -462,6 +462,43 @@ class LocalDB {
       );
     ''');
 
+      // CCI transition form Database
+      await db.execute('''
+            CREATE TABLE IF NOT EXISTS cciTransition (
+            cci_id TEXT NOT NULL,
+            cci_name TEXT NOT NULL,
+            nccs_registered TEXT,
+            cci_reg_no TEXT,
+            cci_date_of_reg TEXT,
+            cci_valid_yrs TEXT,
+            cci_other_reg TEXT,
+            cci_serves_disabled TEXT,
+            cci_gender TEXT,
+            cci_accommodate_ages TEXT,
+            transition_started TEXT,
+            basis_transition TEXT,
+            legal_framework_strategy TEXT,
+            stakeholder_engagement TEXT,
+            make_decision TEXT,
+            assessment_ TEXT,
+            strategic_plan TEXT,
+            org_planning TEXT,
+            prog_planning TEXT,
+            transition_planning TEXT,
+            employee_development TEXT,
+            piloting_and_validation TEXT,
+            program_implementation TEXT,
+            monitoring_and_evaluation TEXT,
+            cci_transition_to TEXT,
+            survival_rights TEXT,
+            development_rights TEXT,
+            protection_rights TEXT,
+            participation_rights TEXT
+            created_at TEXT
+    )
+    ''');
+
+
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $courtSummonsTable(
     ${CourtSummonsTable.caseId} TEXT PRIMARY KEY,
@@ -481,8 +518,8 @@ class LocalDB {
     ${ReferralTable.referralFor} TEXT
   );
 ''');
-  }
 
+  }
   //Insert social inquiry form data
   Future<void> insertSocialInquiryForm(
       SocialInquiryFormModel socialInquiryForm) async {
@@ -499,6 +536,51 @@ class LocalDB {
         print("Error inserting social inquiry form data: $e");
       }
     }
+  }
+
+  // Save CCI Transition form method
+  //Insert social inquiry form data
+  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAgeGroupsOne,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
+    try {
+      final db = await instance.database;
+      final id = await db.insert("cciTransition",{
+        "cci_id": "909090",
+        'cci_name': selectedCCI,
+        'nccs_registered': cciNCCSRegistered,
+        'cci_reg_no': cciRegNo,
+        'cci_date_of_reg': cciRegDate,
+        'cci_valid_yrs': cciRegValidYrs,
+        'cci_other_reg': cciOtherRegistered,
+        'cci_serves_disabled': cciServesDisabled,
+        'cci_gender': cciServesGender,
+        'cci_accommodate_ages': cciAgeGroupsOne,
+        'transition_started': cciStartedTransition,
+        'basis_transition': cciBasisOfTransition,
+        'legal_framework_strategy': cciLegaFramework,
+        'stakeholder_engagement': cciStakeholderEngagement,
+        'make_decision': cciMakeDecision,
+        'assessment_': cciAssessment,
+        'strategic_plan': cciStrategicPlanning,
+        'org_planning': cciOrganizationPlanning,
+        'prog_planning': cciProgramPlanning,
+        'transition_planning': cciTransitionPlanning,
+        'employee_development': cciEmployeeDev,
+        'piloting_and_validation': cciPilotValidation,
+        'program_implementation': cciProgramImplementation,
+        'monitoring_and_evaluation': cciMonitorEvaluate,
+        'cci_transition_to': cciTransitionTo,
+        'survival_rights': cciSurvivalRights,
+        'development_rights': cciDevRights,
+        'protection_rights': cciProtectionRights,
+        'participation_rights': cciParticipationRights
+      });
+      print(id);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error inserting social inquiry form data: $e");
+      }
+    }
+
   }
 
   // insert multiple caseload records
