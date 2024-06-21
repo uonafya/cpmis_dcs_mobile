@@ -2,6 +2,7 @@ import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/about_child_sibling_details.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_selected_item_pill.dart';
@@ -159,51 +160,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           Column(
             children: model.about!.siblingDetails!
                 .map(
-                  (sibling) => Column(
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(
-                          text: "Date Linked: ",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: sibling.dateLinked.toString(),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      RichText(
-                        text: TextSpan(
-                          text: "Remarks: ",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: sibling.remarks.toString(),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  (sibling) => AboutChildSiblingItem(data: sibling)
                 )
                 .toList(),
           )
