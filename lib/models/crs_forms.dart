@@ -104,23 +104,16 @@ class SiblingDetails extends BaseCRSFormModel {
   final String? remarks;
 
   SiblingDetails(
-      String firstName,
-      String surName,
-      String? otherNames,
-      DateTime dateOfBirth,
-      String sex,
+      {required super.firstName,
+      required super.surName,
+      super.otherNames,
+      required DateTime super.dateOfBirth,
+      required super.sex,
       this.age,
       this.currentClass,
       this.remarks,
-      this.dateLinked,
-      this.dateUnlinked)
-      : super(
-          firstName: firstName,
-          surName: surName,
-          otherNames: otherNames,
-          dateOfBirth: dateOfBirth,
-          sex: sex,
-        );
+      required this.dateLinked,
+      this.dateUnlinked});
 
   @override
   Map<String, dynamic> toJSON() {
@@ -146,22 +139,16 @@ class Caregivers extends BaseCRSFormModel {
   final bool isRegistered;
 
   Caregivers(
-      String firstName,
-      String surName,
-      String? otherNames,
-      DateTime dateOfBirth,
-      String sex,
-      this.relationshipToChild,
-      this.nationalIdNumber,
+      {
+      required super.firstName,
+      required super.surName,
+      super.otherNames,
+      required DateTime super.dateOfBirth,
+      required super.sex,
+      required this.relationshipToChild,
+      required this.nationalIdNumber,
       this.phoneNumber,
-      this.isRegistered)
-      : super(
-          firstName: firstName,
-          surName: surName,
-          otherNames: otherNames,
-          dateOfBirth: dateOfBirth,
-          sex: sex,
-        );
+      required this.isRegistered});
 
   @override
   Map<String, dynamic> toJSON() {
