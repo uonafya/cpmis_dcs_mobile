@@ -378,7 +378,7 @@ class CRSForm {
     }
 
     if (caseData?.summonsIssued == true) {
-      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon;
+      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon?.toIso8601String();
     }
 
     jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;

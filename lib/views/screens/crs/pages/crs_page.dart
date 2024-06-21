@@ -226,7 +226,8 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                         var db = await localdb.database;
                         var uuid = const Uuid();
                         var formID = uuid.v4();
-                        CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+                        // CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+                        form.sendToUpstream();
 
                         Get.to(() => const FollowUpHome());
                       }
