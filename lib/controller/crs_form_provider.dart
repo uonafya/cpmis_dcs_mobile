@@ -3,7 +3,7 @@ import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CRSFormProvider extends ChangeNotifier {
-  final CRSForm form = CRSForm(caseID: "", childID: "");
+  final CRSForm form = CRSForm();
 
   CaseReportingCRSFormModel get caseReport {
     if (form.caseReporting == null) {
@@ -28,6 +28,8 @@ class CRSFormProvider extends ChangeNotifier {
   AboutChildCRSFormModel? get about {
     if (form.about == null) {
       var about = AboutChildCRSFormModel(
+          id: "",
+          isNewChild: true,
           initialDetails: InitialChildDetails(
               firstName: "",
               surName: "",

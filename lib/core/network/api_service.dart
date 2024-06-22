@@ -113,6 +113,22 @@ class ApiService {
     }
   }
 
+  Future<void> sendServiceFollowup(Map<String, dynamic> service) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/', // Make sure this endpoint is correct for service followups
+        'POST',
+        service,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending service followup $e');
+      }
+      throw e;
+    }
+  }
+
   Future<void> sendESRForm(Map<String, dynamic> esr) async {
     try {
       final response = await httpClient.request(

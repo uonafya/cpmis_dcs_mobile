@@ -25,7 +25,11 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Services",
         "onTap": () {
-          Get.to(() => const ServicesFollowUp());
+          Get.to(
+            () => ServicesFollowUp(
+              caseLoad: widget.caseLoad,
+            ),
+          );
         }
       },
       {
@@ -49,9 +53,11 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Close",
         "onTap": () {
-          Get.to(() => CloseFollowup(
-                caseLoad: widget.caseLoad,
-              ));
+          Get.to(
+            () => CloseFollowup(
+              caseLoad: widget.caseLoad,
+            ),
+          );
         }
       },
     ];

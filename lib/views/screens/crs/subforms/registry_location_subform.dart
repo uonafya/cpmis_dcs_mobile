@@ -10,7 +10,6 @@ import '../../../../models/nameid.dart';
 
 const String COUNTY_DROPDOWN_ERROR = "Please select a county.";
 const String SUBCOUNTY_DROPDOWN_ERROR = "Please select a sub-county.";
-const String WARD_DROPDOWN_ERROR = "Please select a ward.";
 
 class RegistryLocationSubform extends StatefulWidget {
   const RegistryLocationSubform({super.key});
@@ -48,7 +47,6 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
 
     String? countyError = registryProvider.registryLocationModel.county.isEmpty? COUNTY_DROPDOWN_ERROR : null;
     String? subCountyError = registryProvider.registryLocationModel.subCounty.isEmpty? SUBCOUNTY_DROPDOWN_ERROR : null;
-    String? wardError = registryProvider.registryLocationModel.ward.isEmpty? WARD_DROPDOWN_ERROR : null;
 
     return SubformWrapper(
         title: "Location",
@@ -83,7 +81,6 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                     if (val.isEmpty) {
                       countyError = COUNTY_DROPDOWN_ERROR;
                       subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
-                      wardError = WARD_DROPDOWN_ERROR;
                     } else {
                       countyError = null;
                     }
@@ -116,7 +113,6 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                       registryProvider.setWard("");
                       if (val.isEmpty) {
                         subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
-                        wardError = WARD_DROPDOWN_ERROR;
                       } else {
                         subCountyError = null;
                       }
@@ -128,22 +124,16 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 const SizedBox(height: 15,),
                 const Divider(),
                 const Text(
-                  'Ward *',
+                  'Ward',
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
                   items: wards.map((e) => e.name).toList(),
-                  error: registryProvider.shouldValidateFields ? wardError : null,
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;
                       registryProvider.setWard(selectedWard);
-                      if (val.isEmpty) {
-                        wardError = WARD_DROPDOWN_ERROR;
-                      } else {
-                        wardError = null;
-                      }
                     });
                   },
                 ),

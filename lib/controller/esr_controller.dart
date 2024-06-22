@@ -1,5 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/esr_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
@@ -10,6 +11,8 @@ class ESRController with ChangeNotifier {
   final householdGeolocationFormKey = GlobalKey<FormState>();
   final householdDemographicFormKey = GlobalKey<FormState>();
   final benefitsFormKey = GlobalKey<FormState>();
+  final familyFormKey = GlobalKey<FormState>();
+
   List<Map<String, dynamic>> familyMembers = [];
   List<Map<String, dynamic>> familyMembersDetails = [];
   String selectedCounty = 'Please select';
@@ -82,6 +85,9 @@ class ESRController with ChangeNotifier {
   }
 
   void addFamilyMemberDetails() {
+    if (!familyFormKey.currentState!.validate()) {
+      return;
+    }
     final family = {
       "doesHaveId": doesHaveId,
       "relationship": relationship,
@@ -293,13 +299,17 @@ class ESRController with ChangeNotifier {
       if (selectedIndex == 0) {
         if (!householdGeolocationFormKey.currentState!.validate()) {
           return;
-        } else if (selectedIndex == 1) {
-          if (!householdDemographicFormKey.currentState!.validate()) {
+        }
+      } else if (selectedIndex == 1) {
+        if (!benefitsFormKey.currentState!.validate()) {
+          return;
+        }
+      } else if (selectedIndex == 2 && familyMembers.isEmpty) {
+        if (!householdDemographicFormKey.currentState!.validate()) {
+          return;
+        } else if (selectedIndex == 3) {
+          if (!familyFormKey.currentState!.validate()) {
             return;
-          } else if (selectedIndex == 2) {
-            if (!benefitsFormKey.currentState!.validate()) {
-              return;
-            }
           }
         }
       }
