@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
@@ -23,6 +24,7 @@ class CourtFollowUp extends StatefulWidget {
 }
 
 class _CourtFollowUpState extends State<CourtFollowUp> {
+  MetadataManager metadataManager = MetadataManager.getInstance();
   final caseCategories = ["Please select", "Abandoned"];
   String caseCategory = "Please select";
   final courtSessionTypeList = [
@@ -77,11 +79,12 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   void handleAddService() async {
     String? caseId = widget.caseLoad.caseID;
     String? formId = "sessions_followup";
+    print(widget.caseLoad.toJson());
 
-    if (caseCategory == "Please select") {
-      showErrorSnackBar(context, "Please select a case category.");
-      return;
-    }
+    // if (caseCategory == "Please select") {
+    //   showErrorSnackBar(context, "Please select a case category.");
+    //   return;
+    // }
 
     if (dateOfService == null) {
       showErrorSnackBar(context, "Please fill in the date of court session.");
@@ -144,7 +147,11 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
           const SizedBox(height: 6),
           CustomDropdown(
             initialValue: caseCategory,
-            items: caseCategories,
+            items: widget.caseLoad.caseCategories == null
+                ? ["-"]
+                : widget.caseLoad.caseCategories!
+                    .map((e) => e.caseCategory.toString())
+                    .toList(),
             onChanged: (val) {
               setState(() {
                 caseCategory = val;
@@ -267,7 +274,12 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
                       const Text("Court Order(s) *"),
                       const SizedBox(height: 6),
                       CustomDropDownMultiSelect(
-                        options: courtOrderOptions,
+                        options: MetadataManager.getInstance()
+                            .courtOrder
+                            .entries
+                            .map((entry) =>
+                                ValueItem(label: entry.key, value: entry.value))
+                            .toList(),
                         onOptionSelected: (List<String> selectedOptions) {
                           setState(() {
                             courtOrders = selectedOptions;

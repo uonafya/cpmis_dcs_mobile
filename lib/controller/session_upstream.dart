@@ -5,7 +5,9 @@ import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
 import 'package:intl/intl.dart';
 import 'package:cpims_dcs_mobile/models/court_session_model.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 
+// Keep these mapping functions
 int mapCaseCategory(String? category) {
   final Map<String, int> categoryMap = {
     "Abandoned": 1,
@@ -48,17 +50,6 @@ int mapCourtOutcome(String? outcome) {
     "Court Order": 4,
   };
   return outcomeMap[outcome] ?? 0;
-}
-
-List<int> mapCourtOrders(List<String>? orders) {
-  final Map<String, int> orderMap = {
-    "Re-unification and Re-integration": 1,
-    "Access order": 2,
-    "Adoption order": 3,
-    "Child assessment order": 4,
-    "Child counselling order": 5,
-  };
-  return orders?.map((order) => orderMap[order] ?? 0).toList() ?? [];
 }
 
 Future<void> sendCourtSessionsUpstream() async {
@@ -105,10 +96,8 @@ Future<void> sendCourtSessionsUpstream() async {
         'court_outcome': sessionModel.courtOutcome != null
             ? mapCourtOutcome(sessionModel.courtOutcome)
             : null,
-        'court_order': sessionModel.courtOrder != null &&
-                sessionModel.courtOrder!.isNotEmpty
-            ? mapCourtOrders(sessionModel.courtOrder)
-            : null,
+        'court_order': sessionModel
+            .courtOrder,
       };
 
       // Remove null values from the submission data

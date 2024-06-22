@@ -18,6 +18,7 @@ class FollowUpScreen extends StatefulWidget {
 class _FollowUpScreenState extends State<FollowUpScreen> {
   @override
   Widget build(BuildContext context) {
+    print(widget.caseLoadModel.toJson());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: customAppBar(),
@@ -71,17 +72,21 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Case Category(s) | Date Of Event	",
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
-                              "1. Neglect | June 16, 2017",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              widget.caseLoadModel.caseCategories == null
+                                  ? "-"
+                                  : widget.caseLoadModel.caseCategories!
+                                      .map((e) => e.caseCategory.toString())
+                                      .join(">\n "),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
