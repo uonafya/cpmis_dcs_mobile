@@ -19,50 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/cupertino.dart';
 
-
-// Mapping functions
-int mapCaseOutcome(String outcome) {
-  final Map<String, int> outcomeMap = {
-    "Please select": 0,
-    "Transferred to another organization unit": 1,
-    "Child reintegrated into education": 2,
-    "Child removed from exploitative situation": 3,
-    "Lost contact (Dropped out)": 4,
-    "Other outcomes (Standard intervention)": 5,
-  };
-  return outcomeMap[outcome] ?? 0;
-}
-
-int mapCaseCategory(String category) {
-  final Map<String, int> categoryMap = {
-    "Please select": 0,
-    "Neglect": 1,
-  };
-  return categoryMap[category] ?? 0;
-}
-
-int mapServiceProvided(String service) {
-  final Map<String, int> serviceMap = {
-    "Please select": 0,
-    "Supported to access clinical HIV services": 1,
-    "Supported to access general clinical service": 2,
-    "Admitted in residential institution (CCI or rescue home)": 3,
-    "Arrest of perpetrator of abuse or violence to child": 4,
-    "Assisted with economic activity (eg farming income generation)": 5,
-  };
-  return serviceMap[service] ?? 0;
-}
-
-int mapServiceProvider(String provider) {
-  final Map<String, int> providerMap = {
-    "Please select": 0,
-    "Civil registration department": 1,
-    // Add more providers as needed
-  };
-  return providerMap[provider] ?? 0;
-}
-
-
 Future<void> syncData(BuildContext context) async {
   final String deviceID = await getDeviceID(context);
 
@@ -179,6 +135,48 @@ Future<void> sendServicesUpstream() async {
   // Sync services
   final services = await db.query(serviceFollowupTable);
   print("SERVICES:$services");
+
+  // Mapping functions
+  int mapCaseOutcome(String outcome) {
+    final Map<String, int> outcomeMap = {
+      "Please select": 0,
+      "Transferred to another organization unit": 1,
+      "Child reintegrated into education": 2,
+      "Child removed from exploitative situation": 3,
+      "Lost contact (Dropped out)": 4,
+      "Other outcomes (Standard intervention)": 5,
+    };
+    return outcomeMap[outcome] ?? 0;
+  }
+
+  int mapCaseCategory(String category) {
+    final Map<String, int> categoryMap = {
+      "Please select": 0,
+      "Neglect": 1,
+    };
+    return categoryMap[category] ?? 0;
+  }
+
+  int mapServiceProvided(String service) {
+    final Map<String, int> serviceMap = {
+      "Please select": 0,
+      "Supported to access clinical HIV services": 1,
+      "Supported to access general clinical service": 2,
+      "Admitted in residential institution (CCI or rescue home)": 3,
+      "Arrest of perpetrator of abuse or violence to child": 4,
+      "Assisted with economic activity (eg farming income generation)": 5,
+    };
+    return serviceMap[service] ?? 0;
+  }
+
+  int mapServiceProvider(String provider) {
+    final Map<String, int> providerMap = {
+      "Please select": 0,
+      "Civil registration department": 1,
+      // Add more providers as needed
+    };
+    return providerMap[provider] ?? 0;
+  }
 
   for (var service in services) {
     try {
