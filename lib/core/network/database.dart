@@ -60,7 +60,7 @@ class LocalDB {
   Future<void> _initialise(Database db, int version) async {
     await db.execute('''
           CREATE TABLE IF NOT EXISTS $geolocationTable(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             code TEXT,
             name TEXT NOT NULL,
             type TEXT NOT NULL,

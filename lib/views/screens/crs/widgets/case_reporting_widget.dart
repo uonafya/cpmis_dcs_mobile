@@ -339,7 +339,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                       final selectedSubCounty =
                           subCounties.firstWhere((e) => e.name == item);
                       final values =
-                          await getWardsFromSubCounty(selectedSubCounty.id);
+                          await getWardsFromSubCounty(selectedSubCounty.name);
 
                       wardsList = values;
                       model.caseReport.ward = pleaseSelect;
