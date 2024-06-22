@@ -39,6 +39,7 @@ class RegisterNewChildQuery {
     } catch (e) {
       print("Error inserting new child: $e");
     }
+    return null;
   }
 
   static Future<List<RegisterNewChildModel>> getRegistryFormDetails() async {

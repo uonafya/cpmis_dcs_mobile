@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/core/utils/input_validation_utils.dart';
 
 class RegistryContactDetailsModel {
   String designatedPhoneNumber;

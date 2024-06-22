@@ -202,6 +202,7 @@ class RegistryProvider extends ChangeNotifier {
         print("Error inserting new child: $e");
       }
     }
+    return null;
     // RegisterNewChildQuery.getRegistryFormDetails();
     // RegisterNewChildQuery.getRegistryFormDetailById(1);
   }

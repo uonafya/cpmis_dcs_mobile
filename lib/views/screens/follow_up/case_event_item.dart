@@ -1,9 +1,10 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/case_load/event_model.dart';
 import 'package:flutter/material.dart';
 
 class CaseEventItem extends StatelessWidget {
   const CaseEventItem({super.key, required this.data, required this.onDelete});
-  final Map<String, dynamic> data;
+  final EventModel data;
   final Function onDelete;
 
   @override
@@ -30,7 +31,7 @@ class CaseEventItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['eventType'],
+                      data.eventType ?? '',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -45,7 +46,7 @@ class CaseEventItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['caseCategory'],
+                      data.caseCategory ?? '',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -67,7 +68,7 @@ class CaseEventItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['details'],
+                      data.details ?? '',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -82,7 +83,7 @@ class CaseEventItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data['dateOfEvent'],
+                      data.dateOfEvent ?? '',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
