@@ -4,11 +4,19 @@ import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-class AboutChildSiblingItem extends StatelessWidget {
+class AboutChildSiblingItem extends StatefulWidget {
   final SiblingDetails data;
+  final Function(String data) includeChild;
 
-  const AboutChildSiblingItem({required this.data, super.key});
+  const AboutChildSiblingItem(
+      {required this.includeChild, required this.data, super.key});
 
+  @override
+  State<AboutChildSiblingItem> createState() => _AboutChildSiblingItemState();
+}
+
+class _AboutChildSiblingItemState extends State<AboutChildSiblingItem> {
+  bool? isSelected = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +41,7 @@ class AboutChildSiblingItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.firstName,
+                      widget.data.firstName,
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
@@ -51,7 +59,7 @@ class AboutChildSiblingItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.sex,
+                      widget.data.sex,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -73,7 +81,7 @@ class AboutChildSiblingItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      convertDateToYMD(data.dateOfBirth),
+                      convertDateToYMD(widget.data.dateOfBirth),
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
@@ -91,7 +99,8 @@ class AboutChildSiblingItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      getAgeFromDateOf(data.dateOfBirth ?? DateTime.now())
+                      getAgeFromDateOf(
+                              widget.data.dateOfBirth ?? DateTime.now())
                           .toString(),
                       style: TextStyle(fontSize: 12),
                     ),
@@ -104,6 +113,21 @@ class AboutChildSiblingItem extends StatelessWidget {
           SizedBox(
             height: smallSpacing,
           ),
+          Row(
+            children: [
+              Text("Clone Case: "),
+              Checkbox(
+                  value: isSelected,
+                  onChanged: (bool? value) {
+                    if (value == true) {
+                      widget.includeChild(widget.data.id ?? "");
+                    }
+                    setState(() {
+                      isSelected = value;
+                    });
+                  })
+            ],
+          )
         ],
       ),
     );

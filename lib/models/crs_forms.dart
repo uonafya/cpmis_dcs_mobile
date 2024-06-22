@@ -1,4 +1,3 @@
-
 import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
@@ -102,6 +101,7 @@ class InitialChildDetails extends BaseCRSFormModel {
 }
 
 class SiblingDetails extends BaseCRSFormModel {
+  final String? id;
   final DateTime dateLinked;
   final DateTime? dateUnlinked;
   final int? age;
@@ -110,6 +110,7 @@ class SiblingDetails extends BaseCRSFormModel {
 
   SiblingDetails(
       {required super.firstName,
+      this.id,
       required super.surName,
       super.otherNames,
       required DateTime super.dateOfBirth,
