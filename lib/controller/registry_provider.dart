@@ -11,47 +11,23 @@ import '../models/registry/registry_sibling_model.dart';
 class RegistryProvider extends ChangeNotifier {
   // final RegisterNewChildModel _registerNewChildModel = RegisterNewChildModel();
 
-  final RegistryPersonalDetailsModel _registryPersonalDetailsModel =
-      RegistryPersonalDetailsModel(
-          personType: "",
-          childOVCProgram: false,
-          firstName: "",
-          surname: "",
-          sex: "",
-          dateOfBirth: "",
-          workforceIdName: "",
-          datePaperFormFilled: "",
-          childClass: "");
-  final RegistryIdentificationModel _registryIdentificationModel =
-      RegistryIdentificationModel(
-          birthRegistrationNumber: "",
-          givenName: "",
-          countryOfOrigin: "",
-          tribe: "",
-          religion: "");
-  final RegistryContactDetailsModel _registryContactDetailsModel =
-      RegistryContactDetailsModel(
-          designatedPhoneNumber: "",
-          otherMobileNumber: "",
-          emailAddress: "",
-          physicalLocation: "");
-  final RegistryLocationModel _registryLocationModel =
-      RegistryLocationModel(county: "", subCounty: "", ward: "");
+  final RegistryPersonalDetailsModel _registryPersonalDetailsModel = RegistryPersonalDetailsModel(personType: "", childOVCProgram: false, firstName: "", surname: "", sex: "", dateOfBirth: "", workforceIdName: "", datePaperFormFilled: "", childClass: "");
+  final RegistryIdentificationModel _registryIdentificationModel = RegistryIdentificationModel(birthRegistrationNumber: "", givenName: "", countryOfOrigin: "", tribe: "", religion:  "");
+  final RegistryContactDetailsModel _registryContactDetailsModel = RegistryContactDetailsModel(designatedPhoneNumber: "", otherMobileNumber: "", emailAddress: "", physicalLocation: "");
+  final RegistryLocationModel _registryLocationModel = RegistryLocationModel(county: "", subCounty: "", ward: "");
   final List<RegistryCaregiverModel> _caregivers = [];
   final List<RegistrySiblingModel> _siblings = [];
-  final RegistryCboChvModel _registryCboChvModel =
-      RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
+  final RegistryCboChvModel _registryCboChvModel = RegistryCboChvModel(cboParentUnit: "", ovcProgramEnrollment: "", chv: "");
+  bool _shouldValidateFields = false;
 
-  RegistryPersonalDetailsModel get registryPersonalDetailsModel =>
-      _registryPersonalDetailsModel;
-  RegistryIdentificationModel get registryIdentificationModel =>
-      _registryIdentificationModel;
-  RegistryContactDetailsModel get registryContactDetailsModel =>
-      _registryContactDetailsModel;
+  RegistryPersonalDetailsModel get registryPersonalDetailsModel => _registryPersonalDetailsModel;
+  RegistryIdentificationModel get registryIdentificationModel => _registryIdentificationModel;
+  RegistryContactDetailsModel get registryContactDetailsModel => _registryContactDetailsModel;
   RegistryLocationModel get registryLocationModel => _registryLocationModel;
   List<RegistryCaregiverModel> get caregivers => _caregivers;
   List<RegistrySiblingModel> get siblings => _siblings;
   RegistryCboChvModel get registryCboChvModel => _registryCboChvModel;
+  bool get shouldValidateFields => _shouldValidateFields;
 
   void setPersonType(String value) {
     _registryPersonalDetailsModel.personType = value;
@@ -165,6 +141,11 @@ class RegistryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShouldValidateFields() {
+    _shouldValidateFields = true;
+    notifyListeners();
+  }
+
   void clearState() {
     _registryPersonalDetailsModel.clear();
     _registryIdentificationModel.clear();
@@ -173,15 +154,33 @@ class RegistryProvider extends ChangeNotifier {
     _caregivers.clear();
     _siblings.clear();
     _registryCboChvModel.clear();
+    _shouldValidateFields = false;
   }
 
-  Future<void> submit() async {
+  bool isComplete() {
+    return _registryPersonalDetailsModel.isComplete() &&
+    _registryIdentificationModel.isComplete() &&
+    _registryContactDetailsModel.isComplete() &&
+    _registryLocationModel.isComplete() &&
+    _registryCboChvModel.isComplete();
+  }
+
+  bool isNotComplete() {
+    return !isComplete();
+  }
+
+  Future<int?> submit() async {
+    if (isNotComplete()) {
+      return null;
+    }
     try {
       RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(
           personType: registryPersonalDetailsModel.personType,
+          isCaregiver: registryPersonalDetailsModel.isCaregiver,
           childOVCProgram: false,
           firstName: registryPersonalDetailsModel.firstName,
           surname: registryPersonalDetailsModel.surname,
+          otherNames: registryPersonalDetailsModel.otherNames,
           sex: registryPersonalDetailsModel.sex,
           dateOfBirth: registryPersonalDetailsModel.dateOfBirth,
           childClass: registryPersonalDetailsModel.childClass,
@@ -193,17 +192,20 @@ class RegistryProvider extends ChangeNotifier {
           caregivers: caregivers,
           siblings: siblings,
           registryCboChvModel: registryCboChvModel);
-      await RegisterNewChildQuery.insertRegistryFormDetails(
+      var id = await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
       clearState();
       if (kDebugMode) {
         print(registerNewChildModel.toJson());
       }
+      return id;
     } on Exception catch (e) {
       if (kDebugMode) {
         print("Error inserting new child: $e");
       }
     }
-    RegisterNewChildQuery.getRegistryFormDetails();
+    return null;
+    // RegisterNewChildQuery.getRegistryFormDetails();
+    // RegisterNewChildQuery.getRegistryFormDetailById(1);
   }
 }

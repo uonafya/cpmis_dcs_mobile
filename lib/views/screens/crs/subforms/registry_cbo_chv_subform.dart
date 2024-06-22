@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,24 +16,8 @@ class RegistryCBOandCHVSubform extends StatefulWidget {
 }
 
 class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
-  List<String> cboCriteria = [
-    'Select Parent Unit',
-    'UO27664 - CARITAS DOHB',
-    'U73643 - KARAYA',
-  ];
-  List<String> ovcCriteria = [
-    'Please Select One',
-    'OVC',
-    'Preventive',
-    'Dreams',
-    'Fs/Other',
-  ];
-  List<String> chvCriteria = [
-    'Select CHV',
-    'RUTH AKINYI',
-    'ANNA. OWINO',
-    'DAMARIS. OTOLO',
-  ];
+
+  List<String> chvCriteria = [];
 
   String selectedCBO = 'Select Parent Unit';
   String selectedOVC = 'Please Select One';
@@ -47,13 +32,13 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
       title: "CBO/CHV Details",
       children: [
         const Text(
-          'CBO *',
+          'CBO',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
-          items: cboCriteria,
+          items: MetadataManager.getInstance().orgUnitNames,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;
@@ -66,13 +51,13 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const Divider(),
         const Text(
-          'OVC Program Enrollment *',
+          'OVC Program Enrollment',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
-          items: ovcCriteria,
+          items: MetadataManager.getInstance().ovcProgramNames,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;
@@ -85,7 +70,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const Divider(),
         const Text(
-          'CHV *',
+          'CHV',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),

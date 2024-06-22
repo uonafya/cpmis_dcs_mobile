@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/models/registry/registry_sibling_model.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/form_page_heading.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
@@ -8,9 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../controller/metadata_manager.dart';
 import '../../../../../controller/registry_provider.dart';
+import '../../../../../core/constants/constants.dart';
+import '../../../../../core/utils/input_validation_utils.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_date_picker.dart';
+
+const String FIRST_NAME_INPUT_ERROR = "Please enter a valid first name.";
+const String SUR_NAME_INPUT_ERROR = "Please enter a valid surname.";
+const String SEX_DROPDOWN_ERROR = "Please select a sex.";
+const String CLASS_DROPDOWN_ERROR = "Please select a class.";
 
 class PersonRegistryAttachSiblingModal extends StatefulWidget {
   const PersonRegistryAttachSiblingModal({super.key});
@@ -22,7 +29,6 @@ class PersonRegistryAttachSiblingModal extends StatefulWidget {
 
 class _PersonRegistryAttachSiblingModalState
     extends State<PersonRegistryAttachSiblingModal> {
-  bool _isChecked = false;
 
   String firstName = "";
   String surName = "";
@@ -31,6 +37,11 @@ class _PersonRegistryAttachSiblingModalState
   String sex = "";
   String currentClass = "";
   String? remarks;
+  String? firstNameError = FIRST_NAME_INPUT_ERROR;
+  String? surNameError = SUR_NAME_INPUT_ERROR;
+  String? sexError = SEX_DROPDOWN_ERROR;
+  String? classError = CLASS_DROPDOWN_ERROR;
+  bool shouldValidateFields = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,38 +55,37 @@ class _PersonRegistryAttachSiblingModalState
           heading: "Add Sibling",
           hasClosePage: true,
         ),
-        Row(
-          children: [
-            h2Text("CPIMS registered caregiver"),
-            Checkbox(
-              value: _isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _isChecked = value ?? false; // Update the state
-                });
-              },
-            ),
-          ],
-        ),
         const SizedBox(height: 10),
-        h2Text("First Name"),
+        h2Text("First Name *"),
         CustomTextField(
-            hintText: 'First Name',
+          hintText: 'First Name',
+          error: shouldValidateFields ? firstNameError : null,
           onChanged: (value) {
               setState(() {
                 firstName = value;
+                if (InputValidationUtils.isInvalidName(value)) {
+                  firstNameError = FIRST_NAME_INPUT_ERROR;
+                  return;
+                }
+                firstNameError = null;
               });
-    },
+          },
         ),
         const SizedBox(height: 15),
-        h2Text("Surname"),
+        h2Text("Surname *"),
         CustomTextField(
-            hintText: 'Surname',
+          hintText: 'Surname',
+          error: shouldValidateFields ? surNameError : null,
           onChanged: (value) {
-              setState(() {
-                surName = value;
-              });
-    },
+            setState(() {
+              surName = value;
+              if (InputValidationUtils.isInvalidName(value)) {
+                surNameError = SUR_NAME_INPUT_ERROR;
+                return;
+              }
+              surNameError = null;
+            });
+          },
         ),
         const SizedBox(height: 15),
         h2Text("Other Name(s)"),
@@ -105,24 +115,36 @@ class _PersonRegistryAttachSiblingModalState
           },
         ),
         const SizedBox(height: 15),
-        h2Text("Sex"),
+        h2Text("Sex *"),
         CustomDropdown(
           initialValue: "Please Select",
-          items: const ["Please Select", "Male", "Female"],
+          error: shouldValidateFields ? sexError : null,
+          items: MetadataManager.getInstance().sexNames,
           onChanged: (value) {
             setState(() {
               sex = value;
+              if (value.isEmpty) {
+                sexError = SEX_DROPDOWN_ERROR;
+              } else {
+                sexError = null;
+              }
             });
           },
         ),
         const SizedBox(height: 15),
-        h2Text("Class"),
+        h2Text("Class *"),
         CustomDropdown(
           initialValue: "Please Select",
-          items: childClass,
+          items: MetadataManager.getInstance().childClassNames,
+          error: shouldValidateFields ? classError : null,
           onChanged: (value) {
             setState(() {
               currentClass = value;
+              if (value.toString().isEmpty) {
+                classError = CLASS_DROPDOWN_ERROR;
+              } else {
+                classError = null;
+              }
             });
           },
         ),
@@ -154,7 +176,16 @@ class _PersonRegistryAttachSiblingModalState
                 text: "Submit",
                 textColor: Colors.white,
                 onTap: () {
-                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass);
+                  if (firstName.isEmpty || surName.isEmpty || sex.isEmpty || currentClass.isEmpty) {
+                    if (context.mounted) {
+                      errorSnackBar(context, "Please enter all required fields, appropriately. (*)");
+                    }
+                    setState(() {
+                      shouldValidateFields = true;
+                    });
+                    return;
+                  }
+                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName,otherNames: otherNames, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass, remarks: remarks);
                   registryProvider.addSibling(sibling);
                   Navigator.pop(context);
                 },

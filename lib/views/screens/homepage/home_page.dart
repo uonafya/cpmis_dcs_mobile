@@ -1,12 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
-
-import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
+import 'package:cpims_dcs_mobile/controller/location_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
+import 'package:cpims_dcs_mobile/core/utils/sync_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/force_synch_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -32,6 +34,18 @@ class _HomepageState extends State<Homepage> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
+      Provider.of<LocationProvider>(context, listen: false)
+          .getCurrentLocation();
+      final syncTimeStamp = preferences.getString("sync_timestamp");
+      if (syncTimeStamp != null) {
+        final syncTime = DateTime.parse(syncTimeStamp);
+        final now = DateTime.now();
+        final difference = now.difference(syncTime).inDays;
+        if (difference > 7) {
+          Get.to(() => const LockPage());
+        }
+      }
+
       final data = await getOrganizationalUnits(null);
       orgUnits = data.map((e) => e.name ?? "-").toList();
       setState(() {});
@@ -75,17 +89,35 @@ class _HomepageState extends State<Homepage> {
                           width: 10,
                         ),
                         GestureDetector(
-                            child: const Text(
-                              'Sync',
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.sync,
+                                  color: kPrimaryColor,
+                                  size: 16,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  'Sync',
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             onTap: () {
-                              syncData();
-                              syncCciTransitionData();
-
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => const Dialog(
+                                  child: SingleChildScrollView(
+                                    child: SyncModal(),
+                                  ),
+                                ),
+                              );
                             })
                       ],
                     ),
@@ -216,22 +248,14 @@ class _HomepageState extends State<Homepage> {
                 bottom: 30,
                 right: 30,
                 left: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: 140,
-                      child: CustomButton(
-                        onTap: () {
-                          Get.to(() => const CRSHome());
-                        },
-                        text: "CRS Registry",
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
+                child: CustomButton(
+                  onTap: () {
+                    Get.to(() => const CRSHome());
+                  },
+                  text: "CRS Registry",
+                  color: Colors.green,
                 ),
-              )
+              ),
             ],
           ),
         ));

@@ -8,12 +8,12 @@ class CustomDropDownMultiSelect extends StatefulWidget {
   final String hint;
 
   const CustomDropDownMultiSelect({
-    Key? key,
+    super.key,
     required this.options,
     required this.onOptionSelected,
     required this.selectionType,
     required this.hint,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomDropDownMultiSelect> createState() =>

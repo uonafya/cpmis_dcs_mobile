@@ -1,5 +1,5 @@
 class RegistryCaregiverModel {
-  String id;
+  String? id;
   String firstName;
   String surName;
   String? otherNames;
@@ -8,10 +8,10 @@ class RegistryCaregiverModel {
   String relationshipToChild;
   String nationalIdNumber;
   String? phoneNumber;
-  bool isRegistered;
 
   RegistryCaregiverModel({
-    required this.id,
+
+    this.id,
     required this.firstName,
     required this.surName,
     this.otherNames,
@@ -20,27 +20,23 @@ class RegistryCaregiverModel {
     required this.relationshipToChild,
     required this.nationalIdNumber,
     this.phoneNumber,
-    this.isRegistered = false,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'firstName': firstName,
       'surName': surName,
       'otherNames': otherNames,
       'dateOfBirth': dateOfBirth,
       'sex': sex,
-      'relationshipToChild': relationshipToChild,
+      'relationshipToChild': mapRelationshipToChild(relationshipToChild),
       'nationalIdNumber': nationalIdNumber,
       'phoneNumber': phoneNumber,
-      'isRegistered': isRegistered ? true : false,
     };
   }
 
   factory RegistryCaregiverModel.fromJson(Map<String, dynamic> json) {
     return RegistryCaregiverModel(
-      id: json['id'],
       firstName: json['firstName'],
       surName: json['surName'],
       otherNames: json['otherNames'],
@@ -49,12 +45,10 @@ class RegistryCaregiverModel {
       relationshipToChild: json['relationshipToChild'],
       nationalIdNumber: json['nationalIdNumber'],
       phoneNumber: json['phoneNumber'],
-      isRegistered: json['isRegistered'],
     );
   }
 
   void clear() {
-    id = "";
     firstName = "";
     surName = "";
     otherNames = null;
@@ -63,6 +57,23 @@ class RegistryCaregiverModel {
     relationshipToChild = "";
     nationalIdNumber = "";
     phoneNumber = null;
-    isRegistered = false;
+  }
+
+  String mapRelationshipToChild(String outcome) {
+    final Map<String, String> relationshipOutcome = {
+      "None": "CGNN",
+      "Adoptive father": "CGAF",
+      "Adoptive mother": "CGAM",
+      "Foster father": "CGFF",
+      "Foster mother": "CGFM",
+      "Other relative": "CGOR",
+      "Parent (Father)": "CGPF",
+      "Parent (Mother)": "CGPM",
+      "Guardian": "CGGU",
+      "Next of Kin": "CGNK",
+      "Other": "CGOT"
+    };
+
+    return relationshipOutcome[outcome] ?? "CGNN";
   }
 }

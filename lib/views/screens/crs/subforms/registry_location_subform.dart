@@ -5,9 +5,11 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
+import '../../../../core/network/locations.dart';
+import '../../../../models/nameid.dart';
 
-
-
+const String COUNTY_DROPDOWN_ERROR = "Please select a county.";
+const String SUBCOUNTY_DROPDOWN_ERROR = "Please select a sub-county.";
 
 class RegistryLocationSubform extends StatefulWidget {
   const RegistryLocationSubform({super.key});
@@ -17,31 +19,34 @@ class RegistryLocationSubform extends StatefulWidget {
 }
 
 class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
-  List<String> countyCriteria = [
-    'Please Select',
-    'HomaBay',
-    'Migori',
+
+  List<NameID> counties = [
   ];
-  List<String> subcountyCriteria = [
-    'Please Select',
-    'Suba',
-    'Suna West',
-    'Ndhiwa',
+  List<NameID> subCounties = [
   ];
-  List<String> wardCriteria = [
-    'Please Select',
-    'Wasibete',
-    'Wiga',
-    'Wasweta li',
+  List<NameID> wards = [
   ];
+
   String selectedCounty = 'Please Select';
   String selectedSubCounty = 'Please Select';
   String selectedWard = 'Please Select';
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      counties = await getCounties();
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
+
+    String? countyError = registryProvider.registryLocationModel.county.isEmpty? COUNTY_DROPDOWN_ERROR : null;
+    String? subCountyError = registryProvider.registryLocationModel.subCounty.isEmpty? SUBCOUNTY_DROPDOWN_ERROR : null;
 
     return SubformWrapper(
         title: "Location",
@@ -57,16 +62,30 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'County: ',
+                'County *',
                 style: TextStyle(color: kTextGrey),
               ),
               CustomDropdown(
                 initialValue: registryProvider.registryLocationModel.county.isNotEmpty ? registryProvider.registryLocationModel.county : selectedCounty,
-                items: countyCriteria,
-                onChanged: (val) {
+                items: counties.map((e) => e.name).toList(),
+                error: registryProvider.shouldValidateFields ? countyError : null,
+                onChanged: (val) async {
+                  final values = await getSubCountiesOfCounty(val);
                   setState(() {
                     selectedCounty = val;
                     registryProvider.setCounty(selectedCounty);
+                    selectedSubCounty = 'Please Select';
+                    selectedWard = 'Please Select';
+                    registryProvider.setSubCounty("");
+                    registryProvider.setWard("");
+                    if (val.isEmpty) {
+                      countyError = COUNTY_DROPDOWN_ERROR;
+                      subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
+                    } else {
+                      countyError = null;
+                    }
+                    subCounties.clear();
+                    subCounties.addAll(values);
                   });
                 },
               ),
@@ -78,28 +97,39 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Sub-County: ',
+                  'Sub-County *',
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.subCounty.isNotEmpty ? registryProvider.registryLocationModel.subCounty : selectedSubCounty,
-                  items: subcountyCriteria,
-                  onChanged: (val) {
+                  items: subCounties.map((e) => e.name).toList(),
+                  error: registryProvider.shouldValidateFields ? subCountyError : null,
+                  onChanged: (val) async {
+                    final values = await getWardsFromSubCounty(val);
                     setState(() {
                       selectedSubCounty = val;
                       registryProvider.setSubCounty(selectedSubCounty);
+                      selectedWard = 'Please Select';
+                      registryProvider.setWard("");
+                      if (val.isEmpty) {
+                        subCountyError = SUBCOUNTY_DROPDOWN_ERROR;
+                      } else {
+                        subCountyError = null;
+                      }
+                      wards.clear();
+                      wards.addAll(values);
                     });
                   },
                 ),
                 const SizedBox(height: 15,),
                 const Divider(),
                 const Text(
-                  'Ward: ',
+                  'Ward',
                   style: TextStyle(color: kTextGrey),
                 ),
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
-                  items: wardCriteria,
+                  items: wards.map((e) => e.name).toList(),
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;

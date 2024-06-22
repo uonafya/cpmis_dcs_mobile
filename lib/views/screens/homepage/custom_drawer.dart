@@ -1,7 +1,8 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
+import 'package:cpims_dcs_mobile/core/utils/sync_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
-import 'package:cpims_dcs_mobile/views/screens/esr/esr_form.dart';
+import 'package:cpims_dcs_mobile/views/screens/esr/esr_concent_dialog.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:flutter/material.dart';
@@ -16,47 +17,17 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  List<Map<String, dynamic>> drawerItems = [
-    {
-      "title": "Home",
-      "onTap": () => Get.offAll(() => const Homepage()),
-    },
-    {
-      "title": "Case Record Sheet",
-      "onTap": () {
-        Get.back();
-
-        Get.to(() => const CRSHome());
-      },
-    },
-    {
-      "title": "Follow-ups",
-      "onTap": () {
-        Get.back();
-
-        Get.to(() => const FollowUpHome());
-      },
-    },
-    {
-      "title": "ESR",
-      "onTap": () {
-        Get.back();
-
-        Get.to(() => const ESRForm());
-      },
-    },
-    {
-      "title": "CCI Transition form",
-      "onTap": () {
-        Get.back();
-
-        Get.to(() => const CCI());
-      },
-    },
-    {
-      "title": "Delete Data",
-    },
-  ];
+  void _syncData() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Dialog(
+        child: SingleChildScrollView(
+          child: SyncModal(),
+        ),
+      ),
+    );
+  }
 
   void _showDeleteConfirmationDialog() {
     showDialog(
@@ -89,6 +60,56 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> drawerItems = [
+      {
+        "title": "Home",
+        "onTap": () => Get.offAll(() => const Homepage()),
+      },
+      {
+        "title": "Case Record Sheet",
+        "onTap": () {
+          Get.back();
+
+          Get.to(() => const CRSHome());
+        },
+      },
+      {
+        "title": "Follow-ups",
+        "onTap": () {
+          Get.back();
+
+          Get.to(() => const FollowUpHome());
+        },
+      },
+      {
+        "title": "ESR",
+        "onTap": () {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => const Dialog(
+                    child: SingleChildScrollView(child: ESRConcentDialog()),
+                  ));
+        },
+      },
+      {
+        "title": "CCI Transition form",
+        "onTap": () {
+          Get.back();
+
+          Get.to(() => const CCI());
+        },
+      },
+      {
+        "title": "Sync data",
+        "onTap": () {
+          Get.back();
+        },
+      },
+      {
+        "title": "Delete Data",
+      },
+    ];
     return Scaffold(
       body: Column(
         children: [
@@ -123,7 +144,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   (item) => InkWell(
                     onTap: item['title'] == "Delete Data"
                         ? _showDeleteConfirmationDialog
-                        : item['onTap'],
+                        : item["title"] == "Sync data"
+                            ? _syncData
+                            : item['onTap'],
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

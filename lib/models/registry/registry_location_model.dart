@@ -32,4 +32,9 @@ class RegistryLocationModel {
     subCounty = "";
     ward = "";
   }
+
+  bool isComplete() {
+    return county.isNotEmpty &&
+    subCounty.isNotEmpty;
+  }
 }

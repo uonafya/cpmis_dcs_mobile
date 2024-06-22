@@ -1,6 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart.dart';
+import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -63,6 +63,7 @@ class ReferralDatabaseHelper {
 class ReferralTable {
   static final List<String> values = [
     caseId,
+    formId,
     caseCategory,
     referralActor,
     specifiedReferral,
@@ -70,6 +71,7 @@ class ReferralTable {
   ];
 
   static const String caseId = 'case_id';
+  static const String formId = 'form_id';
   static const String caseCategory = 'case_category';
   static const String referralActor = 'referral_actor';
   static const String specifiedReferral = 'specified_referral';

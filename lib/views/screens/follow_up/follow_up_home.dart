@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/views/screens/follow_up/widgets/follow_up_list_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -81,7 +80,7 @@ class _FollowUpHomeState extends State<FollowUpHome> {
                   ],
                 ),
               ]),
-              ...List.generate(10, (index) => const FollowUpListItem()),
+              // ...List.generate(10, (index) => const FollowUpListItem()),
               const Footer(),
             ]));
   }

@@ -1,15 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:get/route_manager.dart';
+
 import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
-import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart.dart';
+import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 class ReferralsFollowUp extends StatefulWidget {
-  const ReferralsFollowUp({super.key});
+  const ReferralsFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<ReferralsFollowUp> createState() => _ReferralsFollowUpState();
@@ -29,51 +33,47 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
       ReferralDatabaseHelper();
 
   void handleAddReferral() async {
-    String? caseId = "1232";
+    String? caseId = widget.caseLoad.caseID;
+    String? formId = "referrals_followup";
 
     if (caseCategory == "Please select") {
-      Get.snackbar("Error", "Please select a case category.");
+      showErrorSnackBar(context, "Please select a case category.");
       return;
     }
 
     if (referral == "Please select") {
-      Get.snackbar("Error", "Please select a referral actor.");
+      showErrorSnackBar(context, "Please select a referral actor.");
       return;
     }
 
     if (specifiedReferral == "Please select") {
-      Get.snackbar("Error", "Please select a specified referral.");
+      showErrorSnackBar(context, "Please select a specified referral.");
       return;
     }
 
     if (referralFor == "Please select") {
-      Get.snackbar("Error", "Please select what the referral is for.");
+      showErrorSnackBar(context, "Please select what the referral is for.");
       return;
     }
 
     // Create ReferralModel instance
     ReferralModel referralModel = ReferralModel(
       caseId: caseId,
+      formId: formId,
       caseCategory: caseCategory,
       referralActor: referral,
       specifiedReferral: specifiedReferral,
       referralFor: referralFor,
     );
 
-    print(referralModel.toJson());
-
     try {
-      print('Db initialization & saving referral...');
-      var db = await localdb.database;
       final referralDatabaseHelper = ReferralDatabaseHelper();
       await referralDatabaseHelper.insertReferral(referralModel);
-      print('Saved referral :)');
 
       Get.back(); // Navigate back
-      Get.snackbar("Success", "Referral added successfully.");
+      showSuccessSnackBar(context, "Referral added successfully.");
     } catch (e) {
-      print(e.toString());
-      Get.snackbar("Error", "Failed to save referral. Please try again.");
+      showErrorSnackBar(context, "Failed to save referral. Please try again.");
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/notification_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../models/cci_transition.dart';
@@ -38,6 +39,18 @@ class ApiService {
     );
 
     return response.data;
+  }
+
+  Future<String> verifyToken() async {
+    final response = await httpClient.request(
+      'token/verify/',
+      'POST',
+      {
+        'token': preferences.getString('access'),
+      },
+    );
+
+    return response.data['token'];
   }
 
   static List<Map<String, dynamic>> fetchCrsData() {
@@ -98,6 +111,36 @@ class ApiService {
     }
   }
 
+  Future<void> sendClosureFollowup(Map<String, dynamic> closure) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        closure,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending closure followup $e');
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> sendServiceFollowup(Map<String, dynamic> service) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        service,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending service followup $e');
+      }
+    }
+  }
 
   Future<void> sendCciTransition(CciTransitionModel inquiry) async {
     try {
@@ -109,12 +152,66 @@ class ApiService {
       print(response.data);
     } catch (e) {
       if (kDebugMode) {
-        print('Error occurred while sending social inquiry $e');
+        print('Error occurred while sending cci transition $e');
       }
     }
   }
 
+  Future<void> sendCourtSummons(Map<String, dynamic> summons) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        summons,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending court summons $e');
+      }
+      rethrow;
+    }
+  }
 
+  Future<void> sendCourtSession(Map<String, dynamic> session) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        session,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending court session $e');
+        if (e is DioException) {
+          print('Response data: ${e.response?.data}');
+          print('Response status code: ${e.response?.statusCode}');
+        }
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> sendReferral(Map<String, dynamic> referral) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/', // Adjust this endpoint if needed
+        'POST',
+        referral,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending referral $e');
+        if (e is DioException) {
+          print('Response data: ${e.response?.data}');
+          print('Response status code: ${e.response?.statusCode}');
+        }
+      }
+      rethrow;
+    }
+  }
 
   Future<void> sendESRForm(Map<String, dynamic> esr) async {
     try {
@@ -126,7 +223,7 @@ class ApiService {
       print(response.data);
     } catch (e) {
       if (kDebugMode) {
-        print('Error occurred while sending social inquiry $e');
+        print('Error occurred while sending esr form');
       }
     }
   }
