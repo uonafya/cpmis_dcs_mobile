@@ -142,31 +142,31 @@ class MetadataManager {
     _orgUnit.addAll({for (var e in orgUnitMetadata) e.name ?? "Unknown" : e.id.toString()});
   }
 
-  String getSexMetaValue(String key) {
+  String getSexValue(String key) {
     return _sex[key] ?? key;
   }
 
-  String getCategoryMetaValue(String key) {
+  String getCategoryValue(String key) {
     return _category[key] ?? key;
   }
 
-  String getReporterMetaValue(String key) {
+  String getReporterValue(String key) {
     return _reporter[key] ?? key;
   }
 
-  String getAreaTypeMetaValue(String key) {
+  String getAreaTypeValue(String key) {
     return _areaType[key] ?? key;
   }
 
-  String getReligionMetaValue(String key) {
+  String getReligionValue(String key) {
     return _religion[key] ?? key;
   }
 
-  String getTribeMetaValue(String key) {
+  String getTribeValue(String key) {
     return _tribe[key] ?? key;
   }
 
-  String getChildClassMetaValue(String key) {
+  String getChildClassValue(String key) {
     return _childClass[key] ?? key;
   }
 
