@@ -4,6 +4,7 @@ import 'package:cpims_dcs_mobile/models/nameid.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ESRHouseholdGeolocation extends StatefulWidget {
@@ -126,9 +127,9 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
                 },
                 onChanged: (val) async {
                   controller.setLocation(val);
-                 
-                  final values = await getSubLocationFromLocation(
-                      controller.location);
+
+                  final values =
+                      await getSubLocationFromLocation(controller.location);
                   subLocation.addAll(values);
 
                   setState(() {});
@@ -148,12 +149,12 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
           if (controller.location != 'Please select')
             CustomDropdown(
                 initialValue: controller.selectedSubLocation,
-                // validator: (val) {
-                //   if (val == 'Please select') {
-                //     return 'Please select a sub location';
-                //   }
-                //   return null;
-                // },
+                validator: (val) {
+                  if (val == 'Please select') {
+                    return 'Please select a sub location';
+                  }
+                  return null;
+                },
                 items: subLocation.map((e) => e.name).toList(),
                 onChanged: (val) async {
                   controller.setSelectedSubLocation(val);
@@ -176,12 +177,6 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
             CustomTextField(
               hintText: 'Village Elder',
               controller: controller.villageElderController,
-              validator: (val) {
-                if (val!.isEmpty) {
-                  return 'Please fill in the village elder';
-                }
-                return null;
-              },
             ),
           if (controller.selectedSubLocation != 'Please select')
             const SizedBox(
@@ -216,6 +211,9 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
                   hintText: 'Months',
                   controller: controller.monthsController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(2),
+                  ],
                   validator: (val) {
                     if (val!.isEmpty) {
                       return 'Please select a sub county';

@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.error,
     this.onFieldSubmitted,
+    this.inputFormatters,
     this.keyboardType,
   });
 
@@ -37,6 +39,7 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final String? error;
   final void Function(String)? onFieldSubmitted;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,7 @@ class CustomTextField extends StatelessWidget {
       initialValue: initialValue,
       cursorColor: kPrimaryColor,
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       textInputAction: textInputAction,
       textAlignVertical: TextAlignVertical.center,
       maxLines: maxLines,
