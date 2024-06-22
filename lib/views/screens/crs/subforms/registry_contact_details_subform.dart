@@ -31,6 +31,7 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
+          keyboardType: TextInputType.number,
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
             registryProvider.setDesignatedPhoneNumber(value);
@@ -44,6 +45,7 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
+          keyboardType: TextInputType.number,
           initialValue: registryProvider.registryContactDetailsModel.otherMobileNumber,
           onChanged: (value) {
             registryProvider.setOtherMobileNumber(value);

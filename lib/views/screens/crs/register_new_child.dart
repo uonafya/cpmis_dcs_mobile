@@ -47,6 +47,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
     'Child',
   ];
   String selectedPersonCriteria = 'Please Select';
+  String selectedSexCriteria = 'Please Select Gender';
   int selectedStep = 0;
   bool? _radioValue;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -214,7 +215,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           } else {
                             sexError = null;
                           }
-                          selectedPersonCriteria = value;
+                          selectedSexCriteria = value;
                           registryProvider.setSex(value);
                         });
                       },
