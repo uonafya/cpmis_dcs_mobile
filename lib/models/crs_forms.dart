@@ -138,8 +138,7 @@ class Caregivers extends BaseCRSFormModel {
   final String? phoneNumber;
 
   Caregivers(
-      {
-      required super.firstName,
+      {required super.firstName,
       required super.surName,
       super.otherNames,
       required DateTime super.dateOfBirth,
@@ -164,6 +163,8 @@ class Caregivers extends BaseCRSFormModel {
 }
 
 class AboutChildCRSFormModel {
+  final String id;
+  final bool isNewChild;
   InitialChildDetails initialDetails;
   List<SiblingDetails>? siblingDetails;
   String houseEconomicStatus;
@@ -174,6 +175,8 @@ class AboutChildCRSFormModel {
 
   AboutChildCRSFormModel(
       {required this.initialDetails,
+      required this.id,
+      required this.isNewChild,
       this.siblingDetails,
       required this.houseEconomicStatus,
       required this.familyStatus,
@@ -319,13 +322,12 @@ class CRSForm {
   MedicalCRSFormModel? medical;
   CaseDataCRSFormModel? caseData;
 
-  CRSForm({
-    this.caseReporting,
-    this.about,
-    this.medical,
-    this.caseData,
-    this.formID
-  });
+  CRSForm(
+      {this.caseReporting,
+      this.about,
+      this.medical,
+      this.caseData,
+      this.formID});
 
   Map<String, dynamic> toJSON() {
     List<Map<String, dynamic>> siblingJSON;
@@ -390,20 +392,22 @@ class CRSForm {
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
     jsonToReturn['reporting_orgunit'] =
         caseReporting?.reportingOrganizationalUnit;
-    jsonToReturn['date_case_reported'] = convertDateToYMD(caseReporting?.dateCaseReported);
+    jsonToReturn['date_case_reported'] =
+        convertDateToYMD(caseReporting?.dateCaseReported);
 
-    jsonToReturn['child'] = about?.initialDetails == null ? {} : about!.initialDetails.toJSON();
+    jsonToReturn['child'] =
+        about?.initialDetails == null ? {} : about!.initialDetails.toJSON();
 
     if (about?.siblingDetails != null) {
       jsonToReturn['siblings'] = [
-        for(var i = 0; i < about!.siblingDetails!.length; i++)
+        for (var i = 0; i < about!.siblingDetails!.length; i++)
           about!.siblingDetails![i].toJSON()
       ];
     }
 
     if (about?.caregivers != null) {
       jsonToReturn['caregivers'] = [
-        for (var i  = 0; i < about!.caregivers!.length; i++)
+        for (var i = 0; i < about!.caregivers!.length; i++)
           about!.caregivers![i].toJSON()
       ];
     }
