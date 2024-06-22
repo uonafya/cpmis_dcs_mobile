@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FollowUpScreen extends StatefulWidget {
   const FollowUpScreen({super.key, required this.caseLoadModel});
@@ -18,7 +19,6 @@ class FollowUpScreen extends StatefulWidget {
 class _FollowUpScreenState extends State<FollowUpScreen> {
   @override
   Widget build(BuildContext context) {
-    print(widget.caseLoadModel.toJson());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: customAppBar(),
@@ -83,7 +83,8 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                               widget.caseLoadModel.caseCategories == null
                                   ? "-"
                                   : widget.caseLoadModel.caseCategories!
-                                      .map((e) => e.caseCategory.toString())
+                                      .map((e) =>
+                                          "${e.caseCategory} | ${DateFormat("dd MMMM, yyy").format(DateTime.parse(e.dateOfEvent))}")
                                       .join(">\n "),
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.grey),
