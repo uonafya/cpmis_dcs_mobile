@@ -177,7 +177,7 @@ class RegistryProvider extends ChangeNotifier {
       RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(
           personType: registryPersonalDetailsModel.personType,
           isCaregiver: registryPersonalDetailsModel.isCaregiver,
-          childOVCProgram: registryPersonalDetailsModel.childOVCProgram,
+          childOVCProgram: false,
           firstName: registryPersonalDetailsModel.firstName,
           surname: registryPersonalDetailsModel.surname,
           otherNames: registryPersonalDetailsModel.otherNames,
