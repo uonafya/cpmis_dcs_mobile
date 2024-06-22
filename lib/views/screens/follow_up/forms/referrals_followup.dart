@@ -1,13 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:get/route_manager.dart';
-import 'package:cpims_dcs_mobile/core/network/database.dart';
+
 import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
 import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 class ReferralsFollowUp extends StatefulWidget {
   const ReferralsFollowUp({super.key});
@@ -61,19 +62,13 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
       referralFor: referralFor,
     );
 
-    print(referralModel.toJson());
-
     try {
-      print('Db initialization & saving referral...');
-      var db = await localdb.database;
       final referralDatabaseHelper = ReferralDatabaseHelper();
       await referralDatabaseHelper.insertReferral(referralModel);
-      print('Saved referral :)');
 
       Get.back(); // Navigate back
       showSuccessSnackBar(context, "Referral added successfully.");
     } catch (e) {
-      print(e.toString());
       showErrorSnackBar(context, "Failed to save referral. Please try again.");
     }
   }

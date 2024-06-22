@@ -1,5 +1,4 @@
 import 'package:cpims_dcs_mobile/core/network/metadata.dart';
-import 'package:get/get.dart';
 
 import '../models/nameid.dart';
 
