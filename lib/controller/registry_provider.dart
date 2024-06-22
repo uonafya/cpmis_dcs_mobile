@@ -169,9 +169,9 @@ class RegistryProvider extends ChangeNotifier {
     return !isComplete();
   }
 
-  Future<void> submit() async {
+  Future<int?> submit() async {
     if (isNotComplete()) {
-      return;
+      return null;
     }
     try {
       RegisterNewChildModel registerNewChildModel = RegisterNewChildModel(
@@ -190,12 +190,13 @@ class RegistryProvider extends ChangeNotifier {
           caregivers: caregivers,
           siblings: siblings,
           registryCboChvModel: registryCboChvModel);
-      await RegisterNewChildQuery.insertRegistryFormDetails(
+      var id = await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
       clearState();
       if (kDebugMode) {
         print(registerNewChildModel.toJson());
       }
+      return id;
     } on Exception catch (e) {
       if (kDebugMode) {
         print("Error inserting new child: $e");

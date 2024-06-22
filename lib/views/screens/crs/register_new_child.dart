@@ -24,6 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/registry_provider.dart';
+import '../../../core/network/person_registry/query.dart';
 import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
@@ -374,7 +375,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                         child: CustomButton(
                           text: 'Submit',
                           textColor: Colors.white,
-                          onTap: () {
+                          onTap: () async {
 
                             if (registryProvider.isNotComplete()) {
                               if (context.mounted) {
@@ -436,8 +437,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                                 siblingDetails: siblings,
                                 caregivers: caregivers,
                                 familyStatus: [],
-                                houseEconomicStatus: "");
-                            registryProvider.submit();
+                                houseEconomicStatus: "",
+                                id: "1",
+                                isNewChild: true,);
+                            var id = await registryProvider.submit();
+                            crsAbout.id = id.toString();
                             Provider.of<CRSFormProvider>(context, listen: false)
                                 .about = crsAbout;
                             Get.off(() => const CaseRegistrationSheet());
