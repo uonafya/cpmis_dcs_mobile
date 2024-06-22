@@ -1,7 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
+import 'package:cpims_dcs_mobile/controller/location_provider.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
-import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/metadata.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
@@ -28,10 +30,12 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
       const Duration(seconds: 0),
       () async {
         try {
+          Provider.of<LocationProvider>(context, listen: false)
+              .getCurrentLocation();
           final hasConnection =
               await Provider.of<ConnectivityProvider>(context, listen: false)
                   .checkInternetConnection();
-          print(hasConnection);
+
           if (hasConnection) {
             // final prefs = await SharedPreferences.getInstance();
             // final accessToken = prefs.getString('access');

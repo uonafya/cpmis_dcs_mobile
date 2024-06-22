@@ -17,7 +17,7 @@ class AboutChildSiblingItem extends StatelessWidget {
         border: Border.all(color: Colors.grey[300]!),
       ),
       width: double.infinity,
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -26,38 +26,38 @@ class AboutChildSiblingItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Name",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
                       "FILL WITH DATA",
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 width: mediumSpacing,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Sex",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
                       "FILL WITH DATA",
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(
+          SizedBox(
             height: 10,
           ),
           Row(
@@ -66,39 +66,39 @@ class AboutChildSiblingItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Date of Birth",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
                       "FILL WITH DETAILS",
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 width: mediumSpacing,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "AGE",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
                       "FILL WITH DATA",
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const Divider(),
-          const SizedBox(
+          Divider(),
+          SizedBox(
             height: smallSpacing,
           ),
         ],

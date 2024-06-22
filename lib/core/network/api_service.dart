@@ -2,7 +2,6 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
-import 'package:cpims_dcs_mobile/models/closure_followup_model.dart';
 import 'package:cpims_dcs_mobile/models/notification_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
@@ -109,7 +108,7 @@ class ApiService {
       if (kDebugMode) {
         print('Error occurred while sending closure followup $e');
       }
-      throw e;
+      rethrow;
     }
   }
 
@@ -125,7 +124,7 @@ class ApiService {
       if (kDebugMode) {
         print('Error occurred while sending service followup $e');
       }
-      throw e;
+      rethrow;
     }
   }
 

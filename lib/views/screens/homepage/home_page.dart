@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
+import 'package:cpims_dcs_mobile/controller/location_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -32,6 +33,9 @@ class _HomepageState extends State<Homepage> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
+      Provider.of<LocationProvider>(context, listen: false)
+          .getCurrentLocation();
+
       final data = await getOrganizationalUnits(null);
       orgUnits = data.map((e) => e.name ?? "-").toList();
       setState(() {});

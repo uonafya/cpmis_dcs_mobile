@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
@@ -77,18 +79,11 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
       serviceProvidedList: serviceProvidedList,
     );
 
-    print(serviceFollowupModel.toJson());
-
     try {
-      print('Db initialization & saving service followup...');
-      var db = await localdb.database;
       await serviceDatabaseHelper.insertServiceFollowup(serviceFollowupModel);
-      print('Saved service followup :)');
 
       Get.back();
-      showSuccessSnackBar(context, "Service followup saved successfully.");
     } catch (e) {
-      print(e.toString());
       showErrorSnackBar(context, "Failed to save service followup.");
     }
   }
