@@ -35,7 +35,11 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Court Session",
         "onTap": () {
-          Get.to(() => const CourtFollowUp());
+          Get.to(
+            () => CourtFollowUp(
+              caseLoad: widget.caseLoad,
+            ),
+          );
         }
       },
       {

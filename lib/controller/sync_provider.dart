@@ -3,6 +3,7 @@
 import 'package:cpims_dcs_mobile/controller/closure_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
 import 'package:cpims_dcs_mobile/controller/services_upstream.dart';
+import 'package:cpims_dcs_mobile/controller/session_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/social_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/summons_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/sync_crs.dart';
@@ -24,6 +25,7 @@ Future<void> syncData(BuildContext context) async {
     sendClosureUpstream(),
     sendSocialInquiryUpstream(),
     sendESRUpstream(),
+    sendCourtSessionsUpstream(),
 
     syncCRS(),
 
