@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
+import 'package:cpims_dcs_mobile/controller/sync_crs.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
@@ -16,27 +17,6 @@ import 'package:intl/intl.dart';
 import 'package:cpims_dcs_mobile/views/widgets/initial_loader.dart';
 import 'package:flutter/cupertino.dart';
 
-// Mapping functions
-int mapCaseOutcome(String outcome) {
-  final Map<String, int> outcomeMap = {
-    "Please select": 0,
-    "Transferred to another organization unit": 1,
-    "Child reintegrated into education": 2,
-    "Child removed from exploitative situation": 3,
-    "Lost contact (Dropped out)": 4,
-    "Other outcomes (Standard intervention)": 5,
-  };
-  return outcomeMap[outcome] ?? 0;
-}
-
-int mapCaseCategory(String category) {
-  final Map<String, int> categoryMap = {
-    "Please select": 0,
-    "Neglect": 1,
-  };
-  return categoryMap[category] ?? 0;
-}
-
 Future<void> syncData(BuildContext context) async {
   final String deviceID = await getDeviceID(context);
 
@@ -45,6 +25,7 @@ Future<void> syncData(BuildContext context) async {
     sendClosureUpstream(),
     sendSocialInquiryUpstream(),
     sendESRUpstream(),
+    syncCRS(),
     //FROM UPSTREAM
     apiService.fetchAndInsertCaseload(deviceID: deviceID),
     loadLocationFromUpstream(),
@@ -72,6 +53,25 @@ Future<void> sendSocialInquiryUpstream() async {
 
 Future<void> sendClosureUpstream() async {
   final db = await LocalDB.instance.database;
+  int mapCaseOutcome(String outcome) {
+    final Map<String, int> outcomeMap = {
+      "Please select": 0,
+      "Transferred to another organization unit": 1,
+      "Child reintegrated into education": 2,
+      "Child removed from exploitative situation": 3,
+      "Lost contact (Dropped out)": 4,
+      "Other outcomes (Standard intervention)": 5,
+    };
+    return outcomeMap[outcome] ?? 0;
+  }
+
+  int mapCaseCategory(String category) {
+    final Map<String, int> categoryMap = {
+      "Please select": 0,
+      "Neglect": 1,
+    };
+    return categoryMap[category] ?? 0;
+  }
 
   // Sync closure followups
   final closures = await db.query(caseClosureTable);
@@ -115,8 +115,9 @@ Future<void> sendClosureUpstream() async {
       } else {
         print('Invalid caseId for deletion: $caseId');
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
       // Continue with the next closure instead of throwing an exception
+
       continue;
     }
   }

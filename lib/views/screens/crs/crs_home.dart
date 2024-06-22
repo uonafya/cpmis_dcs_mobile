@@ -110,8 +110,11 @@ class _CRSHomeState extends State<CRSHome> {
                 Row(
                   children: [
                     Expanded(
-                        child:
-                            CustomButton(text: 'Search', onTap: searchChild)),
+                        child: CustomButton(
+                      text: 'Search',
+                      onTap: searchChild,
+                      isDisabled: selectedCriteria == 'Select Criteria',
+                    )),
                     const SizedBox(
                       width: 15,
                     ),

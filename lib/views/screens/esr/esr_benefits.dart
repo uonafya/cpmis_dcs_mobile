@@ -38,7 +38,7 @@ class _ESRBenefitsState extends State<ESRBenefits> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Is the household receiving benefits from any of the Social Assistance Programmes?',
+            'Is the household receiving benefits from any of the Social Assistance Programmes? *',
           ),
           const SizedBox(
             height: 6,
@@ -59,7 +59,7 @@ class _ESRBenefitsState extends State<ESRBenefits> {
             height: 14,
           ),
           const Text(
-            'What type of the BENEFITS do you Receive?',
+            'What type of the BENEFITS do you Receive? *',
           ),
           const SizedBox(
             height: 6,
@@ -82,7 +82,7 @@ class _ESRBenefitsState extends State<ESRBenefits> {
           if (controller.kindOfBenefits == "Others" ||
               controller.kindOfBenefits == "In-kind")
             const Text(
-              'Specify the benefit',
+              'Specify the benefit *',
             ),
           if (controller.kindOfBenefits == "Others" ||
               controller.kindOfBenefits == "In-kind")
