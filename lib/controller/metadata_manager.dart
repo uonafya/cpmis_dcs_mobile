@@ -87,6 +87,28 @@ class MetadataManager {
   List<String> get personTypeNames => _personType.keys.toList();
   List<String> get relationshipTypeNames => _relationshipType.keys.toList();
 
+  List<String> get familyStatusNames => _familyStatus.keys.toList();
+  List<String> get referralDestinationClassificationNames =>
+      _referralDestinationClassification.keys.toList();
+  List<String> get referralTypeNames => _referralType.keys.toList();
+  List<String> get longTermSupportNames => _longTermSupport.keys.toList();
+  List<String> get mentalSubConditionNames => _mentalSubCondition.keys.toList();
+  List<String> get physicalSubConditionNames => _physicalSubCondition.keys.toList();
+  List<String> get courtOrderNames => _courtOrder.keys.toList();
+  List<String> get householdEconomicsNames => _householdEconomics.keys.toList();
+  List<String> get immediateNeedNames => _immediateNeed.keys.toList();
+  List<String> get otherSubconditionNames => _otherSubcondition.keys.toList();
+  List<String> get mentalConditionNames => _mentalCondition.keys.toList();
+  List<String> get caseNatureNames => _caseNature.keys.toList();
+  List<String> get perpetratorIDNames => _perpetratorID.keys.toList();
+  List<String> get perpetratorStatusNames => _perpetratorStatus.keys.toList();
+  List<String> get placeOfEventNames => _placeOfEvent.keys.toList();
+  List<String> get physicalConditioTypeNames => _physicalConditioType.keys.toList();
+  List<String> get referralDestinationIDNames => _referralDestinationID.keys.toList();
+  List<String> get riskLevelNames => _riskLevel.keys.toList();
+  List<String> get coreItemNames => _coreItem.keys.toList();
+  List<String> get interventionNames => _intervention.keys.toList();
+
   static MetadataManager getInstance() {
     if (_instance != null) {
       return _instance!;
