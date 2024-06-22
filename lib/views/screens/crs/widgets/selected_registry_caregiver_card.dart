@@ -50,8 +50,8 @@ class _SelectedRegistryCaregiverCardState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.caregiver.relationshipToChild),
-                    const Text("Adult: Yes"),
+                    Expanded(child: Text(widget.caregiver.relationshipToChild),),
+
                   ],
                 ),
                 const SizedBox(
