@@ -1,12 +1,8 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
-import 'package:cpims_dcs_mobile/core/network/case_categories.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
-import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
-import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -16,11 +12,8 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../models/case_load/case_load_model.dart';
 
 class CaseRegistrationSheet extends StatefulWidget {
   const CaseRegistrationSheet({

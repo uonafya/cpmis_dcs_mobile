@@ -192,7 +192,6 @@ class RegistryProvider extends ChangeNotifier {
           registryCboChvModel: registryCboChvModel);
       await RegisterNewChildQuery.insertRegistryFormDetails(
           registerNewChildModel);
-
       clearState();
       if (kDebugMode) {
         print(registerNewChildModel.toJson());
@@ -202,6 +201,7 @@ class RegistryProvider extends ChangeNotifier {
         print("Error inserting new child: $e");
       }
     }
-    RegisterNewChildQuery.getRegistryFormDetails();
+    // RegisterNewChildQuery.getRegistryFormDetails();
+    // RegisterNewChildQuery.getRegistryFormDetailById(1);
   }
 }

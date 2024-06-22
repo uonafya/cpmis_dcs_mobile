@@ -313,8 +313,7 @@ class CaseDataCRSFormModel {
 }
 
 class CRSForm {
-  String caseID;
-  String childID;
+  String? formID;
   CaseReportingCRSFormModel? caseReporting;
   AboutChildCRSFormModel? about;
   MedicalCRSFormModel? medical;
@@ -325,8 +324,7 @@ class CRSForm {
     this.about,
     this.medical,
     this.caseData,
-    required this.caseID,
-    required this.childID,
+    this.formID
   });
 
   Map<String, dynamic> toJSON() {
@@ -392,11 +390,23 @@ class CRSForm {
     jsonToReturn['reporting_sub_county'] = caseReporting?.reportingSubCounty;
     jsonToReturn['reporting_orgunit'] =
         caseReporting?.reportingOrganizationalUnit;
-    jsonToReturn['date_case_reported'] = caseReporting?.dateCaseReported;
+    jsonToReturn['date_case_reported'] = convertDateToYMD(caseReporting?.dateCaseReported);
 
-    jsonToReturn['child'] = {};
-    jsonToReturn['siblings'] = [];
-    jsonToReturn['caregivers'] = [];
+    jsonToReturn['child'] = about?.initialDetails == null ? {} : about!.initialDetails.toJSON();
+
+    if (about?.siblingDetails != null) {
+      jsonToReturn['siblings'] = [
+        for(var i = 0; i < about!.siblingDetails!.length; i++)
+          about!.siblingDetails![i].toJSON()
+      ];
+    }
+
+    if (about?.caregivers != null) {
+      jsonToReturn['caregivers'] = [
+        for (var i  = 0; i < about!.caregivers!.length; i++)
+          about!.caregivers![i].toJSON()
+      ];
+    }
     jsonToReturn['house_economic_status'] = about?.houseEconomicStatus;
     jsonToReturn['family_status'] = about?.familyStatus;
 
@@ -426,7 +436,7 @@ class CRSForm {
 
     if (caseData?.offenderKnown == "Known") {
       jsonToReturn['perpetrators'] =
-          caseData?.perpetrators.map((e) => e.toJSON).toList();
+          caseData?.perpetrators.map((e) => e.toJSON()).toList();
     }
 
     jsonToReturn['case_categories'] =
@@ -439,7 +449,7 @@ class CRSForm {
     }
 
     if (caseData?.summonsIssued == true) {
-      jsonToReturn['date_of_summon'] = caseData?.dateOfSummon;
+      jsonToReturn['date_of_summon'] = convertDateToYMD(caseData?.dateOfSummon);
     }
 
     jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;
