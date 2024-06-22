@@ -154,6 +154,8 @@ class LocalDB {
             ward TEXT,
             location TEXT,
             subLocation TEXT,
+            longitude TEXT,
+            latitude TEXT,
             reportingSubCounty TEXT NOT NULL,
             reportingOrgUnit TEXT NOT NULL,          
             dateCaseReported TEXT NOT NULL,

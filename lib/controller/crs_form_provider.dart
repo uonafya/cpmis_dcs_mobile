@@ -3,8 +3,12 @@ import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CRSFormProvider extends ChangeNotifier {
-  final CRSForm form =
-      CRSForm(startTime: DateTime.now(), endTime: DateTime.now());
+  final CRSForm form = CRSForm(
+    startTime: DateTime.now(),
+    endTime: DateTime.now(),
+    longitude: "",
+    latitude: "",
+  );
 
   CaseReportingCRSFormModel get caseReport {
     if (form.caseReporting == null) {
@@ -112,6 +116,16 @@ class CRSFormProvider extends ChangeNotifier {
 
   set caseData(CaseDataCRSFormModel? data) {
     form.caseData = data;
+    notifyListeners();
+  }
+
+  set latitude(double latitude) {
+    form.latitude = latitude.toString();
+    notifyListeners();
+  }
+
+  set longitude(double longitude) {
+    form.longitude = longitude.toString();
     notifyListeners();
   }
 }

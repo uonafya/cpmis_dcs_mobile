@@ -321,6 +321,8 @@ class CaseDataCRSFormModel {
 class CRSForm {
   String? formID;
   DateTime startTime;
+  String longitude;
+  String latitude;
   DateTime endTime;
   CaseReportingCRSFormModel? caseReporting;
   AboutChildCRSFormModel? about;
@@ -333,6 +335,8 @@ class CRSForm {
       this.medical,
       required this.startTime,
       required this.endTime,
+      required this.latitude,
+      required this.longitude,
       this.caseData,
       this.formID});
 
@@ -353,8 +357,10 @@ class CRSForm {
 
     Map<String, dynamic> jsonToReturn = {};
     jsonToReturn["case_reporter"] = caseReporting?.originator;
-    jsonToReturn['startTime'] = convertDateToYMD(startTime);
-    jsonToReturn['endTime'] = convertDateToYMD(endTime);
+    jsonToReturn['startTime'] = startTime.toIso8601String();
+    jsonToReturn['endTime'] = endTime.toIso8601String();
+    jsonToReturn['latitiude'] = latitude;
+    jsonToReturn['longitude'] = longitude;
 
     if (caseReporting?.originator == "Court") {
       jsonToReturn["court_name"] = caseReporting?.courtName;

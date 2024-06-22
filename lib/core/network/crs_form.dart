@@ -9,8 +9,10 @@ class CRSDatabaseForm {
       // Insert into form table
       await db.insert(crsTable, {
         "id": formID,
-        "startTime": convertDateToYMD(form.startTime),
-        "endTime": convertDateToYMD(form.endTime),
+        "longitude": form.longitude,
+        "latitude": form.latitude,
+        "startTime": form.startTime.toIso8601String(),
+        "endTime": form.endTime..toIso8601String(),
         "caseReporter": form.caseReporting?.originator,
         "courtName": form.caseReporting?.courtName,
         "reporterPhoneNumber": form.caseReporting?.reporterPhoneNumber,

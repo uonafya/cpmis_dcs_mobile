@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/location_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
@@ -190,6 +191,13 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             var formID = uuid.v4();
 
                             model.endTime = DateTime.now();
+                            var locationDetails =
+                                await Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .getCurrentLocation();
+                            model.latitude = locationDetails?.latitude ?? 0;
+                            model.longitude = locationDetails?.longitude ?? 0;
+
                             CRSDatabaseForm.storeFormInDB(
                                 cprdata.form, db, formID);
                             await form.sendToUpstream();
