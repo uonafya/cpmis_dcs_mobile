@@ -100,7 +100,8 @@ class CRSDetails extends StatelessWidget {
                       otherNames: caseLoad.ovcOtherNames ?? "",
                     ),
                     familyStatus: [],
-                    houseEconomicStatus: caseLoad.householdEconomicStatus?.first ?? "",
+                    houseEconomicStatus:
+                        caseLoad.householdEconomicStatus?.first ?? "",
                     siblingDetails: siblings,
                   );
                   Provider.of<CRSFormProvider>(context, listen: false).about =
@@ -339,24 +340,31 @@ class CRSDetails extends StatelessWidget {
                 Text(
                   caseLoad.siblings == null
                       ? "No siblings"
-                      : caseLoad.siblings!.length.toString(),
+                      : caseLoad.siblings!
+                          .map((e) =>
+                              "${e.siblingFirstName} ${e.siblingSurName}")
+                          .join("\n>"),
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "House Economic Status",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Middle Income (apparent)",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.householdEconomicStatus == null
+                      ? "NA"
+                      : caseLoad.householdEconomicStatus!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(
@@ -369,7 +377,7 @@ class CRSDetails extends StatelessWidget {
                 Text(
                   caseLoad.hobbies == null
                       ? "No friends"
-                      : caseLoad.hobbies!.length.toString(),
+                      : caseLoad.hobbies!.map((e) => e.toString()).join("\n>"),
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Divider()
@@ -486,7 +494,7 @@ class CRSDetails extends StatelessWidget {
                 Text(
                   caseLoad.immediateNeeds == null
                       ? "NA"
-                      : caseLoad.mentalCondition!
+                      : caseLoad.immediateNeeds!
                           .map((e) => e.toString())
                           .join("\n>"),
                   style: const TextStyle(fontSize: 12),

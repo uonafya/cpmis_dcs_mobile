@@ -89,12 +89,24 @@ class _HomepageState extends State<Homepage> {
                           width: 10,
                         ),
                         GestureDetector(
-                            child: const Text(
-                              'Sync',
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.sync,
+                                  color: kPrimaryColor,
+                                  size: 16,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  'Sync',
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             onTap: () {
                               showDialog(
@@ -236,22 +248,14 @@ class _HomepageState extends State<Homepage> {
                 bottom: 30,
                 right: 30,
                 left: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: 140,
-                      child: CustomButton(
-                        onTap: () {
-                          Get.to(() => const CRSHome());
-                        },
-                        text: "CRS Registry",
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
+                child: CustomButton(
+                  onTap: () {
+                    Get.to(() => const CRSHome());
+                  },
+                  text: "CRS Registry",
+                  color: Colors.green,
                 ),
-              )
+              ),
             ],
           ),
         ));
