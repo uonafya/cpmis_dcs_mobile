@@ -40,7 +40,6 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     print("Here I am");
     // print(widget.caseLoad.events?.eventType);
 
-
     if (dateOfVisit == null) {
       showErrorSnackBar(context, "Please fill in the date of visit.");
       return;
@@ -100,7 +99,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             ),
             Text(
               widget.caseLoad.events
-                      ?.where((event) => event.eventType == 'summons')
+                      ?.where((event) => event.eventType == 'summon')
                       .length
                       .toString() ??
                   "0",
