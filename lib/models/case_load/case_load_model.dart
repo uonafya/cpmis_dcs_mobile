@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_category_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/conditions_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/event_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
@@ -48,9 +49,9 @@ class CaseLoadModel {
   String? dateOfSummon;
   bool? summonStatus;
   List<String>? householdEconomicStatus;
-  List<String>? mentalCondition;
-  List<String>? physicalCondition;
-  List<String>? otherCondition;
+  List<ConditionsModel>? mentalCondition;
+  List<ConditionsModel>? physicalCondition;
+  List<ConditionsModel>? otherCondition;
   List<String>? immediateNeeds;
   List<String>? futureNeeds;
   List<String>? friends;
@@ -185,16 +186,33 @@ class CaseLoadModel {
     householdEconomicStatus = json['household_economic_status'] != null
         ? List<String>.from(json['household_economic_status'].map((x) => x))
         : [];
-    mentalCondition = json['mental_condition'] != null
-        ? List<String>.from(json['mental_condition'].map((x) => x))
-        : [];
 
-    physicalCondition = json['physical_condition'] != null
-        ? List<String>.from(json['physical_condition'].map((x) => x))
-        : [];
-    otherCondition = json['other_condition'] != null
-        ? List<String>.from(json['other_condition'].map((x) => x))
-        : [];
+    if (json['mental_condition'] != null) {
+      mentalCondition = <ConditionsModel>[];
+      json['mental_condition'].forEach((v) {
+        mentalCondition!.add(ConditionsModel.fromJson(v));
+      });
+    } else {
+      mentalCondition = [];
+    }
+
+    if (json['physical_condition'] != null) {
+      physicalCondition = <ConditionsModel>[];
+      json['physical_condition'].forEach((v) {
+        physicalCondition!.add(ConditionsModel.fromJson(v));
+      });
+    } else {
+      physicalCondition = [];
+    }
+
+    if (json['other_condition'] != null) {
+      otherCondition = <ConditionsModel>[];
+      json['other_condition'].forEach((v) {
+        otherCondition!.add(ConditionsModel.fromJson(v));
+      });
+    } else {
+      otherCondition = [];
+    }
     immediateNeeds = json['immediate_needs'] != null
         ? List<String>.from(json['immediate_needs'].map((x) => x))
         : [];
@@ -437,9 +455,9 @@ class CaseLoadModel {
     String? dateOfSummon,
     bool? summonStatus,
     List<String>? householdEconomicStatus,
-    List<String>? mentalCondition,
-    List<String>? physicalCondition,
-    List<String>? otherCondition,
+    List<ConditionsModel>? mentalCondition,
+    List<ConditionsModel>? physicalCondition,
+    List<ConditionsModel>? otherCondition,
     List<String>? immediateNeeds,
     List<String>? futureNeeds,
     List<String>? friends,
