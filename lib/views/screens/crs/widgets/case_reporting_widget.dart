@@ -19,10 +19,15 @@ class CaseReportingWidget extends StatefulWidget {
 class _CaseReportingWidgetState extends State<CaseReportingWidget> {
   RadioButtonOptions? isInCountry = RadioButtonOptions.yes;
 
+  String selectedCountry = pleaseSelect;
   String selectedCounty = pleaseSelect;
   String selectedSubCounty = pleaseSelect;
 
   DateTime dateOfCaseOpening = DateTime.now();
+
+  List<NameID> countries = [
+    const NameID(name: pleaseSelect, id: '1'),
+  ];
 
   List<NameID> counties = [
     const NameID(name: pleaseSelect, id: '1'),
@@ -40,6 +45,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
+      countries = await getCountries();
       counties = await getCounties();
       setState(() {});
     });
@@ -408,8 +414,8 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   const SizedBox(height: 10),
                   CustomDropdown(
                     initialValue: model.caseReport.country,
-                    items: countiesOptions,
-                    onChanged: (dynamic item) {
+                    items: countries.map((e) => e.name).toList(),
+                    onChanged: (item) {
                       var update = model.caseReport;
                       update.country = item;
                       model.caseReport = update;

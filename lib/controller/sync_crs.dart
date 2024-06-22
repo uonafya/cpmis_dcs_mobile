@@ -3,6 +3,7 @@ import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -11,7 +12,7 @@ Future<void> syncCRS() async {
     // Get forms
     var db = await localdb.database;
     var forms = await fetchCRSFormsFromDB(db);
-
+    print("CRS: ${forms.map((e) => e.toJSON()).toList()}");
     // Submit and delete each form
     for (var i = 0; i < forms.length; i++) {
       var form = forms[i];
@@ -185,6 +186,98 @@ Future<List<CRSForm>> fetchCRSFormsFromDB(Database db) async {
                 : null));
       }
 
+      late AboutChildCRSFormModel about;
+      // If form is a new submission get details from registry
+      if (rawForm['isNew'] == 1) {
+        var childID = int.parse(rawForm['childID'].toString());
+        var childDetails =
+            await RegisterNewChildQuery.getRegistryFormDetailById(childID);
+
+        if (childDetails == null) {
+          about = AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: "",
+            surName: "",
+            otherNames: "",
+            dateOfBirth: DateTime.now(),
+            sex: "",
+          ),
+          houseEconomicStatus: rawForm['houseEconomic'].toString(),
+          familyStatus: familyStatus,
+          id: rawForm['childID'].toString(),
+          isNewChild: true,
+        );
+        } else {
+          List<SiblingDetails> siblings = [];
+
+          for (var i = 0; i < childDetails.siblings.length; i++) {
+            var sibling = childDetails.siblings[i];
+            siblings.add(SiblingDetails(
+              firstName: sibling.firstName,
+              surName: sibling.surName,
+              otherNames: sibling.otherNames,
+              dateOfBirth:
+                  convertYMDtoDate(sibling.dateOfBirth),
+              sex: sibling.sex,
+              currentClass: sibling.currentClass,
+              remarks: sibling.remarks,
+              dateLinked: DateTime.now(),
+            ));
+          }
+        
+        var initDetails = InitialChildDetails(
+            firstName: childDetails.firstName,
+            surName: childDetails.surname,
+            otherNames: childDetails.otherNames,
+            currentClass: childDetails.childClass,
+            remarks: "",
+            dateOfBirth: convertYMDtoDate(childDetails.dateOfBirth),
+            sex: childDetails.sex);
+
+        List<Caregivers> caregivers = [];
+        for (var i = 0;
+            i < childDetails.caregivers.length;
+            i++) {
+          var car = childDetails.caregivers[i];
+          caregivers.add(Caregivers(
+              firstName: car.firstName,
+              surName: car.surName,
+              otherNames: car.otherNames,
+              dateOfBirth: convertYMDtoDate(car.dateOfBirth),
+              sex: car.sex,
+              relationshipToChild: car.relationshipToChild,
+              nationalIdNumber: car.nationalIdNumber,
+              phoneNumber: car.phoneNumber)); }
+
+        about = AboutChildCRSFormModel(
+          initialDetails: initDetails, 
+          id: rawForm['childID'].toString(), 
+          siblingDetails: siblings,
+          closeFriends: closeFriends,
+          caregivers: caregivers,
+          hobbies: hobbies,
+          isNewChild: true, 
+          houseEconomicStatus: rawForm['houseEconomic'].toString(), 
+          familyStatus: familyStatus
+        );
+        }
+        
+      } else {
+        about = AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: "",
+            surName: "",
+            otherNames: "",
+            dateOfBirth: DateTime.now(),
+            sex: "",
+          ),
+          houseEconomicStatus: rawForm['houseEconomic'].toString(),
+          familyStatus: familyStatus,
+          id: rawForm['childID'].toString(),
+          isNewChild: true,
+        );
+      }
+
       CRSForm form = CRSForm(
         formID: formID.toString(),
         caseReporting: CaseReportingCRSFormModel(
@@ -207,23 +300,14 @@ Future<List<CRSForm>> fetchCRSFormsFromDB(Database db) async {
           crsCategories: categories,
           riskLevel: rawForm['riskLevel'].toString(),
           referralsPresent: rawForm['referralPresent'] == 1,
+          referrals: referals,
           summonsIssued: rawForm['summonsIssued'] == 1,
           immediateNeeds: immediateNeeds,
           futureNeeds: futureNeeds,
           caseNarration: rawForm['caseNarration'].toString(),
           perpetrators: perpetrators,
         ),
-        about: AboutChildCRSFormModel(
-          initialDetails: InitialChildDetails(
-            firstName: "",
-            surName: "",
-            otherNames: "",
-            dateOfBirth: DateTime.now(),
-            sex: "",
-          ),
-          houseEconomicStatus: rawForm['houseEconomic'].toString(),
-          familyStatus: familyStatus,
-        ),
+        about: about,
         medical: MedicalCRSFormModel(
             mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
             mentalCondition: mentalCondition,

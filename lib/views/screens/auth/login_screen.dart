@@ -3,6 +3,7 @@
 import 'package:cpims_dcs_mobile/controller/auth_provider.dart';
 import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/connectivity_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/request_access_screen.dart';
 import 'package:cpims_dcs_mobile/views/screens/auth/reset_password_screen.dart';
@@ -56,10 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
           authenticated ? "Authorized success" : "Failed to authenticate";
     });
     if (!authenticated) return;
-    final prefs = await SharedPreferences.getInstance();
 
-    final username = prefs.getString('username');
-    final password = prefs.getString('password');
+    final username = preferences.getString('username');
+    final password = preferences.getString('password');
 
     if (username != null && password != null) {
       _login(username: username, password: password);
@@ -406,8 +406,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    final hasUserSetup = prefs.getBool("hasUserSetup");
+    final hasUserSetup = preferences.getBool("hasUserSetup");
     final hasConnection =
         await Provider.of<ConnectivityProvider>(context, listen: false)
             .checkInternetConnection();
@@ -417,8 +416,8 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      final savedUsername = prefs.getString('username');
-      final savedPassword = prefs.getString('password');
+      final savedUsername = preferences.getString('username');
+      final savedPassword = preferences.getString('password');
       if (savedUsername == null || savedPassword == null) {
         if (mounted) {
           errorSnackBar(context, 'Please login with your credentials first');

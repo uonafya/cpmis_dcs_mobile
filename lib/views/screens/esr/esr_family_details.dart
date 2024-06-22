@@ -128,7 +128,6 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
   ];
 
   int familyIndex = 0;
-  final familyFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +138,7 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
       );
     }
     return Form(
-      key: familyFormKey,
+      key: controller.familyFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -175,6 +174,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
               CustomDropdown(
                   initialValue: controller.relationship,
                   items: relationshipList,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please enter the relationship to the head of the household';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     controller.setRelationship(val);
                   }),
@@ -190,6 +195,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
               CustomDropdown(
                   initialValue: controller.sex,
                   items: sexList,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select sex';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     controller.setSex(val);
                   }),
@@ -206,6 +217,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
                   firstDate: DateTime(1950),
                   lastDate: DateTime.now(),
                   hintText: "Date of birth",
+                  validator: (val) {
+                    if (val == null || val.isEmpty) {
+                      return 'Please enter date of birth';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     setState(() {
                       controller
@@ -224,6 +241,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
               CustomDropdown(
                   initialValue: controller.maritalStatus,
                   items: maritalStatusList,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select marital status';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     controller.setMaritalStatus(val);
                   }),
@@ -238,6 +261,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
               ),
               CustomDropdown(
                   initialValue: controller.doesSufferChronic,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select if member suffers from a chronic illness';
+                    }
+                    return null;
+                  },
                   items: doesSufferChronicList,
                   onChanged: (val) {
                     controller.setDoesSufferChronic(val);
@@ -254,6 +283,12 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
               CustomDropdown(
                   initialValue: controller.typeOfDisability,
                   items: typeOfDisabilityList,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select type of disability';
+                    }
+                    return null;
+                  },
                   onChanged: (val) {
                     controller.setTypeOfDisability(val);
                   }),
@@ -330,13 +365,19 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
                   height: 14,
                 ),
               const Text(
-                'What was member mainly doing during the last seven days?',
+                'What was member mainly doing during the last seven days? *',
               ),
               const SizedBox(
                 height: 6,
               ),
               CustomDropdown(
                   initialValue: controller.doingLast,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select what member was mainly doing during the last seven days';
+                    }
+                    return null;
+                  },
                   items: doingLastList,
                   onChanged: (val) {
                     controller.setDoingLast(val);
@@ -364,13 +405,19 @@ class _ESRFamilyDetailsState extends State<ESRFamilyDetails> {
                   height: 14,
                 ),
               const Text(
-                'Do you recommend this household to be considered for any support?',
+                'Do you recommend this household to be considered for any support? *',
               ),
               const SizedBox(
                 height: 6,
               ),
               CustomDropdown(
                   initialValue: controller.recommendSupport,
+                  validator: (val) {
+                    if (val == 'Please select') {
+                      return 'Please select if you recommend this household to be considered for any support';
+                    }
+                    return null;
+                  },
                   items: doesSufferChronicList,
                   onChanged: (val) {
                     controller.setRecommendSupport(val);

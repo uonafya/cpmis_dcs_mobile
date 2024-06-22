@@ -29,6 +29,8 @@ Future<List<NameID>> getMetadata(MetadataTypes type) async {
         columns: ['description', 'id'],
         whereArgs: [type.value]);
 
+    print("getMetadata");
+
     return results
         .map((e) =>
             NameID(name: e['description'].toString(), id: e['id'].toString()))
@@ -62,7 +64,7 @@ Future<void> saveMetadataInDB(Database db, List<dynamic> metadata) async {
   }
 }
 
-enum MetadataTypes { category, reporter, areaType, sex }
+enum MetadataTypes { category, reporter, areaType, sex, religion, tribe }
 
 extension MetadataValues on MetadataTypes {
   String get value {
@@ -75,6 +77,10 @@ extension MetadataValues on MetadataTypes {
         return "area_type_id";
       case MetadataTypes.sex:
         return "sex_id";
+      case MetadataTypes.religion:
+        return "religion_type_id";
+      case MetadataTypes.tribe:
+        return "tribe_category_id";
       default:
         throw "Unsupported Type";
     }

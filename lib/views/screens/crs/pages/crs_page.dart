@@ -3,9 +3,11 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
@@ -182,7 +184,7 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
                             await form.sendToUpstream();
 
-                            Get.to(() => const FollowUpHome());
+                            Get.to(() => const CRSHome());
                           }
                           _scrollController.animateTo(
                             0,

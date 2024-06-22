@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/controller/connection_provider.dart';
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/controller/esr_controller.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/controller/registry_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/theme.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
