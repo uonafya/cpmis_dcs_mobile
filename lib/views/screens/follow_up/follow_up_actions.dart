@@ -55,7 +55,11 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Referrals",
         "onTap": () {
-          Get.to(() => const ReferralsFollowUp());
+          Get.to(
+            () => ReferralsFollowUp(
+              caseLoad: widget.caseLoad,
+            ),
+          );
         }
       },
       {

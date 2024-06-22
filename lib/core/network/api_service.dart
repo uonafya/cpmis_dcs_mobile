@@ -116,7 +116,7 @@ class ApiService {
   Future<void> sendServiceFollowup(Map<String, dynamic> service) async {
     try {
       final response = await httpClient.request(
-        'mobile/follow_up/', // Make sure this endpoint is correct for service followups
+        'mobile/follow_up/',
         'POST',
         service,
       );
@@ -132,7 +132,7 @@ class ApiService {
   Future<void> sendCourtSummons(Map<String, dynamic> summons) async {
     try {
       final response = await httpClient.request(
-        'mobile/follow_up/', // Make sure this endpoint is correct for court summons
+        'mobile/follow_up/',
         'POST',
         summons,
       );
@@ -148,7 +148,7 @@ class ApiService {
   Future<void> sendCourtSession(Map<String, dynamic> session) async {
     try {
       final response = await httpClient.request(
-        'mobile/follow_up/', // Make sure this endpoint is correct for court sessions
+        'mobile/follow_up/', 
         'POST',
         session,
       );
