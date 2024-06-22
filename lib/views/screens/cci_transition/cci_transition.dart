@@ -1,4 +1,3 @@
-
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -34,6 +33,7 @@ class _CCIState extends State<CCI> {
       setState(() {});
     });
   }
+
   List<String> cciGenders = [];
   List<String> cciAges = [];
   String selectedCCI = 'Please Select a CCI';
@@ -45,11 +45,11 @@ class _CCIState extends State<CCI> {
   String cciRegOtherType = "";
   String cciServesDisabled = "";
   String cciServesGender = "";
-  bool? cciAgeGroupsOne =false;
-  bool? cciAgeGroupsTwo =false;
-  bool? cciAgeGroupsThree=false;
-  bool? cciAgeGroupsFour =false;
-  bool? cciAgeGroupsFive =false;
+  bool? cciAgeGroupsOne = false;
+  bool? cciAgeGroupsTwo = false;
+  bool? cciAgeGroupsThree = false;
+  bool? cciAgeGroupsFour = false;
+  bool? cciAgeGroupsFive = false;
   String cciStartedTransition = pleaseSelect;
   String cciBasisOfTransition = pleaseSelect;
   String cciLegaFramework = pleaseSelect;
@@ -129,7 +129,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Is it registered with NCCS ?"),
                             Checkbox(
-                                value:cciNCCSRegistered,
+                                value: cciNCCSRegistered,
                                 onChanged: (val) {
                                   setState(() {
                                     cciNCCSRegistered = val;
@@ -178,6 +178,7 @@ class _CCIState extends State<CCI> {
                                   CustomTextField(
                                       hintText: 'Valid until: (in years)',
                                       controller: cciRegValidYrs,
+                                      keyboardType: TextInputType.number,
                                       validator: (val) {
                                         if (val!.isEmpty) {
                                           return "Valid years required";
@@ -245,7 +246,7 @@ class _CCIState extends State<CCI> {
                                         ),
                                         CustomTextField(
                                           hintText:
-                                          "if Yes, Registration number",
+                                              "if Yes, Registration number",
                                           controller: cciRegNo,
                                           validator: (val) {
                                             if (val!.isEmpty) {
@@ -265,7 +266,8 @@ class _CCIState extends State<CCI> {
                                             hintText: 'Date of Registration',
                                             onChanged: (val) {
                                               setState(() {
-                                                cciRegDate= dateFormat.format(val);
+                                                cciRegDate =
+                                                    dateFormat.format(val);
                                               });
                                             }),
                                         const SizedBox(
@@ -277,12 +279,11 @@ class _CCIState extends State<CCI> {
                                         ),
                                         CustomTextField(
                                             hintText:
-                                            'Other Entity Valid until: (in years)',
+                                                'Other Entity Valid until: (in years)',
                                             controller: cciRegValidYrs,
+                                            keyboardType: TextInputType.number,
                                             onChanged: (val) {
-                                              setState(() {
-
-                                              });
+                                              setState(() {});
                                             }),
                                       ],
                                     ),
@@ -335,12 +336,10 @@ class _CCIState extends State<CCI> {
                             Row(
                               children: [
                                 Checkbox(
-                                    value:
-                                    cciAgeGroupsOne,
+                                    value: cciAgeGroupsOne,
                                     onChanged: (val) {
                                       setState(() {
-                                        cciAgeGroupsOne =
-                                            val;
+                                        cciAgeGroupsOne = val;
                                       });
                                     }),
                                 const SizedBox(
@@ -355,12 +354,10 @@ class _CCIState extends State<CCI> {
                             Row(
                               children: [
                                 Checkbox(
-                                    value:
-                                    cciAgeGroupsTwo,
+                                    value: cciAgeGroupsTwo,
                                     onChanged: (val) {
                                       setState(() {
-                                        cciAgeGroupsTwo =
-                                            val;
+                                        cciAgeGroupsTwo = val;
                                       });
                                     }),
                                 const SizedBox(
@@ -375,8 +372,7 @@ class _CCIState extends State<CCI> {
                             Row(
                               children: [
                                 Checkbox(
-                                    value:
-                                    cciAgeGroupsThree,
+                                    value: cciAgeGroupsThree,
                                     onChanged: (val) {
                                       setState(() {
                                         cciAgeGroupsThree = val;
@@ -394,8 +390,7 @@ class _CCIState extends State<CCI> {
                             Row(
                               children: [
                                 Checkbox(
-                                    value:
-                                    cciAgeGroupsFour,
+                                    value: cciAgeGroupsFour,
                                     onChanged: (val) {
                                       setState(() {
                                         cciAgeGroupsFour = val;
@@ -443,13 +438,11 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Has the CCI started the transitioning process? "),
                             CustomDropdown(
-                                initialValue:
-                                cciStartedTransition,
+                                initialValue: cciStartedTransition,
                                 items: yesNoOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    cciStartedTransition =
-                                        item;
+                                    cciStartedTransition = item;
                                   });
                                 }),
                             const SizedBox(
@@ -458,12 +451,11 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Learning the reason and basis for transition  "),
                             CustomDropdown(
-                                initialValue:
-                                cciBasisOfTransition,
+                                initialValue: cciBasisOfTransition,
                                 items: cciAwareOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    cciBasisOfTransition =  item;
+                                    cciBasisOfTransition = item;
                                   });
                                 }),
                             const SizedBox(
@@ -472,12 +464,11 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Understanding the legal framework/strategy  "),
                             CustomDropdown(
-                                initialValue:
-                                cciLegaFramework,
+                                initialValue: cciLegaFramework,
                                 items: cciAwareOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    cciLegaFramework=  item;
+                                    cciLegaFramework = item;
                                   });
                                 }),
                             const SizedBox(
@@ -485,12 +476,11 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Stakeholder engagement  "),
                             CustomDropdown(
-                                initialValue:
-                                cciStakeholderEngagement,
+                                initialValue: cciStakeholderEngagement,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    cciStakeholderEngagement =item;
+                                    cciStakeholderEngagement = item;
                                   });
                                 }),
                             const SizedBox(
@@ -533,8 +523,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Strategic Planning"),
                             CustomDropdown(
-                                initialValue:
-                                cciStrategicPlanning,
+                                initialValue: cciStrategicPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -558,8 +547,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Program planning"),
                             CustomDropdown(
-                                initialValue:
-                                cciProgramPlanning,
+                                initialValue: cciProgramPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -571,8 +559,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Transition planning"),
                             CustomDropdown(
-                                initialValue:
-                                cciTransitionPlanning,
+                                initialValue: cciTransitionPlanning,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -595,8 +582,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Employee Development"),
                             CustomDropdown(
-                                initialValue:
-                                cciEmployeeDev,
+                                initialValue: cciEmployeeDev,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -608,8 +594,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Piloting and validation "),
                             CustomDropdown(
-                                initialValue:
-                                cciPilotValidation,
+                                initialValue: cciPilotValidation,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -621,8 +606,7 @@ class _CCIState extends State<CCI> {
                             ),
                             const Text("Program implementation"),
                             CustomDropdown(
-                                initialValue:
-                                cciProgramImplementation,
+                                initialValue: cciProgramImplementation,
                                 items: cciDoneOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -647,8 +631,7 @@ class _CCIState extends State<CCI> {
                             const Text(
                                 "Which programme has the CCI transition to? "),
                             CustomDropdown(
-                                initialValue:
-                                cciTransitionTo,
+                                initialValue: cciTransitionTo,
                                 items: cciProgramsOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -676,7 +659,7 @@ class _CCIState extends State<CCI> {
                                 items: cciSurvivalRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
-                                    cciSurvivalRights= item;
+                                    cciSurvivalRights = item;
                                   });
                                 }),
                             const SizedBox(
@@ -698,8 +681,7 @@ class _CCIState extends State<CCI> {
                             const Text("Protection rights"),
                             CustomDropdown(
                                 isMultiSelect: true,
-                                initialValue:
-                                cciProtectionRights,
+                                initialValue: cciProtectionRights,
                                 items: cciProtectRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -712,8 +694,7 @@ class _CCIState extends State<CCI> {
                             const Text("Participation rights"),
                             CustomDropdown(
                                 isMultiSelect: true,
-                                initialValue:
-                                cciParticipationRights,
+                                initialValue: cciParticipationRights,
                                 items: cciParticipateRightsOptions,
                                 onChanged: (item) {
                                   setState(() {
@@ -730,13 +711,22 @@ class _CCIState extends State<CCI> {
                         const SizedBox(height: 10),
                         CustomButton(
                           text: 'Submit',
-                          onTap:  () async {
-
-                            if(cciAgeGroupsOne == true){cciAges.add('0_4_yrs');}
-                            if(cciAgeGroupsTwo == true){cciAges.add('5_9_yrs');}
-                            if(cciAgeGroupsThree == true){cciAges.add('10_14_yrs');}
-                            if(cciAgeGroupsFour == true){cciAges.add('15_17_yrs');}
-                            if(cciAgeGroupsFive == true){cciAges.add('18_plus_yrs');}
+                          onTap: () async {
+                            if (cciAgeGroupsOne == true) {
+                              cciAges.add('0_4_yrs');
+                            }
+                            if (cciAgeGroupsTwo == true) {
+                              cciAges.add('5_9_yrs');
+                            }
+                            if (cciAgeGroupsThree == true) {
+                              cciAges.add('10_14_yrs');
+                            }
+                            if (cciAgeGroupsFour == true) {
+                              cciAges.add('15_17_yrs');
+                            }
+                            if (cciAgeGroupsFive == true) {
+                              cciAges.add('18_plus_yrs');
+                            }
                             final db = LocalDB.instance;
                             db.saveCciTransition(
                               selectedCCI: selectedCCI,
@@ -751,7 +741,8 @@ class _CCIState extends State<CCI> {
                               cciStartedTransition: cciStartedTransition,
                               cciBasisOfTransition: cciBasisOfTransition,
                               cciLegaFramework: cciLegaFramework,
-                              cciStakeholderEngagement: cciStakeholderEngagement,
+                              cciStakeholderEngagement:
+                                  cciStakeholderEngagement,
                               cciMakeDecision: cciMakeDecision,
                               cciAssessment: cciAssessment,
                               cciStrategicPlanning: cciStrategicPlanning,
@@ -760,13 +751,16 @@ class _CCIState extends State<CCI> {
                               cciTransitionPlanning: cciTransitionPlanning,
                               cciEmployeeDev: cciEmployeeDev,
                               cciPilotValidation: cciPilotValidation,
-                              cciProgramImplementation: cciProgramImplementation,
+                              cciProgramImplementation:
+                                  cciProgramImplementation,
                               cciMonitorEvaluate: cciMonitorEvaluate,
                               cciTransitionTo: cciTransitionTo,
                               cciSurvivalRights: cciSurvivalRights.join(";"),
                               cciDevRights: cciDevRights.join(";"),
-                              cciProtectionRights: cciProtectionRights.join(";"),
-                              cciParticipationRights: cciParticipationRights.join(";"),
+                              cciProtectionRights:
+                                  cciProtectionRights.join(";"),
+                              cciParticipationRights:
+                                  cciParticipationRights.join(";"),
                             );
                           },
                         ),
