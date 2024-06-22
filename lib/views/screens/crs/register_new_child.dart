@@ -126,13 +126,13 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       items: metadataManager.personTypeNames,
                       error: registryProvider.shouldValidateFields
                           ? personTypeError
-                          : '',
+                          : null,
                       onChanged: (val) {
                         setState(() {
                           if (val.isEmpty) {
                             personTypeError = PERSON_TYPE_DROPDOWN_ERROR;
                           } else {
-                            personTypeError = '';
+                            personTypeError = null;
                           }
                           selectedPersonCriteria = val;
                           registryProvider
@@ -164,7 +164,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       hintText: 'First Name',
                       error: registryProvider.shouldValidateFields
                           ? firstNameError
-                          : '',
+                          : null,
                       initialValue: registryProvider
                           .registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
@@ -173,7 +173,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             firstNameError = FIRST_NAME_INPUT_ERROR;
                             return;
                           }
-                          firstNameError = '';
+                          firstNameError = null;
                         });
                         registryProvider.setFirstName(value);
                       },
@@ -188,7 +188,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       hintText: 'Surname',
                       error: registryProvider.shouldValidateFields
                           ? surNameError
-                          : '',
+                          : null,
                       initialValue:
                           registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
@@ -197,7 +197,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             surNameError = SUR_NAME_INPUT_ERROR;
                             return;
                           }
-                          surNameError = '';
+                          surNameError = null;
                         });
                         registryProvider.setSurname(value);
                       },
@@ -228,15 +228,15 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       items: metadataManager.sexNames,
                       error: registryProvider.shouldValidateFields
                           ? sexError
-                          : '',
+                          : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
                             sexError = SEX_DROPDOWN_ERROR;
                           } else {
-                            sexError = '';
+                            sexError = null;
                           }
-                          selectedPersonCriteria = value;
+                          selectedSexCriteria = value;
                           registryProvider.setSex(value);
                         });
                       },
@@ -254,7 +254,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       showInitialDate: true,
                       error: registryProvider.shouldValidateFields
                           ? dobError
-                          : '',
+                          : null,
                       initialDate: registryProvider
                               .registryPersonalDetailsModel.dateOfBirth.isEmpty
                           ? null
@@ -262,7 +262,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                               .registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
                         setState(() {
-                          dobError = '';
+                          dobError = null;
                         });
                         dateOfBirth = DateFormat('yyyy-MM-dd').format(val);
                         registryProvider.setDateOfBirth(dateOfBirth);
@@ -280,13 +280,13 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       items: metadataManager.childClassNames,
                       error: registryProvider.shouldValidateFields
                           ? classError
-                          : '',
+                          : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
                             classError = CLASS_DROPDOWN_ERROR;
                           } else {
-                            classError = '';
+                            classError = null;
                           }
                           currentClass = value;
                           registryProvider.setChildClass(currentClass);
