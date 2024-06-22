@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_category_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/event_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
 
@@ -53,6 +54,7 @@ class CaseLoadModel {
   List<dynamic>? futureNeeds;
   List<dynamic>? friends;
   List<dynamic>? hobbies;
+  List<EventModel>? events;
 
   CaseLoadModel({
     this.orgUnitName,
@@ -104,6 +106,7 @@ class CaseLoadModel {
     this.futureNeeds,
     this.friends,
     this.hobbies,
+    this.events,
   });
 
   CaseLoadModel.fromJson(Map<String, dynamic> json) {
@@ -184,6 +187,11 @@ class CaseLoadModel {
     futureNeeds = json['future_needs'] ?? [];
     friends = json['friends'] ?? [];
     hobbies = json['hobbies'] ?? [];
+    events = json['events'] != null
+        ? List<EventModel>.from(
+            json['events'].map((x) => EventModel.fromJson(x)),
+          )
+        : [];
   }
 
   Map<String, dynamic> toJson() {
@@ -245,6 +253,9 @@ class CaseLoadModel {
     data['future_needs'] = futureNeeds;
     data['friends'] = friends;
     data['hobbies'] = hobbies;
+    if (events != null) {
+      data['events'] = events!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 
