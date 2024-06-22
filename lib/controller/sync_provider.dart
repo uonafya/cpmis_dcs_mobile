@@ -9,6 +9,11 @@ import 'package:cpims_dcs_mobile/controller/social_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/summons_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/sync_crs.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
+
+import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
+import 'package:cpims_dcs_mobile/models/cci_transition.dart';
+
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
 import 'package:cpims_dcs_mobile/core/network/metadata.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
@@ -28,6 +33,7 @@ Future<void> syncData(BuildContext context) async {
     sendESRUpstream(),
     sendCourtSessionsUpstream(),
     sendReferralsUpstream(),
+syncCciTransitionData();
 
     syncCRS(),
 
@@ -38,4 +44,22 @@ Future<void> syncData(BuildContext context) async {
     saveCountries(),
     saveMetadata(),
   ]);
+}
+
+
+
+Future<void> syncCciTransitionData() async {
+  print("data for cci Transition");
+  final db = await LocalDB.instance.database;
+  //Get all social inquiries
+  final transitions = await db.query(cciTransitionTable);
+  print(transitions);
+  for (var transition in transitions) {
+    final ccitrans = CciTransitionModel.fromJson(transition);
+    await apiService.sendCciTransition(ccitrans);
+    final cciTransId = transition['id'];
+
+    await db
+        .delete(socialInquiryTable, where: 'id = ?', whereArgs: [cciTransId]);
+  }
 }

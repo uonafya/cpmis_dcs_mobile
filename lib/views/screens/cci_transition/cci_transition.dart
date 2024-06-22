@@ -35,6 +35,7 @@ class _CCIState extends State<CCI> {
     });
   }
   List<String> cciGenders = [];
+  List<String> cciAges = [];
   String selectedCCI = 'Please Select a CCI';
   bool? cciNCCSRegistered = false;
   final cciRegNo = TextEditingController();
@@ -160,6 +161,8 @@ class _CCIState extends State<CCI> {
                                   ),
                                   CustomDatePicker(
                                       hintText: 'Date of Registration',
+                                      lastDate: DateTime.now(),
+                                      firstDate: DateTime(1970, 12, 31, 11, 59),
                                       onChanged: (val) {
                                         setState(() {
                                           cciRegDate = dateFormat.format(val);
@@ -310,6 +313,7 @@ class _CCIState extends State<CCI> {
                             const SizedBox(
                               height: 10,
                             ),
+                            Text("Please Select Sex: "),
                             CustomDropdown(
                               items: genders,
                               isMultiSelect: true,
@@ -727,6 +731,12 @@ class _CCIState extends State<CCI> {
                         CustomButton(
                           text: 'Submit',
                           onTap:  () async {
+
+                            if(cciAgeGroupsOne == true){cciAges.add('0_4_yrs');}
+                            if(cciAgeGroupsTwo == true){cciAges.add('5_9_yrs');}
+                            if(cciAgeGroupsThree == true){cciAges.add('10_14_yrs');}
+                            if(cciAgeGroupsFour == true){cciAges.add('15_17_yrs');}
+                            if(cciAgeGroupsFive == true){cciAges.add('18_plus_yrs');}
                             final db = LocalDB.instance;
                             db.saveCciTransition(
                               selectedCCI: selectedCCI,
@@ -737,7 +747,7 @@ class _CCIState extends State<CCI> {
                               cciOtherRegistered: cciOtherRegistered,
                               cciServesDisabled: cciServesDisabled,
                               cciServesGender: cciServesGender,
-                              cciAgeGroupsOne: cciAgeGroupsOne,
+                              cciAges: cciAges.join(";"),
                               cciStartedTransition: cciStartedTransition,
                               cciBasisOfTransition: cciBasisOfTransition,
                               cciLegaFramework: cciLegaFramework,

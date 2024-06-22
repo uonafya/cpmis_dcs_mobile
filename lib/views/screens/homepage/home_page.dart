@@ -109,6 +109,8 @@ class _HomepageState extends State<Homepage> {
                               ],
                             ),
                             onTap: () {
+
+                              syncData();
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -118,6 +120,7 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                 ),
                               );
+
                             })
                       ],
                     ),
