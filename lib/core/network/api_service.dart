@@ -148,7 +148,7 @@ class ApiService {
   Future<void> sendCourtSession(Map<String, dynamic> session) async {
     try {
       final response = await httpClient.request(
-        'mobile/follow_up/', 
+        'mobile/follow_up/',
         'POST',
         session,
       );
@@ -156,6 +156,26 @@ class ApiService {
     } catch (e) {
       if (kDebugMode) {
         print('Error occurred while sending court session $e');
+        if (e is DioException) {
+          print('Response data: ${e.response?.data}');
+          print('Response status code: ${e.response?.statusCode}');
+        }
+      }
+      throw e;
+    }
+  }
+
+  Future<void> sendReferral(Map<String, dynamic> referral) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/', // Adjust this endpoint if needed
+        'POST',
+        referral,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending referral $e');
         if (e is DioException) {
           print('Response data: ${e.response?.data}');
           print('Response status code: ${e.response?.statusCode}');
