@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';
@@ -36,12 +39,13 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     print("Here I am");
 
     if (dateOfVisit == null) {
-      Get.snackbar("Error", "Please fill in the date of visit.");
+      showErrorSnackBar(context, "Please fill in the date of visit.");
       return;
     }
 
     if (summonHonored == "Please select") {
-      Get.snackbar("Error", "Please select whether the summon was honored.");
+      showErrorSnackBar(
+          context, "Please select whether the summon was honored.");
       return;
     }
 
@@ -62,12 +66,13 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
       await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
       print('Saved court summons :)');
 
-      Get.snackbar("Success",
+      showSuccessSnackBar(context,
           "Summons added successfully, you can go back to the previous page");
       Get.back(); // Navigate back
     } catch (e) {
       print(e.toString());
-      Get.snackbar("Error", "Failed to save court summons. Please try again.");
+      showErrorSnackBar(
+          context, "Failed to save court summons. Please try again.");
     }
   }
 
@@ -173,7 +178,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             //             Get.snackbar(
             //                 "Success", "Court summons retrieved successfully.");
             //           } else {
-            //             Get.snackbar("Error",
+            //            showErrorSnackBar(context,
             //                 "No court summons found for this case ID.");
             //           }
             //         } catch (e) {
@@ -215,7 +220,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             //               "Success", "Court summons deleted successfully.");
             //         } catch (e) {
             //           print(e.toString());
-            //           Get.snackbar("Error", "Failed to delete court summons.");
+            //          showErrorSnackBar(context,  "Failed to delete court summons.");
             //         }
             //       },
             //     )

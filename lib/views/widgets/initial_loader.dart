@@ -31,6 +31,7 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
           final hasConnection =
               await Provider.of<ConnectivityProvider>(context, listen: false)
                   .checkInternetConnection();
+          print(hasConnection);
           if (hasConnection) {
             // final prefs = await SharedPreferences.getInstance();
             // final accessToken = prefs.getString('access');

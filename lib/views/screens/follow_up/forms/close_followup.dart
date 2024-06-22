@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_closure.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
@@ -45,17 +48,17 @@ class _CourtFollowUpState extends State<CloseFollowup> {
     String? formId = "closure_followup";
 
     if (courtSessionType == "Please select") {
-      Get.snackbar("Error", "Please select a court session type.");
+      showErrorSnackBar(context, "Please select a court session type.");
       return;
     }
 
     if (dateOfService == null) {
-      Get.snackbar("Error", "Please fill in the date of service.");
+      showErrorSnackBar(context, "Please fill in the date of service.");
       return;
     }
 
     if (caseCategory == "Please select") {
-      Get.snackbar("Error", "Please select a case category.");
+      showErrorSnackBar(context, "Please select a case category.");
       return;
     }
 
@@ -77,19 +80,14 @@ class _CourtFollowUpState extends State<CloseFollowup> {
       interventionList: interventionList,
     );
 
-    print(closureFollowupModel.toJson());
-
     try {
-      print('Db initialization & saving to closure...');
-      var db = await localdb.database;
       await closureDatabaseHelper.insertClosureFollowup(closureFollowupModel);
-      print('Saved to closure :)');
 
       Get.back(); // Navigate back
-      Get.snackbar("Success", "Case closure saved successfully.");
+      showSuccessSnackBar(context, "Case closure saved successfully.");
     } catch (e) {
       // Handle error
-      Get.snackbar("Error", "Failed to save case closure.");
+      showErrorSnackBar(context, "Failed to save case closure.");
     }
   }
 
@@ -220,7 +218,7 @@ class _CourtFollowUpState extends State<CloseFollowup> {
           //       onTap: () async {
           //         try {
           //           await closureDatabaseHelper.deleteClosureFollowup("1233");
-          //           Get.snackbar("Success", "Delete successful.");
+          //          showSuccessSnackBar(context, message) "Delete successful.");
           //         } catch (e) {
           //           Get.snackbar("Error", "Failed to delete.");
           //         }
