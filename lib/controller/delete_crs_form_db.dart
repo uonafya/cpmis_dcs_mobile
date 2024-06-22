@@ -1,7 +1,9 @@
+import 'package:sqflite/sqflite.dart';
+
 import '../core/constants/constants.dart';
 import '../core/network/database.dart';
 
-Future<void> deleteCrsForm(String formID) async{
+Future<void> deleteCrsForm(Database db, String formID) async{
   try {
     var db = await localdb.database;
 

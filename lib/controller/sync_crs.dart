@@ -1,14 +1,31 @@
+import 'package:cpims_dcs_mobile/controller/delete_crs_form_db.dart';
 import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
-import 'package:cpims_dcs_mobile/models/registry/personal_details_model.dart';
+import 'package:sqflite/sqflite.dart';
 
-Future<List<CRSForm>> fetchCRSFormsFromDB() async {
+Future<void> syncCRS() async {
   try {
+    // Get forms
     var db = await localdb.database;
+    var forms = await fetchCRSFormsFromDB(db);
+
+    // Submit and delete each form
+    for (var i = 0; i < forms.length; i++) {
+      var form = forms[i];
+      await form.sendToUpstream();
+      await deleteCrsForm(db, form.formID ?? "");
+    }
+  } catch (err) {
+    throw "Could Not Sync CRS";
+  }
+}
+
+Future<List<CRSForm>> fetchCRSFormsFromDB(Database db) async {
+  try {
     // Fetch all forms from DB
     var forms = await db.query(crsTable,
         distinct: true, whereArgs: [0], where: "synced = ?");
@@ -283,6 +300,7 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           crsCategories: categories,
           riskLevel: rawForm['riskLevel'].toString(),
           referralsPresent: rawForm['referralPresent'] == 1,
+          referrals: referals,
           summonsIssued: rawForm['summonsIssued'] == 1,
           immediateNeeds: immediateNeeds,
           futureNeeds: futureNeeds,
