@@ -7,6 +7,7 @@ import 'package:cpims_dcs_mobile/core/network/preferences.dart';
 import 'package:cpims_dcs_mobile/core/utils/sync_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
+import 'package:cpims_dcs_mobile/views/screens/homepage/force_synch_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_grid_item.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/widgets/statistics_item.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
@@ -35,6 +36,15 @@ class _HomepageState extends State<Homepage> {
     Future.delayed(Duration.zero, () async {
       Provider.of<LocationProvider>(context, listen: false)
           .getCurrentLocation();
+      final syncTimeStamp = preferences.getString("sync_timestamp");
+      if (syncTimeStamp != null) {
+        final syncTime = DateTime.parse(syncTimeStamp);
+        final now = DateTime.now();
+        final difference = now.difference(syncTime).inDays;
+        if (difference > 7) {
+          Get.to(() => const LockPage());
+        }
+      }
 
       final data = await getOrganizationalUnits(null);
       orgUnits = data.map((e) => e.name ?? "-").toList();
