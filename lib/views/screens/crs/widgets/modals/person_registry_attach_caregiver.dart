@@ -172,6 +172,7 @@ class _PersonRegistryAttachCareGiverState
           h2Text("National ID No *"),
           CustomTextField(
             hintText: 'National ID',
+            keyboardType: TextInputType.number,
             error: shouldValidateFields ? idError : null,
             onChanged: (value) {
               setState(() {
@@ -188,6 +189,7 @@ class _PersonRegistryAttachCareGiverState
           h2Text("MobileNumber:"),
           CustomTextField(
             hintText: 'Cellphone Number',
+            keyboardType: TextInputType.number,
             onChanged: (value) {
               setState(() {
                 phoneNumber = value;
