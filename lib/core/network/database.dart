@@ -146,6 +146,7 @@ class LocalDB {
             subCounty TEXT NOT NULL,
             policeStation TEXT,
             obNumber TEXT,
+            isNew INTEGER NOT NULL,
             placeOfOccurence INTEGER NOT NULL,
             village TEXT,
             ward TEXT,

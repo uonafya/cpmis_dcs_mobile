@@ -2,18 +2,16 @@ import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/core/network/person_registry/query.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+import 'package:cpims_dcs_mobile/models/registry/personal_details_model.dart';
 
 Future<List<CRSForm>> fetchCRSFormsFromDB() async {
   try {
     var db = await localdb.database;
     // Fetch all forms from DB
-    var forms = await db.query(
-      crsTable,
-      distinct: true,
-      whereArgs: [0],
-      where: "synced = ?"
-    );
+    var forms = await db.query(crsTable,
+        distinct: true, whereArgs: [0], where: "synced = ?");
 
     List<CRSForm> returnForms = [];
 
@@ -161,13 +159,112 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
             ]);
 
         perpetrators.add(Perpetrators(
-          firstName: rawPerp[0]['firstName'].toString(),
-          lastName: rawPerp[0]['surname'].toString(),
-          relationshipType: rawPerp[0]['relationshipType'].toString(),
-          othernames: rawPerp[0]['otherNames'].toString(),
-          sex: rawPerp[0]['sex'].toString(),
-          dateOfBirth: rawPerp[0]['dob'] != null ? convertYMDtoDate(rawPerp[0]['dob'].toString()): null
-        ));
+            firstName: rawPerp[0]['firstName'].toString(),
+            lastName: rawPerp[0]['surname'].toString(),
+            relationshipType: rawPerp[0]['relationshipType'].toString(),
+            othernames: rawPerp[0]['otherNames'].toString(),
+            sex: rawPerp[0]['sex'].toString(),
+            dateOfBirth: rawPerp[0]['dob'] != null
+                ? convertYMDtoDate(rawPerp[0]['dob'].toString())
+                : null));
+      }
+
+      late AboutChildCRSFormModel about;
+      // If form is a new submission get details from registry
+      if (rawForm['isNew'] == 1) {
+        var childID = int.parse(rawForm['childID'].toString());
+        var childDetails =
+            await RegisterNewChildQuery.getRegistryFormDetailById(childID);
+
+        if (childDetails == null) {
+          about = AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: "",
+            surName: "",
+            otherNames: "",
+            dateOfBirth: DateTime.now(),
+            sex: "",
+          ),
+          houseEconomicStatus: rawForm['houseEconomic'].toString(),
+          familyStatus: familyStatus,
+          id: rawForm['childID'].toString(),
+          isNewChild: true,
+        );
+        } else {
+          List<SiblingDetails> siblings = [];
+
+          for (var i = 0; i < childDetails.siblings.length; i++) {
+            var sibling = childDetails.siblings[i];
+            siblings.add(SiblingDetails(
+              firstName: sibling.firstName,
+              surName: sibling.surName,
+              otherNames: sibling.otherNames,
+              dateOfBirth:
+                  convertYMDtoDate(sibling.dateOfBirth),
+              sex: sibling.sex,
+              currentClass: sibling.currentClass,
+              remarks: sibling.remarks,
+              dateLinked: DateTime.now(),
+            ));
+          }
+        
+        var initDetails = InitialChildDetails(
+            firstName: childDetails.firstName,
+            surName: childDetails.surname,
+            otherNames: childDetails.otherNames,
+            currentClass: childDetails.childClass,
+            remarks: childDetails.,
+            dateOfBirth: convertYMDtoDate(registryProvider
+                .registryPersonalDetailsModel.dateOfBirth),
+            sex: registryProvider
+                .registryPersonalDetailsModel.sex);
+
+        List<Caregivers> caregivers = [];
+        for (var i = 0;
+            i < registryProvider.caregivers.length;
+            i++) {
+          var car = registryProvider.caregivers[i];
+          caregivers.add(Caregivers(
+              firstName: car.firstName,
+              surName: car.surName,
+              otherNames: car.otherNames,
+              dateOfBirth: convertYMDtoDate(car.dateOfBirth),
+              sex: car.sex,
+              relationshipToChild: car.relationshipToChild,
+              nationalIdNumber: car.nationalIdNumber,
+              phoneNumber: car.phoneNumber)); }
+        about = AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: firstName, 
+            surName: surName, 
+            dateOfBirth: dateOfBirth, 
+            sex: sex
+          ), 
+          id: rawForm['childID'].toString(), 
+          siblingDetails: ,
+          closeFriends: closeFriends,
+          caregivers: ,
+          hobbies: hobbies,
+          isNewChild: true, 
+          houseEconomicStatus: rawForm['houseEconomic'].toString(), 
+          familyStatus: familyStatus
+        );
+        }
+        
+      } else {
+        about = AboutChildCRSFormModel(
+          initialDetails: InitialChildDetails(
+            firstName: "",
+            surName: "",
+            otherNames: "",
+            dateOfBirth: DateTime.now(),
+            sex: "",
+          ),
+          houseEconomicStatus: rawForm['houseEconomic'].toString(),
+          familyStatus: familyStatus,
+          id: rawForm['childID'].toString(),
+          isNewChild: true,
+        );
       }
 
       CRSForm form = CRSForm(
@@ -183,7 +280,8 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           reportingSubCounty: rawForm['reportingSubCounty'].toString(),
           reportingOrganizationalUnit: rawForm['reportingOrgUnit'].toString(),
           city: rawForm['city'].toString(),
-          dateCaseReported: convertYMDtoDate(rawForm['dateCaseReported'].toString()),
+          dateCaseReported:
+              convertYMDtoDate(rawForm['dateCaseReported'].toString()),
         ),
         caseData: CaseDataCRSFormModel(
           serialNumber: rawForm['caseSerialNumber'].toString(),
@@ -197,27 +295,15 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           caseNarration: rawForm['caseNarration'].toString(),
           perpetrators: perpetrators,
         ),
-        about: AboutChildCRSFormModel(
-          initialDetails: InitialChildDetails(
-            firstName: "",
-            surName: "",
-            otherNames: "",
-            dateOfBirth: DateTime.now(),
-            sex: "",
-          ),
-          houseEconomicStatus: rawForm['houseEconomic'].toString(),
-          familyStatus: familyStatus,
-          id: '',
-          isNewChild: true,
-        ),
+        about: ,
         medical: MedicalCRSFormModel(
-          mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
-          mentalCondition: mentalCondition,
-          physicalConditionStatus: rawForm['physicalConditionStatus'].toString(),
-          physicalCondition: physicalConditions,
-          otherConditionStatus: rawForm['otherConditionStatus'].toString(),
-          otherCondition: otherConditions
-        ),
+            mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
+            mentalCondition: mentalCondition,
+            physicalConditionStatus:
+                rawForm['physicalConditionStatus'].toString(),
+            physicalCondition: physicalConditions,
+            otherConditionStatus: rawForm['otherConditionStatus'].toString(),
+            otherCondition: otherConditions),
       );
       returnForms.add(form);
     }
