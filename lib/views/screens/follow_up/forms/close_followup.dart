@@ -122,6 +122,8 @@ class _CourtFollowUpState extends State<CloseFollowup> {
             height: 6,
           ),
           CustomFormsDatePicker(
+            firstDate: DateTime(2000),
+            lastDate: DateTime.now(),
             onDateSelected: (val) {
               dateOfService = DateFormat("dd/MM/yyyy").format(val);
               setState(() {});

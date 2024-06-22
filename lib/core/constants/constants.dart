@@ -62,7 +62,7 @@ const String registryLocationTable = "registry_location";
 const String registryCaregiverTable = "registry_caregiver";
 const String registrySiblingTable = "registry_sibling";
 const String registryCboChvTable = "registry_cbo_chv";
-const String cciTransitionTable = "cciTransitionTable";
+const String cciTransitionTable = "cciTransition";
 
 const String registryFormDetails = "registry_form_details";
 

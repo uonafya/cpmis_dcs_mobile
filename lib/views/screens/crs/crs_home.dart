@@ -76,7 +76,7 @@ class _CRSHomeState extends State<CRSHome> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             children: [
               const SizedBox(height: 20),
-              const Text('Case Registration Sheet',
+              const Text('Case Record Sheet',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

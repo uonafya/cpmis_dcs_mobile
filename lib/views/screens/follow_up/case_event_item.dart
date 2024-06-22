@@ -31,7 +31,9 @@ class CaseEventItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      data.eventType ?? '',
+                      data.eventType == null
+                          ? "-"
+                          : data.eventType!.toUpperCase(),
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -95,14 +97,6 @@ class CaseEventItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Icon(
-                Icons.edit,
-                color: kPrimaryColor,
-                size: 18,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
               InkWell(
                 onTap: () {
                   onDelete();
