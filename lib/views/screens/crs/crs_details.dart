@@ -95,6 +95,8 @@ class CRSDetails extends StatelessWidget {
                   }
 
                   AboutChildCRSFormModel? crsAbout = AboutChildCRSFormModel(
+                    id: "",
+                    isNewChild: false,
                     initialDetails: InitialChildDetails(
                       sex: caseLoad.ovcSex ?? "",
                       dateOfBirth: DateTime.now(),
