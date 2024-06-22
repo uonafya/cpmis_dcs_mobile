@@ -81,6 +81,7 @@ enum MetadataTypes {
   courtOrder,
   householdEconomics,
   immediateNeed,
+  otherCondition,
   otherSubcondition,
   mentalCondition,
   caseNature,
@@ -99,6 +100,8 @@ extension MetadataValues on MetadataTypes {
     switch (this) {
       case MetadataTypes.category:
         return "case_category_id";
+      case MetadataTypes.otherCondition:
+        return "other_condition_id";
       case MetadataTypes.reporter:
         return "case_reporter_id";
       case MetadataTypes.areaType:
@@ -136,7 +139,7 @@ extension MetadataValues on MetadataTypes {
       case MetadataTypes.immediateNeed:
         return "immediate_need_id";
       case MetadataTypes.otherSubcondition:
-        return "otherSubcondition";
+        return "other_subcondition_id";
       case MetadataTypes.mentalCondition:
         return "mental_condition_id";
       case MetadataTypes.caseNature:

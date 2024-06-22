@@ -58,7 +58,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               ),
               CustomDropdown(
                   initialValue: model.medical.mentalConditionStatus,
-                  items: metadata.me,
+                  items: metadata.mentalConditionNames,
                   onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
                     updated.mentalConditionStatus = item;
