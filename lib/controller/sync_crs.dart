@@ -12,7 +12,7 @@ Future<void> syncCRS() async {
     // Get forms
     var db = await localdb.database;
     var forms = await fetchCRSFormsFromDB(db);
-
+    print("CRS: ${forms.map((e) => e.toJSON()).toList()}");
     // Submit and delete each form
     for (var i = 0; i < forms.length; i++) {
       var form = forms[i];
