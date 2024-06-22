@@ -280,6 +280,8 @@ Future<List<CRSForm>> fetchCRSFormsFromDB(Database db) async {
 
       CRSForm form = CRSForm(
         formID: formID.toString(),
+        startTime: convertYMDtoDate(rawForm['startTime'].toString()),
+        endTime: convertYMDtoDate(rawForm['endTime'].toString()),
         caseReporting: CaseReportingCRSFormModel(
           courtFileNumber: rawForm['courtFileNumber'].toString(),
           courtName: rawForm['courtName'].toString(),
