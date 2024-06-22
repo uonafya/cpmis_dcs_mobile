@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ServiceFollowupModel {
   String? caseId;
   String? formId;
@@ -20,9 +22,15 @@ class ServiceFollowupModel {
     caseCategoryId = json['case_category_id'];
     if (json['service_provided_list'] != null) {
       serviceProvidedList = <ServiceProvidedList>[];
-      json['service_provided_list'].forEach((v) {
-        serviceProvidedList!.add(ServiceProvidedList.fromJson(v));
-      });
+      if (json['service_provided_list'] is String) {
+        // If it's a string, parse it as JSON
+        List<dynamic> list = jsonDecode(json['service_provided_list']);
+        serviceProvidedList = list.map((v) => ServiceProvidedList.fromJson(v)).toList();
+      } else if (json['service_provided_list'] is List) {
+        json['service_provided_list'].forEach((v) {
+          serviceProvidedList!.add(ServiceProvidedList.fromJson(v));
+        });
+      }
     }
   }
 
