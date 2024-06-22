@@ -10,6 +10,7 @@ import 'package:cpims_dcs_mobile/views/screens/social_inquiry/social_inquiry.dar
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -183,15 +184,51 @@ class CRSDetails extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
+          const Text(
+            "Available forms",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           InkWell(
             onTap: () {
               Get.to(() => SocialInquiry(crsDetails: caseLoad));
             },
-            child: Text(
-              "Social Inquiry Form",
-              style: TextStyle(
-                  color: Colors.blue[800],
-                  decoration: TextDecoration.underline),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      FontAwesomeIcons.file,
+                      size: 14,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Expanded(
+                      child: Text(
+                        "Social Inquiry Form",
+                        style: TextStyle(
+                          color: Colors.blue[900],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                const Divider()
+              ],
             ),
           ),
           const SizedBox(

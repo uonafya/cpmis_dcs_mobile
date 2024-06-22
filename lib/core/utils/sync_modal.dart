@@ -24,7 +24,7 @@ class _SyncModalState extends State<SyncModal> {
         showSuccessSnackBar(context, "Sync complete");
       } catch (e) {
         Get.back();
-        showSuccessSnackBar(context, "Sync failed");
+        showErrorSnackBar(context, "Sync failed");
       }
     });
   }
