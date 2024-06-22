@@ -105,8 +105,8 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                   items: subCounties.map((e) => e.name).toList(),
                   error: registryProvider.shouldValidateFields ? subCountyError : null,
                   onChanged: (val) async {
-                    final values = await getWardsFromSubCounty(selectedSubCounty);
-                    setState(() async {
+                    final values = await getWardsFromSubCounty(val);
+                    setState(() {
                       selectedSubCounty = val;
                       registryProvider.setSubCounty(selectedSubCounty);
                       selectedWard = 'Please Select';
