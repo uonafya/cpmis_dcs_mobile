@@ -10,6 +10,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:intl/intl.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:get/route_manager.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
@@ -39,11 +40,11 @@ class _CCIState extends State<CCI> {
   List<String> cciGenders = [];
   List<String> cciAges = [];
   String selectedCCI = 'Please Select a CCI';
-  bool? cciNCCSRegistered = false;
+  String? cciNCCSRegistered = "Please Select";
   final cciRegNo = TextEditingController();
   String cciRegDate = '';
   final cciRegValidYrs = TextEditingController();
-  bool? cciOtherRegistered = false;
+  String cciOtherRegistered = "Please Select";
   String cciRegOtherType = "";
   String cciServesDisabled = "";
   String cciServesGender = "";
@@ -133,14 +134,15 @@ class _CCIState extends State<CCI> {
                                 height: 10,
                               ),
                               const Text("Is it registered with NCCS ?"),
-                              Checkbox(
-                                  value: cciNCCSRegistered,
-                                  onChanged: (val) {
+                              CustomDropdown(
+                                  initialValue: cciNCCSRegistered,
+                                  items: yesNoOptions,
+                                  onChanged: (item) {
                                     setState(() {
-                                      cciNCCSRegistered = val;
+                                      cciNCCSRegistered = item;
                                     });
                                   }),
-                              if (cciNCCSRegistered == true)
+                              if (cciNCCSRegistered == "Yes")
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -196,7 +198,7 @@ class _CCIState extends State<CCI> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              if (cciNCCSRegistered == false)
+                              if (cciNCCSRegistered == "No")
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -216,14 +218,15 @@ class _CCIState extends State<CCI> {
                                     ),
                                     const Text(
                                         "CCI Registered by another Entity"),
-                                    Checkbox(
-                                        value: cciOtherRegistered,
-                                        onChanged: (val) {
+                                    CustomDropdown(
+                                        initialValue: cciOtherRegistered,
+                                        items: yesNoOptions,
+                                        onChanged: (item) {
                                           setState(() {
-                                            cciOtherRegistered = val;
+                                            cciOtherRegistered = item;
                                           });
                                         }),
-                                    if (cciOtherRegistered != false)
+                                    if (cciOtherRegistered == "Yes")
                                       Column(
                                         children: [
                                           const SizedBox(
@@ -271,6 +274,9 @@ class _CCIState extends State<CCI> {
                                           ),
                                           CustomDatePicker(
                                               hintText: 'Date of Registration',
+                                              lastDate: DateTime.now(),
+                                              firstDate: DateTime(
+                                                  1970, 12, 31, 11, 59),
                                               onChanged: (val) {
                                                 setState(() {
                                                   cciRegDate =
@@ -300,6 +306,14 @@ class _CCIState extends State<CCI> {
                                               }),
                                         ],
                                       ),
+                                  ],
+                                ),
+                              if (cciNCCSRegistered == "No")
+                                const Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                   ],
                                 ),
                               const SizedBox(
@@ -730,6 +744,7 @@ class _CCIState extends State<CCI> {
                                     const SnackBar(
                                         content: Text(
                                             "Saving CCI Transition Data...")));
+
                                 if (cciAgeGroupsOne == true) {
                                   cciAges.add('0_4_yrs');
                                 }
@@ -783,6 +798,9 @@ class _CCIState extends State<CCI> {
                                   cciParticipationRights:
                                       cciParticipationRights.join(";"),
                                 );
+                                Get.back();
+
+                                Get.to(() => const CCI());
                               }
                             },
                           ),

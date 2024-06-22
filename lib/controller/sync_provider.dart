@@ -57,7 +57,7 @@ Future<void> syncCciTransitionData() async {
     final ccitrans = CciTransitionModel.fromJson(transition);
     await apiService.sendCciTransition(ccitrans);
     final cciTransId = transition['id'];
-    print("Sent cci id: {$cciTransId}");
+    print("Sent cci id: {$cciTransId} --- > {$transition} --->  {$ccitrans}");
 
     await db
         .delete(cciTransitionTable, where: 'id = ?', whereArgs: [cciTransId]);
