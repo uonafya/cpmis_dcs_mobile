@@ -111,15 +111,6 @@ class ApiService {
     }
   }
 
-
-
-  Future<void> sendCciTransition(CciTransitionModel inquiry) async {
-    try {
-      final response = await httpClient.request(
-        'mobile/forms/cci/',
-        'POST',
-        inquiry.toJson(),
-
   Future<void> sendClosureFollowup(Map<String, dynamic> closure) async {
     try {
       final response = await httpClient.request(
@@ -142,22 +133,27 @@ class ApiService {
         'mobile/follow_up/',
         'POST',
         service,
-
       );
       print(response.data);
     } catch (e) {
       if (kDebugMode) {
-
-        print('Error occurred while sending social inquiry $e');
+        print('Error occurred while sending service followup $e');
       }
     }
   }
 
-
-
-        print('Error occurred while sending service followup $e');
+  Future<void> sendCciTransition(CciTransitionModel inquiry) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/forms/cci/',
+        'POST',
+        inquiry.toJson(),
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending cci transition $e');
       }
-      rethrow;
     }
   }
 
@@ -173,7 +169,7 @@ class ApiService {
       if (kDebugMode) {
         print('Error occurred while sending court summons $e');
       }
-      throw e;
+      rethrow;
     }
   }
 
@@ -193,7 +189,7 @@ class ApiService {
           print('Response status code: ${e.response?.statusCode}');
         }
       }
-      throw e;
+      rethrow;
     }
   }
 
@@ -213,10 +209,9 @@ class ApiService {
           print('Response status code: ${e.response?.statusCode}');
         }
       }
-      throw e;
+      rethrow;
     }
   }
-
 
   Future<void> sendESRForm(Map<String, dynamic> esr) async {
     try {
@@ -228,7 +223,7 @@ class ApiService {
       print(response.data);
     } catch (e) {
       if (kDebugMode) {
-        print('Error occurred while sending social inquiry $e');
+        print('Error occurred while sending esr form');
       }
     }
   }

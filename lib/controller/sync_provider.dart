@@ -8,10 +8,11 @@ import 'package:cpims_dcs_mobile/controller/session_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/social_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/summons_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/sync_crs.dart';
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 
 import 'package:cpims_dcs_mobile/core/network/database.dart';
-import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
+
 import 'package:cpims_dcs_mobile/models/cci_transition.dart';
 
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
@@ -33,7 +34,7 @@ Future<void> syncData(BuildContext context) async {
     sendESRUpstream(),
     sendCourtSessionsUpstream(),
     sendReferralsUpstream(),
-syncCciTransitionData();
+    syncCciTransitionData(),
 
     syncCRS(),
 
@@ -45,8 +46,6 @@ syncCciTransitionData();
     saveMetadata(),
   ]);
 }
-
-
 
 Future<void> syncCciTransitionData() async {
   print("data for cci Transition");
@@ -60,6 +59,6 @@ Future<void> syncCciTransitionData() async {
     final cciTransId = transition['id'];
 
     await db
-        .delete(socialInquiryTable, where: 'id = ?', whereArgs: [cciTransId]);
+        .delete(cciTransitionTable, where: 'id = ?', whereArgs: [cciTransId]);
   }
 }
