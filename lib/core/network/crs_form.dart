@@ -42,7 +42,8 @@ class CRSDatabaseForm {
         "referralPresent": form.caseData?.referralsPresent == true ? 1 : 0,
         "summonsIssued": form.caseData?.referralsPresent == true ? 1 : 0,
         "dateOfSummon": form.caseData?.dateOfSummon?.toIso8601String(),
-        "caseNarration": form.caseData?.caseNarration
+        "caseNarration": form.caseData?.caseNarration,
+        "synced": 0
       });
 
       // Insert into family status

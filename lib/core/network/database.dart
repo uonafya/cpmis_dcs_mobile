@@ -167,7 +167,8 @@ class LocalDB {
             referralPresent INT NOT NULL,
             summonsIssued INT NOT NULL,
             dateOfSummon TEXT,
-            caseNarration TEXT
+            caseNarration TEXT,
+            synced INTEGER NOT NULL
           );
        ''');
 
