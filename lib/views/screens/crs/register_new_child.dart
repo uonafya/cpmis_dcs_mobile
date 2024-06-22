@@ -207,7 +207,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
-                      items: const ["Male", "Female"],
+                      items: MetadataManager.getInstance().sexNames,
                       error: registryProvider.shouldValidateFields ? sexError : null,
                       onChanged: (value) {
                         setState(() {
@@ -315,7 +315,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             REGISTRY_SUBFORM_HEADERS_TEXT.length - 1,
                         text: 'Next →',
                         onTap: () {
-                          print(MetadataManager.getInstance().sex);
                           if (selectedStep >=
                               REGISTRY_SUBFORM_HEADERS_TEXT.length - 1) {
                             return;

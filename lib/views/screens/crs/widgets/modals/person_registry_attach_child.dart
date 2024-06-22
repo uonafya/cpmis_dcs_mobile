@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../controller/metadata_manager.dart';
 import '../../../../../controller/registry_provider.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../core/utils/input_validation_utils.dart';
@@ -119,7 +120,7 @@ class _PersonRegistryAttachSiblingModalState
         CustomDropdown(
           initialValue: "Please Select",
           error: shouldValidateFields ? sexError : null,
-          items: const [ "Male", "Female"],
+          items: MetadataManager.getInstance().sexNames,
           onChanged: (value) {
             setState(() {
               sex = value;
