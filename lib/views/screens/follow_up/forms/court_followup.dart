@@ -79,11 +79,12 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   void handleAddService() async {
     String? caseId = widget.caseLoad.caseID;
     String? formId = "sessions_followup";
+    print(widget.caseLoad.toJson());
 
-    if (caseCategory == "Please select") {
-      showErrorSnackBar(context, "Please select a case category.");
-      return;
-    }
+    // if (caseCategory == "Please select") {
+    //   showErrorSnackBar(context, "Please select a case category.");
+    //   return;
+    // }
 
     if (dateOfService == null) {
       showErrorSnackBar(context, "Please fill in the date of court session.");
@@ -146,7 +147,11 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
           const SizedBox(height: 6),
           CustomDropdown(
             initialValue: caseCategory,
-            items: caseCategories,
+            items: widget.caseLoad.caseCategories == null
+                ? ["-"]
+                : widget.caseLoad.caseCategories!
+                    .map((e) => e.caseCategory.toString())
+                    .toList(),
             onChanged: (val) {
               setState(() {
                 caseCategory = val;
