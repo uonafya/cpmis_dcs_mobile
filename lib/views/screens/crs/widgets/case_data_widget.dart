@@ -1,4 +1,6 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
+import 'package:cpims_dcs_mobile/core/network/metadata.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
@@ -33,6 +35,8 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
   var othernames = TextEditingController();
   String perpetratorSex = pleaseSelect;
   DateTime? perpetratorDOB;
+
+  MetadataManager metadata = MetadataManager.getInstance();
 
   String referralActor = "";
   void updateReferralActor(value) {
@@ -70,21 +74,6 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               height: mediumSpacing,
             ),
 
-            // Questions
-            const Align(
-                alignment: Alignment.centerLeft,
-                child: CompulsaryQuestion(question: "Case Serial Number")),
-            const SizedBox(
-              height: smallSpacing,
-            ),
-            CustomTextField(
-              initialValue: model.caseData.serialNumber,
-              enabled: false,
-            ),
-            const SizedBox(
-              height: mediumSpacing,
-            ),
-
             const Align(
               alignment: Alignment.centerLeft,
               child: CompulsaryQuestion(
@@ -95,7 +84,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             ),
             CustomDropdown(
                 initialValue: model.caseData.offenderKnown ?? pleaseSelect,
-                items: perpetratorOptions,
+                items: metadata.perpetratorStatusNames,
                 onChanged: (dynamic value) {
                   var update = model.caseData;
 
@@ -121,7 +110,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   ),
                   CustomDropdown(
                       initialValue: relationshipToChild,
-                      items: relationshipToChildOptions,
+                      items: metadata.relationshipTypeNames,
                       onChanged: (dynamic value) {
                         setState(() {
                           relationshipToChild = value;
@@ -187,7 +176,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                   ),
                   CustomDropdown(
                       initialValue: perpetratorSex,
-                      items: sexOptions,
+                      items: metadata.sexNames,
                       onChanged: (dynamic value) {
                         setState(() {
                           perpetratorSex = value;
@@ -355,7 +344,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
             ),
             CustomDropdown(
                 initialValue: pleaseSelect,
-                items: lowMedHighList,
+                items: metadata.riskLevelNames,
                 onChanged: (dynamic val) {
                   CaseDataCRSFormModel update = model.caseData;
                   update.riskLevel = val;
@@ -474,7 +463,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               height: smallSpacing,
             ),
             CustomDropDownMultiSelect(
-                options: immediateNeedsOptions,
+                options: metadata.immediateNeedNames.map((e) => ValueItem<String>(label: e, value: e)).toList(),
                 onOptionSelected: (List<String> value) {
                   CaseDataCRSFormModel update = model.caseData;
 
@@ -498,7 +487,7 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
               height: smallSpacing,
             ),
             CustomDropDownMultiSelect(
-                options: futureNeedsOptions,
+                options: metadata.longTermSupportNames.map((e) => ValueItem<String>(label: e, value: e)).toList(),
                 onOptionSelected: (List<String> value) {
                   CaseDataCRSFormModel update = model.caseData;
 

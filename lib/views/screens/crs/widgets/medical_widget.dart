@@ -83,7 +83,9 @@ class _MedicalWidgetState extends State<MedicalWidget> {
                       height: smallSpacing,
                     ),
                     CustomDropDownMultiSelect(
-                        options: possibleMentalChallenges,
+                        options: metadata.mentalSubConditionNames
+                            .map((e) => ValueItem<String>(label: e, value: e))
+                            .toList(),
                         onOptionSelected: (List<String> value) {
                           MedicalCRSFormModel updated = model.medical;
 
@@ -111,7 +113,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               ),
               CustomDropdown(
                   initialValue: model.medical.physicalConditionStatus,
-                  items: physicalConditionOptions,
+                  items: metadata.physicalConditioTypeNames,
                   onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
                     updated.physicalConditionStatus = item;
@@ -133,7 +135,9 @@ class _MedicalWidgetState extends State<MedicalWidget> {
                       height: smallSpacing,
                     ),
                     CustomDropDownMultiSelect(
-                        options: possiblePhysicalChallenges,
+                        options: metadata.physicalSubConditionNames
+                            .map((e) => ValueItem<String>(label: e, value: e))
+                            .toList(),
                         onOptionSelected: (List<String> value) {
                           // Create temp
                           MedicalCRSFormModel updated = model.medical;
@@ -163,7 +167,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               ),
               CustomDropdown(
                   initialValue: model.medical.otherConditionStatus,
-                  items: otherConditionOptions,
+                  items: metadata.otherConditionsNames,
                   onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
 
@@ -186,7 +190,9 @@ class _MedicalWidgetState extends State<MedicalWidget> {
                       height: smallSpacing,
                     ),
                     CustomDropDownMultiSelect(
-                        options: possibleOtherChallenges,
+                        options: metadata.otherSubconditionNames
+                            .map((e) => ValueItem<String>(value: e, label: e))
+                            .toList(),
                         onOptionSelected: (List<String> value) {
                           MedicalCRSFormModel updated = model.medical;
 

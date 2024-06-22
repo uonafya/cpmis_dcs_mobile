@@ -4,6 +4,7 @@ import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/crs_consent_dialog.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/crs_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/steps.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
@@ -50,6 +51,21 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
       ),
       body: Consumer<CRSFormProvider>(
         builder: (context, model, _) {
+          if (hasConcented == false) {
+            return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Scaffold(
+                  body: Center(
+                    child: CRSConcentDialog(
+                      changeConsent: (bool val) {
+                        setState(() {
+                          hasConcented = val;
+                        });
+                      },
+                    ),
+                  ),
+                ));
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: ListView(

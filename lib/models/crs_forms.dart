@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/medical_page_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CaseReportingCRSFormModel {
   String originator;
@@ -86,14 +88,15 @@ class InitialChildDetails extends BaseCRSFormModel {
 
   @override
   Map<String, dynamic> toJSON() {
+    var metadata = MetadataManager.getInstance();
     return {
       "first_name": firstName,
       "surname": surName,
       "other_names": otherNames,
-      "sex": sex,
+      "sex": metadata.getSexValue(sex),
       "date_of_birth": convertDateToYMD(dateOfBirth),
       "age": age,
-      "current_class": currentClass,
+      "current_class": metadata.getChildClassValue(currentClass ?? ""),
       "remarks": remarks
     };
   }
@@ -120,14 +123,15 @@ class SiblingDetails extends BaseCRSFormModel {
 
   @override
   Map<String, dynamic> toJSON() {
+    var metadata = MetadataManager.getInstance();
     return {
       "first_name": firstName,
       "surname": surName,
       "other_names": otherNames,
-      "sex": sex,
+      "sex": metadata.getSexValue(sex),
       "date_of_birth": convertDateToYMD(dateOfBirth),
       "age": age,
-      "current_class": currentClass,
+      "current_class": metadata.getChildClassValue(currentClass ?? ""),
       "remarks": remarks,
       "date_linked": convertDateToYMD(dateLinked),
       "date_unlinked": convertDateToYMD(dateUnlinked)
@@ -152,13 +156,15 @@ class Caregivers extends BaseCRSFormModel {
 
   @override
   Map<String, dynamic> toJSON() {
+    var metadata = MetadataManager.getInstance();
     return {
       "first_name": firstName,
       "surname": surName,
       "other_names": otherNames,
-      "sex": sex,
+      "sex": metadata.getSexValue(sex),
       "date_of_birth": convertDateToYMD(dateOfBirth),
-      "relationship_to_child": relationshipToChild,
+      "relationship_to_child":
+          metadata.getrelationshiptype(relationshipToChild),
       "national_id_number": nationalIdNumber,
       "phone_number": phoneNumber
     };
@@ -220,11 +226,12 @@ class CRSCategory {
       required this.caseNature});
 
   Map<String, dynamic> toJSON() {
+    var metadata = MetadataManager.getInstance();
     var json = {
-      "case_category": category,
+      "case_category": metadata.getCategoryValue(category),
       "date_of_event": dateOfEvent,
-      "place_of_event": placeOfEvent,
-      "case_nature": caseNature
+      "place_of_event": metadata.getplaceOfEvent(placeOfEvent),
+      "case_nature": metadata.getcaseNature(placeOfEvent)
     };
     json['case_subcategories'] = subcategory.toString();
     return json;
@@ -259,8 +266,10 @@ class Perpetrators {
       this.age});
 
   Map<String, dynamic> toJSON() {
+    var metadata = MetadataManager.getInstance();
     var json = {
-      "relationship_to_child": relationshipType,
+      "relationship_to_child":
+          metadata.getrelationshiptype(relationshipType ?? ""),
       "first_name": firstName,
       "surname": lastName,
       "other_names": othernames
@@ -285,7 +294,12 @@ class CRSReferral {
       {required this.actor, required this.reason, required this.specify});
 
   Map<String, dynamic> toJSON() {
-    return {"actor": actor, "specify": specify, "reason": reason};
+    var metadata = MetadataManager.getInstance();
+    return {
+      "actor": metadata.getreferralDestinationID(actor),
+      "specify": metadata.getreferralDestinationClassification(specify),
+      "reason": reason
+    };
   }
 }
 
@@ -341,6 +355,8 @@ class CRSForm {
       this.formID});
 
   Map<String, dynamic> toJSON() {
+    MetadataManager metadata = MetadataManager.getInstance();
+
     List<Map<String, dynamic>> siblingJSON;
     if (about?.siblingDetails == null) {
       siblingJSON = [];
@@ -356,7 +372,8 @@ class CRSForm {
     }
 
     Map<String, dynamic> jsonToReturn = {};
-    jsonToReturn["case_reporter"] = caseReporting?.originator;
+    jsonToReturn["case_reporter"] =
+        metadata.getReporterValue(caseReporting?.originator ?? "");
     jsonToReturn['startTime'] = startTime.toIso8601String();
     jsonToReturn['endTime'] = endTime.toIso8601String();
     jsonToReturn['latitiude'] = latitude;
@@ -380,7 +397,7 @@ class CRSForm {
     }
 
     if (caseReporting?.placeOfOccurence == true) {
-      jsonToReturn['country'] = "Kenya";
+      jsonToReturn['country'] = "KE";
       jsonToReturn['county'] = caseReporting?.county;
       jsonToReturn['sub_county'] = caseReporting?.subCounty;
 
@@ -426,8 +443,17 @@ class CRSForm {
           about!.caregivers![i].toJSON()
       ];
     }
-    jsonToReturn['house_economic_status'] = about?.houseEconomicStatus;
-    jsonToReturn['family_status'] = about?.familyStatus;
+    jsonToReturn['house_economic_status'] =
+        metadata.gethouseholdEconomics(about?.houseEconomicStatus ?? "");
+
+    if (about?.familyStatus != null) {
+      List<String> familyStatusCodes = [];
+      for (var i = 0; i < about!.familyStatus.length; i++) {
+        var stat = about!.familyStatus[i];
+        familyStatusCodes.add(metadata.getfamilyStatus(stat));
+      }
+      jsonToReturn['family_status'] = familyStatusCodes;
+    }
 
     if (about?.closeFriends != null && about!.closeFriends!.isNotEmpty) {
       jsonToReturn['close_friends'] = about?.closeFriends;
@@ -440,20 +466,42 @@ class CRSForm {
     jsonToReturn['medical_condition'] = medical?.mentalConditionStatus;
     if (medical?.mentalConditionStatus ==
         MentalConditionOptions.challengeVerifed.value) {
-      jsonToReturn['medical_conditions'] = medical?.mentalCondition;
+      if (medical?.mentalCondition != null) {
+        List<String> ments = [];
+        for (var i = 0; i < medical!.mentalCondition!.length; i++) {
+          var stat = medical!.mentalCondition![i];
+          ments.add(metadata.getmentalSubCondition(stat));
+        }
+        jsonToReturn['medical_conditions'] = ments;
+      }
     }
     jsonToReturn['physical_condition'] = medical?.physicalCondition;
     if (medical?.physicalConditionStatus ==
         PhysicalConditionOptions.challengedVerified.value) {
-      jsonToReturn['physical_conditions'] = medical?.physicalCondition;
+      if (medical?.physicalCondition != null) {
+        List<String> ments = [];
+        for (var i = 0; i < medical!.physicalCondition!.length; i++) {
+          var stat = medical!.physicalCondition![i];
+          ments.add(metadata.getphysicalSubCondition(stat));
+        }
+        jsonToReturn['physical_conditions'] = ments;
+      }
     }
     jsonToReturn['other_condition'] = medical?.otherConditionStatus;
     if (medical?.otherConditionStatus == OtherConditionOptions.chronic.value) {
-      jsonToReturn['other_conditions'] = medical?.otherCondition;
+      if (medical?.otherCondition != null) {
+        List<String> ments = [];
+        for (var i = 0; i < medical!.otherCondition!.length; i++) {
+          var stat = medical!.otherCondition![i];
+          ments.add(metadata.getotherSubcondition(stat));
+        }
+        jsonToReturn['other_conditions'] = ments;
+      }
     }
 
     jsonToReturn['case_serial_number'] = caseData?.serialNumber;
-    jsonToReturn['offender_known'] = caseData?.offenderKnown;
+    jsonToReturn['offender_known'] =
+        metadata.getperpetratorStatus(caseData?.offenderKnown ?? "");
 
     if (caseData?.offenderKnown == "Known") {
       jsonToReturn['perpetrators'] =
@@ -475,6 +523,24 @@ class CRSForm {
 
     jsonToReturn['immediate_needs'] = caseData?.immediateNeeds;
     jsonToReturn['future_needs'] = caseData?.futureNeeds;
+
+    if (caseData?.immediateNeeds != null) {
+      List<String> codes = [];
+      for (var i = 0; i < caseData!.immediateNeeds.length; i++) {
+        var stat = caseData!.immediateNeeds[i];
+        codes.add(metadata.getimmediateNeed(stat));
+      }
+      jsonToReturn['immediate_needs'] = codes;
+    }
+
+    if (caseData?.futureNeeds != null) {
+      List<String> codes = [];
+      for (var i = 0; i < caseData!.futureNeeds.length; i++) {
+        var stat = caseData!.futureNeeds[i];
+        codes.add(metadata.getlongTermSupport(stat));
+      }
+      jsonToReturn['future_needs'] = codes;
+    }
 
     return jsonToReturn;
   }
