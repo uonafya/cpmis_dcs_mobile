@@ -23,7 +23,7 @@ class RegistrySiblingModel {
       'surName': surName,
       'otherNames': otherNames,
       'dateOfBirth': dateOfBirth,
-      'sex': sex == "Male" ? "SMAL" : "SFEM",
+      'sex': sex,
       'currentClass': currentClass,
       'remarks': remarks,
     };

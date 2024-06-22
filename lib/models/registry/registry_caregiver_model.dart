@@ -28,7 +28,7 @@ class RegistryCaregiverModel {
       'surName': surName,
       'otherNames': otherNames,
       'dateOfBirth': dateOfBirth,
-      'sex': sex == "Male" ? "SMAL" : "SFEM",
+      'sex': sex,
       'relationshipToChild': mapRelationshipToChild(relationshipToChild),
       'nationalIdNumber': nationalIdNumber,
       'phoneNumber': phoneNumber,
