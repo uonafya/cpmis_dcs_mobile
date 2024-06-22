@@ -41,6 +41,6 @@ class RegistryContactDetailsModel {
   }
 
   bool isComplete() {
-    return InputValidationUtils.isValidPhoneNumber(designatedPhoneNumber);
+    return true;
   }
 }
