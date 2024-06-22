@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/location_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
 import 'package:cpims_dcs_mobile/core/network/crs_form.dart';
@@ -11,6 +12,7 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_consent_form.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -28,6 +30,16 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
   var selectedStep = 0;
   bool hasConcented = false;
   final ScrollController _scrollController = ScrollController();
+
+  // Initialize start time
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CRSFormProvider>(context, listen: false).startTime =
+          DateTime.now();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +124,6 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                 const SizedBox(
                   height: 20,
                 ),
-
                 // Form body
                 hasConcented == false
                     ? ConsentForm(
@@ -178,8 +189,17 @@ class _CaseRegistrationSheetState extends State<CaseRegistrationSheet> {
                             var db = await localdb.database;
                             var uuid = const Uuid();
                             var formID = uuid.v4();
-                            
-                            CRSDatabaseForm.storeFormInDB(cprdata.form, db, formID);
+
+                            model.endTime = DateTime.now();
+                            var locationDetails =
+                                await Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .getCurrentLocation();
+                            model.latitude = locationDetails?.latitude ?? 0;
+                            model.longitude = locationDetails?.longitude ?? 0;
+
+                            CRSDatabaseForm.storeFormInDB(
+                                cprdata.form, db, formID);
                             await form.sendToUpstream();
 
                             Get.to(() => const CRSHome());

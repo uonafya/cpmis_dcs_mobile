@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
@@ -318,6 +320,10 @@ class CaseDataCRSFormModel {
 
 class CRSForm {
   String? formID;
+  DateTime startTime;
+  String longitude;
+  String latitude;
+  DateTime endTime;
   CaseReportingCRSFormModel? caseReporting;
   AboutChildCRSFormModel? about;
   MedicalCRSFormModel? medical;
@@ -327,6 +333,10 @@ class CRSForm {
       {this.caseReporting,
       this.about,
       this.medical,
+      required this.startTime,
+      required this.endTime,
+      required this.latitude,
+      required this.longitude,
       this.caseData,
       this.formID});
 
@@ -347,6 +357,10 @@ class CRSForm {
 
     Map<String, dynamic> jsonToReturn = {};
     jsonToReturn["case_reporter"] = caseReporting?.originator;
+    jsonToReturn['startTime'] = startTime.toIso8601String();
+    jsonToReturn['endTime'] = endTime.toIso8601String();
+    jsonToReturn['latitiude'] = latitude;
+    jsonToReturn['longitude'] = longitude;
 
     if (caseReporting?.originator == "Court") {
       jsonToReturn["court_name"] = caseReporting?.courtName;
@@ -424,11 +438,13 @@ class CRSForm {
     }
 
     jsonToReturn['medical_condition'] = medical?.mentalConditionStatus;
-    if (medical?.mentalConditionStatus == MentalConditionOptions.challengeVerifed.value) {
+    if (medical?.mentalConditionStatus ==
+        MentalConditionOptions.challengeVerifed.value) {
       jsonToReturn['medical_conditions'] = medical?.mentalCondition;
     }
     jsonToReturn['physical_condition'] = medical?.physicalCondition;
-    if (medical?.physicalConditionStatus == PhysicalConditionOptions.challengedVerified.value) {
+    if (medical?.physicalConditionStatus ==
+        PhysicalConditionOptions.challengedVerified.value) {
       jsonToReturn['physical_conditions'] = medical?.physicalCondition;
     }
     jsonToReturn['other_condition'] = medical?.otherConditionStatus;

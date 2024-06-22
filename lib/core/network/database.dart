@@ -135,6 +135,8 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsTable(
             id TEXT PRIMARY KEY,
+            startTime TEXT,
+            endTime TEXT,
             caseReporter TEXT NOT NULL,
             courtName TEXT,
             reporterPhoneNumber TEXT,
@@ -152,6 +154,8 @@ class LocalDB {
             ward TEXT,
             location TEXT,
             subLocation TEXT,
+            longitude TEXT,
+            latitude TEXT,
             reportingSubCounty TEXT NOT NULL,
             reportingOrgUnit TEXT NOT NULL,          
             dateCaseReported TEXT NOT NULL,
