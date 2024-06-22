@@ -53,6 +53,27 @@ class MetadataManager {
   Map<String, String> get ovcProgram => _ovcProgram;
   Map<String, String> get personType => _personType;
   Map<String, String> get relationshipType => _relationshipType;
+  Map<String, String> get familyStatus => _familyStatus;
+  Map<String, String> get referralDestinationClassification =>
+      _referralDestinationClassification;
+  Map<String, String> get referralType => _referralType;
+  Map<String, String> get longTermSupport => _longTermSupport;
+  Map<String, String> get mentalSubCondition => _mentalSubCondition;
+  Map<String, String> get physicalSubCondition => _physicalSubCondition;
+  Map<String, String> get courtOrder => _courtOrder;
+  Map<String, String> get householdEconomics => _householdEconomics;
+  Map<String, String> get immediateNeed => _immediateNeed;
+  Map<String, String> get otherSubcondition => _otherSubcondition;
+  Map<String, String> get mentalCondition => _mentalCondition;
+  Map<String, String> get caseNature => _caseNature;
+  Map<String, String> get perpetratorID => _perpetratorID;
+  Map<String, String> get perpetratorStatus => _perpetratorStatus;
+  Map<String, String> get placeOfEvent => _placeOfEvent;
+  Map<String, String> get physicalConditioType => _physicalConditioType;
+  Map<String, String> get referralDestinationID => _referralDestinationID;
+  Map<String, String> get riskLevel => _riskLevel;
+  Map<String, String> get coreItem => _coreItem;
+  Map<String, String> get intervention => _intervention;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -379,7 +400,7 @@ class MetadataManager {
     return _householdEconomics[key] ?? key;
   }
 
-  String immediateNeed(String key) {
+  String getimmediateNeed(String key) {
     return _immediateNeed[key] ?? key;
   }
 
