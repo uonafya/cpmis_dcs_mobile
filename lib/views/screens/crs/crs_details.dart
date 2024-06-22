@@ -75,15 +75,27 @@ class CRSDetails extends StatelessWidget {
 
                   if (caseLoadSiblings != null) {
                     for (var caseLoadSibling in caseLoadSiblings) {
+                      DateTime dob = DateTime.now();
+                      DateTime dateLinked = DateTime.now();
+
+                      if (caseLoadSibling.siblingDoB != null &&
+                          caseLoadSibling.siblingDoB != "null") {
+                        dob = DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.siblingDoB ?? "");
+                      }
+
+                      if (caseLoadSibling.siblingDateLinked != null &&
+                          caseLoadSibling.siblingDateLinked != "null") {
+                        dateLinked = DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.siblingDateLinked ?? "");
+                      }
                       siblings.add(SiblingDetails(
-                        firstName: caseLoadSibling.siblingFirstName ?? "",
-                        surName: caseLoadSibling.siblingSurName ?? "",
-                        sex: caseLoadSibling.siblingSex ?? "",
-                        dateOfBirth: DateFormat("yyyy-MM-dd")
-                            .parse(caseLoadSibling.siblingDoB ?? ""),
-                        dateLinked: DateFormat("yyyy-MM-dd")
-                            .parse(caseLoadSibling.siblingDateLinked ?? ""),
-                      ));
+                          id: caseLoadSibling.siblingCpimsId,
+                          firstName: caseLoadSibling.siblingFirstName ?? "",
+                          surName: caseLoadSibling.siblingSurName ?? "",
+                          sex: caseLoadSibling.siblingSex ?? "",
+                          dateOfBirth: dob,
+                          dateLinked: dateLinked));
                     }
                   }
 

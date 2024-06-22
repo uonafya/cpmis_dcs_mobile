@@ -1,12 +1,22 @@
+import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
+import 'package:cpims_dcs_mobile/core/constants/get_age_from_dob.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-class AboutChildSiblingItem extends StatelessWidget {
+class AboutChildSiblingItem extends StatefulWidget {
   final SiblingDetails data;
+  final Function(String data) includeChild;
 
-  const AboutChildSiblingItem({required this.data, super.key});
+  const AboutChildSiblingItem(
+      {required this.includeChild, required this.data, super.key});
 
+  @override
+  State<AboutChildSiblingItem> createState() => _AboutChildSiblingItemState();
+}
+
+class _AboutChildSiblingItemState extends State<AboutChildSiblingItem> {
+  bool? isSelected = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +27,7 @@ class AboutChildSiblingItem extends StatelessWidget {
         border: Border.all(color: Colors.grey[300]!),
       ),
       width: double.infinity,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -26,38 +36,38 @@ class AboutChildSiblingItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Name",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "FILL WITH DATA",
+                      widget.data.firstName,
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: mediumSpacing,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Sex",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "FILL WITH DATA",
-                      style: TextStyle(fontSize: 12),
+                      widget.data.sex,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -66,18 +76,18 @@ class AboutChildSiblingItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Date of Birth",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "FILL WITH DETAILS",
+                      convertDateToYMD(widget.data.dateOfBirth),
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: mediumSpacing,
               ),
               Expanded(
@@ -89,7 +99,9 @@ class AboutChildSiblingItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      "FILL WITH DATA",
+                      getAgeFromDateOf(
+                              widget.data.dateOfBirth ?? DateTime.now())
+                          .toString(),
                       style: TextStyle(fontSize: 12),
                     ),
                   ],
@@ -101,6 +113,21 @@ class AboutChildSiblingItem extends StatelessWidget {
           SizedBox(
             height: smallSpacing,
           ),
+          Row(
+            children: [
+              Text("Clone Case: "),
+              Checkbox(
+                  value: isSelected,
+                  onChanged: (bool? value) {
+                    if (value == true) {
+                      widget.includeChild(widget.data.id ?? "");
+                    }
+                    setState(() {
+                      isSelected = value;
+                    });
+                  })
+            ],
+          )
         ],
       ),
     );

@@ -1,7 +1,9 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/widgets/about_child_sibling_details.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_selected_item_pill.dart';
@@ -25,6 +27,12 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
 
   List<String> closeFriends = [];
   List<String> hobbies = [];
+
+  List<String> includedSiblings = [];
+  void includeChild(String data) {
+    includedSiblings.add(data);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,15 +164,28 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           const SizedBox(height: 10),
           // Siblings list
           // no siblings found
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              border: Border.all(color: kTextGrey),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: const Text('No siblings found'),
-          ),
+          model.about?.siblingDetails == null ||
+                  model.about!.siblingDetails!.isEmpty
+              ? Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: kTextGrey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Text('No siblings found'),
+                )
+              : Column(
+                  children: [
+                    for (var i = 0;
+                        i < model.about!.siblingDetails!.length;
+                        i++)
+                      AboutChildSiblingItem(
+                          includeChild: includeChild,
+                          data: model.about!.siblingDetails![i])
+                  ],
+                ),
+
           const SizedBox(height: 10),
           const Divider(),
           const SizedBox(height: 10),
