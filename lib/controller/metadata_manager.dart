@@ -41,6 +41,7 @@ class MetadataManager {
   final Map<String, String> _riskLevel = {};
   final Map<String, String> _coreItem = {};
   final Map<String, String> _intervention = {};
+  final Map<String, String> _otherConditions = {};
 
   Map<String, String> get sex => _sex;
   Map<String, String> get category => _category;
@@ -74,6 +75,7 @@ class MetadataManager {
   Map<String, String> get riskLevel => _riskLevel;
   Map<String, String> get coreItem => _coreItem;
   Map<String, String> get intervention => _intervention;
+  Map<String, String> get otherConditions => _otherConditions;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -93,7 +95,8 @@ class MetadataManager {
   List<String> get referralTypeNames => _referralType.keys.toList();
   List<String> get longTermSupportNames => _longTermSupport.keys.toList();
   List<String> get mentalSubConditionNames => _mentalSubCondition.keys.toList();
-  List<String> get physicalSubConditionNames => _physicalSubCondition.keys.toList();
+  List<String> get physicalSubConditionNames =>
+      _physicalSubCondition.keys.toList();
   List<String> get courtOrderNames => _courtOrder.keys.toList();
   List<String> get householdEconomicsNames => _householdEconomics.keys.toList();
   List<String> get immediateNeedNames => _immediateNeed.keys.toList();
@@ -103,11 +106,14 @@ class MetadataManager {
   List<String> get perpetratorIDNames => _perpetratorID.keys.toList();
   List<String> get perpetratorStatusNames => _perpetratorStatus.keys.toList();
   List<String> get placeOfEventNames => _placeOfEvent.keys.toList();
-  List<String> get physicalConditioTypeNames => _physicalConditioType.keys.toList();
-  List<String> get referralDestinationIDNames => _referralDestinationID.keys.toList();
+  List<String> get physicalConditioTypeNames =>
+      _physicalConditioType.keys.toList();
+  List<String> get referralDestinationIDNames =>
+      _referralDestinationID.keys.toList();
   List<String> get riskLevelNames => _riskLevel.keys.toList();
   List<String> get coreItemNames => _coreItem.keys.toList();
   List<String> get interventionNames => _intervention.keys.toList();
+  List<String> get otherConditionsNames => _otherConditions.keys.toList();
 
   static MetadataManager getInstance() {
     if (_instance != null) {
@@ -152,6 +158,13 @@ class MetadataManager {
     _loadriskLevelMetadata();
     _loadinterventionMetadata();
     _loadcoreItemMetadata();
+    _loadOtherConditions();
+  }
+
+  Future<void> _loadOtherConditions() async {
+    List<NameID> metadata = await getMetadata(MetadataTypes.otherCondition);
+    _otherConditions.clear();
+    _otherConditions.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadSexMetaData() async {
@@ -228,126 +241,131 @@ class MetadataManager {
 
   Future<void> _loadfamilyStatusMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.familyStatus);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _familyStatus.clear();
+    _familyStatus.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadreferralDestinationClassificationMetadata() async {
     List<NameID> metadata =
         await getMetadata(MetadataTypes.referralDestinationClassification);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _referralDestinationClassification.clear();
+    _referralDestinationClassification
+        .addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadreferralType() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.referralType);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _referralType.clear();
+    _referralType.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadlongTermSupportMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.longTermSupport);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _longTermSupport.clear();
+    _longTermSupport.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadmentalSubConditionMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.mentalSubCondition);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _mentalSubCondition.clear();
+    _mentalSubCondition.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadphysicalSubConditionMetadata() async {
     List<NameID> metadata =
         await getMetadata(MetadataTypes.physicalSubCondition);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _physicalSubCondition.clear();
+    _physicalSubCondition.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadcourtOrderMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.courtOrder);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _courtOrder.clear();
+    _courtOrder.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadhouseholdEconomicsMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.householdEconomics);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _householdEconomics.clear();
+    _householdEconomics.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadimmediateNeedMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.immediateNeed);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _immediateNeed.clear();
+    _immediateNeed.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadotherSubconditionMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.otherSubcondition);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _otherSubcondition.clear();
+    _otherSubcondition.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadmentalConditionMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.mentalCondition);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _mentalCondition.clear();
+    _mentalCondition.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadcaseNatureMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.caseNature);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _caseNature.clear();
+    _caseNature.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadperpetratorIDMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.perpetratorID);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _perpetratorID.clear();
+    _perpetratorID.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadperpetratorStatusMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.perpetratorStatus);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _perpetratorStatus.clear();
+    _perpetratorStatus.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadplaceOfEventMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.placeOfEvent);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _placeOfEvent.clear();
+    _placeOfEvent.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadphysicalConditionType() async {
     List<NameID> metadata =
         await getMetadata(MetadataTypes.physicalConditionType);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _physicalConditioType.clear();
+    _physicalConditioType.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadreferralDestinationIDMetadata() async {
     List<NameID> metadata =
         await getMetadata(MetadataTypes.referralDestinationID);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    referralDestinationID.clear();
+    referralDestinationID.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadriskLevelMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.riskLevel);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _riskLevel.clear();
+    _riskLevel.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadcoreItemMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.coreItem);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _coreItem.clear();
+    _coreItem.addAll({for (var e in metadata) e.name: e.id});
   }
 
   Future<void> _loadinterventionMetadata() async {
     List<NameID> metadata = await getMetadata(MetadataTypes.intervention);
-    _relationshipType.clear();
-    _relationshipType.addAll({for (var e in metadata) e.name: e.id});
+    _intervention.clear();
+    _intervention.addAll({for (var e in metadata) e.name: e.id});
+  }
+
+  String getrelationshiptype(String key) {
+    return _relationshipType[key] ?? key;
   }
 
   String getSexValue(String key) {
@@ -404,6 +422,10 @@ class MetadataManager {
 
   String getlongTermSupport(String key) {
     return _longTermSupport[key] ?? key;
+  }
+
+  String getOtherCondition(String key) {
+    return _otherConditions[key] ?? key;
   }
 
   String getmentalSubCondition(String key) {
