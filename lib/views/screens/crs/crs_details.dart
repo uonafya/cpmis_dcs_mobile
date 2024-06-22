@@ -81,9 +81,9 @@ class CRSDetails extends StatelessWidget {
                   if (caseLoadSiblings != null) {
                     for (var caseLoadSibling in caseLoadSiblings) {
                       siblings.add(SiblingDetails(
-                        firstName: "Wakili",
-                        surName: "Mkuu",
-                        sex: "Male",
+                        firstName: caseLoadSibling.siblingFirstName ?? "",
+                        surName: caseLoadSibling.siblingSurName ?? "",
+                        sex: caseLoadSibling.siblingSex ?? "",
                         dateOfBirth: DateFormat("yyyy-MM-dd")
                             .parse(caseLoadSibling.siblingDoB ?? ""),
                         dateLinked: DateFormat("yyyy-MM-dd")
