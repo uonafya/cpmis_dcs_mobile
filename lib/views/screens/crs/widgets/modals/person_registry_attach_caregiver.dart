@@ -29,7 +29,7 @@ class PersonRegistryAttachCareGiver extends StatefulWidget {
 
 class _PersonRegistryAttachCareGiverState
     extends State<PersonRegistryAttachCareGiver> {
-  bool _isChecked = false;
+  final bool _isChecked = false;
   List<String> childRelationship = [
     "None",
     "Adoptive Father",

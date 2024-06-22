@@ -29,9 +29,9 @@ class ClosureFollowupModel {
       if (json['intervention_list'] is String) {
         // If it's a string, parse it as JSON
         List<dynamic> list = jsonDecode(json['intervention_list']);
-        list.forEach((v) {
+        for (var v in list) {
           interventionList!.add(InterventionList.fromJson(v));
-        });
+        }
       } else if (json['intervention_list'] is List) {
         json['intervention_list'].forEach((v) {
           interventionList!.add(InterventionList.fromJson(v));

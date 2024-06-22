@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
+import 'package:cpims_dcs_mobile/views/screens/crs/constants/medical_page_options.dart';
 
 class CaseReportingCRSFormModel {
   String originator;
@@ -423,15 +424,15 @@ class CRSForm {
     }
 
     jsonToReturn['medical_condition'] = medical?.mentalConditionStatus;
-    if (medical?.mentalConditionStatus == "verified") {
+    if (medical?.mentalConditionStatus == MentalConditionOptions.challengeVerifed.value) {
       jsonToReturn['medical_conditions'] = medical?.mentalCondition;
     }
     jsonToReturn['physical_condition'] = medical?.physicalCondition;
-    if (medical?.physicalConditionStatus == "verified") {
+    if (medical?.physicalConditionStatus == PhysicalConditionOptions.challengedVerified.value) {
       jsonToReturn['physical_conditions'] = medical?.physicalCondition;
     }
     jsonToReturn['other_condition'] = medical?.otherConditionStatus;
-    if (medical?.otherConditionStatus == "verified") {
+    if (medical?.otherConditionStatus == OtherConditionOptions.chronic.value) {
       jsonToReturn['other_conditions'] = medical?.otherCondition;
     }
 

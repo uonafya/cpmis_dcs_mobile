@@ -10,9 +10,9 @@ extension LocationTypesExtension on LocationTypes {
       case LocationTypes.subcounty:
         return "GDIS";
       case LocationTypes.location:
-        return "location";
+        return "GLOC";
       case LocationTypes.sublocation:
-        return "sublocation";
+        return "GSLC";
       case LocationTypes.orgunit:
         return "orgunit";
       case LocationTypes.ward:
