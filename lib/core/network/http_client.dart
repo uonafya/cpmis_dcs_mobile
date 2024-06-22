@@ -56,10 +56,30 @@ class HttpClient {
     print(error.response?.data);
     print(error.response?.realUri);
     if (error.response?.statusCode == 401) {
+//Check message
+      if (error.response?.data['detail'] ==
+          "No active account found with the given credentials") {
+        return handler.next(DioError(
+          requestOptions: error.requestOptions,
+          response: error.response,
+          error: "No active account found with the given credentials",
+          type: error.type,
+        ));
+      }
+      if (error.response?.data['detail'] == "Token is invalid or expired") {
+        return handler.next(DioError(
+          requestOptions: error.requestOptions,
+          response: error.response,
+          error: "Token is invalid or expired",
+          type: error.type,
+        ));
+      }
+
       _refreshAccessToken();
 
       return;
     }
+
     if (error.type == DioErrorType.badResponse) {
       return handler.next(DioError(
         requestOptions: error.requestOptions,

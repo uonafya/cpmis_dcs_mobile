@@ -38,6 +38,18 @@ class ApiService {
     return response.data;
   }
 
+  Future<String> verifyToken() async {
+    final response = await httpClient.request(
+      'token/verify/',
+      'POST',
+      {
+        'token': preferences.getString('access'),
+      },
+    );
+
+    return response.data['token'];
+  }
+
   static List<Map<String, dynamic>> fetchCrsData() {
     return caseLoadDummy;
   }

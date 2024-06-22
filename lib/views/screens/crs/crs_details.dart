@@ -42,20 +42,15 @@ class CRSDetails extends StatelessWidget {
               const SizedBox(
                 width: 14,
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(() => const FollowUpHome());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: const Text(
-                    "INACTIVE",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: Text(
+                  caseLoad.caseStatus ?? "ACTIVE",
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
                 ),
               ),
             ],
@@ -142,13 +137,24 @@ class CRSDetails extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  if (caseLoad.caseStatus
+                      .toString()
+                      .toLowerCase()
+                      .contains("inactive")) {
+                    return;
+                  }
                   Get.to(() => FollowUpScreen(
                         caseLoadModel: caseLoad,
                       ));
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.blue[600],
+                      color: caseLoad.caseStatus
+                              .toString()
+                              .toLowerCase()
+                              .contains("inactive")
+                          ? Colors.grey
+                          : Colors.blue[600],
                       borderRadius: BorderRadius.circular(4)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
