@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
@@ -314,6 +315,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             REGISTRY_SUBFORM_HEADERS_TEXT.length - 1,
                         text: 'Next →',
                         onTap: () {
+                          print(MetadataManager.getInstance().sex);
                           if (selectedStep >=
                               REGISTRY_SUBFORM_HEADERS_TEXT.length - 1) {
                             return;

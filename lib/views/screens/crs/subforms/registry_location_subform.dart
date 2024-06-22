@@ -5,6 +5,8 @@ import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
+import '../../../../core/network/locations.dart';
+import '../../../../models/nameid.dart';
 
 const String COUNTY_DROPDOWN_ERROR = "Please select a county.";
 const String SUBCOUNTY_DROPDOWN_ERROR = "Please select a sub-county.";
@@ -17,23 +19,27 @@ class RegistryLocationSubform extends StatefulWidget {
 }
 
 class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
-  List<String> countyCriteria = [
-    'HomaBay',
-    'Migori',
+
+  List<NameID> counties = [
   ];
-  List<String> subcountyCriteria = [
-    'Suba',
-    'Suna West',
-    'Ndhiwa',
+  List<NameID> subCounties = [
   ];
-  List<String> wardCriteria = [
-    'Wasibete',
-    'Wiga',
-    'Wasweta li',
+  List<NameID> wards = [
   ];
+
   String selectedCounty = 'Please Select';
   String selectedSubCounty = 'Please Select';
   String selectedWard = 'Please Select';
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      counties = await getCounties();
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -61,9 +67,10 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
               ),
               CustomDropdown(
                 initialValue: registryProvider.registryLocationModel.county.isNotEmpty ? registryProvider.registryLocationModel.county : selectedCounty,
-                items: countyCriteria,
+                items: counties.map((e) => e.name).toList(),
                 error: registryProvider.shouldValidateFields ? countyError : null,
-                onChanged: (val) {
+                onChanged: (val) async {
+                  final values = await getSubCountiesOfCounty(val);
                   setState(() {
                     selectedCounty = val;
                     registryProvider.setCounty(selectedCounty);
@@ -77,7 +84,8 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                     } else {
                       countyError = null;
                     }
-                    
+                    subCounties.clear();
+                    subCounties.addAll(values);
                   });
                 },
               ),
@@ -94,10 +102,11 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 ),
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.subCounty.isNotEmpty ? registryProvider.registryLocationModel.subCounty : selectedSubCounty,
-                  items: registryProvider.registryLocationModel.county.isEmpty ? [] : subcountyCriteria,
+                  items: subCounties.map((e) => e.name).toList(),
                   error: registryProvider.shouldValidateFields ? subCountyError : null,
-                  onChanged: (val) {
-                    setState(() {
+                  onChanged: (val) async {
+                    final values = await getWardsFromSubCounty(selectedSubCounty);
+                    setState(() async {
                       selectedSubCounty = val;
                       registryProvider.setSubCounty(selectedSubCounty);
                       selectedWard = 'Please Select';
@@ -107,6 +116,8 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                       } else {
                         subCountyError = null;
                       }
+                      wards.clear();
+                      wards.addAll(values);
                     });
                   },
                 ),
@@ -118,7 +129,7 @@ class _RegistryLocationSubformState extends State<RegistryLocationSubform> {
                 ),
                 CustomDropdown(
                   initialValue: registryProvider.registryLocationModel.ward.isNotEmpty ? registryProvider.registryLocationModel.ward : selectedWard,
-                  items: registryProvider.registryLocationModel.county.isEmpty || registryProvider.registryLocationModel.subCounty.isEmpty ? [] : wardCriteria,
+                  items: wards.map((e) => e.name).toList(),
                   onChanged: (val) {
                     setState(() {
                       selectedWard = val;
