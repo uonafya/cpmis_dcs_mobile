@@ -163,8 +163,8 @@ class Caregivers extends BaseCRSFormModel {
 }
 
 class AboutChildCRSFormModel {
-  final String id;
-  final bool isNewChild;
+  String id;
+  bool isNewChild;
   InitialChildDetails initialDetails;
   List<SiblingDetails>? siblingDetails;
   String houseEconomicStatus;
