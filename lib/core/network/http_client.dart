@@ -98,6 +98,7 @@ class HttpClient {
     } else {
       preferences.clear();
       Get.offAll(() => const LoginScreen());
+
       Get.snackbar("Login failed", "Credentials are invalid",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,

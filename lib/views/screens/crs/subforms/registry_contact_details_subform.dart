@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
-import '../../../../core/utils/input_validation_utils.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../widgets/subform_wrapper.dart';
 
