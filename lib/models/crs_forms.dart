@@ -422,7 +422,7 @@ class CRSForm {
 
     if (caseData?.offenderKnown == "Known") {
       jsonToReturn['perpetrators'] =
-          caseData?.perpetrators.map((e) => e.toJSON).toList();
+          caseData?.perpetrators.map((e) => e.toJSON()).toList();
     }
 
     jsonToReturn['case_categories'] =
