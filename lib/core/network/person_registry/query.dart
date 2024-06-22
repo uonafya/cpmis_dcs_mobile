@@ -11,12 +11,12 @@ import '../../../models/registry/registry_location_model.dart';
 import '../../../models/registry/registry_sibling_model.dart';
 
 class RegisterNewChildQuery {
-  static Future<void> insertRegistryFormDetails(
+    static Future<int?> insertRegistryFormDetails(
       RegisterNewChildModel child) async {
     try {
       final db = await LocalDB.instance.database;
       // Insert personal details
-      await db.insert(registryFormDetails, {
+      var ID = await db.insert(registryFormDetails, {
         'personType': child.personType,
         'isCaregiver': child.isCaregiver == true ? 1 : 0,
         'childOVCProgram': child.childOVCProgram ? 1 : 0,
@@ -35,6 +35,7 @@ class RegisterNewChildQuery {
         'workforceIdName': child.workforceIdName,
         'datePaperFormFilled': child.datePaperFormFilled,
       });
+      return ID;
     } catch (e) {
       print("Error inserting new child: $e");
     }

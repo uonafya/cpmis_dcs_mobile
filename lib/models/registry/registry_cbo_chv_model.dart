@@ -34,8 +34,6 @@ class RegistryCboChvModel {
   }
 
   bool isComplete() {
-    return cboParentUnit.isNotEmpty &&
-    ovcProgramEnrollment.isNotEmpty &&
-    chv.isNotEmpty;
+    return true;
   }
 }

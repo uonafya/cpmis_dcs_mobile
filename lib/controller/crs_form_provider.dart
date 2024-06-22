@@ -28,6 +28,8 @@ class CRSFormProvider extends ChangeNotifier {
   AboutChildCRSFormModel? get about {
     if (form.about == null) {
       var about = AboutChildCRSFormModel(
+          id: "",
+          isNewChild: true,
           initialDetails: InitialChildDetails(
               firstName: "",
               surName: "",

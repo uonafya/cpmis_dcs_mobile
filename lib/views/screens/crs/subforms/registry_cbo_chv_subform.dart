@@ -6,10 +6,6 @@ import '../../../../controller/registry_provider.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../widgets/custom_dropdown.dart';
 
-const String CBO_DROPDOWN_ERROR = "Please select a parent unit.";
-const String OVC_DROPDOWN_ERROR = "Please select an OVH program.";
-const String CHV_DROPDOWN_ERROR = "Please select a CHV.";
-
 class RegistryCBOandCHVSubform extends StatefulWidget {
   const RegistryCBOandCHVSubform({super.key});
 
@@ -44,31 +40,21 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
 
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    String? cboError = registryProvider.registryCboChvModel.cboParentUnit.isEmpty? CBO_DROPDOWN_ERROR : null;
-    String? ovcError = registryProvider.registryCboChvModel.ovcProgramEnrollment.isEmpty? OVC_DROPDOWN_ERROR : null;
-    String? chvError = registryProvider.registryCboChvModel.chv.isEmpty? CHV_DROPDOWN_ERROR : null;
-
     return SubformWrapper(
       title: "CBO/CHV Details",
       children: [
         const Text(
-          'CBO *',
+          'CBO',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
           items: cboCriteria,
-          error: registryProvider.shouldValidateFields ? cboError : null,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;
               registryProvider.setCboParentUnit(selectedCBO);
-              if (val.isEmpty) {
-                cboError = CBO_DROPDOWN_ERROR;
-              } else {
-                cboError = null;
-              }
             });
           },
         ),
@@ -77,23 +63,17 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const Divider(),
         const Text(
-          'OVC Program Enrollment *',
+          'OVC Program Enrollment',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
           items: ovcCriteria,
-          error: registryProvider.shouldValidateFields ? ovcError : null,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;
               registryProvider.setOvcProgramEnrolment(selectedOVC);
-              if (val.isEmpty) {
-                ovcError = OVC_DROPDOWN_ERROR;
-              } else {
-                ovcError = null;
-              }
             });
           },
         ),
@@ -102,23 +82,17 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         ),
         const Divider(),
         const Text(
-          'CHV *',
+          'CHV',
           style: TextStyle(color: kTextGrey),
         ),
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.chv.isNotEmpty ? registryProvider.registryCboChvModel.chv : selectedCHV,
           items: chvCriteria,
-          error: registryProvider.shouldValidateFields ? chvError : null,
           onChanged: (val) {
             setState(() {
               selectedCHV = val;
               registryProvider.setChv(selectedCHV);
-              if (val.isEmpty) {
-                chvError = CHV_DROPDOWN_ERROR;
-              } else {
-                chvError = null;
-              }
             });
           },
         ),

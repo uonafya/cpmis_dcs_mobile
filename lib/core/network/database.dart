@@ -146,6 +146,7 @@ class LocalDB {
             subCounty TEXT NOT NULL,
             policeStation TEXT,
             obNumber TEXT,
+            isNew INTEGER NOT NULL,
             placeOfOccurence INTEGER NOT NULL,
             village TEXT,
             ward TEXT,
@@ -421,6 +422,7 @@ class LocalDB {
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $serviceFollowupTable(
     ${ServiceFollowupTable.caseID} TEXT PRIMARY KEY,
+    ${ServiceFollowupTable.formId} TEXT,
     ${ServiceFollowupTable.encounterNotes} TEXT,
     ${ServiceFollowupTable.caseCategoryId} TEXT,
     ${ServiceFollowupTable.serviceProvidedList} TEXT
