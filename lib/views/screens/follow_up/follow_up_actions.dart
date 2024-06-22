@@ -41,7 +41,11 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Summons",
         "onTap": () {
-          Get.to(() => const SummonsFollowUp());
+          Get.to(
+            () => SummonsFollowUp(
+              caseLoad: widget.caseLoad,
+            ),
+          );
         }
       },
       {
