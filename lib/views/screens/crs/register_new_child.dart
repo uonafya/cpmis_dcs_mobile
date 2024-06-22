@@ -376,6 +376,14 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           textColor: Colors.white,
                           onTap: () {
 
+                            if (registryProvider.isNotComplete()) {
+                              if (context.mounted) {
+                                errorSnackBar(context, 'Please enter all required fields. (*)');
+                              }
+                              registryProvider.setShouldValidateFields();
+                              return;
+                            }
+
                             List<SiblingDetails> siblings = [];
                             for (var i = 0;
                                 i < registryProvider.siblings.length;
@@ -423,14 +431,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                                   nationalIdNumber: car.nationalIdNumber,
                                   phoneNumber: car.phoneNumber)); }
 
-                            if (registryProvider.isNotComplete()) {
-                              if (context.mounted) {
-                                errorSnackBar(context, 'Please enter all required fields. (*)');
-                              }
-                              registryProvider.setShouldValidateFields();
-                              return;
-
-                            }
                             var crsAbout = AboutChildCRSFormModel(
                                 initialDetails: initDetails,
                                 siblingDetails: siblings,
