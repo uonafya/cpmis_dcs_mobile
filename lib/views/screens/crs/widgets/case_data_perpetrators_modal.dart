@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/case_data_page_options.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
@@ -33,6 +34,8 @@ class _CaseDataMorePerpetratorsModalState
   String otherNames = "";
   String sex = pleaseSelect;
   late DateTime dob;
+
+  MetadataManager metadata = MetadataManager.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +78,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomDropdown(
               initialValue: relationship,
-              items: relationshipToChildOptions,
+              items: metadata.perpetratorStatusNames,
               onChanged: (value) {
                 setState(() {
                   relationship = value;
@@ -86,7 +89,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomDropdown(
             initialValue: additionalRelationship,
-            items: additionalRelationshipToChildOptions,
+            items: metadata.perpetratorIDNames,
             onChanged: (value) {
               setState(() {
                 additionalRelationship = value;
@@ -147,7 +150,7 @@ class _CaseDataMorePerpetratorsModalState
           ),
           CustomDropdown(
               initialValue: sex,
-              items: sexOptions,
+              items: metadata.sexNames,
               onChanged: (value) {
                 setState(() {
                   sex = value;

@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/case_load/caregiver_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_category_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/conditions_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/event_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/perpetrator_model.dart';
 import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
@@ -173,7 +174,7 @@ class SearchCaseLoad {
       ovcData[CaseLoadTableFields.mentalCondition] =
           (jsonDecode(ovcData[CaseLoadTableFields.mentalCondition] as String)
                   as List<dynamic>?)
-              ?.map((e) => e.toString())
+              ?.map((e) => ConditionsModel.fromJson(e).toJson())
               .toList();
     }
 
@@ -181,7 +182,7 @@ class SearchCaseLoad {
       ovcData[CaseLoadTableFields.physicalCondition] =
           (jsonDecode(ovcData[CaseLoadTableFields.physicalCondition] as String)
                   as List<dynamic>?)
-              ?.map((e) => e.toString())
+              ?.map((e) => ConditionsModel.fromJson(e).toJson())
               .toList();
     }
 
@@ -189,7 +190,7 @@ class SearchCaseLoad {
       ovcData[CaseLoadTableFields.otherCondition] =
           (jsonDecode(ovcData[CaseLoadTableFields.otherCondition] as String)
                   as List<dynamic>?)
-              ?.map((e) => e.toString())
+              ?.map((e) => ConditionsModel.fromJson(e).toJson())
               .toList();
     }
 

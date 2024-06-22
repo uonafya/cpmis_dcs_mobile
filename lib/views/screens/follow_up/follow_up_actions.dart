@@ -25,6 +25,7 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Services",
         "onTap": () {
+          Navigator.of(context).pop();
           Get.to(
             () => ServicesFollowUp(
               caseLoad: widget.caseLoad,
@@ -35,6 +36,8 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Court Session",
         "onTap": () {
+          Navigator.of(context).pop();
+
           Get.to(
             () => CourtFollowUp(
               caseLoad: widget.caseLoad,
@@ -45,6 +48,8 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Summons",
         "onTap": () {
+          Navigator.of(context).pop();
+
           Get.to(
             () => SummonsFollowUp(
               caseLoad: widget.caseLoad,
@@ -55,6 +60,8 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Manage Referrals",
         "onTap": () {
+          Navigator.of(context).pop();
+
           Get.to(
             () => ReferralsFollowUp(
               caseLoad: widget.caseLoad,
@@ -65,6 +72,8 @@ class _FollowupActionsState extends State<FollowupActions> {
       {
         "title": "Close",
         "onTap": () {
+          Navigator.of(context).pop();
+
           Get.to(
             () => CloseFollowup(
               caseLoad: widget.caseLoad,

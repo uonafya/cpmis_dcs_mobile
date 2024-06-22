@@ -39,7 +39,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.showInitialDate && widget.initialDate != null) {
       pickedDate.text = DateFormat('dd/MM/yyyy').format(widget.initialDate!);
     }
@@ -57,16 +56,18 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               widget.onChanged(value);
             }));
       },
-      child: CustomTextField(
-        enabled: false,
-        error: widget.error,
-        suffixIcon: widget.suffixIcon ?? Icons.calendar_today,
-        labelText: widget.labelText,
-        hintText: widget.hintText,
-        prefixIcon: widget.prefixIcon,
-        controller: pickedDate,
-        validator: widget.validator,
-        onChanged: (val) {},
+      child: AbsorbPointer(
+        absorbing: true,
+        child: CustomTextField(
+          error: widget.error,
+          suffixIcon: widget.suffixIcon ?? Icons.calendar_today,
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          prefixIcon: widget.prefixIcon,
+          controller: pickedDate,
+          validator: widget.validator,
+          onChanged: (val) {},
+        ),
       ),
     );
   }

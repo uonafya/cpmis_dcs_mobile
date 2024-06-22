@@ -1,3 +1,5 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
+
 class CourtSessionModel {
   String? caseId;
   String? formId;
@@ -59,6 +61,24 @@ class CourtSessionModel {
     data['plea_taken'] = pleaTaken;
     data['application_outcome'] = applicationOutcome;
     data['court_outcome'] = courtOutcome;
+    data['court_order'] = courtOrder?.join(',');
+    return data;
+  }
+
+
+  Map<String, dynamic> toJsonForUpstream() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['form_id'] = formId;
+    data['court_session_case'] = courtSessionCase;
+    data['court_session_type'] = courtSessionType;
+    data['date_of_court_event'] = dateOfCourtEvent;
+    data['court_notes'] = courtNotes;
+    data['next_hearing_date'] = nextHearingDate;
+    data['next_mention_date'] = nextMentionDate;
+    data['plea_taken'] = pleaTaken;
+    data['application_outcome'] = applicationOutcome;
+    data['court_outcome'] = MetadataManager.getInstance().getcourtOrder(courtOutcome ?? "");
     data['court_order'] = courtOrder?.join(',');
     return data;
   }

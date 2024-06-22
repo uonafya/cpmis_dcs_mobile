@@ -94,13 +94,18 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
             height: 6,
           ),
           CustomDropdown(
-              initialValue: caseCategory,
-              items: caseCategoryList.map((e) => e["title"]!).toList(),
-              onChanged: (val) {
-                setState(() {
-                  caseCategory = val;
-                });
-              }),
+            initialValue: caseCategory,
+            items: widget.caseLoad.caseCategories == null
+                ? ["-"]
+                : widget.caseLoad.caseCategories!
+                    .map((e) => e.caseCategory.toString())
+                    .toList(),
+            onChanged: (val) {
+              setState(() {
+                caseCategory = val;
+              });
+            },
+          ),
           const SizedBox(
             height: 14,
           ),

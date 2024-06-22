@@ -140,7 +140,7 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
             ),
           if (controller.location != 'Please select')
             const Text(
-              'Sub Location *',
+              'Sub Location',
             ),
           if (controller.location != 'Please select')
             const SizedBox(
@@ -149,12 +149,6 @@ class _ESRHouseholdGeolocationState extends State<ESRHouseholdGeolocation> {
           if (controller.location != 'Please select')
             CustomDropdown(
                 initialValue: controller.selectedSubLocation,
-                validator: (val) {
-                  if (val == 'Please select') {
-                    return 'Please select a sub location';
-                  }
-                  return null;
-                },
                 items: subLocation.map((e) => e.name).toList(),
                 onChanged: (val) async {
                   controller.setSelectedSubLocation(val);

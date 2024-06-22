@@ -6,6 +6,7 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FollowUpScreen extends StatefulWidget {
   const FollowUpScreen({super.key, required this.caseLoadModel});
@@ -71,17 +72,22 @@ class _FollowUpScreenState extends State<FollowUpScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Case Category(s) | Date Of Event	",
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
-                              "1. Neglect | June 16, 2017",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              widget.caseLoadModel.caseCategories == null
+                                  ? "-"
+                                  : widget.caseLoadModel.caseCategories!
+                                      .map((e) =>
+                                          "${e.caseCategory} | ${DateFormat("dd MMMM, yyy").format(DateTime.parse(e.dateOfEvent))}")
+                                      .join(">\n "),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),

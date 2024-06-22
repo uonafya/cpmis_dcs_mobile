@@ -1,7 +1,9 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/locations.dart';
+import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/models/nameid.dart';
+import 'package:cpims_dcs_mobile/models/organization_unit.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_forms_date_picker.dart';
@@ -22,6 +24,9 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
   String selectedCountry = pleaseSelect;
   String selectedCounty = pleaseSelect;
   String selectedSubCounty = pleaseSelect;
+  List<OrganizationUnit> orgunits = [];
+  List<NameID> subcounties = [];
+  List<NameID> wards = [];
 
   DateTime dateOfCaseOpening = DateTime.now();
 
@@ -47,6 +52,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
     Future.delayed(Duration.zero, () async {
       countries = await getCountries();
       counties = await getCounties();
+      orgunits = await getOrganizationalUnits(null);
       setState(() {});
     });
   }
@@ -320,6 +326,9 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                       final values =
                           await getSubCountiesOfCounty(selectedCounty);
 
+                      // Get sub counties
+                      subcounties = await getSubCountiesOfCounty(item);
+
                       subCounties = values;
                       model.caseReport.subCounty = pleaseSelect;
                       setState(() {});
@@ -339,7 +348,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                       final selectedSubCounty =
                           subCounties.firstWhere((e) => e.name == item);
                       final values =
-                          await getWardsFromSubCounty(selectedSubCounty.id);
+                          await getWardsFromSubCounty(selectedSubCounty.name);
 
                       wardsList = values;
                       model.caseReport.ward = pleaseSelect;
@@ -349,7 +358,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   const SizedBox(height: 10),
                   const Divider(),
                   const SizedBox(height: 20),
-                  const Text('Ward *'),
+                  const Text('Ward '),
                   const SizedBox(height: 10),
                   CustomDropdown(
                     initialValue: model.caseReport.ward ?? pleaseSelect,
@@ -381,7 +390,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                   const SizedBox(height: 20),
                   const Divider(),
                   const SizedBox(height: 10),
-                  const Text('Location *'),
+                  const Text('Location '),
                   const SizedBox(height: 10),
                   CustomDropdown(
                     initialValue: model.caseReport.location ?? pleaseSelect,
@@ -393,7 +402,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  const Text('Sub Location *'),
+                  const Text('Sub Location '),
                   const SizedBox(height: 10),
                   CustomDropdown(
                     initialValue: model.caseReport.subLocation ?? pleaseSelect,
@@ -450,7 +459,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         const SizedBox(height: 10),
         CustomDropdown(
           initialValue: model.caseReport.reportingSubCounty,
-          items: countiesOptions,
+          items: subcounties.map((e) => e.name).toList(),
           onChanged: (dynamic item) {
             var update = model.caseReport;
             update.reportingSubCounty = item;
@@ -462,7 +471,7 @@ class _CaseReportingWidgetState extends State<CaseReportingWidget> {
         const SizedBox(height: 10),
         CustomDropdown(
           initialValue: model.caseReport.reportingOrganizationalUnit,
-          items: countiesOptions,
+          items: orgunits.map((e) => e.name ?? "").toList(),
           onChanged: (dynamic item) {
             var update = model.caseReport;
             update.reportingOrganizationalUnit = item;

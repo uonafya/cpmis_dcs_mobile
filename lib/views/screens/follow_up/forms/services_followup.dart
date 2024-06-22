@@ -104,13 +104,18 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
             height: 6,
           ),
           CustomDropdown(
-              initialValue: caseCategory,
-              items: caseCategories,
-              onChanged: (val) {
-                setState(() {
-                  caseCategory = val;
-                });
-              }),
+            initialValue: caseCategory,
+            items: widget.caseLoad.caseCategories == null
+                ? ["-"]
+                : widget.caseLoad.caseCategories!
+                    .map((e) => e.caseCategory.toString())
+                    .toList(),
+            onChanged: (val) {
+              setState(() {
+                caseCategory = val;
+              });
+            },
+          ),
           const SizedBox(
             height: 14,
           ),

@@ -7,9 +7,9 @@ extension MentalConditionsExtension on MentalConditionOptions {
   String get value {
     switch (this) {
       case MentalConditionOptions.challengeUnverified:
-        return "Challenge (unverified)";
+        return "Challenged (unverified)";
       case MentalConditionOptions.challengeVerifed:
-        return "Challenge (verified)";
+        return "Challenged (verified)";
       case MentalConditionOptions.normal:
         return "Appears Normal";
       default:
@@ -35,9 +35,9 @@ extension PhysicalConditionExtension on PhysicalConditionOptions {
   String get value {
     switch (this) {
       case PhysicalConditionOptions.challengeUnverified:
-        return "Challenge (unverified)";
+        return "Challenged (unverified)";
       case PhysicalConditionOptions.challengedVerified:
-        return "Challenge (verified)";
+        return "Challenged (verified)";
       case PhysicalConditionOptions.normal:
         return "Appears normal";
       default:
