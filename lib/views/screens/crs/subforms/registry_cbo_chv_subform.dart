@@ -17,17 +17,7 @@ class RegistryCBOandCHVSubform extends StatefulWidget {
 
 class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
 
-  List<String> ovcCriteria = [
-    'OVC',
-    'Preventive',
-    'Dreams',
-    'Fs/Other',
-  ];
-  List<String> chvCriteria = [
-    'RUTH AKINYI',
-    'ANNA. OWINO',
-    'DAMARIS. OTOLO',
-  ];
+  List<String> chvCriteria = [];
 
   String selectedCBO = 'Select Parent Unit';
   String selectedOVC = 'Please Select One';
@@ -67,7 +57,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.ovcProgramEnrollment.isNotEmpty ? registryProvider.registryCboChvModel.ovcProgramEnrollment : selectedOVC,
-          items: ovcCriteria,
+          items: MetadataManager.getInstance().ovcProgramNames,
           onChanged: (val) {
             setState(() {
               selectedOVC = val;

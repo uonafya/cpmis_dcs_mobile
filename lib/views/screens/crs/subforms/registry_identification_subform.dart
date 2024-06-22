@@ -26,24 +26,6 @@ class _RegistryIdentificationSubformState
   List<NameID> countries = [
   ];
 
-  List<String> countryCriteria = [
-    'Kenya',
-    'Tanzania',
-    'Ethopia',
-  ];
-  List<String> tribeCriteria = [
-    'Kikuyu',
-    'Kamba',
-    'Kalenjin',
-  ];
-  List<String> religionCriteria = [
-    'Christian',
-    'Muslim',
-    'Buddhist',
-    'Atheist',
-    'Other',
-  ];
-
   String selectedCountry = 'Please Select';
   String selectedTribe = 'Please Select';
   String selectedReligion = 'Please Select';

@@ -20,6 +20,7 @@ class MetadataManager {
   final Map<String, String> _tribe = {};
   final Map<String, String> _childClass = {};
   final Map<String, String> _orgUnit = {};
+  final Map<String, String> _ovcProgram = {};
 
   Map<String, String> get sex => _sex;
   Map<String, String> get category => _category;
@@ -29,6 +30,7 @@ class MetadataManager {
   Map<String, String> get tribe => _tribe;
   Map<String, String> get childClass => _childClass;
   Map<String, String> get orgUnit => _orgUnit;
+  Map<String, String> get ovcProgram => _ovcProgram;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -38,6 +40,7 @@ class MetadataManager {
   List<String> get tribeNames => _tribe.keys.toList();
   List<String> get childClassNames => _childClass.keys.toList();
   List<String> get orgUnitNames => _orgUnit.keys.toList();
+  List<String> get ovcProgramNames => _ovcProgram.keys.toList();
 
 
   static MetadataManager getInstance() {
@@ -61,6 +64,7 @@ class MetadataManager {
     _loadTribeMetaData();
     _loadChildClassMetaData();
     _loadOrgUnitMetaData();
+    _loadOvcProgramMetaData();
   }
 
   Future<void> _loadSexMetaData() async {
@@ -105,6 +109,12 @@ class MetadataManager {
     _childClass.addAll({for (var e in childClassMetadata) e.name : e.id});
   }
 
+  Future<void> _loadOvcProgramMetaData() async {
+    List<NameID> ovcProgramMetadata = await getMetadata(MetadataTypes.ovcProgram);
+    _ovcProgram.clear();
+    _ovcProgram.addAll({for (var e in ovcProgramMetadata) e.name : e.id});
+  }
+
   Future<void> _loadOrgUnitMetaData() async {
     List<OrganizationUnit> orgUnitMetadata = await getOrganizationalUnits(null);
     _orgUnit.clear();
@@ -141,5 +151,9 @@ class MetadataManager {
 
   String getOrgUnitValue(String key) {
     return _orgUnit[key] ?? key;
+  }
+
+  String getOvcProgramValue(String key) {
+    return _ovcProgram[key] ?? key;
   }
 }

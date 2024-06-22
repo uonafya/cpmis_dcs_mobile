@@ -62,7 +62,7 @@ Future<void> saveMetadataInDB(Database db, List<dynamic> metadata) async {
   }
 }
 
-enum MetadataTypes { category, reporter, areaType, sex, religion, tribe, childClass }
+enum MetadataTypes { category, reporter, areaType, sex, religion, tribe, childClass, ovcProgram }
 
 extension MetadataValues on MetadataTypes {
   String get value {
@@ -81,6 +81,8 @@ extension MetadataValues on MetadataTypes {
         return "tribe_category_id";
       case MetadataTypes.childClass:
         return "class_level_id";
+      case MetadataTypes.ovcProgram:
+        return "ovc_program_id";
       default:
         throw "Unsupported Type";
     }
