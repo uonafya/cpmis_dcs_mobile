@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/widgets/subform_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +16,7 @@ class RegistryCBOandCHVSubform extends StatefulWidget {
 }
 
 class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
-  List<String> cboCriteria = [
-    'UO27664 - CARITAS DOHB',
-    'U73643 - KARAYA',
-  ];
+
   List<String> ovcCriteria = [
     'OVC',
     'Preventive',
@@ -50,7 +48,7 @@ class _RegistryCBOandCHVSubformState extends State<RegistryCBOandCHVSubform> {
         const SizedBox(height: 6),
         CustomDropdown(
           initialValue: registryProvider.registryCboChvModel.cboParentUnit.isNotEmpty ? registryProvider.registryCboChvModel.cboParentUnit : selectedCBO,
-          items: cboCriteria,
+          items: MetadataManager.getInstance().orgUnitNames,
           onChanged: (val) {
             setState(() {
               selectedCBO = val;

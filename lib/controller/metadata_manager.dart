@@ -1,6 +1,8 @@
 import 'package:cpims_dcs_mobile/core/network/metadata.dart';
+import 'package:cpims_dcs_mobile/models/organization_unit.dart';
 import 'package:get/get.dart';
 
+import '../core/network/mobile_settings.dart';
 import '../models/nameid.dart';
 
 class MetadataManager {
@@ -17,6 +19,7 @@ class MetadataManager {
   final Map<String, String> _religion = {};
   final Map<String, String> _tribe = {};
   final Map<String, String> _childClass = {};
+  final Map<String, String> _orgUnit = {};
 
   Map<String, String> get sex => _sex;
   Map<String, String> get category => _category;
@@ -25,6 +28,7 @@ class MetadataManager {
   Map<String, String> get religion => _religion;
   Map<String, String> get tribe => _tribe;
   Map<String, String> get childClass => _childClass;
+  Map<String, String> get orgUnit => _orgUnit;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -33,6 +37,7 @@ class MetadataManager {
   List<String> get religionNames => _religion.keys.toList();
   List<String> get tribeNames => _tribe.keys.toList();
   List<String> get childClassNames => _childClass.keys.toList();
+  List<String> get orgUnitNames => _orgUnit.keys.toList();
 
 
   static MetadataManager getInstance() {
@@ -55,6 +60,7 @@ class MetadataManager {
     _loadReligionMetaData();
     _loadTribeMetaData();
     _loadChildClassMetaData();
+    _loadOrgUnitMetaData();
   }
 
   Future<void> _loadSexMetaData() async {
@@ -99,6 +105,12 @@ class MetadataManager {
     _childClass.addAll({for (var e in childClassMetadata) e.name : e.id});
   }
 
+  Future<void> _loadOrgUnitMetaData() async {
+    List<OrganizationUnit> orgUnitMetadata = await getOrganizationalUnits(null);
+    _orgUnit.clear();
+    _orgUnit.addAll({for (var e in orgUnitMetadata) e.name ?? "Unknown" : e.id.toString()});
+  }
+
   String getSexMetaValue(String key) {
     return _sex[key] ?? key;
   }
@@ -125,5 +137,9 @@ class MetadataManager {
 
   String getChildClassMetaValue(String key) {
     return _childClass[key] ?? key;
+  }
+
+  String getOrgUnitValue(String key) {
+    return _orgUnit[key] ?? key;
   }
 }

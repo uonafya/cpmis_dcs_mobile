@@ -12,6 +12,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 
+import '../../controller/metadata_manager.dart';
+
 class InitialLoaderScreen extends StatefulWidget {
   const InitialLoaderScreen({super.key});
 
@@ -49,6 +51,8 @@ class _InitialLoaderScreenState extends State<InitialLoaderScreen> {
             await saveOrganizationUnits();
             await saveCountries();
             await saveMetadata();
+            // Call after all metadata, org units locations etc fetch
+            MetadataManager.getInstance();
           } else {
             // show dialog to user
             // to enable internet connection

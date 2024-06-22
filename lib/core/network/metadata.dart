@@ -16,7 +16,6 @@ Future<void> saveMetadata() async {
     var metadata = results.data.map((e) => Metadata.fromJSON(e)).toList();
 
     await saveMetadataInDB(db, metadata);
-    MetadataManager.getInstance();
   } catch (err) {
     throw "Could Not Get Metadata";
   }
@@ -30,9 +29,6 @@ Future<List<NameID>> getMetadata(MetadataTypes type) async {
         where: "fieldName = ?",
         columns: ['description', 'id'],
         whereArgs: [type.value]);
-
-    print("getMetadata");
-
     return results
         .map((e) =>
             NameID(name: e['description'].toString(), id: e['id'].toString()))
