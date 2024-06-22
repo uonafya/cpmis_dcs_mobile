@@ -213,17 +213,15 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
             surName: childDetails.surname,
             otherNames: childDetails.otherNames,
             currentClass: childDetails.childClass,
-            remarks: childDetails.,
-            dateOfBirth: convertYMDtoDate(registryProvider
-                .registryPersonalDetailsModel.dateOfBirth),
-            sex: registryProvider
-                .registryPersonalDetailsModel.sex);
+            remarks: "",
+            dateOfBirth: convertYMDtoDate(childDetails.dateOfBirth),
+            sex: childDetails.sex);
 
         List<Caregivers> caregivers = [];
         for (var i = 0;
-            i < registryProvider.caregivers.length;
+            i < childDetails.caregivers.length;
             i++) {
-          var car = registryProvider.caregivers[i];
+          var car = childDetails.caregivers[i];
           caregivers.add(Caregivers(
               firstName: car.firstName,
               surName: car.surName,
@@ -233,17 +231,13 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
               relationshipToChild: car.relationshipToChild,
               nationalIdNumber: car.nationalIdNumber,
               phoneNumber: car.phoneNumber)); }
+
         about = AboutChildCRSFormModel(
-          initialDetails: InitialChildDetails(
-            firstName: firstName, 
-            surName: surName, 
-            dateOfBirth: dateOfBirth, 
-            sex: sex
-          ), 
+          initialDetails: initDetails, 
           id: rawForm['childID'].toString(), 
-          siblingDetails: ,
+          siblingDetails: siblings,
           closeFriends: closeFriends,
-          caregivers: ,
+          caregivers: caregivers,
           hobbies: hobbies,
           isNewChild: true, 
           houseEconomicStatus: rawForm['houseEconomic'].toString(), 
@@ -295,7 +289,7 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           caseNarration: rawForm['caseNarration'].toString(),
           perpetrators: perpetrators,
         ),
-        about: ,
+        about: about,
         medical: MedicalCRSFormModel(
             mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
             mentalCondition: mentalCondition,
