@@ -5,6 +5,7 @@ import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/notification_model.dart';
 import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiService {
@@ -127,7 +128,7 @@ class ApiService {
   Future<void> sendServiceFollowup(Map<String, dynamic> service) async {
     try {
       final response = await httpClient.request(
-        'mobile/follow_up/', // Make sure this endpoint is correct for service followups
+        'mobile/follow_up/',
         'POST',
         service,
       );
@@ -137,6 +138,62 @@ class ApiService {
         print('Error occurred while sending service followup $e');
       }
       rethrow;
+    }
+  }
+
+  Future<void> sendCourtSummons(Map<String, dynamic> summons) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        summons,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending court summons $e');
+      }
+      throw e;
+    }
+  }
+
+  Future<void> sendCourtSession(Map<String, dynamic> session) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/',
+        'POST',
+        session,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending court session $e');
+        if (e is DioException) {
+          print('Response data: ${e.response?.data}');
+          print('Response status code: ${e.response?.statusCode}');
+        }
+      }
+      throw e;
+    }
+  }
+
+  Future<void> sendReferral(Map<String, dynamic> referral) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/', // Adjust this endpoint if needed
+        'POST',
+        referral,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending referral $e');
+        if (e is DioException) {
+          print('Response data: ${e.response?.data}');
+          print('Response status code: ${e.response?.statusCode}');
+        }
+      }
+      throw e;
     }
   }
 

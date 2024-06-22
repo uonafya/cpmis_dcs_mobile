@@ -1,6 +1,7 @@
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_court.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/court_session_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -14,7 +15,8 @@ import 'package:intl/intl.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class CourtFollowUp extends StatefulWidget {
-  const CourtFollowUp({super.key});
+  const CourtFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<CourtFollowUp> createState() => _CourtFollowUpState();
@@ -73,7 +75,7 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
   final CourtDatabaseHelper courtDatabaseHelper = CourtDatabaseHelper();
 
   void handleAddService() async {
-    String? caseId = "1213";
+    String? caseId = widget.caseLoad.caseID;
     String? formId = "sessions_followup";
 
     if (caseCategory == "Please select") {

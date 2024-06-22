@@ -2,8 +2,11 @@
 
 import 'package:cpims_dcs_mobile/controller/closure_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/loadLocationFromUpstream.dart';
+import 'package:cpims_dcs_mobile/controller/referral_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/services_upstream.dart';
+import 'package:cpims_dcs_mobile/controller/session_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/social_upstream.dart';
+import 'package:cpims_dcs_mobile/controller/summons_upstream.dart';
 import 'package:cpims_dcs_mobile/controller/sync_crs.dart';
 import 'package:cpims_dcs_mobile/core/network/api_service.dart';
 import 'package:cpims_dcs_mobile/core/network/countries.dart';
@@ -18,13 +21,15 @@ Future<void> syncData(BuildContext context) async {
 
   await Future.wait([
     //TO UPSTREAM
+    sendServicesUpstream(),
+    sendCourtSummonsUpstream(),
     sendClosureUpstream(),
     sendSocialInquiryUpstream(),
     sendESRUpstream(),
+    sendCourtSessionsUpstream(),
+    sendReferralsUpstream(),
 
     syncCRS(),
-
-    sendServicesUpstream(),
 
     //FROM UPSTREAM
     apiService.fetchAndInsertCaseload(deviceID: deviceID),

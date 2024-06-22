@@ -1,17 +1,19 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:get/route_manager.dart';
 
 import 'package:cpims_dcs_mobile/core/network/followup_referrals.dart';
-import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart.dart';
+import 'package:cpims_dcs_mobile/models/referrals_followup_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
 class ReferralsFollowUp extends StatefulWidget {
-  const ReferralsFollowUp({super.key});
+  const ReferralsFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<ReferralsFollowUp> createState() => _ReferralsFollowUpState();
@@ -31,7 +33,8 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
       ReferralDatabaseHelper();
 
   void handleAddReferral() async {
-    String? caseId = "1232";
+    String? caseId = widget.caseLoad.caseID;
+    String? formId = "referrals_followup";
 
     if (caseCategory == "Please select") {
       showErrorSnackBar(context, "Please select a case category.");
@@ -56,6 +59,7 @@ class _ReferralsFollowUpState extends State<ReferralsFollowUp> {
     // Create ReferralModel instance
     ReferralModel referralModel = ReferralModel(
       caseId: caseId,
+      formId: formId,
       caseCategory: caseCategory,
       referralActor: referral,
       specifiedReferral: specifiedReferral,

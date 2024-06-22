@@ -528,6 +528,7 @@ class LocalDB {
     await db.execute('''
   CREATE TABLE IF NOT EXISTS $referralTable(
     ${ReferralTable.caseId} TEXT PRIMARY KEY,
+    ${ReferralTable.formId} TEXT,
     ${ReferralTable.caseCategory} TEXT,
     ${ReferralTable.referralActor} TEXT,
     ${ReferralTable.specifiedReferral} TEXT,
