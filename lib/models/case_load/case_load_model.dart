@@ -23,6 +23,7 @@ class CaseLoadModel {
   String? ovcFirstName;
   String? ovcSurname;
   String? ovcOtherNames;
+  String? ovcDoB;
   String? ovcSex;
   List<SiblingsModel>? siblings;
   List<CaregiverModel>? caregivers;
@@ -75,6 +76,7 @@ class CaseLoadModel {
     this.ovcFirstName,
     this.ovcSurname,
     this.ovcOtherNames,
+    this.ovcDoB,
     this.ovcSex,
     this.siblings,
     this.caregivers,
@@ -135,6 +137,7 @@ class CaseLoadModel {
     ovcFirstName = json['ovc_first_name'] ?? '';
     ovcSurname = json['ovc_surname'] ?? '';
     ovcOtherNames = json['ovc_other_names'] ?? '';
+    ovcDoB = json['ovc_dob'].toString();
     ovcSex = json['ovc_sex'] ?? '';
     if (json['siblings'] != null) {
       siblings = <SiblingsModel>[];
@@ -158,7 +161,7 @@ class CaseLoadModel {
         caseCategories!.add(CaseCategoryModel.fromJson(v));
       });
     } else {
-    caseCategories = [];
+      caseCategories = [];
     }
     riskLevel = json['risk_level'] ?? '';
     dateCaseOpened = json['date_case_opened'].toString();
@@ -216,6 +219,7 @@ class CaseLoadModel {
     data['ovc_first_name'] = ovcFirstName;
     data['ovc_surname'] = ovcSurname;
     data['ovc_other_names'] = ovcOtherNames;
+    data['ovc_dob'] = ovcDoB;
     data['ovc_sex'] = ovcSex;
     if (siblings != null) {
       data['siblings'] = siblings!.map((v) => v.toJson()).toList();
@@ -279,6 +283,7 @@ class CaseLoadModel {
       'ovc_first_name': ovcFirstName ?? '',
       'ovc_surname': ovcSurname ?? '',
       'ovc_other_names': ovcOtherNames ?? '',
+      'ovc_dob': ovcDoB ?? '',
       'ovc_sex': ovcSex ?? '',
       'siblings': siblings?.map((x) => x.toMap()).toList() ?? [],
       'caregivers': caregivers?.map((x) => x.toMap()).toList() ?? [],
@@ -333,6 +338,7 @@ class CaseLoadModel {
       ovcFirstName: map['ovc_first_name'] ?? '',
       ovcSurname: map['ovc_surname'] ?? '',
       ovcOtherNames: map['ovc_other_names'] ?? '',
+      ovcDoB: map['ovc_dob'] ?? '',
       ovcSex: map['ovc_sex'] ?? '',
       siblings: map['siblings'] ?? [],
       caregivers: map['caregivers'] ?? [],
@@ -387,6 +393,7 @@ class CaseLoadModel {
     String? ovcFirstName,
     String? ovcSurname,
     String? ovcOtherNames,
+    String? ovcDoB,
     String? ovcSex,
     List<SiblingsModel>? siblings,
     List<CaregiverModel>? caregivers,
@@ -441,6 +448,7 @@ class CaseLoadModel {
       ovcFirstName: ovcFirstName ?? this.ovcFirstName,
       ovcSurname: ovcSurname ?? this.ovcSurname,
       ovcOtherNames: ovcOtherNames ?? this.ovcOtherNames,
+      ovcDoB: ovcDoB ?? this.ovcDoB,
       ovcSex: ovcSex ?? this.ovcSex,
       siblings: siblings ?? this.siblings,
       caregivers: caregivers ?? this.caregivers,

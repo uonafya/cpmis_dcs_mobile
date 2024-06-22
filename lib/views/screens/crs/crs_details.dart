@@ -93,17 +93,19 @@ class CRSDetails extends StatelessWidget {
                   }
 
                   AboutChildCRSFormModel? crsAbout = AboutChildCRSFormModel(
-                    id: "",
+                    id: caseLoad.caseID ?? "",
                     isNewChild: false,
                     initialDetails: InitialChildDetails(
                       sex: caseLoad.ovcSex ?? "",
-                      dateOfBirth: DateTime.now(),
+                      dateOfBirth: caseLoad.ovcDoB != null
+                          ? DateTime.parse(caseLoad.ovcDoB ?? "")
+                          : DateTime.now(),
                       surName: caseLoad.ovcSurname ?? "",
                       firstName: caseLoad.ovcFirstName ?? "",
                       otherNames: caseLoad.ovcOtherNames ?? "",
                     ),
                     familyStatus: [],
-                    houseEconomicStatus: "",
+                    houseEconomicStatus: caseLoad.householdEconomicStatus?.first ?? "",
                     siblingDetails: siblings,
                   );
                   Provider.of<CRSFormProvider>(context, listen: false).about =
