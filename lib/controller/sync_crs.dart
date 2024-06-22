@@ -1,19 +1,33 @@
+import 'package:cpims_dcs_mobile/controller/delete_crs_form_db.dart';
 import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
+import 'package:sqflite/sqflite.dart';
 
-Future<List<CRSForm>> fetchCRSFormsFromDB() async {
+Future<void> syncCRS() async {
   try {
+    // Get forms
     var db = await localdb.database;
+    var forms = await fetchCRSFormsFromDB(db);
+
+    // Submit and delete each form
+    for (var i = 0; i < forms.length; i++) {
+      var form = forms[i];
+      await form.sendToUpstream();
+      await deleteCrsForm(db, form.formID ?? "");
+    }
+  } catch (err) {
+    throw "Could Not Sync CRS";
+  }
+}
+
+Future<List<CRSForm>> fetchCRSFormsFromDB(Database db) async {
+  try {
     // Fetch all forms from DB
-    var forms = await db.query(
-      crsTable,
-      distinct: true,
-      whereArgs: [0],
-      where: "synced = ?"
-    );
+    var forms = await db.query(crsTable,
+        distinct: true, whereArgs: [0], where: "synced = ?");
 
     List<CRSForm> returnForms = [];
 
@@ -161,13 +175,14 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
             ]);
 
         perpetrators.add(Perpetrators(
-          firstName: rawPerp[0]['firstName'].toString(),
-          lastName: rawPerp[0]['surname'].toString(),
-          relationshipType: rawPerp[0]['relationshipType'].toString(),
-          othernames: rawPerp[0]['otherNames'].toString(),
-          sex: rawPerp[0]['sex'].toString(),
-          dateOfBirth: rawPerp[0]['dob'] != null ? convertYMDtoDate(rawPerp[0]['dob'].toString()): null
-        ));
+            firstName: rawPerp[0]['firstName'].toString(),
+            lastName: rawPerp[0]['surname'].toString(),
+            relationshipType: rawPerp[0]['relationshipType'].toString(),
+            othernames: rawPerp[0]['otherNames'].toString(),
+            sex: rawPerp[0]['sex'].toString(),
+            dateOfBirth: rawPerp[0]['dob'] != null
+                ? convertYMDtoDate(rawPerp[0]['dob'].toString())
+                : null));
       }
 
       CRSForm form = CRSForm(
@@ -183,7 +198,8 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           reportingSubCounty: rawForm['reportingSubCounty'].toString(),
           reportingOrganizationalUnit: rawForm['reportingOrgUnit'].toString(),
           city: rawForm['city'].toString(),
-          dateCaseReported: convertYMDtoDate(rawForm['dateCaseReported'].toString()),
+          dateCaseReported:
+              convertYMDtoDate(rawForm['dateCaseReported'].toString()),
         ),
         caseData: CaseDataCRSFormModel(
           serialNumber: rawForm['caseSerialNumber'].toString(),
@@ -209,13 +225,13 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           familyStatus: familyStatus,
         ),
         medical: MedicalCRSFormModel(
-          mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
-          mentalCondition: mentalCondition,
-          physicalConditionStatus: rawForm['physicalConditionStatus'].toString(),
-          physicalCondition: physicalConditions,
-          otherConditionStatus: rawForm['otherConditionStatus'].toString(),
-          otherCondition: otherConditions
-        ),
+            mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
+            mentalCondition: mentalCondition,
+            physicalConditionStatus:
+                rawForm['physicalConditionStatus'].toString(),
+            physicalCondition: physicalConditions,
+            otherConditionStatus: rawForm['otherConditionStatus'].toString(),
+            otherCondition: otherConditions),
       );
       returnForms.add(form);
     }
