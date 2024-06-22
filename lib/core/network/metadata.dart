@@ -29,6 +29,8 @@ Future<List<NameID>> getMetadata(MetadataTypes type) async {
         columns: ['description', 'id'],
         whereArgs: [type.value]);
 
+    print("getMetadata");
+
     return results
         .map((e) =>
             NameID(name: e['description'].toString(), id: e['id'].toString()))
