@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
@@ -15,6 +16,7 @@ Future<void> saveMetadata() async {
     var metadata = results.data.map((e) => Metadata.fromJSON(e)).toList();
 
     await saveMetadataInDB(db, metadata);
+    MetadataManager.getInstance();
   } catch (err) {
     throw "Could Not Get Metadata";
   }
