@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 
@@ -7,7 +8,14 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
   try {
     var db = await localdb.database;
     // Fetch all forms from DB
-    var forms = await db.query(crsTable, distinct: true);
+    var forms = await db.query(
+      crsTable,
+      distinct: true,
+      whereArgs: [0],
+      where: "synced = ?"
+    );
+
+    List<CRSForm> returnForms = [];
 
     // For each form
     for (var i = 0; i < forms.length; i++) {
@@ -82,8 +90,8 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           crsFormSubCategoriesTable,
           distinct: true,
           columns: ['subCategoryID'],
-          where: "crsFormCategoryID = ?",
-          whereArgs: [formID],
+          where: "crsFormCategoryID = ? AND categoryID = ?",
+          whereArgs: [formID, rawCateg['categoryID']],
         );
 
         List<String> subCategories =
@@ -158,45 +166,46 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           relationshipType: rawPerp[0]['relationshipType'].toString(),
           othernames: rawPerp[0]['otherNames'].toString(),
           sex: rawPerp[0]['sex'].toString(),
-          // dateOfBirth: rawPerp[0]['dob'].toString(),
-          // age: ,
+          dateOfBirth: rawPerp[0]['dob'] != null ? convertYMDtoDate(rawPerp[0]['dob'].toString()): null
         ));
       }
 
       CRSForm form = CRSForm(
+        formID: formID.toString(),
         caseReporting: CaseReportingCRSFormModel(
           courtFileNumber: rawForm['courtFileNumber'].toString(),
           courtName: rawForm['courtName'].toString(),
-          originator: "TO BE FILLED",
+          originator: rawForm['caseReporter'].toString(),
           placeOfOccurence: strToBool(rawForm['placeOfOccurence'].toString()),
           country: rawForm['country'].toString(),
           county: rawForm['country'].toString(),
-          subCounty: "TO BE FILLED",
-          reportingSubCounty: "TO BE FILLED",
-          reportingOrganizationalUnit: "TO BE FILLED",
+          subCounty: rawForm['subCounty'].toString(),
+          reportingSubCounty: rawForm['reportingSubCounty'].toString(),
+          reportingOrganizationalUnit: rawForm['reportingOrgUnit'].toString(),
           city: rawForm['city'].toString(),
-          dateCaseReported: DateTime.now(),
+          dateCaseReported: convertYMDtoDate(rawForm['dateCaseReported'].toString()),
         ),
         caseData: CaseDataCRSFormModel(
-          serialNumber: "TO BE FAILED", 
-          offenderKnown: "TO BE FILLED", 
-          crsCategories: categories, 
-          riskLevel: rawForm['riskLevel'].toString(), 
-          referralsPresent: rawForm['referralPresent'] == 1, 
-          summonsIssued: rawForm['summonsIssued'] == 1, 
-          immediateNeeds: immediateNeeds, 
-          futureNeeds: futureNeeds, 
-          caseNarration: "TO BE FILLED", 
+          serialNumber: rawForm['caseSerialNumber'].toString(),
+          offenderKnown: rawForm['offenderKnown'].toString(),
+          crsCategories: categories,
+          riskLevel: rawForm['riskLevel'].toString(),
+          referralsPresent: rawForm['referralPresent'] == 1,
+          summonsIssued: rawForm['summonsIssued'] == 1,
+          immediateNeeds: immediateNeeds,
+          futureNeeds: futureNeeds,
+          caseNarration: rawForm['caseNarration'].toString(),
           perpetrators: perpetrators,
         ),
         about: AboutChildCRSFormModel(
           initialDetails: InitialChildDetails(
-            firstName: "", 
-            surname: "", 
-            otherNames: "", 
+            firstName: "",
+            surName: "",
+            otherNames: "",
+            dateOfBirth: DateTime.now(),
             sex: "",
-          ), 
-          houseEconomicStatus: rawForm['houseEconomic'].toString(), 
+          ),
+          houseEconomicStatus: rawForm['houseEconomic'].toString(),
           familyStatus: familyStatus,
         ),
         medical: MedicalCRSFormModel(
@@ -208,8 +217,9 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           otherCondition: otherConditions
         ),
       );
+      returnForms.add(form);
     }
-    return [];
+    return returnForms;
   } catch (err) {
     throw "Could Not Fetch CRS from DB";
   }
