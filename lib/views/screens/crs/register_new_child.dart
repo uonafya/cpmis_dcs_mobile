@@ -246,7 +246,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                         style: TextStyle(color: kTextGrey)),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
-                      items: childClass,
+                      items: MetadataManager.getInstance().childClassNames,
                       error: registryProvider.shouldValidateFields ? classError : null,
                       onChanged: (value) {
                         setState(() {

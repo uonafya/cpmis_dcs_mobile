@@ -136,7 +136,7 @@ class _PersonRegistryAttachSiblingModalState
         h2Text("Class *"),
         CustomDropdown(
           initialValue: "Please Select",
-          items: childClass,
+          items: MetadataManager.getInstance().childClassNames,
           error: shouldValidateFields ? classError : null,
           onChanged: (value) {
             setState(() {

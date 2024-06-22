@@ -16,6 +16,7 @@ class MetadataManager {
   final Map<String, String> _areaType = {};
   final Map<String, String> _religion = {};
   final Map<String, String> _tribe = {};
+  final Map<String, String> _childClass = {};
 
   Map<String, String> get sex => _sex;
   Map<String, String> get category => _category;
@@ -23,6 +24,7 @@ class MetadataManager {
   Map<String, String> get areaType => _areaType;
   Map<String, String> get religion => _religion;
   Map<String, String> get tribe => _tribe;
+  Map<String, String> get childClass => _childClass;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -30,6 +32,7 @@ class MetadataManager {
   List<String> get areaTypeNames => _areaType.keys.toList();
   List<String> get religionNames => _religion.keys.toList();
   List<String> get tribeNames => _tribe.keys.toList();
+  List<String> get childClassNames => _childClass.keys.toList();
 
 
   static MetadataManager getInstance() {
@@ -51,6 +54,7 @@ class MetadataManager {
     _loadAreaTypeMetaData();
     _loadReligionMetaData();
     _loadTribeMetaData();
+    _loadChildClassMetaData();
   }
 
   Future<void> _loadSexMetaData() async {
@@ -89,5 +93,37 @@ class MetadataManager {
     _tribe.addAll({for (var e in tribeMetadata) e.name : e.id});
   }
 
+  Future<void> _loadChildClassMetaData() async {
+    List<NameID> childClassMetadata = await getMetadata(MetadataTypes.childClass);
+    _childClass.clear();
+    _childClass.addAll({for (var e in childClassMetadata) e.name : e.id});
+  }
 
+  String getSexMetaValue(String key) {
+    return _sex[key] ?? key;
+  }
+
+  String getCategoryMetaValue(String key) {
+    return _category[key] ?? key;
+  }
+
+  String getReporterMetaValue(String key) {
+    return _reporter[key] ?? key;
+  }
+
+  String getAreaTypeMetaValue(String key) {
+    return _areaType[key] ?? key;
+  }
+
+  String getReligionMetaValue(String key) {
+    return _religion[key] ?? key;
+  }
+
+  String getTribeMetaValue(String key) {
+    return _tribe[key] ?? key;
+  }
+
+  String getChildClassMetaValue(String key) {
+    return _childClass[key] ?? key;
+  }
 }
