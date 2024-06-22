@@ -1,5 +1,6 @@
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -11,7 +12,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class SummonsFollowUp extends StatefulWidget {
-  const SummonsFollowUp({super.key});
+  const SummonsFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<SummonsFollowUp> createState() => _SummonsFollowUpState();
@@ -32,7 +34,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
       CourtSummonsDatabaseHelper();
 
   void handleAddService() async {
-    String? caseId = "1232"; // Replace with actual case ID
+    String? caseId = widget.caseLoad.caseID;
     print("Here I am");
 
     if (dateOfVisit == null) {
@@ -62,9 +64,9 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
       await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
       print('Saved court summons :)');
 
+      Get.back(); // Navigate back
       Get.snackbar("Success",
           "Summons added successfully, you can go back to the previous page");
-      Get.back(); // Navigate back
     } catch (e) {
       print(e.toString());
       Get.snackbar("Error", "Failed to save court summons. Please try again.");
