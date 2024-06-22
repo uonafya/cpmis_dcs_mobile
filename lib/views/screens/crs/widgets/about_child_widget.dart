@@ -60,7 +60,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               children: <TextSpan>[
                 TextSpan(
                   text:
-                      '${model.about?.initialDetails.firstName.toUpperCase()} ${model.about?.initialDetails.surName.toUpperCase()} ${model.about?.initialDetails.otherNames!.toUpperCase() ?? ""}',
+                      '${model.about?.initialDetails.firstName.toUpperCase()} ${model.about?.initialDetails.surName.toUpperCase()} ${model.about?.initialDetails.otherNames?.toUpperCase() ?? ""}',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -104,7 +104,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
                 TextSpan(
                   text: model.about?.initialDetails.dateOfBirth != null
                       ? convertDateToYMD(
-                          model.about!.initialDetails.dateOfBirth!)
+                          model.about?.initialDetails.dateOfBirth)
                       : "",
                   style: const TextStyle(
                     fontSize: 15,
@@ -129,10 +129,11 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
                   text: model.about?.initialDetails.dateOfBirth == null
                       ? ""
                       : getAgeFromDateOf(
-                                  model.about!.initialDetails.dateOfBirth!) <
+                                  model.about?.initialDetails.dateOfBirth ??
+                                      DateTime.now()) <
                               1
                           ? "Under 1 Year "
-                          : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years ",
+                          : "${getAgeFromDateOf(model.about?.initialDetails.dateOfBirth ?? DateTime.now())} Years ",
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
