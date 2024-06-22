@@ -63,6 +63,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   String? sexError = SEX_DROPDOWN_ERROR;
   String? classError = CLASS_DROPDOWN_ERROR;
   String? dobError = DOB_INPUT_ERROR;
+  MetadataManager metadataManager = MetadataManager.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
-                      items: personCriteria,
+                      items: metadataManager.personTypeNames,
                       error: registryProvider.shouldValidateFields ? personTypeError : null,
                       onChanged: (val) {
                         setState(() {
@@ -208,7 +209,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
-                      items: MetadataManager.getInstance().sexNames,
+                      items: metadataManager.sexNames,
                       error: registryProvider.shouldValidateFields ? sexError : null,
                       onChanged: (value) {
                         setState(() {
@@ -247,7 +248,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                         style: TextStyle(color: kTextGrey)),
                     CustomDropdown(
                       initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
-                      items: MetadataManager.getInstance().childClassNames,
+                      items: metadataManager.childClassNames,
                       error: registryProvider.shouldValidateFields ? classError : null,
                       onChanged: (value) {
                         setState(() {

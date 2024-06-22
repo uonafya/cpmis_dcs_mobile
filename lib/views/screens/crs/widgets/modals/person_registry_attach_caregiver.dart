@@ -157,7 +157,7 @@ class _PersonRegistryAttachCareGiverState
           CustomDropdown(
             initialValue: "None",
             error: shouldValidateFields ? relationshipError : null,
-            items: MetadataManager.getInstance().reporterNames,
+            items: MetadataManager.getInstance().relationshipTypeNames,
             onChanged: (val) {
               setState(() {
                 relationshipToChild = val;

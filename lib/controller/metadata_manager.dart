@@ -21,6 +21,8 @@ class MetadataManager {
   final Map<String, String> _childClass = {};
   final Map<String, String> _orgUnit = {};
   final Map<String, String> _ovcProgram = {};
+  final Map<String, String> _personType = {};
+  final Map<String, String> _relationshipType = {};
 
   Map<String, String> get sex => _sex;
   Map<String, String> get category => _category;
@@ -31,6 +33,8 @@ class MetadataManager {
   Map<String, String> get childClass => _childClass;
   Map<String, String> get orgUnit => _orgUnit;
   Map<String, String> get ovcProgram => _ovcProgram;
+  Map<String, String> get personType => _personType;
+  Map<String, String> get relationshipType => _relationshipType;
 
   List<String> get sexNames => _sex.keys.toList();
   List<String> get categoryNames => _category.keys.toList();
@@ -41,6 +45,8 @@ class MetadataManager {
   List<String> get childClassNames => _childClass.keys.toList();
   List<String> get orgUnitNames => _orgUnit.keys.toList();
   List<String> get ovcProgramNames => _ovcProgram.keys.toList();
+  List<String> get personTypeNames => _personType.keys.toList();
+  List<String> get relationshipTypeNames => _relationshipType.keys.toList();
 
 
   static MetadataManager getInstance() {
@@ -65,6 +71,8 @@ class MetadataManager {
     _loadChildClassMetaData();
     _loadOrgUnitMetaData();
     _loadOvcProgramMetaData();
+    _loadPersonTypeMetaData();
+    _loadRelationshipTypeMetaData();
   }
 
   Future<void> _loadSexMetaData() async {
@@ -115,6 +123,19 @@ class MetadataManager {
     _ovcProgram.addAll({for (var e in ovcProgramMetadata) e.name : e.id});
   }
 
+  Future<void> _loadPersonTypeMetaData() async {
+    List<NameID> personTypeMetadata = await getMetadata(MetadataTypes.personType);
+    _personType.clear();
+    _personType.addAll({for (var e in personTypeMetadata) e.name : e.id});
+  }
+
+
+  Future<void> _loadRelationshipTypeMetaData() async {
+    List<NameID> relationshipTypeMetadata = await getMetadata(MetadataTypes.relationshipType);
+    _relationshipType.clear();
+    _relationshipType.addAll({for (var e in relationshipTypeMetadata) e.name : e.id});
+  }
+
   Future<void> _loadOrgUnitMetaData() async {
     List<OrganizationUnit> orgUnitMetadata = await getOrganizationalUnits(null);
     _orgUnit.clear();
@@ -155,5 +176,9 @@ class MetadataManager {
 
   String getOvcProgramValue(String key) {
     return _ovcProgram[key] ?? key;
+  }
+
+  String getPersonTypeValue(String key) {
+    return _personType[key] ?? key;
   }
 }
