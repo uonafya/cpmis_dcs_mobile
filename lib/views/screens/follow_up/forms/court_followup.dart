@@ -81,10 +81,10 @@ class _CourtFollowUpState extends State<CourtFollowUp> {
     String? formId = "sessions_followup";
     print(widget.caseLoad.toJson());
 
-    // if (caseCategory == "Please select") {
-    //   showErrorSnackBar(context, "Please select a case category.");
-    //   return;
-    // }
+    if (caseCategory == "Please select") {
+      showErrorSnackBar(context, "Please select a case category.");
+      return;
+    }
 
     if (dateOfService == null) {
       showErrorSnackBar(context, "Please fill in the date of court session.");
