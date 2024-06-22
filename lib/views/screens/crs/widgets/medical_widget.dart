@@ -1,4 +1,5 @@
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/medical_page_options.dart';
@@ -22,6 +23,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
   List<String> mentalChallenges = [];
   List<String> physicalChallenges = [];
   List<String> otherChallenges = [];
+  MetadataManager metadata = MetadataManager.getInstance();
 
   var formKey = GlobalKey<FormState>();
 
@@ -56,7 +58,7 @@ class _MedicalWidgetState extends State<MedicalWidget> {
               ),
               CustomDropdown(
                   initialValue: model.medical.mentalConditionStatus,
-                  items: mentalConditionOptions,
+                  items: metadata.me,
                   onChanged: (dynamic item) {
                     MedicalCRSFormModel updated = model.medical;
                     updated.mentalConditionStatus = item;
