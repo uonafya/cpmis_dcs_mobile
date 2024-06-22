@@ -30,7 +30,7 @@ class PersonRegistryAttachCareGiver extends StatefulWidget {
 
 class _PersonRegistryAttachCareGiverState
     extends State<PersonRegistryAttachCareGiver> {
-  bool _isChecked = false;
+  final bool _isChecked = false;
   List<String> childRelationship = [
     "None",
     "Adoptive Father",
@@ -173,6 +173,7 @@ class _PersonRegistryAttachCareGiverState
           h2Text("National ID No *"),
           CustomTextField(
             hintText: 'National ID',
+            keyboardType: TextInputType.number,
             error: shouldValidateFields ? idError : null,
             onChanged: (value) {
               setState(() {
@@ -189,6 +190,7 @@ class _PersonRegistryAttachCareGiverState
           h2Text("MobileNumber:"),
           CustomTextField(
             hintText: 'Cellphone Number',
+            keyboardType: TextInputType.number,
             onChanged: (value) {
               setState(() {
                 phoneNumber = value;
@@ -214,8 +216,6 @@ class _PersonRegistryAttachCareGiverState
                   textColor: Colors.white,
                   onTap: () {
 
-                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(firstName: firstName, surName: surName, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber);
-
                     int? nationalId;
                     try {
                       nationalId = int.parse(nationalIdNumber);
@@ -229,6 +229,9 @@ class _PersonRegistryAttachCareGiverState
                       });
                       return;
                     }
+
+                    RegistryCaregiverModel caregiver = RegistryCaregiverModel(firstName: firstName, surName: surName,otherNames: otherNames, dateOfBirth: dateOfBirth, sex: sex, relationshipToChild: relationshipToChild, nationalIdNumber: nationalIdNumber, phoneNumber: phoneNumber);
+
                     registryProvider.addCaregiver(caregiver);
                     Navigator.pop(context);
                   },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../controller/registry_provider.dart';
-import '../../../../core/utils/input_validation_utils.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../widgets/subform_wrapper.dart';
 
@@ -32,6 +31,7 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
+          keyboardType: TextInputType.number,
           initialValue: registryProvider.registryContactDetailsModel.designatedPhoneNumber,
           onChanged: (value) {
             registryProvider.setDesignatedPhoneNumber(value);
@@ -45,6 +45,7 @@ class _RegistryContactDetailsSubformState
         const SizedBox(height: 6),
         CustomTextField(
           hintText: '07xxxxxxxx',
+          keyboardType: TextInputType.number,
           initialValue: registryProvider.registryContactDetailsModel.otherMobileNumber,
           onChanged: (value) {
             registryProvider.setOtherMobileNumber(value);

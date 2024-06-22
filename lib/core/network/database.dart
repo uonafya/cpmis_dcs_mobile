@@ -135,6 +135,8 @@ class LocalDB {
     await db.execute('''
         CREATE TABLE IF NOT EXISTS $crsTable(
             id TEXT PRIMARY KEY,
+            startTime TEXT,
+            endTime TEXT,
             caseReporter TEXT NOT NULL,
             courtName TEXT,
             reporterPhoneNumber TEXT,
@@ -152,6 +154,8 @@ class LocalDB {
             ward TEXT,
             location TEXT,
             subLocation TEXT,
+            longitude TEXT,
+            latitude TEXT,
             reportingSubCounty TEXT NOT NULL,
             reportingOrgUnit TEXT NOT NULL,          
             dateCaseReported TEXT NOT NULL,
@@ -363,6 +367,7 @@ class LocalDB {
             ${CaseLoadTableFields.ovcFirstName} TEXT,
             ${CaseLoadTableFields.ovcSurname} TEXT,
             ${CaseLoadTableFields.ovcOtherNames} TEXT,
+            ${CaseLoadTableFields.ovcDoB} TEXT,
             ${CaseLoadTableFields.ovcSex} TEXT,
             ${CaseLoadTableFields.siblings} TEXT,
             ${CaseLoadTableFields.caregivers} TEXT,
@@ -807,6 +812,7 @@ CREATE TABLE family_members (
             CaseLoadTableFields.ovcFirstName: caseLoadModel.ovcFirstName,
             CaseLoadTableFields.ovcSurname: caseLoadModel.ovcSurname,
             CaseLoadTableFields.ovcOtherNames: caseLoadModel.ovcOtherNames,
+            CaseLoadTableFields.ovcDoB: caseLoadModel.ovcDoB,
             CaseLoadTableFields.ovcSex: caseLoadModel.ovcSex,
             CaseLoadTableFields.siblings: jsonEncode(caseLoadModel.siblings),
             CaseLoadTableFields.caregivers:
@@ -889,6 +895,7 @@ class CaseLoadTableFields {
     ovcFirstName,
     ovcSurname,
     ovcOtherNames,
+    ovcDoB,
     ovcSex,
     siblings,
     caregivers,
@@ -941,6 +948,7 @@ class CaseLoadTableFields {
   static const String ovcFirstName = 'ovc_first_name';
   static const String ovcSurname = 'ovc_surname';
   static const String ovcOtherNames = 'ovc_other_names';
+  static const String ovcDoB = 'ovc_dob';
   static const String ovcSex = 'ovc_sex';
   static const String siblings = 'siblings';
   static const String caregivers = 'caregivers';

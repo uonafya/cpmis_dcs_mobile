@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
@@ -10,6 +9,10 @@ class CRSDatabaseForm {
       // Insert into form table
       await db.insert(crsTable, {
         "id": formID,
+        "longitude": form.longitude,
+        "latitude": form.latitude,
+        "startTime": form.startTime.toIso8601String(),
+        "endTime": form.endTime..toIso8601String(),
         "caseReporter": form.caseReporting?.originator,
         "courtName": form.caseReporting?.courtName,
         "reporterPhoneNumber": form.caseReporting?.reporterPhoneNumber,

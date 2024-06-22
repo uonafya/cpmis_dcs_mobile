@@ -2,7 +2,6 @@ import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/widgets/about_child_sibling_details.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_dropdown_multiselect.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_selected_item_pill.dart';
@@ -30,7 +29,6 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CRSFormProvider>(builder: (context, model, _) {
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -62,7 +60,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               children: <TextSpan>[
                 TextSpan(
                   text:
-                      model.form.about?.initialDetails.firstName.toUpperCase() ?? "",
+                      '${model.about?.initialDetails.firstName.toUpperCase()} ${model.about?.initialDetails.surName.toUpperCase()} ${model.about?.initialDetails.otherNames!.toUpperCase() ?? ""}',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -83,7 +81,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: model.form.about?.initialDetails.sex ?? "",
+                  text: model.about?.initialDetails.sex ?? "",
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -104,9 +102,9 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: model.form.about?.initialDetails.dateOfBirth != null
+                  text: model.about?.initialDetails.dateOfBirth != null
                       ? convertDateToYMD(
-                          model.form.about!.initialDetails.dateOfBirth!)
+                          model.about!.initialDetails.dateOfBirth!)
                       : "",
                   style: const TextStyle(
                     fontSize: 15,
@@ -128,9 +126,13 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: model.form.about?.initialDetails.dateOfBirth == null
+                  text: model.about?.initialDetails.dateOfBirth == null
                       ? ""
-                      : getAgeFromDateOf(model.form.about!.initialDetails.dateOfBirth!) < 1 ? "Under 1 Year " : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years ",
+                      : getAgeFromDateOf(
+                                  model.about!.initialDetails.dateOfBirth!) <
+                              1
+                          ? "Under 1 Year "
+                          : "${getAgeFromDateOf(model.about!.initialDetails.dateOfBirth!)} Years ",
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.normal,
@@ -175,10 +177,10 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           ),
           const SizedBox(height: 10),
           CustomDropdown(
-            initialValue: model.form.about?.houseEconomicStatus ?? pleaseSelect,
+            initialValue: model.about?.houseEconomicStatus ?? pleaseSelect,
             items: houseEconomicStatusOptions,
             onChanged: (dynamic item) {
-              var update = model.form.about;
+              var update = model.about;
               update?.houseEconomicStatus = item;
               model.about = update;
             },
@@ -197,7 +199,7 @@ class _AboutChildWidgetState extends State<AboutChildWidget> {
           CustomDropDownMultiSelect(
             options: familyStatusOptions,
             onOptionSelected: (List<String> value) {
-              var update = model.form.about;
+              var update = model.about;
 
               if (update?.familyStatus.isEmpty ?? false) {
                 update?.familyStatus = value;

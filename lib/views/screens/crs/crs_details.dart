@@ -42,20 +42,15 @@ class CRSDetails extends StatelessWidget {
               const SizedBox(
                 width: 14,
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(() => const FollowUpHome());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: const Text(
-                    "INACTIVE",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: Text(
+                  caseLoad.caseStatus ?? "ACTIVE",
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
                 ),
               ),
             ],
@@ -81,9 +76,9 @@ class CRSDetails extends StatelessWidget {
                   if (caseLoadSiblings != null) {
                     for (var caseLoadSibling in caseLoadSiblings) {
                       siblings.add(SiblingDetails(
-                        firstName: "Wakili",
-                        surName: "Mkuu",
-                        sex: "Male",
+                        firstName: caseLoadSibling.siblingFirstName ?? "",
+                        surName: caseLoadSibling.siblingSurName ?? "",
+                        sex: caseLoadSibling.siblingSex ?? "",
                         dateOfBirth: DateFormat("yyyy-MM-dd")
                             .parse(caseLoadSibling.siblingDoB ?? ""),
                         dateLinked: DateFormat("yyyy-MM-dd")
@@ -93,17 +88,19 @@ class CRSDetails extends StatelessWidget {
                   }
 
                   AboutChildCRSFormModel? crsAbout = AboutChildCRSFormModel(
-                    id: "",
+                    id: caseLoad.caseID ?? "",
                     isNewChild: false,
                     initialDetails: InitialChildDetails(
                       sex: caseLoad.ovcSex ?? "",
-                      dateOfBirth: DateTime.now(),
+                      dateOfBirth: caseLoad.ovcDoB != null
+                          ? DateTime.parse(caseLoad.ovcDoB ?? "")
+                          : DateTime.now(),
                       surName: caseLoad.ovcSurname ?? "",
                       firstName: caseLoad.ovcFirstName ?? "",
                       otherNames: caseLoad.ovcOtherNames ?? "",
                     ),
                     familyStatus: [],
-                    houseEconomicStatus: "",
+                    houseEconomicStatus: caseLoad.householdEconomicStatus?.first ?? "",
                     siblingDetails: siblings,
                   );
                   Provider.of<CRSFormProvider>(context, listen: false).about =
@@ -142,13 +139,24 @@ class CRSDetails extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  if (caseLoad.caseStatus
+                      .toString()
+                      .toLowerCase()
+                      .contains("inactive")) {
+                    return;
+                  }
                   Get.to(() => FollowUpScreen(
                         caseLoadModel: caseLoad,
                       ));
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.blue[600],
+                      color: caseLoad.caseStatus
+                              .toString()
+                              .toLowerCase()
+                              .contains("inactive")
+                          ? Colors.grey
+                          : Colors.blue[600],
                       borderRadius: BorderRadius.circular(4)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

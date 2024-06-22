@@ -186,7 +186,7 @@ class _PersonRegistryAttachSiblingModalState
                     });
                     return;
                   }
-                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass);
+                  RegistrySiblingModel sibling = RegistrySiblingModel(firstName: firstName, surName: surName,otherNames: otherNames, sex: sex, dateOfBirth: dateOfBirth, currentClass: currentClass, remarks: remarks);
                   registryProvider.addSibling(sibling);
                   Navigator.pop(context);
                 },

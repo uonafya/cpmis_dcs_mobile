@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_services.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
@@ -38,22 +41,22 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
     String? formId = "services_followup";
 
     if (caseCategory == "Please select") {
-      Get.snackbar("Error", "Please select case category.");
+      showErrorSnackBar(context, "Please select case category.");
       return;
     }
 
     if (service == "Please select") {
-      Get.snackbar("Error", "Please select a service.");
+      showErrorSnackBar(context, "Please select a service.");
       return;
     }
 
     if (serviceProvider == "Please select") {
-      Get.snackbar("Error", "Please select a service provider.");
+      showErrorSnackBar(context, "Please select a service provider.");
       return;
     }
 
     if (dateOfService == null) {
-      Get.snackbar("Error", "Please select a date of service.");
+      showErrorSnackBar(context, "Please select a date of service.");
       return;
     }
 
@@ -76,19 +79,12 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
       serviceProvidedList: serviceProvidedList,
     );
 
-    print(serviceFollowupModel.toJson());
-
     try {
-      print('Db initialization & saving service followup...');
-      var db = await localdb.database;
       await serviceDatabaseHelper.insertServiceFollowup(serviceFollowupModel);
-      print('Saved service followup :)');
 
       Get.back();
-      Get.snackbar("Success", "Service followup saved successfully.");
     } catch (e) {
-      print(e.toString());
-      Get.snackbar("Error", "Failed to save service followup.");
+      showErrorSnackBar(context, "Failed to save service followup.");
     }
   }
 
@@ -262,7 +258,7 @@ class _ServicesFollowUpState extends State<ServicesFollowUp> {
           //           Get.snackbar(
           //               "Success", "Service followup deleted successfully.");
           //         } catch (e) {
-          //           Get.snackbar("Error", "Failed to delete service followup.");
+          //           showErrorSnackBar(context,  "Failed to delete service followup.");
           //         }
           //       },
           //     )

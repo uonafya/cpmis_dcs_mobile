@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
@@ -11,7 +13,6 @@ import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_cbo_chv_sub
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_contact_details_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_identification_subform.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/subforms/registry_location_subform.dart';
-import 'package:cpims_dcs_mobile/views/screens/crs/widgets/case_data_perpetrators_modal.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/custom_drawer.dart';
 import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -25,7 +26,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/registry_provider.dart';
-import '../../../core/network/person_registry/query.dart';
 import '../../widgets/custom_date_picker.dart';
 import '../../widgets/custom_stepper.dart';
 import './utils/constants_crs.dart';
@@ -49,6 +49,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
     'Child',
   ];
   String selectedPersonCriteria = 'Please Select';
+  String selectedSexCriteria = 'Please Select Gender';
   int selectedStep = 0;
   bool? _radioValue;
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -65,10 +66,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     RegistryProvider registryProvider = Provider.of<RegistryProvider>(context);
 
-    bool _isChecked = registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
+    bool isChecked =
+        registryProvider.registryPersonalDetailsModel.isCaregiver ?? false;
     List<Widget> registrySubforms = [
       RegistryIdentificationSubform(
         birthRegIdController: birthRegIdController,
@@ -138,11 +139,11 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       style: TextStyle(color: kTextGrey),
                     ),
                     Checkbox(
-                      value: _isChecked,
+                      value: isChecked,
                       onChanged: (bool? value) {
                         setState(() {
-                          _isChecked = value ?? false; // Update the state
-                          registryProvider.setIsCaregiver(_isChecked);
+                          isChecked = value ?? false; // Update the state
+                          registryProvider.setIsCaregiver(isChecked);
                         });
                       },
                     ),
@@ -377,7 +378,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           text: 'Submit',
                           textColor: Colors.white,
                           onTap: () async {
-
                             if (registryProvider.isNotComplete()) {
                               if (context.mounted) {
                                 errorSnackBar(context, 'Please enter all required fields. (*)');
