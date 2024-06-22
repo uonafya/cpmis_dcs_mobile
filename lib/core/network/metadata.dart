@@ -1,3 +1,4 @@
+import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
@@ -28,9 +29,6 @@ Future<List<NameID>> getMetadata(MetadataTypes type) async {
         where: "fieldName = ?",
         columns: ['description', 'id'],
         whereArgs: [type.value]);
-
-    print("getMetadata");
-
     return results
         .map((e) =>
             NameID(name: e['description'].toString(), id: e['id'].toString()))
@@ -64,7 +62,7 @@ Future<void> saveMetadataInDB(Database db, List<dynamic> metadata) async {
   }
 }
 
-enum MetadataTypes { category, reporter, areaType, sex, religion, tribe }
+enum MetadataTypes { category, reporter, areaType, sex, religion, tribe, childClass, ovcProgram, personType, familyStatus, relationshipType,  referralDestinationClassification, referralType, longTermSupport, mentalSubCondition, physicalSubCondition, courtOrder, householdEconomics, immediateNeed }
 
 extension MetadataValues on MetadataTypes {
   String get value {
@@ -81,6 +79,32 @@ extension MetadataValues on MetadataTypes {
         return "religion_type_id";
       case MetadataTypes.tribe:
         return "tribe_category_id";
+      case MetadataTypes.childClass:
+        return "class_level_id";
+      case MetadataTypes.ovcProgram:
+        return "ovc_program_id";
+      case MetadataTypes.personType:
+        return "person_type_id";
+      case MetadataTypes.familyStatus:
+        return "family_status_id";
+      case MetadataTypes.relationshipType:
+        return "relationship_type_id";
+      case MetadataTypes.referralDestinationClassification:
+        return "referral_destination_classification";
+      case MetadataTypes.referralType:
+        return "referral_type_id";
+      case MetadataTypes.longTermSupport:
+        return "long_term_support_id";
+      case MetadataTypes.mentalSubCondition:
+        return "mental_subcondition_id";
+      case MetadataTypes.physicalSubCondition:
+        return "physical_subcondition_id";
+      case MetadataTypes.courtOrder:
+        return "court_order_id";
+      case MetadataTypes.householdEconomics:
+        return "household_economics";
+      case MetadataTypes.immediateNeed:
+        return "immediate_need_id";
       default:
         throw "Unsupported Type";
     }

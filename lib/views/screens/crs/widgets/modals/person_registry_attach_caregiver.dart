@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../controller/metadata_manager.dart';
 import '../../../../../controller/registry_provider.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../widgets/custom_button.dart';
@@ -139,7 +140,7 @@ class _PersonRegistryAttachCareGiverState
           CustomDropdown(
             initialValue: "Please Select",
             error: shouldValidateFields ? sexError : null,
-            items: const ["Male", "Female"],
+            items: MetadataManager.getInstance().sexNames,
             onChanged: (val) {
               setState(() {
                 sex = val;
@@ -156,7 +157,7 @@ class _PersonRegistryAttachCareGiverState
           CustomDropdown(
             initialValue: "None",
             error: shouldValidateFields ? relationshipError : null,
-            items: childRelationship,
+            items: MetadataManager.getInstance().relationshipTypeNames,
             onChanged: (val) {
               setState(() {
                 relationshipToChild = val;

@@ -63,6 +63,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
   String? sexError = SEX_DROPDOWN_ERROR;
   String? classError = CLASS_DROPDOWN_ERROR;
   String? dobError = DOB_INPUT_ERROR;
+  MetadataManager metadataManager = MetadataManager.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -118,15 +119,9 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: registryProvider
-                              .registryPersonalDetailsModel.personType.isEmpty
-                          ? selectedPersonCriteria
-                          : registryProvider
-                              .registryPersonalDetailsModel.personType,
-                      items: personCriteria,
-                      error: registryProvider.shouldValidateFields
-                          ? personTypeError
-                          : null,
+                      initialValue: registryProvider.registryPersonalDetailsModel.personType.isEmpty ? selectedPersonCriteria : registryProvider.registryPersonalDetailsModel.personType,
+                      items: metadataManager.personTypeNames,
+                      error: registryProvider.shouldValidateFields ? personTypeError : null,
                       onChanged: (val) {
                         setState(() {
                           if (val.isEmpty) {
@@ -135,8 +130,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             personTypeError = null;
                           }
                           selectedPersonCriteria = val;
-                          registryProvider
-                              .setPersonType(selectedPersonCriteria);
+                          registryProvider.setPersonType(selectedPersonCriteria);
                         });
                       },
                     ),
@@ -162,11 +156,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'First Name',
-                      error: registryProvider.shouldValidateFields
-                          ? firstNameError
-                          : null,
-                      initialValue: registryProvider
-                          .registryPersonalDetailsModel.firstName,
+                      error: registryProvider.shouldValidateFields ? firstNameError : null,
+                      initialValue: registryProvider.registryPersonalDetailsModel.firstName,
                       onChanged: (value) {
                         setState(() {
                           if (InputValidationUtils.isInvalidName(value)) {
@@ -186,11 +177,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Surname',
-                      error: registryProvider.shouldValidateFields
-                          ? surNameError
-                          : null,
-                      initialValue:
-                          registryProvider.registryPersonalDetailsModel.surname,
+                      error: registryProvider.shouldValidateFields ? surNameError : null,
+                      initialValue: registryProvider.registryPersonalDetailsModel.surname,
                       onChanged: (value) {
                         setState(() {
                           if (InputValidationUtils.isInvalidName(value)) {
@@ -199,8 +187,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           }
                           surNameError = null;
                         });
-                        registryProvider.setSurname(value);
-                      },
+                          registryProvider.setSurname(value);
+                       },
                     ),
                     const SizedBox(height: 15),
                     const Text('Other Names',
@@ -208,10 +196,9 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     const SizedBox(height: 6),
                     CustomTextField(
                       hintText: 'Other Names',
-                      initialValue: registryProvider
-                          .registryPersonalDetailsModel.otherNames,
+                      initialValue: registryProvider.registryPersonalDetailsModel.otherNames,
                       onChanged: (value) {
-                        registryProvider.setOtherNames(value);
+                          registryProvider.setOtherNames(value);
                       },
                     ),
                     const SizedBox(height: 15),
@@ -221,14 +208,9 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                     ),
                     const SizedBox(height: 6),
                     CustomDropdown(
-                      initialValue: registryProvider
-                              .registryPersonalDetailsModel.sex.isEmpty
-                          ? "Please Select"
-                          : registryProvider.registryPersonalDetailsModel.sex,
-                      items: const ["Male", "Female"],
-                      error: registryProvider.shouldValidateFields
-                          ? sexError
-                          : null,
+                      initialValue: registryProvider.registryPersonalDetailsModel.sex.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.sex,
+                      items: metadataManager.sexNames,
+                      error: registryProvider.shouldValidateFields ? sexError : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -236,7 +218,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           } else {
                             sexError = null;
                           }
-                          selectedSexCriteria = value;
+                          selectedPersonCriteria = value;
                           registryProvider.setSex(value);
                         });
                       },
@@ -251,14 +233,8 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       lastDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       showInitialDate: true,
-                      error: registryProvider.shouldValidateFields
-                          ? dobError
-                          : null,
-                      initialDate: registryProvider
-                              .registryPersonalDetailsModel.dateOfBirth.isEmpty
-                          ? null
-                          : DateFormat('yyyy-MM-dd').parse(registryProvider
-                              .registryPersonalDetailsModel.dateOfBirth),
+                      error: registryProvider.shouldValidateFields ? dobError : null,
+                      initialDate: registryProvider.registryPersonalDetailsModel.dateOfBirth.isEmpty ? null : DateFormat('yyyy-MM-dd').parse(registryProvider.registryPersonalDetailsModel.dateOfBirth),
                       onChanged: (val) {
                         setState(() {
                           dobError = null;
@@ -268,17 +244,12 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                       },
                     ),
                     const SizedBox(height: 15),
-                    const Text('Class *', style: TextStyle(color: kTextGrey)),
+                    const Text('Class *',
+                        style: TextStyle(color: kTextGrey)),
                     CustomDropdown(
-                      initialValue: registryProvider
-                              .registryPersonalDetailsModel.childClass.isEmpty
-                          ? "Please Select"
-                          : registryProvider
-                              .registryPersonalDetailsModel.childClass,
-                      items: childClass,
-                      error: registryProvider.shouldValidateFields
-                          ? classError
-                          : null,
+                      initialValue: registryProvider.registryPersonalDetailsModel.childClass.isEmpty ? "Please Select" : registryProvider.registryPersonalDetailsModel.childClass,
+                      items: metadataManager.childClassNames,
+                      error: registryProvider.shouldValidateFields ? classError : null,
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
@@ -346,7 +317,6 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             REGISTRY_SUBFORM_HEADERS_TEXT.length - 1,
                         text: 'Next →',
                         onTap: () {
-                          print(MetadataManager.getInstance().sex);
                           if (selectedStep >=
                               REGISTRY_SUBFORM_HEADERS_TEXT.length - 1) {
                             return;
@@ -380,10 +350,10 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                             : "Back",
                     textColor: Colors.white,
                     color: formStep == 1 &&
-                            selectedStep ==
-                                REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
-                        ? kTextGrey
-                        : kPrimaryColor,
+                        selectedStep ==
+                            REGISTRY_SUBFORM_HEADERS_TEXT.length - 1
+                    ? kTextGrey
+                    : kPrimaryColor,
                     onTap: () {
                       if (formStep == 0) {
                         setState(() {
@@ -411,8 +381,7 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                           onTap: () async {
                             if (registryProvider.isNotComplete()) {
                               if (context.mounted) {
-                                errorSnackBar(context,
-                                    'Please enter all required fields. (*)');
+                                errorSnackBar(context, 'Please enter all required fields. (*)');
                               }
                               registryProvider.setShouldValidateFields();
                               return;
@@ -459,23 +428,20 @@ class _RegisterNewChildScreenState extends State<RegisterNewChildScreen> {
                                   firstName: car.firstName,
                                   surName: car.surName,
                                   otherNames: car.otherNames,
-                                  dateOfBirth:
-                                      convertYMDtoDate(car.dateOfBirth),
+                                  dateOfBirth: convertYMDtoDate(car.dateOfBirth),
                                   sex: car.sex,
                                   relationshipToChild: car.relationshipToChild,
                                   nationalIdNumber: car.nationalIdNumber,
-                                  phoneNumber: car.phoneNumber));
-                            }
+                                  phoneNumber: car.phoneNumber)); }
 
                             var crsAbout = AboutChildCRSFormModel(
-                              initialDetails: initDetails,
-                              siblingDetails: siblings,
-                              caregivers: caregivers,
-                              familyStatus: [],
-                              houseEconomicStatus: "",
-                              id: "1",
-                              isNewChild: true,
-                            );
+                                initialDetails: initDetails,
+                                siblingDetails: siblings,
+                                caregivers: caregivers,
+                                familyStatus: [],
+                                houseEconomicStatus: "",
+                                id: "1",
+                                isNewChild: true,);
                             var id = await registryProvider.submit();
                             crsAbout.id = id.toString();
                             Provider.of<CRSFormProvider>(context, listen: false)
