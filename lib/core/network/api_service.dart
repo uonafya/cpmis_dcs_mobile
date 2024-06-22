@@ -128,6 +128,22 @@ class ApiService {
     }
   }
 
+  Future<void> sendCourtSummons(Map<String, dynamic> summons) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/follow_up/', // Make sure this endpoint is correct for court summons
+        'POST',
+        summons,
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending court summons $e');
+      }
+      throw e;
+    }
+  }
+
   Future<void> sendESRForm(Map<String, dynamic> esr) async {
     try {
       final response = await httpClient.request(

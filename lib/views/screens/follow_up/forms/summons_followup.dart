@@ -38,6 +38,8 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
   void handleAddService() async {
     String? caseId = widget.caseLoad.caseID;
     print("Here I am");
+    // print(widget.caseLoad.events?.eventType);
+
 
     if (dateOfVisit == null) {
       showErrorSnackBar(context, "Please fill in the date of visit.");
@@ -96,9 +98,13 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 6,
             ),
-            const Text(
-              "1",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Text(
+              widget.caseLoad.events
+                      ?.where((event) => event.eventType == 'summons')
+                      .length
+                      .toString() ??
+                  "0",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 14,
