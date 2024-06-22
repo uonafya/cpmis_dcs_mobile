@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:cpims_dcs_mobile/controller/location_provider.dart';
+import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/mobile_settings.dart';
 import 'package:cpims_dcs_mobile/core/network/preferences.dart';
@@ -109,8 +110,6 @@ class _HomepageState extends State<Homepage> {
                               ],
                             ),
                             onTap: () {
-
-                              syncData();
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -120,7 +119,6 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                 ),
                               );
-
                             })
                       ],
                     ),
