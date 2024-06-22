@@ -1,4 +1,3 @@
-import 'package:cpims_dcs_mobile/controller/metadata_manager.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/http_client.dart';
@@ -62,7 +61,38 @@ Future<void> saveMetadataInDB(Database db, List<dynamic> metadata) async {
   }
 }
 
-enum MetadataTypes { category, reporter, areaType, sex, religion, tribe, childClass, ovcProgram, personType, familyStatus, relationshipType,  referralDestinationClassification, referralType, longTermSupport, mentalSubCondition, physicalSubCondition, courtOrder, householdEconomics, immediateNeed }
+enum MetadataTypes {
+  category,
+  reporter,
+  areaType,
+  sex,
+  religion,
+  tribe,
+  childClass,
+  ovcProgram,
+  personType,
+  familyStatus,
+  relationshipType,
+  referralDestinationClassification,
+  referralType,
+  longTermSupport,
+  mentalSubCondition,
+  physicalSubCondition,
+  courtOrder,
+  householdEconomics,
+  immediateNeed,
+  otherSubcondition,
+  mentalCondition,
+  caseNature,
+  perpetratorID,
+  perpetratorStatus,
+  placeOfEvent,
+  physicalConditionType,
+  referralDestinationID,
+  riskLevel,
+  coreItem,
+  intervention,
+}
 
 extension MetadataValues on MetadataTypes {
   String get value {
@@ -105,6 +135,28 @@ extension MetadataValues on MetadataTypes {
         return "household_economics";
       case MetadataTypes.immediateNeed:
         return "immediate_need_id";
+      case MetadataTypes.otherSubcondition:
+        return "otherSubcondition";
+      case MetadataTypes.mentalCondition:
+        return "mental_condition_id";
+      case MetadataTypes.caseNature:
+        return "case_nature_id";
+      case MetadataTypes.perpetratorID:
+        return "perpetrator_id";
+      case MetadataTypes.perpetratorStatus:
+        return "perpetrator_status_id";
+      case MetadataTypes.placeOfEvent:
+        return "event_place_id";
+      case MetadataTypes.physicalConditionType:
+        return "physical_condition_id";
+      case MetadataTypes.referralDestinationID:
+        return "referral_destination_id";
+      case MetadataTypes.riskLevel:
+        return "risk_level_id";
+      case MetadataTypes.coreItem:
+        return "core_item_id";
+      case MetadataTypes.intervention:
+        return "intervention_id";
       default:
         throw "Unsupported Type";
     }
