@@ -393,7 +393,8 @@ class LocalDB {
             ${CaseLoadTableFields.immediateNeeds} TEXT,
             ${CaseLoadTableFields.futureNeeds} TEXT,
             ${CaseLoadTableFields.friends} TEXT,
-            ${CaseLoadTableFields.hobbies} TEXT
+            ${CaseLoadTableFields.hobbies} TEXT,
+            ${CaseLoadTableFields.events} TEXT
             );  
     ''');
 
@@ -852,6 +853,7 @@ CREATE TABLE family_members (
                 jsonEncode(caseLoadModel.futureNeeds),
             CaseLoadTableFields.friends: jsonEncode(caseLoadModel.friends),
             CaseLoadTableFields.hobbies: jsonEncode(caseLoadModel.hobbies),
+            CaseLoadTableFields.events: jsonEncode(caseLoadModel.events),
           },
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
@@ -918,6 +920,7 @@ class CaseLoadTableFields {
     futureNeeds,
     friends,
     hobbies,
+    events,
   ];
 
   static const String orgUnitName = 'org_unit_name';
@@ -969,4 +972,5 @@ class CaseLoadTableFields {
   static const String futureNeeds = 'future_needs';
   static const String friends = 'friends';
   static const String hobbies = 'hobbies';
+  static const String events = 'events';
 }

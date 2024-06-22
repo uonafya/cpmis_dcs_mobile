@@ -85,11 +85,9 @@ class CRSDetails extends StatelessWidget {
                         surName: "Mkuu",
                         sex: "Male",
                         dateOfBirth: DateFormat("yyyy-MM-dd")
-                            .parse(caseLoadSibling.dateLinked ?? ""),
+                            .parse(caseLoadSibling.siblingDoB ?? ""),
                         dateLinked: DateFormat("yyyy-MM-dd")
-                            .parse(caseLoadSibling.dateDelinked ?? ""),
-                        dateUnlinked: DateFormat("yyyy-MM-dd")
-                            .parse(caseLoadSibling.dateDelinked ?? ""),
+                            .parse(caseLoadSibling.siblingDateLinked ?? ""),
                       ));
                     }
                   }

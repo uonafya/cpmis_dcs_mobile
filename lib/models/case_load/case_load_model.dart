@@ -152,14 +152,14 @@ class CaseLoadModel {
     } else {
       caregivers = [];
     }
-    // if (json['case_categories'] != null) {
-    //   caseCategories = <CaseCategoryModel>[];
-    //   json['case_categories'].forEach((v) {
-    //     caseCategories!.add(CaseCategoryModel.fromJson(v));
-    //   });
-    // } else {
+    if (json['case_categories'] != null) {
+      caseCategories = <CaseCategoryModel>[];
+      json['case_categories'].forEach((v) {
+        caseCategories!.add(CaseCategoryModel.fromJson(v));
+      });
+    } else {
     caseCategories = [];
-    // }
+    }
     riskLevel = json['risk_level'] ?? '';
     dateCaseOpened = json['date_case_opened'].toString();
     caseReporterfirstName = json['case_reporter_first_name'] ?? '';
