@@ -313,7 +313,7 @@ class _CCIState extends State<CCI> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Text("Please Select Sex: "),
+                            const Text("Please Select Sex: "),
                             CustomDropdown(
                               items: genders,
                               isMultiSelect: true,
