@@ -207,6 +207,8 @@ Future<List<CRSForm>> fetchCRSFormsFromDB() async {
           ),
           houseEconomicStatus: rawForm['houseEconomic'].toString(),
           familyStatus: familyStatus,
+          id: '',
+          isNewChild: true,
         ),
         medical: MedicalCRSFormModel(
           mentalConditionStatus: rawForm['mentalConditionStatus'].toString(),
