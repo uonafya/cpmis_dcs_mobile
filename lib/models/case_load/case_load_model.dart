@@ -47,14 +47,14 @@ class CaseLoadModel {
   String? caseRemarks;
   String? dateOfSummon;
   bool? summonStatus;
-  List<dynamic>? householdEconomicStatus;
-  List<dynamic>? mentalCondition;
-  List<dynamic>? physicalCondition;
-  List<dynamic>? otherCondition;
-  List<dynamic>? immediateNeeds;
-  List<dynamic>? futureNeeds;
-  List<dynamic>? friends;
-  List<dynamic>? hobbies;
+  List<String>? householdEconomicStatus;
+  List<String>? mentalCondition;
+  List<String>? physicalCondition;
+  List<String>? otherCondition;
+  List<String>? immediateNeeds;
+  List<String>? futureNeeds;
+  List<String>? friends;
+  List<String>? hobbies;
   List<EventModel>? events;
 
   CaseLoadModel({
@@ -182,14 +182,31 @@ class CaseLoadModel {
     caseRemarks = json['case_remarks'] ?? '';
     dateOfSummon = json['date_of_summon'] ?? '';
     summonStatus = json['summon_status'] ?? false;
-    householdEconomicStatus = json['household_economic_status'] ?? [];
-    mentalCondition = json['mental_condition'] ?? [];
-    physicalCondition = json['physical_condition'] ?? [];
-    otherCondition = json['other_condition'] ?? [];
-    immediateNeeds = json['immediate_needs'] ?? [];
-    futureNeeds = json['future_needs'] ?? [];
-    friends = json['friends'] ?? [];
-    hobbies = json['hobbies'] ?? [];
+    householdEconomicStatus = json['household_economic_status'] != null
+        ? List<String>.from(json['household_economic_status'].map((x) => x))
+        : [];
+    mentalCondition = json['mental_condition'] != null
+        ? List<String>.from(json['mental_condition'].map((x) => x))
+        : [];
+
+    physicalCondition = json['physical_condition'] != null
+        ? List<String>.from(json['physical_condition'].map((x) => x))
+        : [];
+    otherCondition = json['other_condition'] != null
+        ? List<String>.from(json['other_condition'].map((x) => x))
+        : [];
+    immediateNeeds = json['immediate_needs'] != null
+        ? List<String>.from(json['immediate_needs'].map((x) => x))
+        : [];
+    futureNeeds = json['future_needs'] != null
+        ? List<String>.from(json['future_needs'].map((x) => x))
+        : [];
+    friends = json['friends'] != null
+        ? List<String>.from(json['friends'].map((x) => x))
+        : [];
+    hobbies = json['hobbies'] != null
+        ? List<String>.from(json['hobbies'].map((x) => x))
+        : [];
     events = json['events'] != null
         ? List<EventModel>.from(
             json['events'].map((x) => EventModel.fromJson(x)),
@@ -315,6 +332,7 @@ class CaseLoadModel {
       'future_needs': futureNeeds ?? [],
       'friends': friends ?? [],
       'hobbies': hobbies ?? [],
+      'events': events?.map((x) => x.toMap()).toList() ?? [],
     };
   }
 
@@ -370,6 +388,7 @@ class CaseLoadModel {
       futureNeeds: map['future_needs'] ?? [],
       friends: map['friends'] ?? [],
       hobbies: map['hobbies'] ?? [],
+      events: map['events'] ?? [],
     );
   }
 
@@ -417,14 +436,15 @@ class CaseLoadModel {
     String? caseRemarks,
     String? dateOfSummon,
     bool? summonStatus,
-    List<dynamic>? householdEconomicStatus,
-    List<dynamic>? mentalCondition,
-    List<dynamic>? physicalCondition,
-    List<dynamic>? otherCondition,
-    List<dynamic>? immediateNeeds,
-    List<dynamic>? futureNeeds,
-    List<dynamic>? friends,
-    List<dynamic>? hobbies,
+    List<String>? householdEconomicStatus,
+    List<String>? mentalCondition,
+    List<String>? physicalCondition,
+    List<String>? otherCondition,
+    List<String>? immediateNeeds,
+    List<String>? futureNeeds,
+    List<String>? friends,
+    List<String>? hobbies,
+    List<EventModel>? events,
   }) {
     return CaseLoadModel(
       orgUnitName: orgUnitName ?? this.orgUnitName,
@@ -483,6 +503,7 @@ class CaseLoadModel {
       futureNeeds: futureNeeds ?? this.futureNeeds,
       friends: friends ?? this.friends,
       hobbies: hobbies ?? this.hobbies,
+      events: events ?? this.events,
     );
   }
 }
