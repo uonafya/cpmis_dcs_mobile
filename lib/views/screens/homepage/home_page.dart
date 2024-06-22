@@ -85,28 +85,28 @@ class _HomepageState extends State<Homepage> {
                           'Application data and usage summary',
                           style: TextStyle(color: kTextGrey),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.sync,
-                                  color: kPrimaryColor,
-                                  size: 16,
-                                ),
-                                SizedBox(
-                                  width: 6,
-                                ),
-                                Text(
-                                  'Sync',
-                                  style: TextStyle(
+                        InkWell(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.sync,
                                     color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold,
+                                    size: 16,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: 6,
+                                  ),
+                                  Text(
+                                    'Sync',
+                                    style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             onTap: () {
                               showDialog(
@@ -121,7 +121,7 @@ class _HomepageState extends State<Homepage> {
                             })
                       ],
                     ),
-                    const SizedBox(height: 20),
+
                     if (kDebugMode)
                       const InfoCard(
                         title: 'THIS IS A TEST APPLICATION',
