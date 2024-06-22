@@ -84,6 +84,8 @@ class _HomepageState extends State<Homepage> {
                             ),
                             onTap: () {
                               syncData();
+                              syncCciTransitionData();
+
                             })
                       ],
                     ),

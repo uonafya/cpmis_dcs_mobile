@@ -1,8 +1,8 @@
-import 'dart:ffi';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-import 'dart:typed_data';
-
-import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
+// import 'dart:ffi';
+// import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
+// import 'dart:typed_data';
+//
+// import 'package:cpims_dcs_mobile/views/screens/cci_transition/cci_transition.dart';
 
 class CciTransitionModel {
   String? cciId;

@@ -555,7 +555,7 @@ class LocalDB {
 
   // Save CCI Transition form method
   //Insert social inquiry form data
-  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAgeGroupsOne,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
+  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAges,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
     try {
       final db = await instance.database;
       final id = await db.insert("cciTransition",{
@@ -568,7 +568,7 @@ class LocalDB {
         'cci_other_reg': cciOtherRegistered,
         'cci_serves_disabled': cciServesDisabled,
         'cci_gender': cciServesGender,
-        'cci_accommodate_ages': cciAgeGroupsOne,
+        'cci_accommodate_ages': cciAges,
         'transition_started': cciStartedTransition,
         'basis_transition': cciBasisOfTransition,
         'legal_framework_strategy': cciLegaFramework,

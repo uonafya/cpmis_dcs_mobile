@@ -7,6 +7,8 @@ import 'package:cpims_dcs_mobile/models/social_inquiry_form_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/utils/constants_crs.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../models/cci_transition.dart';
+
 class ApiService {
   String _queryParams(Map<String, dynamic> params) =>
       '?${params.entries.map((map) => '${map.key}=${map.value}').toList().join('&')}';
@@ -95,6 +97,24 @@ class ApiService {
       }
     }
   }
+
+
+  Future<void> sendCciTransition(CciTransitionModel inquiry) async {
+    try {
+      final response = await httpClient.request(
+        'mobile/forms/cci/',
+        'POST',
+        inquiry.toJson(),
+      );
+      print(response.data);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error occurred while sending social inquiry $e');
+      }
+    }
+  }
+
+
 
   Future<void> sendESRForm(Map<String, dynamic> esr) async {
     try {
