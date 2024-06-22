@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
-import 'package:cpims_dcs_mobile/core/network/database.dart';
 import 'package:cpims_dcs_mobile/core/network/followup_summons.dart';
+import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
 import 'package:cpims_dcs_mobile/models/summons_model.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/forms/lists.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
@@ -12,7 +14,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
 class SummonsFollowUp extends StatefulWidget {
-  const SummonsFollowUp({super.key});
+  const SummonsFollowUp({super.key, required this.caseLoad});
+  final CaseLoadModel caseLoad;
 
   @override
   State<SummonsFollowUp> createState() => _SummonsFollowUpState();
@@ -33,16 +36,18 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
       CourtSummonsDatabaseHelper();
 
   void handleAddService() async {
-    String? caseId = "1232"; // Replace with actual case ID
+    String? caseId = widget.caseLoad.caseID;
     print("Here I am");
+    // print(widget.caseLoad.events?.eventType);
 
     if (dateOfVisit == null) {
-      Get.snackbar("Error", "Please fill in the date of visit.");
+      showErrorSnackBar(context, "Please fill in the date of visit.");
       return;
     }
 
     if (summonHonored == "Please select") {
-      Get.snackbar("Error", "Please select whether the summon was honored.");
+      showErrorSnackBar(
+          context, "Please select whether the summon was honored.");
       return;
     }
 
@@ -59,18 +64,17 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
     print(courtSummonsModel.toJson());
 
     try {
-      print('Db initialization & saving court summons...');
-      var db = await localdb.database;
       final courtSummonsDatabaseHelper = CourtSummonsDatabaseHelper();
       await courtSummonsDatabaseHelper.insertCourtSummons(courtSummonsModel);
       print('Saved court summons :)');
 
-      Get.snackbar("Success",
-          "Summons added successfully, you can go back to the previous page");
       Get.back(); // Navigate back
+      showSuccessSnackBar(context,
+          "Summons added successfully, you can go back to the previous page");
     } catch (e) {
       print(e.toString());
-      Get.snackbar("Error", "Failed to save court summons. Please try again.");
+      showErrorSnackBar(
+          context, "Failed to save court summons. Please try again.");
     }
   }
 
@@ -93,9 +97,13 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             const SizedBox(
               height: 6,
             ),
-            const Text(
-              "1",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Text(
+              widget.caseLoad.events
+                      ?.where((event) => event.eventType == 'summon')
+                      .length
+                      .toString() ??
+                  "0",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 14,
@@ -176,7 +184,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             //             Get.snackbar(
             //                 "Success", "Court summons retrieved successfully.");
             //           } else {
-            //             Get.snackbar("Error",
+            //            showErrorSnackBar(context,
             //                 "No court summons found for this case ID.");
             //           }
             //         } catch (e) {
@@ -218,7 +226,7 @@ class _SummonsFollowUpState extends State<SummonsFollowUp> {
             //               "Success", "Court summons deleted successfully.");
             //         } catch (e) {
             //           print(e.toString());
-            //           Get.snackbar("Error", "Failed to delete court summons.");
+            //          showErrorSnackBar(context,  "Failed to delete court summons.");
             //         }
             //       },
             //     )

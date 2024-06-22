@@ -1,5 +1,5 @@
-import 'package:cpims_dcs_mobile/core/constants/booleans.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
+import 'package:cpims_dcs_mobile/core/constants/convert_date_to_YMD.dart';
 import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -9,6 +9,11 @@ class CRSDatabaseForm {
       // Insert into form table
       await db.insert(crsTable, {
         "id": formID,
+        "longitude": form.longitude,
+        "latitude": form.latitude,
+        "startTime": form.startTime.toIso8601String(),
+        "endTime": form.endTime..toIso8601String(),
+        "caseReporter": form.caseReporting?.originator,
         "courtName": form.caseReporting?.courtName,
         "reporterPhoneNumber": form.caseReporting?.reporterPhoneNumber,
         "reporterLastName": form.caseReporting?.reporterLastName,
@@ -17,19 +22,16 @@ class CRSDatabaseForm {
         "reporterOtherName": form.caseReporting?.reporterOtherName,
         "policeStation": form.caseReporting?.policeStation,
         "obNumber": form.caseReporting?.obNumber,
-        "placeOfOccurence":
-            boolToStr(form.caseReporting?.placeOfOccurence ?? false),
-        "subCountyID": 1,
+        "placeOfOccurence": form.caseReporting?.placeOfOccurence == true ? 1: 0,
         "village": form.caseReporting?.village,
-        "wardID": 1,
-        "sublocationID": 1,
-        "reportingSubcountyID":
-            1,
-        "reportingOrgUnitID":
-            1,
-        "dateCaseReported":
-            form.caseReporting!.dateCaseReported!.toIso8601String(),
-        "childID": form.childID,
+        "ward": form.caseReporting?.ward,
+        "county": form.caseReporting?.county,
+        "subCounty": form.caseReporting?.subCounty,
+        "reportingSubCounty": form.caseReporting?.reportingSubCounty,
+        "reportingOrgUnit": form.caseReporting?.reportingOrganizationalUnit,
+        "dateCaseReported": convertDateToYMD(form.caseReporting!.dateCaseReported!),
+        "childID": form.about?.id,
+        "isNew": form.about?.isNewChild == true,
         "country": form.caseReporting?.country,
         "city": form.caseReporting?.city,
         "houseEconomic": form.about!.houseEconomicStatus,
@@ -38,10 +40,14 @@ class CRSDatabaseForm {
         "otherConditionStatus": form.medical!.otherConditionStatus,
         "caseSerialNumber": form.caseData?.serialNumber ?? "",
         "offenderKnown": form.caseData?.offenderKnown ?? "",
+        "location": form.caseReporting?.location,
+        "subLocation": form.caseReporting?.subLocation,
         "riskLevel": form.caseData?.riskLevel,
         "referralPresent": form.caseData?.referralsPresent == true ? 1 : 0,
         "summonsIssued": form.caseData?.referralsPresent == true ? 1 : 0,
         "dateOfSummon": form.caseData?.dateOfSummon?.toIso8601String(),
+        "caseNarration": form.caseData?.caseNarration,
+        "synced": 0
       });
 
       // Insert into family status
@@ -106,7 +112,7 @@ class CRSDatabaseForm {
       for (var j = 0; j < form.caseData!.crsCategories.length; j++) {
         await db.insert(crsFormCategoriesTable, {
           "formID": formID,
-          "categoryID": "CSCU",
+          "categoryID": form.caseData?.crsCategories[j].category,
           "placeOfEvent": form.caseData?.crsCategories[j].placeOfEvent,
           "caseNature": form.caseData?.crsCategories[j].caseNature,
           "dateOfEvent": form.caseData?.crsCategories[j].dateOfEvent,
@@ -119,6 +125,7 @@ class CRSDatabaseForm {
           var subCateg = form.caseData!.crsCategories[j].subcategory![l];
           await db.insert(crsFormSubCategoriesTable, {
             "crsFormCategoryID": formID,
+            "categoryID": form.caseData?.crsCategories[j].category,
             "subCategoryID": subCateg,
           });
         }
@@ -140,7 +147,7 @@ class CRSDatabaseForm {
       // Immediate needs
       for (var j = 0; j < form.caseData!.immediateNeeds.length; j++) {
         var immediate = form.caseData!.immediateNeeds[j];
-        await db.insert(crsOtherConditionTable, {
+        await db.insert(crsImmediateTable, {
           "formID": formID,
           "need": immediate,
         });
@@ -149,7 +156,7 @@ class CRSDatabaseForm {
       // Future needs
       for (var j = 0; j < form.caseData!.futureNeeds.length; j++) {
         var future = form.caseData!.futureNeeds[j];
-        await db.insert(crsOtherConditionTable, {
+        await db.insert(crsFutureNeedsTable, {
           "formID": formID,
           "need": future,
         });
@@ -158,12 +165,12 @@ class CRSDatabaseForm {
       // Store Perpetrators
       for (var j = 0; j < form.caseData!.perpetrators.length; j++) {
         var perp = form.caseData!.perpetrators[j];
-        var perpid = await db.insert(crsOtherConditionTable, {
+        var perpid = await db.insert(perpetratorTable, {
           "firstName": perp.firstName,
           "surname": perp.lastName,
           "otherNames": perp.othernames,
           "sex": perp.sex,
-          "dob": perp.dateOfBirth?.toIso8601String(),
+          "dob": convertDateToYMD(perp.dateOfBirth),
           "relationshipType": perp.relationshipType
         });
 
@@ -172,11 +179,8 @@ class CRSDatabaseForm {
           "formID": formID,
           "perpetratorID": perpid,
         });
-
-        print("CRS stored");
       }
     } catch (err) {
-      print(err.toString());
       throw "Could Not Store Form In Database";
     }
   }

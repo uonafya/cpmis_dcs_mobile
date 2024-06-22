@@ -1,5 +1,8 @@
+import 'package:cpims_dcs_mobile/controller/crs_form_provider.dart';
 import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/models/case_load/case_load_model.dart';
+import 'package:cpims_dcs_mobile/models/case_load/siblings_model.dart';
+import 'package:cpims_dcs_mobile/models/crs_forms.dart';
 import 'package:cpims_dcs_mobile/views/screens/crs/pages/crs_page.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_home.dart';
 import 'package:cpims_dcs_mobile/views/screens/follow_up/follow_up_screen.dart';
@@ -9,6 +12,8 @@ import 'package:cpims_dcs_mobile/views/widgets/app_bar.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CRSDetails extends StatelessWidget {
   const CRSDetails({super.key, required this.caseLoad});
@@ -37,20 +42,15 @@ class CRSDetails extends StatelessWidget {
               const SizedBox(
                 width: 14,
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(() => const FollowUpHome());
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: const Text(
-                    "INACTIVE",
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: Text(
+                  caseLoad.caseStatus ?? "ACTIVE",
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
                 ),
               ),
             ],
@@ -68,10 +68,47 @@ class CRSDetails extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Get.to(
-                    () => CaseRegistrationSheet(
-                      caseLoad: caseLoad,
+                  final List<SiblingsModel>? caseLoadSiblings =
+                      caseLoad.siblings;
+
+                  List<SiblingDetails> siblings = [];
+
+                  if (caseLoadSiblings != null) {
+                    for (var caseLoadSibling in caseLoadSiblings) {
+                      siblings.add(SiblingDetails(
+                        firstName: caseLoadSibling.siblingFirstName ?? "",
+                        surName: caseLoadSibling.siblingSurName ?? "",
+                        sex: caseLoadSibling.siblingSex ?? "",
+                        dateOfBirth: DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.siblingDoB ?? ""),
+                        dateLinked: DateFormat("yyyy-MM-dd")
+                            .parse(caseLoadSibling.siblingDateLinked ?? ""),
+                      ));
+                    }
+                  }
+
+                  AboutChildCRSFormModel? crsAbout = AboutChildCRSFormModel(
+                    id: caseLoad.caseID ?? "",
+                    isNewChild: false,
+                    initialDetails: InitialChildDetails(
+                      sex: caseLoad.ovcSex ?? "",
+                      dateOfBirth: caseLoad.ovcDoB != null
+                          ? DateTime.parse(caseLoad.ovcDoB ?? "")
+                          : DateTime.now(),
+                      surName: caseLoad.ovcSurname ?? "",
+                      firstName: caseLoad.ovcFirstName ?? "",
+                      otherNames: caseLoad.ovcOtherNames ?? "",
                     ),
+                    familyStatus: [],
+                    houseEconomicStatus:
+                        caseLoad.householdEconomicStatus?.first ?? "",
+                    siblingDetails: siblings,
+                  );
+                  Provider.of<CRSFormProvider>(context, listen: false).about =
+                      crsAbout;
+
+                  Get.to(
+                    () => const CaseRegistrationSheet(),
                   );
                 },
                 child: Container(
@@ -103,11 +140,24 @@ class CRSDetails extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => const FollowUpScreen());
+                  if (caseLoad.caseStatus
+                      .toString()
+                      .toLowerCase()
+                      .contains("inactive")) {
+                    return;
+                  }
+                  Get.to(() => FollowUpScreen(
+                        caseLoadModel: caseLoad,
+                      ));
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.blue[600],
+                      color: caseLoad.caseStatus
+                              .toString()
+                              .toLowerCase()
+                              .contains("inactive")
+                          ? Colors.grey
+                          : Colors.blue[600],
                       borderRadius: BorderRadius.circular(4)),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -171,7 +221,7 @@ class CRSDetails extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  caseLoad.caseReporter ?? "-",
+                  "${caseLoad.caseReporterfirstName} ${caseLoad.caseReporterSurName} ${caseLoad.caseReporterOtherNames}",
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Divider()
@@ -185,94 +235,66 @@ class CRSDetails extends StatelessWidget {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  caseLoad.caseReporter ?? "-",
+                  caseLoad.caseReporterContacts ?? "-",
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Divider()
               ],
             ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Place of Occurence",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                Text(
-                  "",
-                  style: TextStyle(fontSize: 12),
-                ),
-                Divider()
-              ],
+            const Text(
+              "Place of Occurence",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            const Column(
+            const SizedBox(
+              height: 4,
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Sub County",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Makadara",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.occurrenceSubCountyName ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Village/Estate",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "N/A",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.occurrenceVillageName ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Place of Reporting",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                Text(
-                  "",
-                  style: TextStyle(fontSize: 12),
-                ),
-                Divider()
-              ],
+            const Text(
+              "Place of Reporting",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            const Column(
+            const SizedBox(
+              height: 4,
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Sub County",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Makadara",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.reportSubCountyName ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
-              ],
-            ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Place of Reporting",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                Text(
-                  "MAKADARA SUB COUNTY",
-                  style: TextStyle(fontSize: 12),
-                ),
-                Divider()
+                const Divider()
               ],
             ),
           ]),
@@ -317,53 +339,48 @@ class CRSDetails extends StatelessWidget {
                 ),
                 Text(
                   caseLoad.siblings == null
-                      ? ""
-                      : caseLoad.siblings!.map((e) => e.id ?? "-").join("\n>"),
+                      ? "No siblings"
+                      : caseLoad.siblings!
+                          .map((e) =>
+                              "${e.siblingFirstName} ${e.siblingSurName}")
+                          .join("\n>"),
                   style: const TextStyle(fontSize: 12),
                 ),
                 const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "No Siblings",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                Text(
-                  "",
-                  style: TextStyle(fontSize: 12),
-                ),
-                Divider()
-              ],
-            ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
+                const Text(
                   "House Economic Status",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Middle Income (apparent)",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.householdEconomicStatus == null
+                      ? "NA"
+                      : caseLoad.householdEconomicStatus!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Close Friends",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.hobbies == null
+                      ? "No friends"
+                      : caseLoad.hobbies!.map((e) => e.toString()).join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             const Column(
@@ -380,46 +397,58 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Mental Condition",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Appears Normal",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.mentalCondition == null
+                      ? "NA"
+                      : caseLoad.mentalCondition!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Physical Condition",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Appears Normal",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.physicalCondition == null
+                      ? "NA"
+                      : caseLoad.physicalCondition!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Other Conditions",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Appears Normal",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.otherCondition == null
+                      ? "NA"
+                      : caseLoad.otherCondition!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
           ]),
@@ -455,18 +484,22 @@ class CRSDetails extends StatelessWidget {
                 const Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Immediate Needs",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "> Clothing\n> Food\n> Shelter",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.immediateNeeds == null
+                      ? "NA"
+                      : caseLoad.immediateNeeds!
+                          .map((e) => e.toString())
+                          .join("\n>"),
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             const Column(
@@ -483,22 +516,25 @@ class CRSDetails extends StatelessWidget {
                 Divider()
               ],
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Summons",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(
+                const SizedBox(
+                  height: 4,
+                ),
+                const Text(
                   "Summon Date",
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Text(
-                  "Oct 11, 2018",
-                  style: TextStyle(fontSize: 12),
+                  caseLoad.dateOfSummon ?? "-",
+                  style: const TextStyle(fontSize: 12),
                 ),
-                Divider()
+                const Divider()
               ],
             ),
             Column(

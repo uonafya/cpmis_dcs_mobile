@@ -35,6 +35,9 @@ class _CRSHomeState extends State<CRSHome> {
   final childTextController = TextEditingController();
 
   void searchChild() async {
+    setState(() {
+      searchedResults = [];
+    });
     if (selectedCriteria == 'Names') {
       final results =
           await searchCaseLoad.searchOVCByNames(childTextController.text);
@@ -44,6 +47,18 @@ class _CRSHomeState extends State<CRSHome> {
     } else if (selectedCriteria == 'CPIMS ID') {
       final results =
           await searchCaseLoad.searchOVCByCPIMSID(childTextController.text);
+      setState(() {
+        searchedResults = results ?? [];
+      });
+    } else if (selectedCriteria == 'Case Serial') {
+      final results =
+          await searchCaseLoad.searchOVCByCaseSerial(childTextController.text);
+      setState(() {
+        searchedResults = results ?? [];
+      });
+    } else if (selectedCriteria == 'Org Unit') {
+      final results =
+          await searchCaseLoad.searchOVCByOrgUnit(childTextController.text);
       setState(() {
         searchedResults = results ?? [];
       });
@@ -95,8 +110,11 @@ class _CRSHomeState extends State<CRSHome> {
                 Row(
                   children: [
                     Expanded(
-                        child:
-                            CustomButton(text: 'Search', onTap: searchChild)),
+                        child: CustomButton(
+                      text: 'Search',
+                      onTap: searchChild,
+                      isDisabled: selectedCriteria == 'Select Criteria',
+                    )),
                     const SizedBox(
                       width: 15,
                     ),

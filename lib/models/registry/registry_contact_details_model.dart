@@ -1,3 +1,4 @@
+
 class RegistryContactDetailsModel {
   String designatedPhoneNumber;
   String otherMobileNumber;
@@ -36,5 +37,9 @@ class RegistryContactDetailsModel {
     otherMobileNumber = "";
     emailAddress = "";
     physicalLocation = "";
+  }
+
+  bool isComplete() {
+    return true;
   }
 }

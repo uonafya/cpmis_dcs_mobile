@@ -317,8 +317,10 @@ class _CaseDataWidgetState extends State<CaseDataWidget> {
                 CaseDataCRSFormModel update = model.caseData;
 
                 if (update.crsCategories.isEmpty) {
+                  print("I am here");
                   update.crsCategories = [item];
                 } else {
+                  print("I am not here");
                   update.crsCategories.add(item);
                 }
                 model.caseData = update;

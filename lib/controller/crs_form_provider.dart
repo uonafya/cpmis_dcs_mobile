@@ -3,7 +3,12 @@ import 'package:cpims_dcs_mobile/views/screens/crs/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CRSFormProvider extends ChangeNotifier {
-  final CRSForm form = CRSForm(caseID: "", childID: "");
+  final CRSForm form = CRSForm(
+    startTime: DateTime.now(),
+    endTime: DateTime.now(),
+    longitude: "",
+    latitude: "",
+  );
 
   CaseReportingCRSFormModel get caseReport {
     if (form.caseReporting == null) {
@@ -28,13 +33,14 @@ class CRSFormProvider extends ChangeNotifier {
   AboutChildCRSFormModel? get about {
     if (form.about == null) {
       var about = AboutChildCRSFormModel(
-          initialDetails: const InitialChildDetails(
-            firstName: "",
-            surname: "",
-            otherNames: "",
-            sex: "",
-            age: 2,
-          ),
+          id: "",
+          isNewChild: true,
+          initialDetails: InitialChildDetails(
+              firstName: "",
+              surName: "",
+              otherNames: "",
+              dateOfBirth: DateTime.now(),
+              sex: pleaseSelect),
           houseEconomicStatus: pleaseSelect,
           familyStatus: [],
           closeFriends: [],
@@ -93,13 +99,33 @@ class CRSFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set startTime(DateTime time) {
+    form.startTime = time;
+    notifyListeners();
+  }
+
   set medical(MedicalCRSFormModel? data) {
     form.medical = data;
     notifyListeners();
   }
 
+  set endTime(DateTime time) {
+    form.endTime = time;
+    notifyListeners();
+  }
+
   set caseData(CaseDataCRSFormModel? data) {
     form.caseData = data;
+    notifyListeners();
+  }
+
+  set latitude(double latitude) {
+    form.latitude = latitude.toString();
+    notifyListeners();
+  }
+
+  set longitude(double longitude) {
+    form.longitude = longitude.toString();
     notifyListeners();
   }
 }

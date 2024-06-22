@@ -1,5 +1,6 @@
 class ReferralModel {
   String? caseId;
+  String? formId;
   String? caseCategory;
   String? referralActor;
   String? specifiedReferral;
@@ -7,6 +8,7 @@ class ReferralModel {
 
   ReferralModel({
     this.caseId,
+    this.formId,
     this.caseCategory,
     this.referralActor,
     this.specifiedReferral,
@@ -15,6 +17,7 @@ class ReferralModel {
 
   ReferralModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
+    formId = json['form_id'];
     caseCategory = json['case_category'];
     referralActor = json['referral_actor'];
     specifiedReferral = json['specified_referral'];
@@ -22,18 +25,20 @@ class ReferralModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['case_category'] = this.caseCategory;
-    data['referral_actor'] = this.referralActor;
-    data['specified_referral'] = this.specifiedReferral;
-    data['referral_for'] = this.referralFor;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['form_id'] = formId;
+    data['case_category'] = caseCategory;
+    data['referral_actor'] = referralActor;
+    data['specified_referral'] = specifiedReferral;
+    data['referral_for'] = referralFor;
     return data;
   }
 
   Map<String, dynamic> toMap() {
     return {
       'case_id': caseId,
+      'form_id': formId,
       'case_category': caseCategory,
       'referral_actor': referralActor,
       'specified_referral': specifiedReferral,

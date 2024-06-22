@@ -1,12 +1,22 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cpims_dcs_mobile/controller/sync_provider.dart';
+import 'package:cpims_dcs_mobile/core/constants/constants.dart';
 import 'package:cpims_dcs_mobile/views/screens/homepage/home_page.dart';
 import 'package:cpims_dcs_mobile/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 
-class LockPage extends StatelessWidget {
+class LockPage extends StatefulWidget {
   const LockPage({super.key});
 
+  @override
+  State<LockPage> createState() => _LockPageState();
+}
+
+class _LockPageState extends State<LockPage> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +48,25 @@ class LockPage extends StatelessWidget {
               ),
               CustomButton(
                 text: "Sync Data",
-                onTap: () {
-                  Get.to(() => const Homepage());
+                isLoading: isLoading,
+                onTap: () async {
+                  try {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await syncData(context);
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Get.to(() => const Homepage());
+                    showSuccessSnackBar(context, "Data synced successfully");
+                  } catch (e) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    showErrorSnackBar(context,
+                        "Failed to sync data, please try again later.");
+                  }
                 },
               ),
               const SizedBox(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ClosureFollowupModel {
   String? caseId;
   String? formId;
@@ -7,14 +9,15 @@ class ClosureFollowupModel {
   String? caseClosureNotes;
   String? dateOfCaseClosure;
 
-  ClosureFollowupModel(
-      {this.caseId,
-      this.formId,
-      this.caseOutcome,
-      this.transferedTo,
-      this.interventionList,
-      this.caseClosureNotes,
-      this.dateOfCaseClosure});
+  ClosureFollowupModel({
+    this.caseId,
+    this.formId,
+    this.caseOutcome,
+    this.transferedTo,
+    this.interventionList,
+    this.caseClosureNotes,
+    this.dateOfCaseClosure,
+  });
 
   ClosureFollowupModel.fromJson(Map<String, dynamic> json) {
     caseId = json['case_id'];
@@ -23,21 +26,29 @@ class ClosureFollowupModel {
     transferedTo = json['transfered_to'];
     if (json['intervention_list'] != null) {
       interventionList = <InterventionList>[];
-      json['intervention_list'].forEach((v) {
-        interventionList!.add(InterventionList.fromJson(v));
-      });
+      if (json['intervention_list'] is String) {
+        // If it's a string, parse it as JSON
+        List<dynamic> list = jsonDecode(json['intervention_list']);
+        for (var v in list) {
+          interventionList!.add(InterventionList.fromJson(v));
+        }
+      } else if (json['intervention_list'] is List) {
+        json['intervention_list'].forEach((v) {
+          interventionList!.add(InterventionList.fromJson(v));
+        });
+      }
     }
     caseClosureNotes = json['case_closure_notes'];
     dateOfCaseClosure = json['date_of_case_closure'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['case_id'] = this.caseId;
-    data['form_id'] = this.formId;
-    data['case_outcome'] = this.caseOutcome;
-    data['transfered_to'] = this.transferedTo;
-    if (this.interventionList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['case_id'] = caseId;
+    data['form_id'] = formId;
+    data['case_outcome'] = caseOutcome;
+    data['transfered_to'] = transferedTo;
+    if (interventionList != null) {
       data['intervention_list'] =
           interventionList!.map((v) => v.toJson()).toList();
     }

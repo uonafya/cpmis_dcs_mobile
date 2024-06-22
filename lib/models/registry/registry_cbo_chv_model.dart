@@ -32,4 +32,8 @@ class RegistryCboChvModel {
     ovcProgramEnrollment = "";
     chv = "";
   }
+
+  bool isComplete() {
+    return true;
+  }
 }

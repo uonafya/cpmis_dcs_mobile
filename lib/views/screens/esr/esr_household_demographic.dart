@@ -18,7 +18,7 @@ class _ESRHouseholdDemographicState extends State<ESRHouseholdDemographic> {
   Widget build(BuildContext context) {
     final controller = Provider.of<ESRController>(context);
     return Form(
-      key: controller.formKey,
+      key: controller.householdDemographicFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
