@@ -145,11 +145,11 @@ class ApiService {
   Future<void> sendCciTransition(CciTransitionModel inquiry) async {
     try {
       final response = await httpClient.request(
-        'mobile/forms/cci/',
+        'mobile/forms/',
         'POST',
         inquiry.toJson(),
       );
-      print(response.data);
+      print("Server Response CCI Transition: {$response.data}");
     } catch (e) {
       if (kDebugMode) {
         print('Error occurred while sending cci transition $e');

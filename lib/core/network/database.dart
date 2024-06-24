@@ -482,6 +482,7 @@ class LocalDB {
     // CCI transition form Database
     await db.execute('''
             CREATE TABLE IF NOT EXISTS cciTransition (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             cci_id TEXT NOT NULL,
             cci_name TEXT NOT NULL,
             nccs_registered TEXT,
@@ -702,8 +703,36 @@ CREATE TABLE family_members (
   // Save CCI Transition form method
   //Insert social inquiry form data
 
-  Future<void> saveCciTransition({  selectedCCI,  cciNCCSRegistered,  final cciRegNo,  cciRegDate,  cciRegValidYrs,  cciOtherRegistered,  cciRegOtherType,  cciServesDisabled,  cciServesGender,  cciAges,  cciStartedTransition,  cciBasisOfTransition,  cciLegaFramework,  cciStakeholderEngagement,  cciMakeDecision,  cciAssessment,  cciStrategicPlanning,  cciOrganizationPlanning,  cciProgramPlanning,  cciTransitionPlanning,  cciEmployeeDev,  cciPilotValidation,  cciProgramImplementation,  cciMonitorEvaluate,  cciTransitionTo,  cciSurvivalRights,  cciDevRights,  cciProtectionRights,  cciParticipationRights}) async {
-
+  Future<void> saveCciTransition(
+      {selectedCCI,
+      cciNCCSRegistered,
+      final cciRegNo,
+      cciRegDate,
+      cciRegValidYrs,
+      cciOtherRegistered,
+      cciRegOtherType,
+      cciServesDisabled,
+      cciServesGender,
+      cciAges,
+      cciStartedTransition,
+      cciBasisOfTransition,
+      cciLegaFramework,
+      cciStakeholderEngagement,
+      cciMakeDecision,
+      cciAssessment,
+      cciStrategicPlanning,
+      cciOrganizationPlanning,
+      cciProgramPlanning,
+      cciTransitionPlanning,
+      cciEmployeeDev,
+      cciPilotValidation,
+      cciProgramImplementation,
+      cciMonitorEvaluate,
+      cciTransitionTo,
+      cciSurvivalRights,
+      cciDevRights,
+      cciProtectionRights,
+      cciParticipationRights}) async {
     try {
       final db = await instance.database;
       final id = await db.insert("cciTransition", {

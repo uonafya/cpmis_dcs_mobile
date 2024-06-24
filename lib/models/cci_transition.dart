@@ -1,12 +1,12 @@
-
 class CciTransitionModel {
+  String? formId;
   String? cciId;
   String? cciName;
-  bool? nccsRegistered;
+  String? nccsRegistered;
   String? cciRegNo;
   String? cciDateOfReg;
   String? cciValidYrs;
-  bool? cciOtherReg;
+  String? cciOtherReg;
   String? cciServesDisabled;
   String? cciGender;
   String? cciAccommodateAges;
@@ -32,6 +32,7 @@ class CciTransitionModel {
   String? createdAt;
 
   CciTransitionModel({
+    this.formId,
     this.cciId,
     this.cciName,
     this.nccsRegistered,
@@ -65,6 +66,7 @@ class CciTransitionModel {
   });
 
   CciTransitionModel.fromJson(Map<String, dynamic> json) {
+    formId = "cci";
     cciId = json['cci_id'];
     cciName = json['cci_name'];
     nccsRegistered = json['nccs_registered'];
@@ -99,6 +101,7 @@ class CciTransitionModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['form_id'] = formId;
     data['cci_id'] = cciId;
     data['cci_name'] = cciName;
     data['nccs_registered'] = nccsRegistered;

@@ -48,15 +48,16 @@ Future<void> syncData(BuildContext context) async {
 }
 
 Future<void> syncCciTransitionData() async {
-  print("data for cci Transition");
   final db = await LocalDB.instance.database;
   //Get all social inquiries
   final transitions = await db.query(cciTransitionTable);
+  print("data for cci Transition: -> {$transitions}");
   print(transitions);
   for (var transition in transitions) {
     final ccitrans = CciTransitionModel.fromJson(transition);
     await apiService.sendCciTransition(ccitrans);
     final cciTransId = transition['id'];
+    print("Sent cci id: {$cciTransId} --- > {$transition} --->  {$ccitrans}");
 
     await db
         .delete(cciTransitionTable, where: 'id = ?', whereArgs: [cciTransId]);
